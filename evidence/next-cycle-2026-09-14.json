@@ -1,0 +1,340 @@
+{
+  "nodule": "NDL-003",
+  "created_at": "2026-09-14T14:55:04Z",
+  "plugin_version": "0.3.0+codex.20260914145158",
+  "checks": {
+    "pytest": "96 passed",
+    "ruff_check": "passed",
+    "ruff_format": "passed",
+    "source_interfaces": 281,
+    "worked_examples": 15,
+    "fresh_index_checkout": {
+      "files": 75,
+      "byte_identical_index_checkout": true,
+      "destination": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\q\\03d230dd"
+    }
+  },
+  "regressions": {
+    "next_nodule": "Public API test failed before active-lane-only conflict check, passed after; receipt and target coverage remain mandatory.",
+    "checkout": "Mixed line endings in existing compatibility MCP config changed on initial checkout. Preserve its raw bytes with -text; two other historical files explicitly restore original CRLF working bytes."
+  },
+  "native_codex": {
+    "version": "codex-cli 0.154.0",
+    "passed": true,
+    "tools": 12,
+    "skills": [
+      "pacer:pacer-onboard",
+      "pacer:pacer-develop",
+      "pacer:pacer-audit"
+    ],
+    "calls": {
+      "pacer_context": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"profile\": \"0.3\",\n  \"task\": \"PAC-001\",\n  \"complete\": true,\n  \"required_ids\": [\n    \"NDL-001\",\n    \"OGM-001\",\n    \"OVR-007\",\n    \"PAC-001\"\n  ],\n  \"tables\": {\n    \"todo\": {\n      \"columns\": [\n        \"ID\",\n        \"Status\",\n        \"DoD\",\n        \"OVRRefs\",\n        \"OGMRefs\",\n        \"Title\",\n        \"Instructions\",\n        \"NextAction\"\n      ],\n      \"rows\": [\n        [\n          \"PAC-001\",\n          \"REVIEW\",\n          \"Current verified retry contract\",\n          \"OVR-007\",\n          \"OGM-001\",\n          \"Maintain retries\",\n          \"Preserve original requirement wording.\",\n          \"review\"\n        ]\n      ]\n    },\n    \"overlord\": {\n      \"columns\": [\n        \"ID\",\n        \"AssetType\",\n        \"Path\"\n      ],\n      \"rows\": [\n        [\n          \"OVR-007\",\n          \"FILE\",\n          \"settings.json\"\n        ]\n      ]\n    },\n    \"organism\": {\n      \"columns\": [\n        \"ID\",\n        \"Status\",\n        \"Authority\",\n        \"RuleType\",\n        \"RuleSubject\",\n        \"RuleSelector\",\n        \"RuleValue\",\n        \"OVRRefs\",\n        \"OriginText\",\n        \"Requirement\"\n      ],\n      \"rows\": [\n        [\n          \"OGM-001\",\n          \"VALIDATED_COMPLETE\",\n          \"USER\",\n          \"json_ge\",\n          \"OVR-007\",\n          \"/retries\",\n          \"2\",\n          \"OVR-007\",\n          \"Retries must be at least 2.\",\n          \"Retries must be at least 2.\"\n        ]\n      ]\n    },\n    \"nodule\": {\n      \"columns\": [\n        \"ID\",\n        \"Status\",\n        \"ContextPolicy\",\n        \"UserRequest\",\n        \"TargetOVR\",\n        \"Intent\",\n        \"AbsorptionCriteria\",\n        \"OGMTargets\",\n        \"SpawnedPACs\"\n      ],\n      \"rows\": [\n        [\n          \"NDL-001\",\n          \"ACTIVE\",\n          \"REQUIRED\",\n          \"Retries must be at least 2.\",\n          \"OVR-007\",\n          \"Maintain retry contract\",\n          \"Tasks and current rule verified\",\n          \"OGM-001\",\n          \"PAC-001\"\n        ]\n      ]\n    }\n  },\n  \"relations\": [\n    {\n      \"source\": \"NDL-001\",\n      \"relation\": \"OGMTargets\",\n      \"target\": \"OGM-001\"\n    },\n    {\n      \"source\": \"NDL-001\",\n      \"relation\": \"SpawnedPACs\",\n      \"target\": \"PAC-001\"\n    },\n    {\n      \"source\": \"NDL-001\",\n      \"relation\": \"TargetOVR\",\n      \"target\": \"OVR-007\"\n    },\n    {\n      \"source\": \"OGM-001\",\n      \"relation\": \"NDLRefs\",\n      \"target\": \"NDL-001\"\n    },\n    {\n      \"source\": \"OGM-001\",\n      \"relation\": \"OVRRefs\",\n      \"target\": \"OVR-007\"\n    },\n    {\n      \"source\": \"OGM-001\",\n      \"relation\": \"PACRefs\",\n      \"target\": \"PAC-001\"\n    },\n    {\n      \"source\": \"OGM-001\",\n      \"relation\": \"RuleSubject\",\n      \"target\": \"OVR-007\"\n    },\n    {\n      \"source\": \"OVR-007\",\n      \"relation\": \"NDLRefs\",\n      \"target\": \"NDL-001\"\n    },\n    {\n      \"source\": \"OVR-007\",\n      \"relation\": \"OGMRefs\",\n      \"target\": \"OGM-001\"\n    },\n    {\n      \"source\": \"OVR-007\",\n      \"relation\": \"PACRefs\",\n      \"target\": \"PAC-001\"\n    },\n    {\n      \"source\": \"PAC-001\",\n      \"relation\": \"NDLRefs\",\n      \"target\": \"NDL-001\"\n    },\n    {\n      \"source\": \"PAC-001\",\n      \"relation\": \"OGMRefs\",\n      \"target\": \"OGM-001\"\n    },\n    {\n      \"source\": \"PAC-001\",\n      \"relation\": \"OVRRefs\",\n      \"target\": \"OVR-007\"\n    }\n  ],\n  \"sources\": {\n    \"settings.json\": \"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"\n  },\n  \"impacted\": [\n    \"OVR-007\"\n  ],\n  \"rules\": [\n    {\n      \"id\": \"OGM-001\",\n      \"rule\": \"json_ge\",\n      \"authority\": \"USER\",\n      \"result\": \"PASS\",\n      \"observed\": 4,\n      \"reason\": \"\",\n      \"freshness\": \"STALE\",\n      \"dependencies\": {},\n      \"meaning\": \"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\"\n    }\n  ],\n  \"diagnostics\": [\n    {\n      \"code\": \"stale_evidence\",\n      \"id\": \"OGM-001\"\n    }\n  ],\n  \"next_action\": \"review\",\n  \"delta\": {\n    \"baseline\": true,\n    \"changed_rows\": [],\n    \"removed_rows\": [],\n    \"changed_sources\": [\n      \"settings.json\"\n    ],\n    \"removed_sources\": []\n  },\n  \"receipt\": {\n    \"task\": \"PAC-001\",\n    \"root\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.cache\\\\c\\\\dbe994d3\\\\fixtures\\\\stale\",\n    \"basis\": \"ecfce759c0aa8cfcc8926d7e6ee85670da2b24a8d974ff4ebf0ea52dd46c4b54\"\n  },\n  \"required_bytes\": 2621\n}"
+          }
+        ],
+        "structuredContent": {
+          "profile": "0.3",
+          "task": "PAC-001",
+          "complete": true,
+          "required_ids": [
+            "NDL-001",
+            "OGM-001",
+            "OVR-007",
+            "PAC-001"
+          ],
+          "tables": {
+            "todo": {
+              "columns": [
+                "ID",
+                "Status",
+                "DoD",
+                "OVRRefs",
+                "OGMRefs",
+                "Title",
+                "Instructions",
+                "NextAction"
+              ],
+              "rows": [
+                [
+                  "PAC-001",
+                  "REVIEW",
+                  "Current verified retry contract",
+                  "OVR-007",
+                  "OGM-001",
+                  "Maintain retries",
+                  "Preserve original requirement wording.",
+                  "review"
+                ]
+              ]
+            },
+            "overlord": {
+              "columns": [
+                "ID",
+                "AssetType",
+                "Path"
+              ],
+              "rows": [
+                [
+                  "OVR-007",
+                  "FILE",
+                  "settings.json"
+                ]
+              ]
+            },
+            "organism": {
+              "columns": [
+                "ID",
+                "Status",
+                "Authority",
+                "RuleType",
+                "RuleSubject",
+                "RuleSelector",
+                "RuleValue",
+                "OVRRefs",
+                "OriginText",
+                "Requirement"
+              ],
+              "rows": [
+                [
+                  "OGM-001",
+                  "VALIDATED_COMPLETE",
+                  "USER",
+                  "json_ge",
+                  "OVR-007",
+                  "/retries",
+                  "2",
+                  "OVR-007",
+                  "Retries must be at least 2.",
+                  "Retries must be at least 2."
+                ]
+              ]
+            },
+            "nodule": {
+              "columns": [
+                "ID",
+                "Status",
+                "ContextPolicy",
+                "UserRequest",
+                "TargetOVR",
+                "Intent",
+                "AbsorptionCriteria",
+                "OGMTargets",
+                "SpawnedPACs"
+              ],
+              "rows": [
+                [
+                  "NDL-001",
+                  "ACTIVE",
+                  "REQUIRED",
+                  "Retries must be at least 2.",
+                  "OVR-007",
+                  "Maintain retry contract",
+                  "Tasks and current rule verified",
+                  "OGM-001",
+                  "PAC-001"
+                ]
+              ]
+            }
+          },
+          "relations": [
+            {
+              "source": "NDL-001",
+              "relation": "OGMTargets",
+              "target": "OGM-001"
+            },
+            {
+              "source": "NDL-001",
+              "relation": "SpawnedPACs",
+              "target": "PAC-001"
+            },
+            {
+              "source": "NDL-001",
+              "relation": "TargetOVR",
+              "target": "OVR-007"
+            },
+            {
+              "source": "OGM-001",
+              "relation": "NDLRefs",
+              "target": "NDL-001"
+            },
+            {
+              "source": "OGM-001",
+              "relation": "OVRRefs",
+              "target": "OVR-007"
+            },
+            {
+              "source": "OGM-001",
+              "relation": "PACRefs",
+              "target": "PAC-001"
+            },
+            {
+              "source": "OGM-001",
+              "relation": "RuleSubject",
+              "target": "OVR-007"
+            },
+            {
+              "source": "OVR-007",
+              "relation": "NDLRefs",
+              "target": "NDL-001"
+            },
+            {
+              "source": "OVR-007",
+              "relation": "OGMRefs",
+              "target": "OGM-001"
+            },
+            {
+              "source": "OVR-007",
+              "relation": "PACRefs",
+              "target": "PAC-001"
+            },
+            {
+              "source": "PAC-001",
+              "relation": "NDLRefs",
+              "target": "NDL-001"
+            },
+            {
+              "source": "PAC-001",
+              "relation": "OGMRefs",
+              "target": "OGM-001"
+            },
+            {
+              "source": "PAC-001",
+              "relation": "OVRRefs",
+              "target": "OVR-007"
+            }
+          ],
+          "sources": {
+            "settings.json": "10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e"
+          },
+          "impacted": [
+            "OVR-007"
+          ],
+          "rules": [
+            {
+              "id": "OGM-001",
+              "rule": "json_ge",
+              "authority": "USER",
+              "result": "PASS",
+              "observed": 4,
+              "reason": "",
+              "freshness": "STALE",
+              "dependencies": {},
+              "meaning": "e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4"
+            }
+          ],
+          "diagnostics": [
+            {
+              "code": "stale_evidence",
+              "id": "OGM-001"
+            }
+          ],
+          "next_action": "review",
+          "delta": {
+            "baseline": true,
+            "changed_rows": [],
+            "removed_rows": [],
+            "changed_sources": [
+              "settings.json"
+            ],
+            "removed_sources": []
+          },
+          "receipt": {
+            "task": "PAC-001",
+            "root": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\c\\dbe994d3\\fixtures\\stale",
+            "basis": "ecfce759c0aa8cfcc8926d7e6ee85670da2b24a8d974ff4ebf0ea52dd46c4b54"
+          },
+          "required_bytes": 2621
+        },
+        "isError": false
+      },
+      "pacer_evaluate": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"id\": \"OGM-001\",\n  \"rule\": \"json_ge\",\n  \"authority\": \"USER\",\n  \"result\": \"PASS\",\n  \"observed\": 4,\n  \"reason\": \"\",\n  \"freshness\": \"STALE\",\n  \"dependencies\": {},\n  \"meaning\": \"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\n  \"sources\": {\n    \"settings.json\": \"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"\n  },\n  \"basis\": {\n    \"version\": \"0.3\",\n    \"meaning\": \"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\n    \"assets\": {\n      \"OVR-007\": \"308780756c9206f4d654526e5f8d4343cbafe042bf772733c3f5b5146b981af8\"\n    },\n    \"sources\": {\n      \"settings.json\": \"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"\n    },\n    \"dependencies\": {}\n  }\n}"
+          }
+        ],
+        "structuredContent": {
+          "id": "OGM-001",
+          "rule": "json_ge",
+          "authority": "USER",
+          "result": "PASS",
+          "observed": 4,
+          "reason": "",
+          "freshness": "STALE",
+          "dependencies": {},
+          "meaning": "e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4",
+          "sources": {
+            "settings.json": "10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e"
+          },
+          "basis": {
+            "version": "0.3",
+            "meaning": "e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4",
+            "assets": {
+              "OVR-007": "308780756c9206f4d654526e5f8d4343cbafe042bf772733c3f5b5146b981af8"
+            },
+            "sources": {
+              "settings.json": "10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e"
+            },
+            "dependencies": {}
+          }
+        },
+        "isError": false
+      }
+    },
+    "installed_files": {
+      ".codex-plugin/plugin.json": "480c1ec96b2c68537b106a918603c7770d7da22e12034b5acdc03e26d57ff716",
+      ".mcp.json": "da062489e04b7251d8da76ba7ba5f4cb8fac9aff0f89c805623347323f9aa284",
+      "mcp.json": "1e36ea01d1e671c2e4e776b3ce869e3471c362af6f4122c05f0717278b3619a8",
+      "plugin.json": "4ed4f56ad2f6e03d6eba0bdb7cf60edb2e2c92a1d3f37da93a2eb499d2512f9b",
+      "pyproject.toml": "53163e404eb85f0ce8557d952448a88246a427ec96ae99907003577d744bcfa3",
+      "README.md": "043496324a472bfcbec731112a1c7b3322d290ddf1225c1a795951ebda9a4006",
+      "references/FORMAT.md": "57217329a7d836e203d2d9d331124d96de4a58414bba25ab1f08a716448f3731",
+      "skills/pacer-audit/agents/openai.yaml": "179d1c208dfc8a1e5219fae467d68d992e39ae692bc5a3833a68c0cfa40d5f90",
+      "skills/pacer-audit/SKILL.md": "00d01fe1d74da6746c803dad6a4c51dfc5ed409b0c2a283a18fdc2f71d7c7a65",
+      "skills/pacer-develop/agents/openai.yaml": "a7e9bce0d039b2413fbd4a89bb0cc5b4c24384c31fa3bd5daf88e4afbc9e948c",
+      "skills/pacer-develop/SKILL.md": "5454c2f440a5f4a8fd558d46b12a5928b72ce817ed9c32c9dbb7b81567a00643",
+      "skills/pacer-onboard/agents/openai.yaml": "3418c71e5f30297a4302f62aa4045699fe92998b0566ee0012c1fff547da7bb2",
+      "skills/pacer-onboard/SKILL.md": "e27649e296c96253cfbfffef3d8bcdd46fe7be89af466ce9a55c1c2419fbb75a",
+      "src/pacer_mcp/__init__.py": "00db8b97dc6771ea7df83737a9a8055dbca8f392a8bdbc2a673402473d05722b",
+      "src/pacer_mcp/cli.py": "3ee321445802bb3ec4e5c6b1a2aeaa907a2116516171603a2158311283355b4e",
+      "src/pacer_mcp/commands.py": "0862c920c9df41b1b6eaae9c22b3cb4d0700066131b8eda3ea5c88b6346d8e1f",
+      "src/pacer_mcp/context.py": "7548c59f80bb9399232cc4c8c40a679abe95d44c1889083e0bb839d63d140c88",
+      "src/pacer_mcp/evidence.py": "ff52ae74662686aaff196a4a0b58b3bb0e2dadcce2002d4b331b72c3b7dbe83e",
+      "src/pacer_mcp/models.py": "9a6fa823b6fb76b4fd3702073fca9cb733a44a3a26adb56f117c61a65b41640f",
+      "src/pacer_mcp/query.py": "b0ca5715c50a0efabb0a397981fb603adb45df8a9dccc6784e9e6e28e37e23ac",
+      "src/pacer_mcp/schema.py": "efdab4bf6685c8b22df8a5826ec2af664080a499f31c28378818c4086e4d736d",
+      "src/pacer_mcp/semantics.py": "e12fae1590963ee178f021640e3ac1e5df89ce378be583eb238b056f8bf50bba",
+      "src/pacer_mcp/server.py": "2a4a2ff10ee083c29c7f6dcfb4d10f9afb4d7edccf06b2f6c19957d8a5545d3b",
+      "src/pacer_mcp/service.py": "6078670944da3223cc21a7ed62359aaf465b9ae7c0266a4595fcd9a439bfe569",
+      "src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+      "src/pacer_mcp/validation.py": "8ecfa845bb865411d2a7d6b1433717dc75dcd26415fa77143d022d779789de00",
+      "tests/conftest.py": "a44c4cc91ecaae783b2ef5b06797da359dc615539a1b32cd4bc2c98afccea8c5",
+      "tests/test_cli.py": "2cbcbe1ef6ad09658879b4eb25e55c5d7eb5470efe59e2e177a7824183c57429",
+      "tests/test_context.py": "6d03ccdb532f0926dff3eb848af21a7f8133ed907d65893b776f06644e26c157",
+      "tests/test_context_evaluation.py": "ab6efb5bf3fb62f15e801f14f736311e5caa63d3df23e2f708cdf52fd027e01f",
+      "tests/test_evidence.py": "1c710425fee3acfafe646c59a32dd2f005b1197359b52f367c22abe75685f9b2",
+      "tests/test_guards.py": "ce91a9864e2085d2c7f4ced1f5c67e9220d428c2e8d61285b6ff97edd431e72c",
+      "tests/test_lifecycle.py": "be786c46ee1787411f8be62510718569aa6e6053969e9d682f0e56afd0b7fa56",
+      "tests/test_mcp.py": "3a92cced2b0993aed1243ebc5fa7a41d85cc05edc329afa67d1104346f81c714",
+      "tests/test_operational_lifecycle.py": "0689a1e79b6b5c8c2827ebda5c86570d0dee67d391ec4e1ffb6ff5709ed0b276",
+      "tests/test_packaging.py": "6010e9dc7d7319ac6e56bcb3251440b330c94cde2339b4c41d8e8c95e7f4d5ee",
+      "tests/test_semantics.py": "53240d98b06e7e2887b4d301ec890950610bae8ee7636baabdc7c507c9d84326",
+      "tests/test_store.py": "463f414666ace248fe13c9a85a6c2905e0bdcc635416066c454b334658e118c9",
+      "uv.lock": "e4b548b432cce98b4e8e9eb0cdcbcbab8ccb32942ae44d343071efb3b9c04136"
+    },
+    "report_sha256": "7939ce5813d4355071c119b29e09a534aae5c1ddccd76177e577b881b0680447"
+  },
+  "comparison": "OVR-270 retains 24 matched trials, all correct, with frozen prompts and usage. No model calls were repeated for this lifecycle repair.",
+  "limitations": [
+    "Manual reports are reviewed assertions with enforced source binding; their structure cannot prove execution honesty.",
+    "Repository-wide context exceeds the default byte budget; relation representation needs further measured optimization."
+  ],
+  "references": [
+    "https://learn.chatgpt.com/docs/app-server",
+    "https://learn.chatgpt.com/docs/extend/mcp"
+  ]
+}

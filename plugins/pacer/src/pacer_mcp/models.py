@@ -68,6 +68,31 @@ class Absorb(Command):
     evidence: str
 
 
+class ContextReceipt(Command):
+    task: str
+    root: str
+    basis: str = Field(pattern=r"^[a-f0-9]{64}$")
+
+
+class Verify(Command):
+    op: Literal["verify"]
+    id: str
+    evidence: str
+    artifact: str = ""
+
+
+class Checkpoint(Command):
+    op: Literal["checkpoint"]
+    id: str
+    next_action: Literal["inspect", "implement", "verify", "review", "absorb", "resolve"]
+
+
+class Refresh(Command):
+    op: Literal["refresh"]
+    id: str
+
+
 Operation = Annotated[
-    Add | Set | Append | Link | Transition | Pace | Split | Absorb, Field(discriminator="op")
+    Add | Set | Append | Link | Transition | Pace | Split | Absorb | Verify | Checkpoint | Refresh,
+    Field(discriminator="op"),
 ]

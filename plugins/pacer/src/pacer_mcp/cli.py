@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 from pacer_mcp.schema import HEADERS
+from pacer_mcp.semantics import semantic_schema
 from pacer_mcp.service import Service
 
 
@@ -36,6 +37,11 @@ def main(argv: list[str] | None = None) -> int:
     graph.add_argument("id")
     graph.add_argument("--depth", type=int, default=1)
     graph.add_argument("--limit", type=int, default=30)
+    context = sub.add_parser("context", help="Assemble sufficient task context and a write receipt")
+    context.add_argument("id")
+    context.add_argument("--max-bytes", type=int, default=32_000)
+    evaluate = sub.add_parser("evaluate", help="Evaluate rule and acceptance freshness")
+    evaluate.add_argument("id")
     for name in ("apply", "preview", "migrate"):
         command = sub.add_parser(name)
         command.add_argument("--actor", required=True)
@@ -45,6 +51,9 @@ def main(argv: list[str] | None = None) -> int:
             command.add_argument("--apply", action="store_true", dest="publish")
         else:
             command.add_argument("--file", required=True, type=Path, help="JSON command array file")
+            command.add_argument(
+                "--context-file", type=Path, help="JSON receipt from pacer context"
+            )
     args = parser.parse_args(argv)
     try:
         if args.command == "serve":
@@ -58,7 +67,11 @@ def main(argv: list[str] | None = None) -> int:
 
             from pacer_mcp.models import Operation
 
-            result = {"columns": HEADERS, "operations": TypeAdapter(list[Operation]).json_schema()}
+            result = {
+                "columns": HEADERS,
+                "operations": TypeAdapter(list[Operation]).json_schema(),
+                **semantic_schema(),
+            }
         elif args.command == "query":
             if any("=" not in value for value in args.where):
                 raise ValueError("--where expects COLUMN=VALUE")
@@ -73,6 +86,10 @@ def main(argv: list[str] | None = None) -> int:
             )
         elif args.command == "graph":
             result = service.graph(args.id, depth=args.depth, limit=args.limit)
+        elif args.command == "context":
+            result = service.context(args.id, max_bytes=args.max_bytes)
+        elif args.command == "evaluate":
+            result = service.evaluate(args.id)
         elif args.command in {"apply", "preview"}:
             if args.file.stat().st_size > 1_000_000:
                 raise ValueError("Command file exceeds 1 MB")
@@ -87,6 +104,9 @@ def main(argv: list[str] | None = None) -> int:
                 revision=args.revision,
                 onboarding=args.onboarding,
                 preview=args.command == "preview",
+                context=json.loads(args.context_file.read_text(encoding="utf-8"))
+                if args.context_file
+                else None,
             )
         elif args.command == "migrate":
             result = service.migrate(

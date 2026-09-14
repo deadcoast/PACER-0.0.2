@@ -38,17 +38,21 @@ hardcoded. The compatibility configuration uses plugin-relative cwd; it does
 not assume hook environment substitutions work in MCP command arguments.
 
 The server exposes onboarding, query, graph, schema, validate, initialize,
-preview, apply, migrate and recover tools, schema resources and an onboarding
+context, evaluate, preview, apply, migrate and recover tools (12 total), schema resources and an onboarding
 prompt. The first 512 characters of its initialization instructions describe the
 essential workflow. CLI failures use nonzero exits; MCP failures use tool errors.
 
-PACER checks structure and workflow transitions. It does not mechanically prove
-that arbitrary evidence is honest or that every changed source file was indexed.
+PACER checks structure, workflow, explicit rules and source-bound acceptance.
+`pacer context <PAC-ID>` returns columnar state, typed relations, applicable rules,
+source deltas and a receipt. New operational scope requires that receipt for
+writes. `checkpoint`, `verify` and `refresh` use the shared mutation lexicon.
+`pacer evaluate <OGM-ID>` observes a rule without changing its accepted status.
+It does not mechanically prove that a manual report is honest or that every changed source file was indexed.
 The audit skill and repository verification command handle those boundaries.
 Source-defined organism statuses remain unchanged.
 
 `python scripts/prove_codex.py` installs into a disposable Codex home and proves
-native skill discovery plus a real MCP onboarding call without a model turn.
+native skill discovery plus real MCP onboarding, context and evaluation calls without a model turn.
 `python scripts/prove_codex.py --installed` checks your current installation.
 Run these from the repository root using its uv environment. First startup may
 download the dependencies already pinned in uv.lock. Python downloads are disabled.

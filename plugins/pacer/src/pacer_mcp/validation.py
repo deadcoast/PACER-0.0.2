@@ -19,6 +19,7 @@ from pacer_mcp.schema import (
     hard_blockers,
     refs,
 )
+from pacer_mcp.semantics import LITERAL_FIELDS, NEXT_ACTIONS, rule_errors
 
 
 def validate_web(
@@ -52,7 +53,7 @@ def validate_web(
             if not isinstance(value, str):
                 errors.append(f"{row_id}.{field}: string required")
                 continue
-            for reference in REF_PATTERN.findall(value):
+            for reference in [] if field in LITERAL_FIELDS else REF_PATTERN.findall(value):
                 if reference not in index:
                     errors.append(f"REFUSAL: Unknown ID {reference}")
         for field, prefix in REF_FIELDS[register].items():
@@ -75,6 +76,8 @@ def validate_web(
                 except ValueError:
                     errors.append(f"{row_id}.{field}: UTC ISO 8601 required")
         if register == "todo":
+            if row.get("NextAction") and row["NextAction"] not in NEXT_ACTIONS:
+                errors.append(f"{row_id}: invalid NextAction")
             if row.get("Status") not in {"TODO", "DOING", "REVIEW", "DONE"}:
                 errors.append(f"{row_id}: invalid task status")
             if not row.get("Title") or not row.get("DoD"):
@@ -132,6 +135,7 @@ def validate_web(
             ):
                 errors.append(f"{row_id}: FILE row required for {row.get('Path')}")
         elif register == "organism":
+            errors.extend(f"{row_id}: {error}" for error in rule_errors(row, index))
             status = row.get("Status")
             if status not in OGM_STATUSES:
                 errors.append(f"{row_id}: invalid organism status")
@@ -152,6 +156,10 @@ def validate_web(
             ):
                 errors.append(f"{row_id}: PACED_REQUIREMENT needs blocking references")
         else:
+            if row.get("ContextPolicy", "") not in {"", "REQUIRED"}:
+                errors.append(f"{row_id}: invalid ContextPolicy")
+            if row.get("ContextPolicy") == "REQUIRED" and not row.get("UserRequest"):
+                errors.append(f"{row_id}: operational nodule requires original UserRequest")
             if row.get("Status") not in {"ACTIVE", "ABSORBED"}:
                 errors.append(f"{row_id}: invalid nodule status")
             for field in ("Intent", "AbsorptionCriteria", "CreatedAt", "Lane", "SpawnedPACs"):

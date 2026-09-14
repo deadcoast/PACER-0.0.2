@@ -15,6 +15,8 @@ import subprocess
 from pathlib import Path
 from uuid import uuid4
 
+from evaluate_context import prepare_cases
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -26,6 +28,8 @@ async def main() -> None:
     # Keep dependency-cache paths below legacy Windows path limits.
     trial = ROOT / ".cache/c" / uuid4().hex[:8]
     trial.mkdir(parents=True)
+    prepare_cases(trial / "fixtures")
+    fixture_root = trial / "fixtures" / "stale"
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--installed", action="store_true", help="Inspect the current Codex home without installing"
@@ -116,7 +120,7 @@ async def main() -> None:
             report["initialize"] = await request(
                 "initialize",
                 {
-                    "clientInfo": {"name": "pacer_integration_proof", "version": "0.2.0"},
+                    "clientInfo": {"name": "pacer_integration_proof", "version": "0.3.0"},
                     "capabilities": {"experimentalApi": True},
                 },
             )
@@ -152,6 +156,8 @@ async def main() -> None:
             ]
             if len(servers) != 1:
                 raise RuntimeError("Codex did not initialize PACER's MCP tool inventory")
+            if not {"pacer_context", "pacer_evaluate"} <= set(servers[0]["tools"]):
+                raise RuntimeError("Installed PACER lacks operational context tools")
             thread = await request("thread/start", {"cwd": str(ROOT), "ephemeral": True})
             report["onboard"] = await request(
                 "mcpServer/tool/call",
@@ -166,6 +172,32 @@ async def main() -> None:
                 report["onboard"]
             ):
                 raise RuntimeError("Codex could not call PACER onboarding")
+            for tool, row_id in (("pacer_context", "PAC-001"), ("pacer_evaluate", "OGM-001")):
+                result = await request(
+                    "mcpServer/tool/call",
+                    {
+                        "threadId": thread["thread"]["id"],
+                        "server": servers[0]["name"],
+                        "tool": tool,
+                        "arguments": {"root": str(fixture_root), "id": row_id},
+                    },
+                )
+                report[tool] = result
+                if result.get("isError"):
+                    raise RuntimeError(f"Installed {tool} call failed")
+                payload = result.get("structuredContent") or json.loads(
+                    next(item["text"] for item in result["content"] if item["type"] == "text")
+                )
+                if tool == "pacer_context":
+                    if not payload["complete"] or not payload["receipt"]:
+                        raise RuntimeError("Installed context did not return a complete receipt")
+                    observation = next(r for r in payload["rules"] if r["id"] == "OGM-001")
+                else:
+                    observation = payload
+                if observation["result"] != "PASS" or observation["freshness"] != "STALE":
+                    raise RuntimeError(
+                        "Installed runtime conflated passing source with current evidence"
+                    )
             report["passed"] = True
             print(
                 json.dumps(

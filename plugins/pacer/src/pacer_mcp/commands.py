@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 
+from pacer_mcp.context import context_snapshot, operational_nodules, required_closure
+from pacer_mcp.evidence import evaluate_rule, stale_requirements
 from pacer_mcp.schema import (
     HISTORY,
     OGM_STATUSES,
@@ -15,17 +18,22 @@ from pacer_mcp.schema import (
     refs,
     utc_now,
 )
+from pacer_mcp.semantics import MEANING_FIELDS, NEXT_ACTIONS, canonical
 from pacer_mcp.validation import absorption_errors
 
 
 class Editor:
     """Apply commands to an isolated candidate; publication belongs to Store."""
 
-    def __init__(self, tables: dict, actor: str):
+    def __init__(
+        self, tables: dict, actor: str, root: Path | None = None, *, legacy_migration: bool = False
+    ):
         self.tables = tables
         self.actor = actor
         self.now = utc_now()
         self.changed: set[str] = set()
+        self.root = root
+        self.legacy_migration = legacy_migration
 
     def find(self, row_id: str) -> tuple[str, dict[str, str]]:
         """Locate one immutable row identity across all four organs."""
@@ -54,6 +62,9 @@ class Editor:
             "pace": {"op", "nodule", "tasks", "requirements"},
             "split": {"op", "id", "children"},
             "absorb": {"op", "id", "evidence"},
+            "verify": {"op", "id", "evidence", "artifact"},
+            "checkpoint": {"op", "id", "next_action"},
+            "refresh": {"op", "id"},
         }
         name = operation.get("op")
         if name not in allowed or set(operation) - allowed[name]:
@@ -93,6 +104,20 @@ class Editor:
                 self.transition(register, row, operation["status"], operation.get("evidence", ""))
             elif name == "absorb":
                 self.absorb(register, row, operation.get("evidence", ""))
+            elif name == "verify":
+                self.verify(
+                    register, row, operation.get("evidence", ""), operation.get("artifact", "")
+                )
+            elif name == "checkpoint":
+                if register != "todo" or operation["next_action"] not in NEXT_ACTIONS:
+                    raise ValueError("checkpoint needs a task and defined next_action")
+                row["NextAction"] = operation["next_action"]
+                row["ContextCheckpoint"] = canonical(
+                    context_snapshot(self.tables, self.root, row["ID"])
+                )
+                self.note(row, "checkpoint; next action " + row["NextAction"])
+            elif name == "refresh":
+                self.refresh(row)
 
     def add(self, register: str, values: dict) -> dict:
         """Add a new row without allowing forged completion or timestamps."""
@@ -101,7 +126,15 @@ class Editor:
             raise ValueError("ID required")
         if any(r["ID"] == row["ID"] for rows in self.tables.values() for r in rows):
             raise ValueError(f"Duplicate ID {row['ID']}")
-        for field in ("StartedAt", "DoneAt", "AbsorbedAt"):
+        for field in (
+            "StartedAt",
+            "DoneAt",
+            "AbsorbedAt",
+            "EvidenceBindings",
+            "EvidenceArtifact",
+            "EvidenceFor",
+            "ContextCheckpoint",
+        ):
             if row.get(field):
                 raise ValueError(f"Workflow owns {field}")
         if register == "todo":
@@ -120,7 +153,15 @@ class Editor:
         return row
 
     def _guard_inverse_basis(self, register: str, row: dict, field: str) -> None:
+        if field in {"EvidenceArtifact", "EvidenceFor"}:
+            raise ValueError("Protected evidence relation; use verify")
         if register == "organism" and field == "OVRRefs" and row["Status"] == "VALIDATED_COMPLETE":
+            if (
+                self.legacy_migration
+                and not row.get("RuleType")
+                and not row.get("EvidenceBindings")
+            ):
+                return
             raise ValueError("Demote a validated requirement before changing its meaning or basis")
 
     def set_fields(self, register: str, row: dict, fields: dict) -> None:
@@ -136,9 +177,16 @@ class Editor:
             "DoD",
             "AcceptanceEvidence",
             "AbsorbedFromNDL",
+            "EvidenceBindings",
+            "EvidenceArtifact",
+            "EvidenceFor",
+            "ContextCheckpoint",
+            "NextAction",
         }
         if register == "nodule":
             protected |= {"Intent", "AbsorptionCriteria", "Lane", "NoduleName"}
+            if row.get("ContextPolicy") == "REQUIRED":
+                protected |= {"ContextPolicy", "UserRequest"}
         if set(fields) & protected:
             raise ValueError("Protected field; use lifecycle or append commands")
         if any(k not in row or not isinstance(v, str) for k, v in fields.items()):
@@ -146,11 +194,7 @@ class Editor:
         if (
             register == "organism"
             and row["Status"] == "VALIDATED_COMPLETE"
-            and any(
-                row[k] != value
-                for k, value in fields.items()
-                if k in {"Requirement", "BlockedByOGM", "OVRRefs"}
-            )
+            and any(row[k] != value for k, value in fields.items() if k in MEANING_FIELDS)
         ):
             raise ValueError("Demote a validated requirement before changing its meaning or basis")
         for field, value in fields.items():
@@ -204,7 +248,9 @@ class Editor:
                             target[back] = ";".join(existing + [row["ID"]])
                             self.note(target, f"linked {back} to {row['ID']}")
 
-    def transition(self, register: str, row: dict, status: str, evidence: str) -> None:
+    def transition(
+        self, register: str, row: dict, status: str, evidence: str, *, verified: bool = False
+    ) -> None:
         """Enforce state transitions, hard dependency gates and truthful evidence."""
         old = row.get("Status", "")
         if register == "todo":
@@ -222,6 +268,16 @@ class Editor:
                     raise ValueError(f"REFUSAL: Blocked by {';'.join(blocked)}")
                 if not evidence.strip():
                     raise ValueError("REFUSAL: Evidence required")
+                index = {r["ID"]: r for rows in self.tables.values() for r in rows}
+                if operational_nodules(row, index):
+                    for key in refs(row["OGMRefs"]):
+                        requirement = index[key]
+                        if (
+                            requirement["Status"] != "VALIDATED_COMPLETE"
+                            or evaluate_rule(requirement, index, self.root)["freshness"]
+                            != "CURRENT"
+                        ):
+                            raise ValueError(f"Task requires current verified rule {key}")
                 row["DoneAt"] = self.now
             if status == "DOING":
                 row["Assignee"] = row["Assignee"] or self.actor
@@ -234,6 +290,9 @@ class Editor:
             ) and not evidence.strip():
                 raise ValueError("REFUSAL: Evidence required")
             if status == "VALIDATED_COMPLETE":
+                index = {r["ID"]: r for rows in self.tables.values() for r in rows}
+                if (row.get("RuleType") or operational_nodules(row, index)) and not verified:
+                    raise ValueError("Operational acceptance requires verify")
                 for target in refs(row["BlockedByOGM"]):
                     if self.find(target)[1]["Status"] != "VALIDATED_COMPLETE":
                         raise ValueError(f"Requirement blocked by {target}")
@@ -247,6 +306,84 @@ class Editor:
             raise ValueError("Use pace/absorb for nodule state")
         row["Status"] = status
         self.note(row, f"{old}->{status}" + (f"; evidence: {evidence}" if evidence else ""))
+
+    def verify(self, register: str, row: dict, evidence: str, artifact: str) -> None:
+        """Accept a passing rule using source fingerprints produced by the runtime."""
+        if register != "organism" or self.root is None or not evidence.strip():
+            raise ValueError("verify requires a requirement, project root and evidence description")
+        index = {r["ID"]: r for rows in self.tables.values() for r in rows}
+        observation = evaluate_rule(row, index, self.root, artifact)
+        if observation["result"] != "PASS":
+            raise ValueError(
+                f"Cannot verify rule {row['ID']}: {observation['result']} {observation['reason']}"
+            )
+        for target in refs(row["BlockedByOGM"]):
+            if (
+                index[target]["Status"] != "VALIDATED_COMPLETE"
+                or evaluate_rule(index[target], index, self.root)["freshness"] != "CURRENT"
+            ):
+                raise ValueError(f"Rule dependency requires current verification: {target}")
+        if row.get("EvidenceBindings"):
+            self.note(row, "previous binding: " + row["EvidenceBindings"])
+        old_artifact = row.get("EvidenceArtifact", "")
+        new_artifact = artifact or old_artifact
+        if row.get("RuleType") != "manual" and new_artifact:
+            raise ValueError("Automatic rules do not accept manual artifacts")
+        if old_artifact != new_artifact:
+            if old_artifact:
+                previous = index[old_artifact]
+                previous["EvidenceFor"] = ";".join(
+                    v for v in refs(previous.get("EvidenceFor", "")) if v != row["ID"]
+                )
+                self.note(previous, "superseded evidence for " + row["ID"])
+            if new_artifact:
+                target = index[new_artifact]
+                target["EvidenceFor"] = ";".join(
+                    dict.fromkeys(refs(target.get("EvidenceFor", "")) + [row["ID"]])
+                )
+                self.note(target, "evidence for " + row["ID"])
+            row["EvidenceArtifact"] = new_artifact
+        row["EvidenceBindings"] = canonical(observation["basis"])
+        if row["Status"] != "VALIDATED_COMPLETE":
+            self.transition(register, row, "VALIDATED_COMPLETE", evidence, verified=True)
+        else:
+            row["AcceptanceEvidence"] = evidence
+            self.note(row, "reverified against current source; " + evidence)
+
+    def refresh(self, task: dict) -> None:
+        """Record stale acceptance and demote demonstrated failures plus their dependents."""
+        if not task["ID"].startswith("PAC-") or self.root is None:
+            raise ValueError("refresh requires a task and project root")
+        index = {r["ID"]: r for rows in self.tables.values() for r in rows}
+        required, _ = required_closure(self.tables, task["ID"])
+        stale = [key for key in stale_requirements(self.tables, self.root) if key in required]
+        failed = {
+            key for key in stale if evaluate_rule(index[key], index, self.root)["result"] == "FAIL"
+        }
+        while True:
+            more = {key for key in stale if set(refs(index[key]["BlockedByOGM"])) & failed}
+            if more <= failed:
+                break
+            failed |= more
+        for key in stale:
+            row = index[key]
+            if key in failed:
+                status = (
+                    "PACED_REQUIREMENT"
+                    if any(row.get(f) for f in ("PACRefs", "OVRRefs", "BlockedByOGM"))
+                    else "SCAFFOLD"
+                )
+                self.transition(
+                    "organism",
+                    row,
+                    status,
+                    f"Rule regression detected under {task['ID']}; prior source binding retained",
+                )
+            else:
+                self.note(
+                    row,
+                    f"stale evidence under {task['ID']}; reverify passing or unresolved rule",
+                )
 
     def pace(self, nodule: dict, tasks: list[dict], requirements: list[dict]) -> None:
         """Create one growth lane and its tasks and provisional design targets together."""
@@ -308,6 +445,11 @@ class Editor:
         errors = absorption_errors(row, self.tables)
         if errors:
             raise ValueError(errors[0])
+        if row.get("ContextPolicy") == "REQUIRED":
+            index = {r["ID"]: r for rows in self.tables.values() for r in rows}
+            for key in refs(row["OGMTargets"]):
+                if evaluate_rule(index[key], index, self.root)["freshness"] != "CURRENT":
+                    raise ValueError(f"Absorption requires current verified rule {key}")
         row["Status"] = "ABSORBED"
         row["AbsorbedAt"] = self.now
         row["AcceptanceEvidence"] = evidence

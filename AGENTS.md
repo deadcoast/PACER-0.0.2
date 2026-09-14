@@ -88,7 +88,7 @@ One canonical copy of each register. Atomic writes (write temp, validate, move).
 
 ## 10. Executable profile and this repository
 
-Use `plugins/pacer/references/FORMAT.md` for profile 0.2's additive columns and
+Use `plugins/pacer/references/FORMAT.md` for profile 0.3's additive columns and
 command lexicon. These clarify the original format while retaining its purposes:
 
 - New OGM targets enter at pace time with `NDLRefs` so forward references resolve;
@@ -102,11 +102,21 @@ command lexicon. These clarify the original format while retaining its purposes:
 - All CLI/MCP writes use the shared applying writer, current revision and current
   authority digest. Readers refuse a pending transaction until explicit recovery.
   No conflicting external changes may be overwritten by recovery.
+- New operational nodules preserve `UserRequest` and use `ContextPolicy=REQUIRED`.
+  Pace alone, then use `pacer_context` for the task. Its typed rows and rules are
+  the primary working representation. A budget refusal never omits required rows.
+- Preserve user wording in `OriginText`; distinguish USER, OBSERVED, INFERRED,
+  UNRESOLVED and LEGACY authority. Use the executable rule vocabulary from schema.
+  Migration never invents rules or changes historical acceptance into current proof.
+- After changes, retrieve fresh context and `refresh` as a separate batch. Source
+  drift requires renewed verification; demonstrated failure requires demotion.
+  Use `verify` for operational acceptance and `checkpoint` for durable next actions.
 
 This repository keeps Python and MCP dependencies in `plugins/pacer/pyproject.toml`
 and `uv.lock`. Use uv and existing Python; do not install through pip. Run
 `uv run --project plugins/pacer --locked python scripts/check.py` before commits.
-`scripts/maintain.py` previews or applies the development nodule's source index;
+`scripts/maintain.py --task <PAC> --nodule <NDL> [--paths <changed-paths>]`
+previews the admitted source index; add `--apply` to publish. It
 it never advances acceptance. Query an OVR path before source edits and include
 the matching register changes in the same commit. The evidence report is a test
 artifact; the organism remains the design history and changelog.

@@ -1,0 +1,27 @@
+{
+  "requirement": "OGM-013",
+  "meaning": "94cf15eb1d099e728bea5fbed94ac50719e85f2bc638a08ed96d4344b61c2fbc",
+  "sources": {
+    "evidence/operational-context-2026-09-14.json": "6d43de40c24e2e1dab775992e459fbc3bbb4aab0a117b2154f1acaa84ad94ec2",
+    "scripts/evaluate_context.py": "5610101eee711f140f223151ffc0accb71f7d5ed0e69bb260a9da3dfe8787c5a",
+    "plugins/pacer/src/pacer_mcp/service.py": "6078670944da3223cc21a7ed62359aaf465b9ae7c0266a4595fcd9a439bfe569",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8ecfa845bb865411d2a7d6b1433717dc75dcd26415fa77143d022d779789de00",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "e12fae1590963ee178f021640e3ac1e5df89ce378be583eb238b056f8bf50bba",
+    "plugins/pacer/src/pacer_mcp/schema.py": "efdab4bf6685c8b22df8a5826ec2af664080a499f31c28378818c4086e4d736d",
+    "plugins/pacer/src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+    "plugins/pacer/src/pacer_mcp/query.py": "b0ca5715c50a0efabb0a397981fb603adb45df8a9dccc6784e9e6e28e37e23ac",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "ff52ae74662686aaff196a4a0b58b3bb0e2dadcce2002d4b331b72c3b7dbe83e",
+    "plugins/pacer/src/pacer_mcp/context.py": "6af6c52c0ab117f4e024cec4ad8d5db90e47c79269495a5e2f73627dcb25d092",
+    "plugins/pacer/src/pacer_mcp/commands.py": "0862c920c9df41b1b6eaae9c22b3cb4d0700066131b8eda3ea5c88b6346d8e1f",
+    "plugins/pacer/tests/test_context_evaluation.py": "ab6efb5bf3fb62f15e801f14f736311e5caa63d3df23e2f708cdf52fd027e01f"
+  },
+  "result": "PASS",
+  "command": [
+    ".cache/dev-env/Scripts/python.exe",
+    "scripts/check.py"
+  ],
+  "checked_at": "2026-09-14T14:46:20Z",
+  "tests": "95 passed; 271 indexed interfaces; 15 worked examples",
+  "audit": "Independent review, native Codex tools and 24 matched model trials retained in OVR-270. Manual report is a reviewed assertion; completion and absorption share the final source/register commit.",
+  "execution_report": "evidence/operational-context-2026-09-14.json"
+}

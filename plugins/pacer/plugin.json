@@ -1,6 +1,6 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pacer",
-  "version": "0.2.0+codex.20260914124024",
+  "version": "0.3.0+codex.20260914145158",
   "description": "Operate PACER's connected task, source, design and growth registers in Codex."
 }

@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from pathlib import Path
 
 from pacer_mcp.commands import Editor
+from pacer_mcp.context import build_context, guard_context, operational_nodules
+from pacer_mcp.evidence import evaluate_rule, stale_requirements
 from pacer_mcp.query import graph, health, next_ids, query_rows
-from pacer_mcp.schema import HEADERS, REF_PATTERN, VERSION, contained_path, empty_row, utc_now
+from pacer_mcp.schema import HEADERS, REF_PATTERN, VERSION, contained_path, empty_row, refs, utc_now
 from pacer_mcp.store import Store, digest
 from pacer_mcp.validation import validate_web
 
@@ -50,10 +53,12 @@ class Service:
                 "active": query_rows(snapshot.tables, "nodule", where={"Status": "ACTIVE"}),
                 "next_ids": next_ids(snapshot.tables),
                 "validation": validate_web(snapshot.tables, self.store.root, snapshot.headers),
+                "stale_evidence": stale_requirements(snapshot.tables, self.store.root),
                 "instructions": "Read this project's README.md then AGENTS.md. Query OVR by Path "
                 "before source edits. Pace new scope before building. Use query projections and "
-                "bounded graph traversal. Submit commands with this revision and onboarding "
-                "digest. A digest only acknowledges current instructions; judge DoDs and evidence.",
+                "pacer_context for the active task. Submit commands with current revision, "
+                "onboarding and context receipt. Checkpoint next action; evaluate, refresh and "
+                "verify rules. Receipts do not prove understanding; judge DoDs and evidence.",
             }
 
     def initialize(self) -> dict:
@@ -93,7 +98,23 @@ class Service:
             return {
                 "revision": snapshot.revision,
                 **validate_web(snapshot.tables, self.store.root, snapshot.headers),
+                "stale_evidence": stale_requirements(snapshot.tables, self.store.root),
             }
+
+    def context(self, task_id: str, *, max_bytes: int = 32_000) -> dict:
+        """Retrieve sufficient operational state for a task, including a freshness receipt."""
+        with self.store.locked():
+            snapshot = self.store.load()
+            return build_context(snapshot.tables, self.store.root, task_id, max_bytes)
+
+    def evaluate(self, row_id: str) -> dict:
+        """Evaluate a rule without changing its stored acceptance or source files."""
+        with self.store.locked():
+            snapshot = self.store.load()
+            index = {r["ID"]: r for rows in snapshot.tables.values() for r in rows}
+            if row_id not in index or not row_id.startswith("OGM-"):
+                raise ValueError(f"REFUSAL: Unknown ID {row_id}")
+            return evaluate_rule(index[row_id], index, self.store.root)
 
     def query(self, register: str, **options) -> dict:
         """Return bounded rows from a consistent locked snapshot."""
@@ -121,6 +142,7 @@ class Service:
         revision: str,
         onboarding: str,
         preview: bool = False,
+        context: dict | None = None,
     ) -> dict:
         """Apply one atomic logical change after onboarding and revision preconditions."""
         if not actor.strip() or len(actor) > 100 or "\n" in actor:
@@ -133,7 +155,9 @@ class Service:
                 raise ValueError("Stale revision; query the current web before applying")
             if onboarding != self.authority()["onboarding"]:
                 raise ValueError("Stale onboarding; reread README.md and AGENTS.md")
-            editor = Editor(snapshot.tables, actor)
+            guard_context(snapshot.tables, self.store.root, operations, context)
+            before_tables = deepcopy(snapshot.tables)
+            editor = Editor(snapshot.tables, actor, self.store.root)
             for operation in operations:
                 try:
                     editor.execute(operation)
@@ -142,6 +166,30 @@ class Service:
                         f"Malformed {operation.get('op', 'unknown')} command: {exc}"
                     ) from exc
             editor.reconcile()
+            guard_context(before_tables, self.store.root, operations, context, snapshot.tables)
+            index = {r["ID"]: r for rows in snapshot.tables.values() for r in rows}
+            for operation in operations:
+                if operation.get("op") == "verify":
+                    _, verified = editor.find(operation["id"])
+                    if evaluate_rule(verified, index, self.store.root)["freshness"] != "CURRENT":
+                        raise ValueError(
+                            "Verified basis changed during batch; retrieve context and verify again"
+                        )
+                if operation.get("op") == "absorb" or (
+                    operation.get("op") == "transition" and operation.get("status") == "DONE"
+                ):
+                    accepted = index[operation["id"]]
+                    if operational_nodules(accepted, index):
+                        field = "OGMTargets" if operation["op"] == "absorb" else "OGMRefs"
+                        for target in refs(accepted.get(field, "")):
+                            if (
+                                index[target]["Status"] != "VALIDATED_COMPLETE"
+                                or evaluate_rule(index[target], index, self.store.root)["freshness"]
+                                != "CURRENT"
+                            ):
+                                raise ValueError(
+                                    f"Final acceptance requires current verified rule {target}"
+                                )
             report = validate_web(snapshot.tables, self.store.root, snapshot.headers)
             _require_valid(report)
             after = snapshot.encode()
@@ -166,7 +214,7 @@ class Service:
             snapshot = self.store.load()
             if revision != snapshot.revision or onboarding != self.authority()["onboarding"]:
                 raise ValueError("Stale revision or onboarding")
-            editor = Editor(snapshot.tables, actor)
+            editor = Editor(snapshot.tables, actor, legacy_migration=True)
             for register, rows in snapshot.tables.items():
                 snapshot.headers[register].extend(
                     k for k in HEADERS[register] if k not in snapshot.headers[register]
@@ -190,6 +238,8 @@ class Service:
                             ).strip(";")
                     if register == "nodule":
                         row["Lane"] = row["Lane"] or row["NoduleName"] or row["ID"]
+                    if register == "organism":
+                        row["Authority"] = row["Authority"] or "LEGACY"
                     editor.note(
                         row, f"migrated to executable profile {VERSION}; original cells retained"
                     )

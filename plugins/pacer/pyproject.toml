@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pacer-mcp"
-version = "0.2.0"
+version = "0.3.0"
 description = "PACER's four connected CSV registers, enforced through a CLI and Codex MCP tools"
 requires-python = ">=3.11"
 dependencies = ["mcp>=1.12.4,<2", "filelock>=3.18,<4"]

@@ -97,3 +97,18 @@ or reference errors.
 After installing, start a new Codex thread and invoke `$pacer:pacer-onboard`.
 The plugin's [usage guide](plugins/pacer/README.md) includes native installation
 verification and the boundary between structural validation and agent judgment.
+
+Profile 0.3 makes PACER the shared operational representation between the user's
+wording and the agent's development work. It preserves that wording, assigns
+explicit authority to requirements, evaluates bounded rules, retrieves sufficient
+task context, and binds acceptance to source and dependency freshness. Durable
+checkpoints reconstruct the next action and changed context in a fresh process.
+The four registers remain canonical; MCP serves compiled views and applies the
+command lexicon. Required Markdown entry points bootstrap discovery and explain
+the format; project meaning and lifecycle state live in PACER.
+
+Use `pacer context <PAC-ID>` for work context and `pacer evaluate <OGM-ID>` to
+inspect a rule. New scope uses `ContextPolicy=REQUIRED`, then current context
+receipts accompany changes. A source change can make evidence stale even while
+the rule still passes. The [format reference](plugins/pacer/references/FORMAT.md)
+defines the distinction and the measured comparison's limits.

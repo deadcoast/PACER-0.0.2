@@ -27,26 +27,6 @@ EXCLUDED = {
 }
 
 
-def _task(path: str) -> str:
-    if (
-        path.endswith(("schema.py", "FORMAT.md"))
-        or path in {"README.md", "AGENTS.md"}
-        or path.startswith("TEMPLATES/")
-    ):
-        return "PAC-001"
-    if path.endswith(("store.py", "validation.py", "test_store.py")):
-        return "PAC-002"
-    if path.endswith(("query.py", "service.py")):
-        return "PAC-003"
-    if path.endswith(("commands.py", "test_guards.py", "test_lifecycle.py", "conftest.py")):
-        return "PAC-004"
-    if path.endswith(("server.py", "test_mcp.py")):
-        return "PAC-005"
-    if path.startswith("plugins/") and "/tests/" not in path:
-        return "PAC-006"
-    return "PAC-007"
-
-
 def source_assets() -> list[dict]:
     """Map repository files and exported Python interfaces to registration metadata."""
     assets = []
@@ -61,15 +41,14 @@ def source_assets() -> list[dict]:
         name = relative.as_posix()
         if name.startswith("archive/nodules/"):
             continue  # Canonical register data, not a new source-code asset.
-        task = _task(name)
         values = {
             "AssetType": "FILE",
             "Path": name,
             "Symbol": "",
             "Purpose": "",
-            "PACRefs": task,
-            "OGMRefs": task.replace("PAC-", "OGM-"),
-            "NDLRefs": "NDL-001",
+            "PACRefs": "",
+            "OGMRefs": "",
+            "NDLRefs": "",
             "Tags": "#core #codex",
             "Exports": "",
             "Imports": "",
@@ -176,9 +155,25 @@ def main() -> None:
     """Preview or apply source index updates with revision and onboarding guards."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--task", required=True, help="Task owning the source change")
+    parser.add_argument("--nodule", required=True, help="Active nodule admitting this change")
+    parser.add_argument(
+        "--paths", nargs="*", default=[], help="Also record files changed without interface changes"
+    )
     args = parser.parse_args()
     service = Service(ROOT)
     receipt = service.onboard()
+    task = service.query("todo", where={"ID": args.task}, fields=["ID", "NDLRefs", "OGMRefs"])[
+        "rows"
+    ]
+    nodule_rows = service.query(
+        "nodule", where={"ID": args.nodule}, fields=["ID", "Status", "NewAssets", "ContextPolicy"]
+    )["rows"]
+    if not task or not nodule_rows or args.nodule not in task[0]["NDLRefs"].split(";"):
+        raise ValueError("Task and nodule must resolve and belong together")
+    nodule = nodule_rows[0]
+    if nodule["Status"] != "ACTIVE":
+        raise ValueError("Source indexing changes require an active development nodule")
     existing = []
     offset = 0
     while True:
@@ -230,34 +225,40 @@ def main() -> None:
                     requires.append(target)
         row["Requires"] = ";".join(dict.fromkeys(requires))
         old = next((r for r in existing if r["ID"] == row["ID"]), None)
+        touched = (
+            old is None
+            or row["Path"] in args.paths
+            or any(
+                old.get(field, "") != row[field]
+                for field in ("Purpose", "Exports", "Imports", "Requires")
+            )
+        )
+        if touched:
+            for field, addition in (
+                ("PACRefs", args.task),
+                ("NDLRefs", args.nodule),
+                ("OGMRefs", task[0]["OGMRefs"]),
+            ):
+                row[field] = ";".join(
+                    dict.fromkeys(v for v in (row[field] + ";" + addition).split(";") if v)
+                )
         if old:
             changes = {k: v for k, v in row.items() if k != "ID" and old.get(k, "") != v}
             if changes:
                 operations.append({"op": "set", "id": row["ID"], "fields": changes})
         else:
             operations.append({"op": "add", "register": "overlord", "row": row})
-    nodule = service.query("nodule", where={"ID": "NDL-001"}, fields=["Status", "NewAssets"])[
-        "rows"
-    ][0]
-    if nodule["Status"] != "ACTIVE":
-        raise ValueError("Source indexing changes require an active development nodule")
     new_assets = set(nodule["NewAssets"].split(";")) - {""}
     new_assets.update(
         r["Path"]
         for r in assets
         if r["AssetType"] == "FILE"
-        and r["Path"]
-        not in {
-            "README.md",
-            "AGENTS.md",
-            *[f"TEMPLATES/{n}.PACER.csv" for n in HEADERS],
-            *[f"{n}.PACER.csv" for n in HEADERS],
-        }
+        and not any(old["Path"] == r["Path"] and old["AssetType"] == "FILE" for old in existing)
     )
     operations.append(
         {
             "op": "set",
-            "id": "NDL-001",
+            "id": args.nodule,
             "fields": {"NewAssets": ";".join(sorted(new_assets))},
         }
     )
@@ -267,6 +268,11 @@ def main() -> None:
         revision=receipt["revision"],
         onboarding=receipt["onboarding"],
         preview=not args.apply,
+        context=(
+            service.context(args.task, max_bytes=1_000_000)["receipt"]
+            if nodule["ContextPolicy"] == "REQUIRED"
+            else None
+        ),
     )
     import json
 

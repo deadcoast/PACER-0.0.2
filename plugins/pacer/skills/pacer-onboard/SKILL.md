@@ -21,8 +21,16 @@ existing work and resolve invalid data before publishing a migration.
 
 Before source edits, query overlord with `where={"Path":"repo/relative/path"}`.
 An absent row requires registration alongside the source change. Follow specific
-IDs with `pacer_graph`; use explicit column projections and pagination when
-more detail is necessary. Do not dump all registers to rediscover the project.
+IDs with `pacer_context(root, id=<PAC>)`. Treat its columnar tables, typed relations,
+rule outcomes and source deltas as the working context. `complete=false` requires
+resolving the diagnostic or increasing the explicit byte budget; it never grants
+a write receipt. Use projected queries for investigation and `pacer_schema` for
+the rule vocabulary. Do not rebuild project context as a Markdown design document.
+
+On resumption, inspect `next_action`, `delta`, `diagnostics` and the task's retained
+failed approaches. A checkpoint lives in the task register and works in a fresh
+process. Read source files implicated by the packet; source hashes are identities,
+not source content. Check `stale_evidence` even when structural validation passes.
 
 The onboarding digest identifies current authority bytes; it does not prove
 that the instructions were understood. Explain the relevant purpose, scope and

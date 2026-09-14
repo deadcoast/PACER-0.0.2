@@ -1,0 +1,2267 @@
+{
+  "profile": "0.3",
+  "created_at": "2026-09-14T14:39:43Z",
+  "nodule": "NDL-002",
+  "plugin_version": "0.3.0+codex.20260914144124",
+  "checks": {
+    "pytest": "95 passed",
+    "ruff_check": "passed",
+    "ruff_format": "passed",
+    "official_plugin_validator": "passed",
+    "official_skill_validators": 3,
+    "uv_locked_offline_sync": "passed",
+    "source_interfaces_before_evidence": 262,
+    "worked_examples": 15,
+    "independent_review": "31 targeted checks passed; no residual blockers in bounded review",
+    "source_interfaces": 271,
+    "self_adoption_regression": "Failed before candidate scope-policy fix; passed afterwards"
+  },
+  "native_codex": {
+    "version": "codex-cli 0.154.0",
+    "passed": true,
+    "skills": [
+      "pacer:pacer-onboard",
+      "pacer:pacer-develop",
+      "pacer:pacer-audit"
+    ],
+    "tool_count": 12,
+    "calls": {
+      "pacer_context": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"profile\": \"0.3\",\n  \"task\": \"PAC-001\",\n  \"complete\": true,\n  \"required_ids\": [\n    \"NDL-001\",\n    \"OGM-001\",\n    \"OVR-007\",\n    \"PAC-001\"\n  ],\n  \"tables\": {\n    \"todo\": {\n      \"columns\": [\n        \"ID\",\n        \"Status\",\n        \"DoD\",\n        \"OVRRefs\",\n        \"OGMRefs\",\n        \"Title\",\n        \"Instructions\",\n        \"NextAction\"\n      ],\n      \"rows\": [\n        [\n          \"PAC-001\",\n          \"REVIEW\",\n          \"Current verified retry contract\",\n          \"OVR-007\",\n          \"OGM-001\",\n          \"Maintain retries\",\n          \"Preserve original requirement wording.\",\n          \"review\"\n        ]\n      ]\n    },\n    \"overlord\": {\n      \"columns\": [\n        \"ID\",\n        \"AssetType\",\n        \"Path\"\n      ],\n      \"rows\": [\n        [\n          \"OVR-007\",\n          \"FILE\",\n          \"settings.json\"\n        ]\n      ]\n    },\n    \"organism\": {\n      \"columns\": [\n        \"ID\",\n        \"Status\",\n        \"Authority\",\n        \"RuleType\",\n        \"RuleSubject\",\n        \"RuleSelector\",\n        \"RuleValue\",\n        \"OVRRefs\",\n        \"OriginText\",\n        \"Requirement\"\n      ],\n      \"rows\": [\n        [\n          \"OGM-001\",\n          \"VALIDATED_COMPLETE\",\n          \"USER\",\n          \"json_ge\",\n          \"OVR-007\",\n          \"/retries\",\n          \"2\",\n          \"OVR-007\",\n          \"Retries must be at least 2.\",\n          \"Retries must be at least 2.\"\n        ]\n      ]\n    },\n    \"nodule\": {\n      \"columns\": [\n        \"ID\",\n        \"Status\",\n        \"ContextPolicy\",\n        \"UserRequest\",\n        \"TargetOVR\",\n        \"Intent\",\n        \"AbsorptionCriteria\",\n        \"OGMTargets\",\n        \"SpawnedPACs\"\n      ],\n      \"rows\": [\n        [\n          \"NDL-001\",\n          \"ACTIVE\",\n          \"REQUIRED\",\n          \"Retries must be at least 2.\",\n          \"OVR-007\",\n          \"Maintain retry contract\",\n          \"Tasks and current rule verified\",\n          \"OGM-001\",\n          \"PAC-001\"\n        ]\n      ]\n    }\n  },\n  \"relations\": [\n    {\n      \"source\": \"NDL-001\",\n      \"relation\": \"OGMTargets\",\n      \"target\": \"OGM-001\"\n    },\n    {\n      \"source\": \"NDL-001\",\n      \"relation\": \"SpawnedPACs\",\n      \"target\": \"PAC-001\"\n    },\n    {\n      \"source\": \"NDL-001\",\n      \"relation\": \"TargetOVR\",\n      \"target\": \"OVR-007\"\n    },\n    {\n      \"source\": \"OGM-001\",\n      \"relation\": \"NDLRefs\",\n      \"target\": \"NDL-001\"\n    },\n    {\n      \"source\": \"OGM-001\",\n      \"relation\": \"OVRRefs\",\n      \"target\": \"OVR-007\"\n    },\n    {\n      \"source\": \"OGM-001\",\n      \"relation\": \"PACRefs\",\n      \"target\": \"PAC-001\"\n    },\n    {\n      \"source\": \"OGM-001\",\n      \"relation\": \"RuleSubject\",\n      \"target\": \"OVR-007\"\n    },\n    {\n      \"source\": \"OVR-007\",\n      \"relation\": \"NDLRefs\",\n      \"target\": \"NDL-001\"\n    },\n    {\n      \"source\": \"OVR-007\",\n      \"relation\": \"OGMRefs\",\n      \"target\": \"OGM-001\"\n    },\n    {\n      \"source\": \"OVR-007\",\n      \"relation\": \"PACRefs\",\n      \"target\": \"PAC-001\"\n    },\n    {\n      \"source\": \"PAC-001\",\n      \"relation\": \"NDLRefs\",\n      \"target\": \"NDL-001\"\n    },\n    {\n      \"source\": \"PAC-001\",\n      \"relation\": \"OGMRefs\",\n      \"target\": \"OGM-001\"\n    },\n    {\n      \"source\": \"PAC-001\",\n      \"relation\": \"OVRRefs\",\n      \"target\": \"OVR-007\"\n    }\n  ],\n  \"sources\": {\n    \"settings.json\": \"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"\n  },\n  \"impacted\": [\n    \"OVR-007\"\n  ],\n  \"rules\": [\n    {\n      \"id\": \"OGM-001\",\n      \"rule\": \"json_ge\",\n      \"authority\": \"USER\",\n      \"result\": \"PASS\",\n      \"observed\": 4,\n      \"reason\": \"\",\n      \"freshness\": \"STALE\",\n      \"dependencies\": {},\n      \"meaning\": \"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\"\n    }\n  ],\n  \"diagnostics\": [\n    {\n      \"code\": \"stale_evidence\",\n      \"id\": \"OGM-001\"\n    }\n  ],\n  \"next_action\": \"review\",\n  \"delta\": {\n    \"baseline\": true,\n    \"changed_rows\": [],\n    \"removed_rows\": [],\n    \"changed_sources\": [\n      \"settings.json\"\n    ],\n    \"removed_sources\": []\n  },\n  \"receipt\": {\n    \"task\": \"PAC-001\",\n    \"root\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.cache\\\\c\\\\0c1dc286\\\\fixtures\\\\stale\",\n    \"basis\": \"c22b875a86f5cca43a0e330711b8219328549c04811ee7c162ff1d1f386252c2\"\n  },\n  \"required_bytes\": 2621\n}"
+          }
+        ],
+        "structuredContent": {
+          "profile": "0.3",
+          "task": "PAC-001",
+          "complete": true,
+          "required_ids": [
+            "NDL-001",
+            "OGM-001",
+            "OVR-007",
+            "PAC-001"
+          ],
+          "tables": {
+            "todo": {
+              "columns": [
+                "ID",
+                "Status",
+                "DoD",
+                "OVRRefs",
+                "OGMRefs",
+                "Title",
+                "Instructions",
+                "NextAction"
+              ],
+              "rows": [
+                [
+                  "PAC-001",
+                  "REVIEW",
+                  "Current verified retry contract",
+                  "OVR-007",
+                  "OGM-001",
+                  "Maintain retries",
+                  "Preserve original requirement wording.",
+                  "review"
+                ]
+              ]
+            },
+            "overlord": {
+              "columns": [
+                "ID",
+                "AssetType",
+                "Path"
+              ],
+              "rows": [
+                [
+                  "OVR-007",
+                  "FILE",
+                  "settings.json"
+                ]
+              ]
+            },
+            "organism": {
+              "columns": [
+                "ID",
+                "Status",
+                "Authority",
+                "RuleType",
+                "RuleSubject",
+                "RuleSelector",
+                "RuleValue",
+                "OVRRefs",
+                "OriginText",
+                "Requirement"
+              ],
+              "rows": [
+                [
+                  "OGM-001",
+                  "VALIDATED_COMPLETE",
+                  "USER",
+                  "json_ge",
+                  "OVR-007",
+                  "/retries",
+                  "2",
+                  "OVR-007",
+                  "Retries must be at least 2.",
+                  "Retries must be at least 2."
+                ]
+              ]
+            },
+            "nodule": {
+              "columns": [
+                "ID",
+                "Status",
+                "ContextPolicy",
+                "UserRequest",
+                "TargetOVR",
+                "Intent",
+                "AbsorptionCriteria",
+                "OGMTargets",
+                "SpawnedPACs"
+              ],
+              "rows": [
+                [
+                  "NDL-001",
+                  "ACTIVE",
+                  "REQUIRED",
+                  "Retries must be at least 2.",
+                  "OVR-007",
+                  "Maintain retry contract",
+                  "Tasks and current rule verified",
+                  "OGM-001",
+                  "PAC-001"
+                ]
+              ]
+            }
+          },
+          "relations": [
+            {
+              "source": "NDL-001",
+              "relation": "OGMTargets",
+              "target": "OGM-001"
+            },
+            {
+              "source": "NDL-001",
+              "relation": "SpawnedPACs",
+              "target": "PAC-001"
+            },
+            {
+              "source": "NDL-001",
+              "relation": "TargetOVR",
+              "target": "OVR-007"
+            },
+            {
+              "source": "OGM-001",
+              "relation": "NDLRefs",
+              "target": "NDL-001"
+            },
+            {
+              "source": "OGM-001",
+              "relation": "OVRRefs",
+              "target": "OVR-007"
+            },
+            {
+              "source": "OGM-001",
+              "relation": "PACRefs",
+              "target": "PAC-001"
+            },
+            {
+              "source": "OGM-001",
+              "relation": "RuleSubject",
+              "target": "OVR-007"
+            },
+            {
+              "source": "OVR-007",
+              "relation": "NDLRefs",
+              "target": "NDL-001"
+            },
+            {
+              "source": "OVR-007",
+              "relation": "OGMRefs",
+              "target": "OGM-001"
+            },
+            {
+              "source": "OVR-007",
+              "relation": "PACRefs",
+              "target": "PAC-001"
+            },
+            {
+              "source": "PAC-001",
+              "relation": "NDLRefs",
+              "target": "NDL-001"
+            },
+            {
+              "source": "PAC-001",
+              "relation": "OGMRefs",
+              "target": "OGM-001"
+            },
+            {
+              "source": "PAC-001",
+              "relation": "OVRRefs",
+              "target": "OVR-007"
+            }
+          ],
+          "sources": {
+            "settings.json": "10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e"
+          },
+          "impacted": [
+            "OVR-007"
+          ],
+          "rules": [
+            {
+              "id": "OGM-001",
+              "rule": "json_ge",
+              "authority": "USER",
+              "result": "PASS",
+              "observed": 4,
+              "reason": "",
+              "freshness": "STALE",
+              "dependencies": {},
+              "meaning": "e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4"
+            }
+          ],
+          "diagnostics": [
+            {
+              "code": "stale_evidence",
+              "id": "OGM-001"
+            }
+          ],
+          "next_action": "review",
+          "delta": {
+            "baseline": true,
+            "changed_rows": [],
+            "removed_rows": [],
+            "changed_sources": [
+              "settings.json"
+            ],
+            "removed_sources": []
+          },
+          "receipt": {
+            "task": "PAC-001",
+            "root": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\c\\0c1dc286\\fixtures\\stale",
+            "basis": "c22b875a86f5cca43a0e330711b8219328549c04811ee7c162ff1d1f386252c2"
+          },
+          "required_bytes": 2621
+        },
+        "isError": false
+      },
+      "pacer_evaluate": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"id\": \"OGM-001\",\n  \"rule\": \"json_ge\",\n  \"authority\": \"USER\",\n  \"result\": \"PASS\",\n  \"observed\": 4,\n  \"reason\": \"\",\n  \"freshness\": \"STALE\",\n  \"dependencies\": {},\n  \"meaning\": \"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\n  \"sources\": {\n    \"settings.json\": \"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"\n  },\n  \"basis\": {\n    \"version\": \"0.3\",\n    \"meaning\": \"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\n    \"assets\": {\n      \"OVR-007\": \"308780756c9206f4d654526e5f8d4343cbafe042bf772733c3f5b5146b981af8\"\n    },\n    \"sources\": {\n      \"settings.json\": \"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"\n    },\n    \"dependencies\": {}\n  }\n}"
+          }
+        ],
+        "structuredContent": {
+          "id": "OGM-001",
+          "rule": "json_ge",
+          "authority": "USER",
+          "result": "PASS",
+          "observed": 4,
+          "reason": "",
+          "freshness": "STALE",
+          "dependencies": {},
+          "meaning": "e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4",
+          "sources": {
+            "settings.json": "10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e"
+          },
+          "basis": {
+            "version": "0.3",
+            "meaning": "e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4",
+            "assets": {
+              "OVR-007": "308780756c9206f4d654526e5f8d4343cbafe042bf772733c3f5b5146b981af8"
+            },
+            "sources": {
+              "settings.json": "10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e"
+            },
+            "dependencies": {}
+          }
+        },
+        "isError": false
+      }
+    },
+    "report_sha256": "f83d85b8f693accf31d7141ecba2b3a4d56e6c98dcac00a5d92aadb55af7c4dc",
+    "installed_files": {
+      ".codex-plugin/plugin.json": "0bb09dc93e6eb383f2b6c4c69688fbafc6a69a0f9e4bad91624f2f89a1dfffd5",
+      ".mcp.json": "da062489e04b7251d8da76ba7ba5f4cb8fac9aff0f89c805623347323f9aa284",
+      "mcp.json": "1e36ea01d1e671c2e4e776b3ce869e3471c362af6f4122c05f0717278b3619a8",
+      "plugin.json": "fa85946b5bbbbd03f34fd527ebd8ac71d4dd4cfa4fb43f331923d29a45c5ce9c",
+      "pyproject.toml": "53163e404eb85f0ce8557d952448a88246a427ec96ae99907003577d744bcfa3",
+      "README.md": "043496324a472bfcbec731112a1c7b3322d290ddf1225c1a795951ebda9a4006",
+      "references/FORMAT.md": "57217329a7d836e203d2d9d331124d96de4a58414bba25ab1f08a716448f3731",
+      "skills/pacer-audit/agents/openai.yaml": "179d1c208dfc8a1e5219fae467d68d992e39ae692bc5a3833a68c0cfa40d5f90",
+      "skills/pacer-audit/SKILL.md": "00d01fe1d74da6746c803dad6a4c51dfc5ed409b0c2a283a18fdc2f71d7c7a65",
+      "skills/pacer-develop/agents/openai.yaml": "a7e9bce0d039b2413fbd4a89bb0cc5b4c24384c31fa3bd5daf88e4afbc9e948c",
+      "skills/pacer-develop/SKILL.md": "5454c2f440a5f4a8fd558d46b12a5928b72ce817ed9c32c9dbb7b81567a00643",
+      "skills/pacer-onboard/agents/openai.yaml": "3418c71e5f30297a4302f62aa4045699fe92998b0566ee0012c1fff547da7bb2",
+      "skills/pacer-onboard/SKILL.md": "e27649e296c96253cfbfffef3d8bcdd46fe7be89af466ce9a55c1c2419fbb75a",
+      "src/pacer_mcp/__init__.py": "00db8b97dc6771ea7df83737a9a8055dbca8f392a8bdbc2a673402473d05722b",
+      "src/pacer_mcp/cli.py": "3ee321445802bb3ec4e5c6b1a2aeaa907a2116516171603a2158311283355b4e",
+      "src/pacer_mcp/commands.py": "0862c920c9df41b1b6eaae9c22b3cb4d0700066131b8eda3ea5c88b6346d8e1f",
+      "src/pacer_mcp/context.py": "6af6c52c0ab117f4e024cec4ad8d5db90e47c79269495a5e2f73627dcb25d092",
+      "src/pacer_mcp/evidence.py": "ff52ae74662686aaff196a4a0b58b3bb0e2dadcce2002d4b331b72c3b7dbe83e",
+      "src/pacer_mcp/models.py": "9a6fa823b6fb76b4fd3702073fca9cb733a44a3a26adb56f117c61a65b41640f",
+      "src/pacer_mcp/query.py": "b0ca5715c50a0efabb0a397981fb603adb45df8a9dccc6784e9e6e28e37e23ac",
+      "src/pacer_mcp/schema.py": "efdab4bf6685c8b22df8a5826ec2af664080a499f31c28378818c4086e4d736d",
+      "src/pacer_mcp/semantics.py": "e12fae1590963ee178f021640e3ac1e5df89ce378be583eb238b056f8bf50bba",
+      "src/pacer_mcp/server.py": "2a4a2ff10ee083c29c7f6dcfb4d10f9afb4d7edccf06b2f6c19957d8a5545d3b",
+      "src/pacer_mcp/service.py": "6078670944da3223cc21a7ed62359aaf465b9ae7c0266a4595fcd9a439bfe569",
+      "src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+      "src/pacer_mcp/validation.py": "8ecfa845bb865411d2a7d6b1433717dc75dcd26415fa77143d022d779789de00",
+      "tests/conftest.py": "a44c4cc91ecaae783b2ef5b06797da359dc615539a1b32cd4bc2c98afccea8c5",
+      "tests/test_cli.py": "2cbcbe1ef6ad09658879b4eb25e55c5d7eb5470efe59e2e177a7824183c57429",
+      "tests/test_context.py": "588a082229af389834803385ddd84f0f031726c341d60615ec4a49fd00a48efe",
+      "tests/test_context_evaluation.py": "ab6efb5bf3fb62f15e801f14f736311e5caa63d3df23e2f708cdf52fd027e01f",
+      "tests/test_evidence.py": "1c710425fee3acfafe646c59a32dd2f005b1197359b52f367c22abe75685f9b2",
+      "tests/test_guards.py": "ce91a9864e2085d2c7f4ced1f5c67e9220d428c2e8d61285b6ff97edd431e72c",
+      "tests/test_lifecycle.py": "be786c46ee1787411f8be62510718569aa6e6053969e9d682f0e56afd0b7fa56",
+      "tests/test_mcp.py": "3a92cced2b0993aed1243ebc5fa7a41d85cc05edc329afa67d1104346f81c714",
+      "tests/test_operational_lifecycle.py": "0689a1e79b6b5c8c2827ebda5c86570d0dee67d391ec4e1ffb6ff5709ed0b276",
+      "tests/test_packaging.py": "6010e9dc7d7319ac6e56bcb3251440b330c94cde2339b4c41d8e8c95e7f4d5ee",
+      "tests/test_semantics.py": "53240d98b06e7e2887b4d301ec890950610bae8ee7636baabdc7c507c9d84326",
+      "tests/test_store.py": "463f414666ace248fe13c9a85a6c2905e0bdcc635416066c454b334658e118c9",
+      "uv.lock": "e4b548b432cce98b4e8e9eb0cdcbcbab8ccb32942ae44d343071efb3b9c04136"
+    }
+  },
+  "comparison": {
+    "model": "gpt-6-astra",
+    "effort": "xhigh",
+    "method": "matched facts and instructions; randomized serialization order seed 314159",
+    "limitations": [
+      "Four synthetic states; not long-term development or a population estimate.",
+      "Row JSON and Markdown are equivalent-fact renditions, not historical v0.2 behavior.",
+      "Full input usage includes constant Codex overhead and may contain cache effects.",
+      "Frozen cases record the measured packet snapshot; later guard hardening adds coverage outside these cases.",
+      "All arms were correct. No accuracy superiority or long-term benefit has been established."
+    ],
+    "harness_sha256_at_execution": "5610101eee711f140f223151ffc0accb71f7d5ed0e69bb260a9da3dfe8787c5a",
+    "harness_sha256_at_delivery": "5610101eee711f140f223151ffc0accb71f7d5ed0e69bb260a9da3dfe8787c5a",
+    "summary": {
+      "markdown": {
+        "trials": 8,
+        "correct": 8,
+        "mean_prompt_bytes": 3416.75,
+        "mean_input_tokens": 14836.25,
+        "mean_output_tokens": 81,
+        "mean_seconds": 6.896,
+        "tool_events": 0
+      },
+      "row_json": {
+        "trials": 8,
+        "correct": 8,
+        "mean_prompt_bytes": 3156,
+        "mean_input_tokens": 14705.25,
+        "mean_output_tokens": 81.375,
+        "mean_seconds": 7.643375,
+        "tool_events": 0
+      },
+      "operational": {
+        "trials": 8,
+        "correct": 8,
+        "mean_prompt_bytes": 3213.75,
+        "mean_input_tokens": 14722,
+        "mean_output_tokens": 83.625,
+        "mean_seconds": 7.1209999999999996,
+        "tool_events": 0
+      }
+    },
+    "frozen_cases": [
+      {
+        "expected": {
+          "blockers": [],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": true,
+          "next_action": "review"
+        },
+        "name": "current",
+        "packet": {
+          "complete": true,
+          "diagnostics": [],
+          "impacted": [
+            "OVR-007"
+          ],
+          "next_action": "review",
+          "profile": "0.3",
+          "relations": [
+            {
+              "relation": "OGMTargets",
+              "source": "NDL-001",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "SpawnedPACs",
+              "source": "NDL-001",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "TargetOVR",
+              "source": "NDL-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "OGM-001",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OVRRefs",
+              "source": "OGM-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "PACRefs",
+              "source": "OGM-001",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "RuleSubject",
+              "source": "OGM-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "OVR-007",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OGMRefs",
+              "source": "OVR-007",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "PACRefs",
+              "source": "OVR-007",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "PAC-001",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OGMRefs",
+              "source": "PAC-001",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "OVRRefs",
+              "source": "PAC-001",
+              "target": "OVR-007"
+            }
+          ],
+          "required_ids": [
+            "NDL-001",
+            "OGM-001",
+            "OVR-007",
+            "PAC-001"
+          ],
+          "rules": [
+            {
+              "authority": "USER",
+              "dependencies": {},
+              "freshness": "CURRENT",
+              "id": "OGM-001",
+              "meaning": "e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4",
+              "observed": 3,
+              "reason": "",
+              "result": "PASS",
+              "rule": "json_ge"
+            }
+          ],
+          "sources": {
+            "settings.json": "891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739"
+          },
+          "tables": {
+            "nodule": {
+              "columns": [
+                "ID",
+                "Status",
+                "ContextPolicy",
+                "UserRequest",
+                "TargetOVR",
+                "Intent",
+                "AbsorptionCriteria",
+                "OGMTargets",
+                "SpawnedPACs"
+              ],
+              "rows": [
+                [
+                  "NDL-001",
+                  "ACTIVE",
+                  "REQUIRED",
+                  "Retries must be at least 2.",
+                  "OVR-007",
+                  "Maintain retry contract",
+                  "Tasks and current rule verified",
+                  "OGM-001",
+                  "PAC-001"
+                ]
+              ]
+            },
+            "organism": {
+              "columns": [
+                "ID",
+                "Status",
+                "Authority",
+                "RuleType",
+                "RuleSubject",
+                "RuleSelector",
+                "RuleValue",
+                "OVRRefs",
+                "OriginText",
+                "Requirement"
+              ],
+              "rows": [
+                [
+                  "OGM-001",
+                  "VALIDATED_COMPLETE",
+                  "USER",
+                  "json_ge",
+                  "OVR-007",
+                  "/retries",
+                  "2",
+                  "OVR-007",
+                  "Retries must be at least 2.",
+                  "Retries must be at least 2."
+                ]
+              ]
+            },
+            "overlord": {
+              "columns": [
+                "ID",
+                "AssetType",
+                "Path"
+              ],
+              "rows": [
+                [
+                  "OVR-007",
+                  "FILE",
+                  "settings.json"
+                ]
+              ]
+            },
+            "todo": {
+              "columns": [
+                "ID",
+                "Status",
+                "DoD",
+                "OVRRefs",
+                "OGMRefs",
+                "Title",
+                "Instructions",
+                "NextAction"
+              ],
+              "rows": [
+                [
+                  "PAC-001",
+                  "REVIEW",
+                  "Current verified retry contract",
+                  "OVR-007",
+                  "OGM-001",
+                  "Maintain retries",
+                  "Preserve original requirement wording.",
+                  "review"
+                ]
+              ]
+            }
+          },
+          "task": "PAC-001"
+        }
+      },
+      {
+        "expected": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "verify"
+        },
+        "name": "stale",
+        "packet": {
+          "complete": true,
+          "diagnostics": [
+            {
+              "code": "stale_evidence",
+              "id": "OGM-001"
+            }
+          ],
+          "impacted": [
+            "OVR-007"
+          ],
+          "next_action": "review",
+          "profile": "0.3",
+          "relations": [
+            {
+              "relation": "OGMTargets",
+              "source": "NDL-001",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "SpawnedPACs",
+              "source": "NDL-001",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "TargetOVR",
+              "source": "NDL-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "OGM-001",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OVRRefs",
+              "source": "OGM-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "PACRefs",
+              "source": "OGM-001",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "RuleSubject",
+              "source": "OGM-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "OVR-007",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OGMRefs",
+              "source": "OVR-007",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "PACRefs",
+              "source": "OVR-007",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "PAC-001",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OGMRefs",
+              "source": "PAC-001",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "OVRRefs",
+              "source": "PAC-001",
+              "target": "OVR-007"
+            }
+          ],
+          "required_ids": [
+            "NDL-001",
+            "OGM-001",
+            "OVR-007",
+            "PAC-001"
+          ],
+          "rules": [
+            {
+              "authority": "USER",
+              "dependencies": {},
+              "freshness": "STALE",
+              "id": "OGM-001",
+              "meaning": "e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4",
+              "observed": 4,
+              "reason": "",
+              "result": "PASS",
+              "rule": "json_ge"
+            }
+          ],
+          "sources": {
+            "settings.json": "10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e"
+          },
+          "tables": {
+            "nodule": {
+              "columns": [
+                "ID",
+                "Status",
+                "ContextPolicy",
+                "UserRequest",
+                "TargetOVR",
+                "Intent",
+                "AbsorptionCriteria",
+                "OGMTargets",
+                "SpawnedPACs"
+              ],
+              "rows": [
+                [
+                  "NDL-001",
+                  "ACTIVE",
+                  "REQUIRED",
+                  "Retries must be at least 2.",
+                  "OVR-007",
+                  "Maintain retry contract",
+                  "Tasks and current rule verified",
+                  "OGM-001",
+                  "PAC-001"
+                ]
+              ]
+            },
+            "organism": {
+              "columns": [
+                "ID",
+                "Status",
+                "Authority",
+                "RuleType",
+                "RuleSubject",
+                "RuleSelector",
+                "RuleValue",
+                "OVRRefs",
+                "OriginText",
+                "Requirement"
+              ],
+              "rows": [
+                [
+                  "OGM-001",
+                  "VALIDATED_COMPLETE",
+                  "USER",
+                  "json_ge",
+                  "OVR-007",
+                  "/retries",
+                  "2",
+                  "OVR-007",
+                  "Retries must be at least 2.",
+                  "Retries must be at least 2."
+                ]
+              ]
+            },
+            "overlord": {
+              "columns": [
+                "ID",
+                "AssetType",
+                "Path"
+              ],
+              "rows": [
+                [
+                  "OVR-007",
+                  "FILE",
+                  "settings.json"
+                ]
+              ]
+            },
+            "todo": {
+              "columns": [
+                "ID",
+                "Status",
+                "DoD",
+                "OVRRefs",
+                "OGMRefs",
+                "Title",
+                "Instructions",
+                "NextAction"
+              ],
+              "rows": [
+                [
+                  "PAC-001",
+                  "REVIEW",
+                  "Current verified retry contract",
+                  "OVR-007",
+                  "OGM-001",
+                  "Maintain retries",
+                  "Preserve original requirement wording.",
+                  "review"
+                ]
+              ]
+            }
+          },
+          "task": "PAC-001"
+        }
+      },
+      {
+        "expected": {
+          "blockers": [
+            "OGM-001",
+            "PAC-002"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "implement"
+        },
+        "name": "regressed",
+        "packet": {
+          "complete": true,
+          "diagnostics": [
+            {
+              "code": "stale_evidence",
+              "id": "OGM-001"
+            }
+          ],
+          "impacted": [
+            "OVR-007"
+          ],
+          "next_action": "review",
+          "profile": "0.3",
+          "relations": [
+            {
+              "relation": "OGMTargets",
+              "source": "NDL-001",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "SpawnedPACs",
+              "source": "NDL-001",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "SpawnedPACs",
+              "source": "NDL-001",
+              "target": "PAC-002"
+            },
+            {
+              "relation": "TargetOVR",
+              "source": "NDL-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "OGM-001",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OVRRefs",
+              "source": "OGM-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "PACRefs",
+              "source": "OGM-001",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "PACRefs",
+              "source": "OGM-001",
+              "target": "PAC-002"
+            },
+            {
+              "relation": "RuleSubject",
+              "source": "OGM-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "OVR-007",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OGMRefs",
+              "source": "OVR-007",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "PACRefs",
+              "source": "OVR-007",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "BlockedBy:hard",
+              "source": "PAC-001",
+              "target": "PAC-002"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "PAC-001",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OGMRefs",
+              "source": "PAC-001",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "OVRRefs",
+              "source": "PAC-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "PAC-002",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OGMRefs",
+              "source": "PAC-002",
+              "target": "OGM-001"
+            }
+          ],
+          "required_ids": [
+            "NDL-001",
+            "OGM-001",
+            "OVR-007",
+            "PAC-001",
+            "PAC-002"
+          ],
+          "rules": [
+            {
+              "authority": "USER",
+              "dependencies": {},
+              "freshness": "STALE",
+              "id": "OGM-001",
+              "meaning": "e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4",
+              "observed": 0,
+              "reason": "",
+              "result": "FAIL",
+              "rule": "json_ge"
+            }
+          ],
+          "sources": {
+            "settings.json": "f26b95c2e64ce495f6494fea2f7a3582de3c5ffc9d25b6ef87a975fe16022e09"
+          },
+          "tables": {
+            "nodule": {
+              "columns": [
+                "ID",
+                "Status",
+                "ContextPolicy",
+                "UserRequest",
+                "TargetOVR",
+                "Intent",
+                "AbsorptionCriteria",
+                "OGMTargets",
+                "SpawnedPACs"
+              ],
+              "rows": [
+                [
+                  "NDL-001",
+                  "ACTIVE",
+                  "REQUIRED",
+                  "Retries must be at least 2.",
+                  "OVR-007",
+                  "Maintain retry contract",
+                  "Tasks and current rule verified",
+                  "OGM-001",
+                  "PAC-001;PAC-002"
+                ]
+              ]
+            },
+            "organism": {
+              "columns": [
+                "ID",
+                "Status",
+                "Authority",
+                "RuleType",
+                "RuleSubject",
+                "RuleSelector",
+                "RuleValue",
+                "OVRRefs",
+                "OriginText",
+                "Requirement"
+              ],
+              "rows": [
+                [
+                  "OGM-001",
+                  "VALIDATED_COMPLETE",
+                  "USER",
+                  "json_ge",
+                  "OVR-007",
+                  "/retries",
+                  "2",
+                  "OVR-007",
+                  "Retries must be at least 2.",
+                  "Retries must be at least 2."
+                ]
+              ]
+            },
+            "overlord": {
+              "columns": [
+                "ID",
+                "AssetType",
+                "Path"
+              ],
+              "rows": [
+                [
+                  "OVR-007",
+                  "FILE",
+                  "settings.json"
+                ]
+              ]
+            },
+            "todo": {
+              "columns": [
+                "ID",
+                "Status",
+                "DoD",
+                "BlockedBy",
+                "DependencyType",
+                "OVRRefs",
+                "OGMRefs",
+                "Title",
+                "Instructions",
+                "NextAction"
+              ],
+              "rows": [
+                [
+                  "PAC-001",
+                  "REVIEW",
+                  "Current verified retry contract",
+                  "PAC-002",
+                  "hard",
+                  "OVR-007",
+                  "OGM-001",
+                  "Maintain retries",
+                  "Preserve original requirement wording.",
+                  "review"
+                ],
+                [
+                  "PAC-002",
+                  "TODO",
+                  "Caller inspected",
+                  "",
+                  "",
+                  "",
+                  "OGM-001",
+                  "Review caller",
+                  "",
+                  ""
+                ]
+              ]
+            }
+          },
+          "task": "PAC-001"
+        }
+      },
+      {
+        "expected": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "resolve"
+        },
+        "name": "unresolved",
+        "packet": {
+          "complete": true,
+          "diagnostics": [
+            {
+              "code": "unresolved_rule",
+              "id": "OGM-001"
+            }
+          ],
+          "impacted": [
+            "OVR-007"
+          ],
+          "next_action": "review",
+          "profile": "0.3",
+          "relations": [
+            {
+              "relation": "OGMTargets",
+              "source": "NDL-001",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "SpawnedPACs",
+              "source": "NDL-001",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "TargetOVR",
+              "source": "NDL-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "OGM-001",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OVRRefs",
+              "source": "OGM-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "PACRefs",
+              "source": "OGM-001",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "RuleSubject",
+              "source": "OGM-001",
+              "target": "OVR-007"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "OVR-007",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OGMRefs",
+              "source": "OVR-007",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "PACRefs",
+              "source": "OVR-007",
+              "target": "PAC-001"
+            },
+            {
+              "relation": "NDLRefs",
+              "source": "PAC-001",
+              "target": "NDL-001"
+            },
+            {
+              "relation": "OGMRefs",
+              "source": "PAC-001",
+              "target": "OGM-001"
+            },
+            {
+              "relation": "OVRRefs",
+              "source": "PAC-001",
+              "target": "OVR-007"
+            }
+          ],
+          "required_ids": [
+            "NDL-001",
+            "OGM-001",
+            "OVR-007",
+            "PAC-001"
+          ],
+          "rules": [
+            {
+              "authority": "UNRESOLVED",
+              "dependencies": {},
+              "freshness": "UNBOUND",
+              "id": "OGM-001",
+              "meaning": "cc7bbde02b0df3cb8afc91acca09bb000a9069c84951e14471ccfaf1de22f87b",
+              "observed": null,
+              "reason": "explicit authority and rule required",
+              "result": "UNRESOLVED",
+              "rule": "json_ge"
+            }
+          ],
+          "sources": {
+            "settings.json": "891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739"
+          },
+          "tables": {
+            "nodule": {
+              "columns": [
+                "ID",
+                "Status",
+                "ContextPolicy",
+                "UserRequest",
+                "TargetOVR",
+                "Intent",
+                "AbsorptionCriteria",
+                "OGMTargets",
+                "SpawnedPACs"
+              ],
+              "rows": [
+                [
+                  "NDL-001",
+                  "ACTIVE",
+                  "REQUIRED",
+                  "Retries must be at least 2.",
+                  "OVR-007",
+                  "Maintain retry contract",
+                  "Tasks and current rule verified",
+                  "OGM-001",
+                  "PAC-001"
+                ]
+              ]
+            },
+            "organism": {
+              "columns": [
+                "ID",
+                "Status",
+                "Authority",
+                "RuleType",
+                "RuleSubject",
+                "RuleSelector",
+                "RuleValue",
+                "OVRRefs",
+                "OriginText",
+                "Requirement"
+              ],
+              "rows": [
+                [
+                  "OGM-001",
+                  "SCAFFOLD",
+                  "UNRESOLVED",
+                  "json_ge",
+                  "OVR-007",
+                  "/retries",
+                  "2",
+                  "OVR-007",
+                  "Retries must be at least 2.",
+                  "Retries must be at least 2."
+                ]
+              ]
+            },
+            "overlord": {
+              "columns": [
+                "ID",
+                "AssetType",
+                "Path"
+              ],
+              "rows": [
+                [
+                  "OVR-007",
+                  "FILE",
+                  "settings.json"
+                ]
+              ]
+            },
+            "todo": {
+              "columns": [
+                "ID",
+                "Status",
+                "DoD",
+                "OVRRefs",
+                "OGMRefs",
+                "Title",
+                "Instructions",
+                "NextAction"
+              ],
+              "rows": [
+                [
+                  "PAC-001",
+                  "REVIEW",
+                  "Current verified retry contract",
+                  "OVR-007",
+                  "OGM-001",
+                  "Maintain retries",
+                  "Preserve original requirement wording.",
+                  "review"
+                ]
+              ]
+            }
+          },
+          "task": "PAC-001"
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "status": "completed",
+        "input_bytes": 3252,
+        "input_sha256": "b8f1c54da800a9ab1c043105ecd82907395a418c5fe85a3fb81d273b90380baa",
+        "returncode": 0,
+        "seconds": 6.265,
+        "usage": [
+          {
+            "input_tokens": 14775,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 71,
+            "reasoning_output_tokens": 34
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": true,
+          "next_action": "review"
+        },
+        "case": "current",
+        "arm": "markdown",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n# Task context\n\n```json\n{\"complete\":true,\"diagnostics\":[],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"CURRENT\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":3,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"task\":\"PAC-001\"}\n```\n\n## todo\n\n| ID | Status | DoD | OVRRefs | OGMRefs | Title | Instructions | NextAction |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| \"PAC-001\" | \"REVIEW\" | \"Current verified retry contract\" | \"OVR-007\" | \"OGM-001\" | \"Maintain retries\" | \"Preserve original requirement wording.\" | \"review\" |\n\n## overlord\n\n| ID | AssetType | Path |\n| --- | --- | --- |\n| \"OVR-007\" | \"FILE\" | \"settings.json\" |\n\n## organism\n\n| ID | Status | Authority | RuleType | RuleSubject | RuleSelector | RuleValue | OVRRefs | OriginText | Requirement |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"OGM-001\" | \"VALIDATED_COMPLETE\" | \"USER\" | \"json_ge\" | \"OVR-007\" | \"/retries\" | \"2\" | \"OVR-007\" | \"Retries must be at least 2.\" | \"Retries must be at least 2.\" |\n\n## nodule\n\n| ID | Status | ContextPolicy | UserRequest | TargetOVR | Intent | AbsorptionCriteria | OGMTargets | SpawnedPACs |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"NDL-001\" | \"ACTIVE\" | \"REQUIRED\" | \"Retries must be at least 2.\" | \"OVR-007\" | \"Maintain retry contract\" | \"Tasks and current rule verified\" | \"OGM-001\" | \"PAC-001\" |\n",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a04f-ca4e-70f2-987c-ed952720080e\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":true,\\\"next_action\\\":\\\"review\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14775,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":71,\"reasoning_output_tokens\":34}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3555,
+        "input_sha256": "7f7c9c9b57a4da5b8b6e00f497621ce9880fba9cb7cbf3b314f03395e96e58b3",
+        "returncode": 0,
+        "seconds": 9.798,
+        "usage": [
+          {
+            "input_tokens": 14827,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 92,
+            "reasoning_output_tokens": 46
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "PAC-002",
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "implement"
+        },
+        "case": "regressed",
+        "arm": "operational",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-002\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-002\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"BlockedBy:hard\",\"source\":\"PAC-001\",\"target\":\"PAC-002\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-002\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-002\",\"target\":\"OGM-001\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\",\"PAC-002\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":0,\"reason\":\"\",\"result\":\"FAIL\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"f26b95c2e64ce495f6494fea2f7a3582de3c5ffc9d25b6ef87a975fe16022e09\"},\"tables\":{\"nodule\":{\"columns\":[\"ID\",\"Status\",\"ContextPolicy\",\"UserRequest\",\"TargetOVR\",\"Intent\",\"AbsorptionCriteria\",\"OGMTargets\",\"SpawnedPACs\"],\"rows\":[[\"NDL-001\",\"ACTIVE\",\"REQUIRED\",\"Retries must be at least 2.\",\"OVR-007\",\"Maintain retry contract\",\"Tasks and current rule verified\",\"OGM-001\",\"PAC-001;PAC-002\"]]},\"organism\":{\"columns\":[\"ID\",\"Status\",\"Authority\",\"RuleType\",\"RuleSubject\",\"RuleSelector\",\"RuleValue\",\"OVRRefs\",\"OriginText\",\"Requirement\"],\"rows\":[[\"OGM-001\",\"VALIDATED_COMPLETE\",\"USER\",\"json_ge\",\"OVR-007\",\"/retries\",\"2\",\"OVR-007\",\"Retries must be at least 2.\",\"Retries must be at least 2.\"]]},\"overlord\":{\"columns\":[\"ID\",\"AssetType\",\"Path\"],\"rows\":[[\"OVR-007\",\"FILE\",\"settings.json\"]]},\"todo\":{\"columns\":[\"ID\",\"Status\",\"DoD\",\"BlockedBy\",\"DependencyType\",\"OVRRefs\",\"OGMRefs\",\"Title\",\"Instructions\",\"NextAction\"],\"rows\":[[\"PAC-001\",\"REVIEW\",\"Current verified retry contract\",\"PAC-002\",\"hard\",\"OVR-007\",\"OGM-001\",\"Maintain retries\",\"Preserve original requirement wording.\",\"review\"],[\"PAC-002\",\"TODO\",\"Caller inspected\",\"\",\"\",\"\",\"OGM-001\",\"Review caller\",\"\",\"\"]]}},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a04f-e296-70a2-8e05-cd0fb4c7d6ea\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"PAC-002\\\",\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"implement\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14827,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":92,\"reasoning_output_tokens\":46}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3576,
+        "input_sha256": "f8d6a62f5212e2da30fad1318d3ed9392cd9e5b38b5d113008ebd51160938efa",
+        "returncode": 0,
+        "seconds": 9.99,
+        "usage": [
+          {
+            "input_tokens": 14829,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 98,
+            "reasoning_output_tokens": 52
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "PAC-002",
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "implement"
+        },
+        "case": "regressed",
+        "arm": "row_json",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-002\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-002\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"BlockedBy:hard\",\"source\":\"PAC-001\",\"target\":\"PAC-002\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-002\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-002\",\"target\":\"OGM-001\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\",\"PAC-002\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":0,\"reason\":\"\",\"result\":\"FAIL\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"f26b95c2e64ce495f6494fea2f7a3582de3c5ffc9d25b6ef87a975fe16022e09\"},\"tables\":{\"nodule\":[{\"AbsorptionCriteria\":\"Tasks and current rule verified\",\"ContextPolicy\":\"REQUIRED\",\"ID\":\"NDL-001\",\"Intent\":\"Maintain retry contract\",\"OGMTargets\":\"OGM-001\",\"SpawnedPACs\":\"PAC-001;PAC-002\",\"Status\":\"ACTIVE\",\"TargetOVR\":\"OVR-007\",\"UserRequest\":\"Retries must be at least 2.\"}],\"organism\":[{\"Authority\":\"USER\",\"ID\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"OriginText\":\"Retries must be at least 2.\",\"Requirement\":\"Retries must be at least 2.\",\"RuleSelector\":\"/retries\",\"RuleSubject\":\"OVR-007\",\"RuleType\":\"json_ge\",\"RuleValue\":\"2\",\"Status\":\"VALIDATED_COMPLETE\"}],\"overlord\":[{\"AssetType\":\"FILE\",\"ID\":\"OVR-007\",\"Path\":\"settings.json\"}],\"todo\":[{\"BlockedBy\":\"PAC-002\",\"DependencyType\":\"hard\",\"DoD\":\"Current verified retry contract\",\"ID\":\"PAC-001\",\"Instructions\":\"Preserve original requirement wording.\",\"NextAction\":\"review\",\"OGMRefs\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"Status\":\"REVIEW\",\"Title\":\"Maintain retries\"},{\"BlockedBy\":\"\",\"DependencyType\":\"\",\"DoD\":\"Caller inspected\",\"ID\":\"PAC-002\",\"Instructions\":\"\",\"NextAction\":\"\",\"OGMRefs\":\"OGM-001\",\"OVRRefs\":\"\",\"Status\":\"TODO\",\"Title\":\"Review caller\"}]},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a050-08ca-7783-b9e9-fad2feb12a54\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"PAC-002\\\",\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"implement\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14829,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":98,\"reasoning_output_tokens\":52}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3340,
+        "input_sha256": "0cbb89920fed6f4e780acafa16c9dc5c3cbd3aabda15cdadb395cf90503fbcf6",
+        "returncode": 0,
+        "seconds": 7.1,
+        "usage": [
+          {
+            "input_tokens": 14808,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 78,
+            "reasoning_output_tokens": 36
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "resolve"
+        },
+        "case": "unresolved",
+        "arm": "markdown",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n# Task context\n\n```json\n{\"complete\":true,\"diagnostics\":[{\"code\":\"unresolved_rule\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"UNRESOLVED\",\"dependencies\":{},\"freshness\":\"UNBOUND\",\"id\":\"OGM-001\",\"meaning\":\"cc7bbde02b0df3cb8afc91acca09bb000a9069c84951e14471ccfaf1de22f87b\",\"observed\":null,\"reason\":\"explicit authority and rule required\",\"result\":\"UNRESOLVED\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"task\":\"PAC-001\"}\n```\n\n## todo\n\n| ID | Status | DoD | OVRRefs | OGMRefs | Title | Instructions | NextAction |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| \"PAC-001\" | \"REVIEW\" | \"Current verified retry contract\" | \"OVR-007\" | \"OGM-001\" | \"Maintain retries\" | \"Preserve original requirement wording.\" | \"review\" |\n\n## overlord\n\n| ID | AssetType | Path |\n| --- | --- | --- |\n| \"OVR-007\" | \"FILE\" | \"settings.json\" |\n\n## organism\n\n| ID | Status | Authority | RuleType | RuleSubject | RuleSelector | RuleValue | OVRRefs | OriginText | Requirement |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"OGM-001\" | \"SCAFFOLD\" | \"UNRESOLVED\" | \"json_ge\" | \"OVR-007\" | \"/retries\" | \"2\" | \"OVR-007\" | \"Retries must be at least 2.\" | \"Retries must be at least 2.\" |\n\n## nodule\n\n| ID | Status | ContextPolicy | UserRequest | TargetOVR | Intent | AbsorptionCriteria | OGMTargets | SpawnedPACs |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"NDL-001\" | \"ACTIVE\" | \"REQUIRED\" | \"Retries must be at least 2.\" | \"OVR-007\" | \"Maintain retry contract\" | \"Tasks and current rule verified\" | \"OGM-001\" | \"PAC-001\" |\n",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a050-2ffc-7aa1-acdf-62b3ac862a26\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"resolve\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14808,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":78,\"reasoning_output_tokens\":36}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3290,
+        "input_sha256": "9065487eee9815379792464a241c90f678759284aa8882b50a8c70ad86616794",
+        "returncode": 0,
+        "seconds": 6.078,
+        "usage": [
+          {
+            "input_tokens": 14798,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 70,
+            "reasoning_output_tokens": 28
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "verify"
+        },
+        "case": "stale",
+        "arm": "markdown",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n# Task context\n\n```json\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":4,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"},\"task\":\"PAC-001\"}\n```\n\n## todo\n\n| ID | Status | DoD | OVRRefs | OGMRefs | Title | Instructions | NextAction |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| \"PAC-001\" | \"REVIEW\" | \"Current verified retry contract\" | \"OVR-007\" | \"OGM-001\" | \"Maintain retries\" | \"Preserve original requirement wording.\" | \"review\" |\n\n## overlord\n\n| ID | AssetType | Path |\n| --- | --- | --- |\n| \"OVR-007\" | \"FILE\" | \"settings.json\" |\n\n## organism\n\n| ID | Status | Authority | RuleType | RuleSubject | RuleSelector | RuleValue | OVRRefs | OriginText | Requirement |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"OGM-001\" | \"VALIDATED_COMPLETE\" | \"USER\" | \"json_ge\" | \"OVR-007\" | \"/retries\" | \"2\" | \"OVR-007\" | \"Retries must be at least 2.\" | \"Retries must be at least 2.\" |\n\n## nodule\n\n| ID | Status | ContextPolicy | UserRequest | TargetOVR | Intent | AbsorptionCriteria | OGMTargets | SpawnedPACs |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"NDL-001\" | \"ACTIVE\" | \"REQUIRED\" | \"Retries must be at least 2.\" | \"OVR-007\" | \"Maintain retry contract\" | \"Tasks and current rule verified\" | \"OGM-001\" | \"PAC-001\" |\n",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a050-4bb4-7593-b44e-32eeb73892d8\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"verify\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14798,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":70,\"reasoning_output_tokens\":28}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3096,
+        "input_sha256": "b44d23d078ff52d491f6ea238b76f5b179316907049fca29ef678a477c88d40a",
+        "returncode": 0,
+        "seconds": 7.447,
+        "usage": [
+          {
+            "input_tokens": 14692,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 75,
+            "reasoning_output_tokens": 33
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "verify"
+        },
+        "case": "stale",
+        "arm": "operational",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":4,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"},\"tables\":{\"nodule\":{\"columns\":[\"ID\",\"Status\",\"ContextPolicy\",\"UserRequest\",\"TargetOVR\",\"Intent\",\"AbsorptionCriteria\",\"OGMTargets\",\"SpawnedPACs\"],\"rows\":[[\"NDL-001\",\"ACTIVE\",\"REQUIRED\",\"Retries must be at least 2.\",\"OVR-007\",\"Maintain retry contract\",\"Tasks and current rule verified\",\"OGM-001\",\"PAC-001\"]]},\"organism\":{\"columns\":[\"ID\",\"Status\",\"Authority\",\"RuleType\",\"RuleSubject\",\"RuleSelector\",\"RuleValue\",\"OVRRefs\",\"OriginText\",\"Requirement\"],\"rows\":[[\"OGM-001\",\"VALIDATED_COMPLETE\",\"USER\",\"json_ge\",\"OVR-007\",\"/retries\",\"2\",\"OVR-007\",\"Retries must be at least 2.\",\"Retries must be at least 2.\"]]},\"overlord\":{\"columns\":[\"ID\",\"AssetType\",\"Path\"],\"rows\":[[\"OVR-007\",\"FILE\",\"settings.json\"]]},\"todo\":{\"columns\":[\"ID\",\"Status\",\"DoD\",\"OVRRefs\",\"OGMRefs\",\"Title\",\"Instructions\",\"NextAction\"],\"rows\":[[\"PAC-001\",\"REVIEW\",\"Current verified retry contract\",\"OVR-007\",\"OGM-001\",\"Maintain retries\",\"Preserve original requirement wording.\",\"review\"]]}},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a050-63b4-7ad1-b913-733ddbd76b16\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"verify\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14692,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":75,\"reasoning_output_tokens\":33}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3058,
+        "input_sha256": "e1f2fcb6cf3d27d1a56cabdd0c2859f9b5e3665ca9eec69a13cd26266fa26932",
+        "returncode": 0,
+        "seconds": 6.887,
+        "usage": [
+          {
+            "input_tokens": 14667,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 78,
+            "reasoning_output_tokens": 41
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": true,
+          "next_action": "review"
+        },
+        "case": "current",
+        "arm": "operational",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"CURRENT\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":3,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"tables\":{\"nodule\":{\"columns\":[\"ID\",\"Status\",\"ContextPolicy\",\"UserRequest\",\"TargetOVR\",\"Intent\",\"AbsorptionCriteria\",\"OGMTargets\",\"SpawnedPACs\"],\"rows\":[[\"NDL-001\",\"ACTIVE\",\"REQUIRED\",\"Retries must be at least 2.\",\"OVR-007\",\"Maintain retry contract\",\"Tasks and current rule verified\",\"OGM-001\",\"PAC-001\"]]},\"organism\":{\"columns\":[\"ID\",\"Status\",\"Authority\",\"RuleType\",\"RuleSubject\",\"RuleSelector\",\"RuleValue\",\"OVRRefs\",\"OriginText\",\"Requirement\"],\"rows\":[[\"OGM-001\",\"VALIDATED_COMPLETE\",\"USER\",\"json_ge\",\"OVR-007\",\"/retries\",\"2\",\"OVR-007\",\"Retries must be at least 2.\",\"Retries must be at least 2.\"]]},\"overlord\":{\"columns\":[\"ID\",\"AssetType\",\"Path\"],\"rows\":[[\"OVR-007\",\"FILE\",\"settings.json\"]]},\"todo\":{\"columns\":[\"ID\",\"Status\",\"DoD\",\"OVRRefs\",\"OGMRefs\",\"Title\",\"Instructions\",\"NextAction\"],\"rows\":[[\"PAC-001\",\"REVIEW\",\"Current verified retry contract\",\"OVR-007\",\"OGM-001\",\"Maintain retries\",\"Preserve original requirement wording.\",\"review\"]]}},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a050-8219-7e51-948f-48eb41ed8f91\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":true,\\\"next_action\\\":\\\"review\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14667,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":78,\"reasoning_output_tokens\":41}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3576,
+        "input_sha256": "f8d6a62f5212e2da30fad1318d3ed9392cd9e5b38b5d113008ebd51160938efa",
+        "returncode": 0,
+        "seconds": 7.033,
+        "usage": [
+          {
+            "input_tokens": 14827,
+            "cached_input_tokens": 11776,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 93,
+            "reasoning_output_tokens": 47
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "PAC-002",
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "implement"
+        },
+        "case": "regressed",
+        "arm": "row_json",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-002\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-002\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"BlockedBy:hard\",\"source\":\"PAC-001\",\"target\":\"PAC-002\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-002\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-002\",\"target\":\"OGM-001\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\",\"PAC-002\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":0,\"reason\":\"\",\"result\":\"FAIL\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"f26b95c2e64ce495f6494fea2f7a3582de3c5ffc9d25b6ef87a975fe16022e09\"},\"tables\":{\"nodule\":[{\"AbsorptionCriteria\":\"Tasks and current rule verified\",\"ContextPolicy\":\"REQUIRED\",\"ID\":\"NDL-001\",\"Intent\":\"Maintain retry contract\",\"OGMTargets\":\"OGM-001\",\"SpawnedPACs\":\"PAC-001;PAC-002\",\"Status\":\"ACTIVE\",\"TargetOVR\":\"OVR-007\",\"UserRequest\":\"Retries must be at least 2.\"}],\"organism\":[{\"Authority\":\"USER\",\"ID\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"OriginText\":\"Retries must be at least 2.\",\"Requirement\":\"Retries must be at least 2.\",\"RuleSelector\":\"/retries\",\"RuleSubject\":\"OVR-007\",\"RuleType\":\"json_ge\",\"RuleValue\":\"2\",\"Status\":\"VALIDATED_COMPLETE\"}],\"overlord\":[{\"AssetType\":\"FILE\",\"ID\":\"OVR-007\",\"Path\":\"settings.json\"}],\"todo\":[{\"BlockedBy\":\"PAC-002\",\"DependencyType\":\"hard\",\"DoD\":\"Current verified retry contract\",\"ID\":\"PAC-001\",\"Instructions\":\"Preserve original requirement wording.\",\"NextAction\":\"review\",\"OGMRefs\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"Status\":\"REVIEW\",\"Title\":\"Maintain retries\"},{\"BlockedBy\":\"\",\"DependencyType\":\"\",\"DoD\":\"Caller inspected\",\"ID\":\"PAC-002\",\"Instructions\":\"\",\"NextAction\":\"\",\"OGMRefs\":\"OGM-001\",\"OVRRefs\":\"\",\"Status\":\"TODO\",\"Title\":\"Review caller\"}]},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a050-9b70-7aa1-b4ab-d4e00a486699\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"PAC-002\\\",\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"implement\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14827,\"cached_input_tokens\":11776,\"cache_write_input_tokens\":0,\"output_tokens\":93,\"reasoning_output_tokens\":47}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3340,
+        "input_sha256": "0cbb89920fed6f4e780acafa16c9dc5c3cbd3aabda15cdadb395cf90503fbcf6",
+        "returncode": 0,
+        "seconds": 6.769,
+        "usage": [
+          {
+            "input_tokens": 14808,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 85,
+            "reasoning_output_tokens": 43
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "resolve"
+        },
+        "case": "unresolved",
+        "arm": "markdown",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n# Task context\n\n```json\n{\"complete\":true,\"diagnostics\":[{\"code\":\"unresolved_rule\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"UNRESOLVED\",\"dependencies\":{},\"freshness\":\"UNBOUND\",\"id\":\"OGM-001\",\"meaning\":\"cc7bbde02b0df3cb8afc91acca09bb000a9069c84951e14471ccfaf1de22f87b\",\"observed\":null,\"reason\":\"explicit authority and rule required\",\"result\":\"UNRESOLVED\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"task\":\"PAC-001\"}\n```\n\n## todo\n\n| ID | Status | DoD | OVRRefs | OGMRefs | Title | Instructions | NextAction |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| \"PAC-001\" | \"REVIEW\" | \"Current verified retry contract\" | \"OVR-007\" | \"OGM-001\" | \"Maintain retries\" | \"Preserve original requirement wording.\" | \"review\" |\n\n## overlord\n\n| ID | AssetType | Path |\n| --- | --- | --- |\n| \"OVR-007\" | \"FILE\" | \"settings.json\" |\n\n## organism\n\n| ID | Status | Authority | RuleType | RuleSubject | RuleSelector | RuleValue | OVRRefs | OriginText | Requirement |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"OGM-001\" | \"SCAFFOLD\" | \"UNRESOLVED\" | \"json_ge\" | \"OVR-007\" | \"/retries\" | \"2\" | \"OVR-007\" | \"Retries must be at least 2.\" | \"Retries must be at least 2.\" |\n\n## nodule\n\n| ID | Status | ContextPolicy | UserRequest | TargetOVR | Intent | AbsorptionCriteria | OGMTargets | SpawnedPACs |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"NDL-001\" | \"ACTIVE\" | \"REQUIRED\" | \"Retries must be at least 2.\" | \"OVR-007\" | \"Maintain retry contract\" | \"Tasks and current rule verified\" | \"OGM-001\" | \"PAC-001\" |\n",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a050-b6e6-7393-8dc4-3c8a1ead8ae7\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"resolve\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14808,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":85,\"reasoning_output_tokens\":43}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3146,
+        "input_sha256": "000b09e39988990dc2353c90a9ad0f2669ddfce8b4a54e089ebc6abedbd32985",
+        "returncode": 0,
+        "seconds": 7.132,
+        "usage": [
+          {
+            "input_tokens": 14702,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 92,
+            "reasoning_output_tokens": 50
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "resolve"
+        },
+        "case": "unresolved",
+        "arm": "operational",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"unresolved_rule\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"UNRESOLVED\",\"dependencies\":{},\"freshness\":\"UNBOUND\",\"id\":\"OGM-001\",\"meaning\":\"cc7bbde02b0df3cb8afc91acca09bb000a9069c84951e14471ccfaf1de22f87b\",\"observed\":null,\"reason\":\"explicit authority and rule required\",\"result\":\"UNRESOLVED\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"tables\":{\"nodule\":{\"columns\":[\"ID\",\"Status\",\"ContextPolicy\",\"UserRequest\",\"TargetOVR\",\"Intent\",\"AbsorptionCriteria\",\"OGMTargets\",\"SpawnedPACs\"],\"rows\":[[\"NDL-001\",\"ACTIVE\",\"REQUIRED\",\"Retries must be at least 2.\",\"OVR-007\",\"Maintain retry contract\",\"Tasks and current rule verified\",\"OGM-001\",\"PAC-001\"]]},\"organism\":{\"columns\":[\"ID\",\"Status\",\"Authority\",\"RuleType\",\"RuleSubject\",\"RuleSelector\",\"RuleValue\",\"OVRRefs\",\"OriginText\",\"Requirement\"],\"rows\":[[\"OGM-001\",\"SCAFFOLD\",\"UNRESOLVED\",\"json_ge\",\"OVR-007\",\"/retries\",\"2\",\"OVR-007\",\"Retries must be at least 2.\",\"Retries must be at least 2.\"]]},\"overlord\":{\"columns\":[\"ID\",\"AssetType\",\"Path\"],\"rows\":[[\"OVR-007\",\"FILE\",\"settings.json\"]]},\"todo\":{\"columns\":[\"ID\",\"Status\",\"DoD\",\"OVRRefs\",\"OGMRefs\",\"Title\",\"Instructions\",\"NextAction\"],\"rows\":[[\"PAC-001\",\"REVIEW\",\"Current verified retry contract\",\"OVR-007\",\"OGM-001\",\"Maintain retries\",\"Preserve original requirement wording.\",\"review\"]]}},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a050-d150-7c10-b11e-0d2e243a3b4d\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"resolve\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14702,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":92,\"reasoning_output_tokens\":50}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3058,
+        "input_sha256": "e1f2fcb6cf3d27d1a56cabdd0c2859f9b5e3665ca9eec69a13cd26266fa26932",
+        "returncode": 0,
+        "seconds": 6.104,
+        "usage": [
+          {
+            "input_tokens": 14669,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 69,
+            "reasoning_output_tokens": 32
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": true,
+          "next_action": "review"
+        },
+        "case": "current",
+        "arm": "operational",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"CURRENT\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":3,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"tables\":{\"nodule\":{\"columns\":[\"ID\",\"Status\",\"ContextPolicy\",\"UserRequest\",\"TargetOVR\",\"Intent\",\"AbsorptionCriteria\",\"OGMTargets\",\"SpawnedPACs\"],\"rows\":[[\"NDL-001\",\"ACTIVE\",\"REQUIRED\",\"Retries must be at least 2.\",\"OVR-007\",\"Maintain retry contract\",\"Tasks and current rule verified\",\"OGM-001\",\"PAC-001\"]]},\"organism\":{\"columns\":[\"ID\",\"Status\",\"Authority\",\"RuleType\",\"RuleSubject\",\"RuleSelector\",\"RuleValue\",\"OVRRefs\",\"OriginText\",\"Requirement\"],\"rows\":[[\"OGM-001\",\"VALIDATED_COMPLETE\",\"USER\",\"json_ge\",\"OVR-007\",\"/retries\",\"2\",\"OVR-007\",\"Retries must be at least 2.\",\"Retries must be at least 2.\"]]},\"overlord\":{\"columns\":[\"ID\",\"AssetType\",\"Path\"],\"rows\":[[\"OVR-007\",\"FILE\",\"settings.json\"]]},\"todo\":{\"columns\":[\"ID\",\"Status\",\"DoD\",\"OVRRefs\",\"OGMRefs\",\"Title\",\"Instructions\",\"NextAction\"],\"rows\":[[\"PAC-001\",\"REVIEW\",\"Current verified retry contract\",\"OVR-007\",\"OGM-001\",\"Maintain retries\",\"Preserve original requirement wording.\",\"review\"]]}},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a050-ed2d-72c3-bcdc-87ec0038bc62\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":true,\\\"next_action\\\":\\\"review\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14669,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":69,\"reasoning_output_tokens\":32}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3290,
+        "input_sha256": "9065487eee9815379792464a241c90f678759284aa8882b50a8c70ad86616794",
+        "returncode": 0,
+        "seconds": 7.49,
+        "usage": [
+          {
+            "input_tokens": 14800,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 87,
+            "reasoning_output_tokens": 45
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "verify"
+        },
+        "case": "stale",
+        "arm": "markdown",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n# Task context\n\n```json\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":4,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"},\"task\":\"PAC-001\"}\n```\n\n## todo\n\n| ID | Status | DoD | OVRRefs | OGMRefs | Title | Instructions | NextAction |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| \"PAC-001\" | \"REVIEW\" | \"Current verified retry contract\" | \"OVR-007\" | \"OGM-001\" | \"Maintain retries\" | \"Preserve original requirement wording.\" | \"review\" |\n\n## overlord\n\n| ID | AssetType | Path |\n| --- | --- | --- |\n| \"OVR-007\" | \"FILE\" | \"settings.json\" |\n\n## organism\n\n| ID | Status | Authority | RuleType | RuleSubject | RuleSelector | RuleValue | OVRRefs | OriginText | Requirement |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"OGM-001\" | \"VALIDATED_COMPLETE\" | \"USER\" | \"json_ge\" | \"OVR-007\" | \"/retries\" | \"2\" | \"OVR-007\" | \"Retries must be at least 2.\" | \"Retries must be at least 2.\" |\n\n## nodule\n\n| ID | Status | ContextPolicy | UserRequest | TargetOVR | Intent | AbsorptionCriteria | OGMTargets | SpawnedPACs |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"NDL-001\" | \"ACTIVE\" | \"REQUIRED\" | \"Retries must be at least 2.\" | \"OVR-007\" | \"Maintain retry contract\" | \"Tasks and current rule verified\" | \"OGM-001\" | \"PAC-001\" |\n",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a051-0540-7331-b008-5ca1504d51b8\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"verify\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14800,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":87,\"reasoning_output_tokens\":45}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3555,
+        "input_sha256": "7f7c9c9b57a4da5b8b6e00f497621ce9880fba9cb7cbf3b314f03395e96e58b3",
+        "returncode": 0,
+        "seconds": 7.316,
+        "usage": [
+          {
+            "input_tokens": 14827,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 108,
+            "reasoning_output_tokens": 62
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "PAC-002",
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "implement"
+        },
+        "case": "regressed",
+        "arm": "operational",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-002\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-002\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"BlockedBy:hard\",\"source\":\"PAC-001\",\"target\":\"PAC-002\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-002\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-002\",\"target\":\"OGM-001\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\",\"PAC-002\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":0,\"reason\":\"\",\"result\":\"FAIL\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"f26b95c2e64ce495f6494fea2f7a3582de3c5ffc9d25b6ef87a975fe16022e09\"},\"tables\":{\"nodule\":{\"columns\":[\"ID\",\"Status\",\"ContextPolicy\",\"UserRequest\",\"TargetOVR\",\"Intent\",\"AbsorptionCriteria\",\"OGMTargets\",\"SpawnedPACs\"],\"rows\":[[\"NDL-001\",\"ACTIVE\",\"REQUIRED\",\"Retries must be at least 2.\",\"OVR-007\",\"Maintain retry contract\",\"Tasks and current rule verified\",\"OGM-001\",\"PAC-001;PAC-002\"]]},\"organism\":{\"columns\":[\"ID\",\"Status\",\"Authority\",\"RuleType\",\"RuleSubject\",\"RuleSelector\",\"RuleValue\",\"OVRRefs\",\"OriginText\",\"Requirement\"],\"rows\":[[\"OGM-001\",\"VALIDATED_COMPLETE\",\"USER\",\"json_ge\",\"OVR-007\",\"/retries\",\"2\",\"OVR-007\",\"Retries must be at least 2.\",\"Retries must be at least 2.\"]]},\"overlord\":{\"columns\":[\"ID\",\"AssetType\",\"Path\"],\"rows\":[[\"OVR-007\",\"FILE\",\"settings.json\"]]},\"todo\":{\"columns\":[\"ID\",\"Status\",\"DoD\",\"BlockedBy\",\"DependencyType\",\"OVRRefs\",\"OGMRefs\",\"Title\",\"Instructions\",\"NextAction\"],\"rows\":[[\"PAC-001\",\"REVIEW\",\"Current verified retry contract\",\"PAC-002\",\"hard\",\"OVR-007\",\"OGM-001\",\"Maintain retries\",\"Preserve original requirement wording.\",\"review\"],[\"PAC-002\",\"TODO\",\"Caller inspected\",\"\",\"\",\"\",\"OGM-001\",\"Review caller\",\"\",\"\"]]}},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a051-2258-7503-ad91-99435e94dce5\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"PAC-002\\\",\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"implement\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14827,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":108,\"reasoning_output_tokens\":62}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3785,
+        "input_sha256": "79e19b57ab8f21cf2ed9091717b02dd4ee2ec9be431b8f518294dd9683e3826b",
+        "returncode": 0,
+        "seconds": 8.432,
+        "usage": [
+          {
+            "input_tokens": 14962,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 99,
+            "reasoning_output_tokens": 53
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "PAC-002",
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "implement"
+        },
+        "case": "regressed",
+        "arm": "markdown",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n# Task context\n\n```json\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-002\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-002\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"BlockedBy:hard\",\"source\":\"PAC-001\",\"target\":\"PAC-002\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-002\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-002\",\"target\":\"OGM-001\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\",\"PAC-002\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":0,\"reason\":\"\",\"result\":\"FAIL\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"f26b95c2e64ce495f6494fea2f7a3582de3c5ffc9d25b6ef87a975fe16022e09\"},\"task\":\"PAC-001\"}\n```\n\n## todo\n\n| ID | Status | DoD | BlockedBy | DependencyType | OVRRefs | OGMRefs | Title | Instructions | NextAction |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"PAC-001\" | \"REVIEW\" | \"Current verified retry contract\" | \"PAC-002\" | \"hard\" | \"OVR-007\" | \"OGM-001\" | \"Maintain retries\" | \"Preserve original requirement wording.\" | \"review\" |\n| \"PAC-002\" | \"TODO\" | \"Caller inspected\" | \"\" | \"\" | \"\" | \"OGM-001\" | \"Review caller\" | \"\" | \"\" |\n\n## overlord\n\n| ID | AssetType | Path |\n| --- | --- | --- |\n| \"OVR-007\" | \"FILE\" | \"settings.json\" |\n\n## organism\n\n| ID | Status | Authority | RuleType | RuleSubject | RuleSelector | RuleValue | OVRRefs | OriginText | Requirement |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"OGM-001\" | \"VALIDATED_COMPLETE\" | \"USER\" | \"json_ge\" | \"OVR-007\" | \"/retries\" | \"2\" | \"OVR-007\" | \"Retries must be at least 2.\" | \"Retries must be at least 2.\" |\n\n## nodule\n\n| ID | Status | ContextPolicy | UserRequest | TargetOVR | Intent | AbsorptionCriteria | OGMTargets | SpawnedPACs |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"NDL-001\" | \"ACTIVE\" | \"REQUIRED\" | \"Retries must be at least 2.\" | \"OVR-007\" | \"Maintain retry contract\" | \"Tasks and current rule verified\" | \"OGM-001\" | \"PAC-001;PAC-002\" |\n",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a051-3ee5-75a1-9201-9540d5a42edd\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"PAC-002\\\",\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"implement\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14962,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":99,\"reasoning_output_tokens\":53}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 2974,
+        "input_sha256": "75235995a0587786cbcc9c4a16d410988d45b435f2df3d55339510c51ae97763",
+        "returncode": 0,
+        "seconds": 9.538,
+        "usage": [
+          {
+            "input_tokens": 14646,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 71,
+            "reasoning_output_tokens": 34
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": true,
+          "next_action": "review"
+        },
+        "case": "current",
+        "arm": "row_json",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"CURRENT\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":3,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"tables\":{\"nodule\":[{\"AbsorptionCriteria\":\"Tasks and current rule verified\",\"ContextPolicy\":\"REQUIRED\",\"ID\":\"NDL-001\",\"Intent\":\"Maintain retry contract\",\"OGMTargets\":\"OGM-001\",\"SpawnedPACs\":\"PAC-001\",\"Status\":\"ACTIVE\",\"TargetOVR\":\"OVR-007\",\"UserRequest\":\"Retries must be at least 2.\"}],\"organism\":[{\"Authority\":\"USER\",\"ID\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"OriginText\":\"Retries must be at least 2.\",\"Requirement\":\"Retries must be at least 2.\",\"RuleSelector\":\"/retries\",\"RuleSubject\":\"OVR-007\",\"RuleType\":\"json_ge\",\"RuleValue\":\"2\",\"Status\":\"VALIDATED_COMPLETE\"}],\"overlord\":[{\"AssetType\":\"FILE\",\"ID\":\"OVR-007\",\"Path\":\"settings.json\"}],\"todo\":[{\"DoD\":\"Current verified retry contract\",\"ID\":\"PAC-001\",\"Instructions\":\"Preserve original requirement wording.\",\"NextAction\":\"review\",\"OGMRefs\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"Status\":\"REVIEW\",\"Title\":\"Maintain retries\"}]},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a051-5fd8-77b1-a7ae-615e776810ba\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":true,\\\"next_action\\\":\\\"review\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14646,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":71,\"reasoning_output_tokens\":34}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3252,
+        "input_sha256": "b8f1c54da800a9ab1c043105ecd82907395a418c5fe85a3fb81d273b90380baa",
+        "returncode": 0,
+        "seconds": 6.141,
+        "usage": [
+          {
+            "input_tokens": 14777,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 71,
+            "reasoning_output_tokens": 34
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": true,
+          "next_action": "review"
+        },
+        "case": "current",
+        "arm": "markdown",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n# Task context\n\n```json\n{\"complete\":true,\"diagnostics\":[],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"CURRENT\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":3,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"task\":\"PAC-001\"}\n```\n\n## todo\n\n| ID | Status | DoD | OVRRefs | OGMRefs | Title | Instructions | NextAction |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| \"PAC-001\" | \"REVIEW\" | \"Current verified retry contract\" | \"OVR-007\" | \"OGM-001\" | \"Maintain retries\" | \"Preserve original requirement wording.\" | \"review\" |\n\n## overlord\n\n| ID | AssetType | Path |\n| --- | --- | --- |\n| \"OVR-007\" | \"FILE\" | \"settings.json\" |\n\n## organism\n\n| ID | Status | Authority | RuleType | RuleSubject | RuleSelector | RuleValue | OVRRefs | OriginText | Requirement |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"OGM-001\" | \"VALIDATED_COMPLETE\" | \"USER\" | \"json_ge\" | \"OVR-007\" | \"/retries\" | \"2\" | \"OVR-007\" | \"Retries must be at least 2.\" | \"Retries must be at least 2.\" |\n\n## nodule\n\n| ID | Status | ContextPolicy | UserRequest | TargetOVR | Intent | AbsorptionCriteria | OGMTargets | SpawnedPACs |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"NDL-001\" | \"ACTIVE\" | \"REQUIRED\" | \"Retries must be at least 2.\" | \"OVR-007\" | \"Maintain retry contract\" | \"Tasks and current rule verified\" | \"OGM-001\" | \"PAC-001\" |\n",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a051-8528-7940-99c2-3a1fb179eadf\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":true,\\\"next_action\\\":\\\"review\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14777,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":71,\"reasoning_output_tokens\":34}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3785,
+        "input_sha256": "79e19b57ab8f21cf2ed9091717b02dd4ee2ec9be431b8f518294dd9683e3826b",
+        "returncode": 0,
+        "seconds": 6.893,
+        "usage": [
+          {
+            "input_tokens": 14962,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 87,
+            "reasoning_output_tokens": 41
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "PAC-002",
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "implement"
+        },
+        "case": "regressed",
+        "arm": "markdown",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n# Task context\n\n```json\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-002\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-002\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"BlockedBy:hard\",\"source\":\"PAC-001\",\"target\":\"PAC-002\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-002\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-002\",\"target\":\"OGM-001\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\",\"PAC-002\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":0,\"reason\":\"\",\"result\":\"FAIL\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"f26b95c2e64ce495f6494fea2f7a3582de3c5ffc9d25b6ef87a975fe16022e09\"},\"task\":\"PAC-001\"}\n```\n\n## todo\n\n| ID | Status | DoD | BlockedBy | DependencyType | OVRRefs | OGMRefs | Title | Instructions | NextAction |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"PAC-001\" | \"REVIEW\" | \"Current verified retry contract\" | \"PAC-002\" | \"hard\" | \"OVR-007\" | \"OGM-001\" | \"Maintain retries\" | \"Preserve original requirement wording.\" | \"review\" |\n| \"PAC-002\" | \"TODO\" | \"Caller inspected\" | \"\" | \"\" | \"\" | \"OGM-001\" | \"Review caller\" | \"\" | \"\" |\n\n## overlord\n\n| ID | AssetType | Path |\n| --- | --- | --- |\n| \"OVR-007\" | \"FILE\" | \"settings.json\" |\n\n## organism\n\n| ID | Status | Authority | RuleType | RuleSubject | RuleSelector | RuleValue | OVRRefs | OriginText | Requirement |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"OGM-001\" | \"VALIDATED_COMPLETE\" | \"USER\" | \"json_ge\" | \"OVR-007\" | \"/retries\" | \"2\" | \"OVR-007\" | \"Retries must be at least 2.\" | \"Retries must be at least 2.\" |\n\n## nodule\n\n| ID | Status | ContextPolicy | UserRequest | TargetOVR | Intent | AbsorptionCriteria | OGMTargets | SpawnedPACs |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| \"NDL-001\" | \"ACTIVE\" | \"REQUIRED\" | \"Retries must be at least 2.\" | \"OVR-007\" | \"Maintain retry contract\" | \"Tasks and current rule verified\" | \"OGM-001\" | \"PAC-001;PAC-002\" |\n",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a051-9d24-7a23-8da3-0caaa1f49e34\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"PAC-002\\\",\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"implement\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14962,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":87,\"reasoning_output_tokens\":41}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3062,
+        "input_sha256": "c92f93d608b5acb8532439f00771e3ba6d6b313169b208b1c7dd2cb7f60e31ce",
+        "returncode": 0,
+        "seconds": 5.658,
+        "usage": [
+          {
+            "input_tokens": 14679,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 66,
+            "reasoning_output_tokens": 24
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "resolve"
+        },
+        "case": "unresolved",
+        "arm": "row_json",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"unresolved_rule\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"UNRESOLVED\",\"dependencies\":{},\"freshness\":\"UNBOUND\",\"id\":\"OGM-001\",\"meaning\":\"cc7bbde02b0df3cb8afc91acca09bb000a9069c84951e14471ccfaf1de22f87b\",\"observed\":null,\"reason\":\"explicit authority and rule required\",\"result\":\"UNRESOLVED\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"tables\":{\"nodule\":[{\"AbsorptionCriteria\":\"Tasks and current rule verified\",\"ContextPolicy\":\"REQUIRED\",\"ID\":\"NDL-001\",\"Intent\":\"Maintain retry contract\",\"OGMTargets\":\"OGM-001\",\"SpawnedPACs\":\"PAC-001\",\"Status\":\"ACTIVE\",\"TargetOVR\":\"OVR-007\",\"UserRequest\":\"Retries must be at least 2.\"}],\"organism\":[{\"Authority\":\"UNRESOLVED\",\"ID\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"OriginText\":\"Retries must be at least 2.\",\"Requirement\":\"Retries must be at least 2.\",\"RuleSelector\":\"/retries\",\"RuleSubject\":\"OVR-007\",\"RuleType\":\"json_ge\",\"RuleValue\":\"2\",\"Status\":\"SCAFFOLD\"}],\"overlord\":[{\"AssetType\":\"FILE\",\"ID\":\"OVR-007\",\"Path\":\"settings.json\"}],\"todo\":[{\"DoD\":\"Current verified retry contract\",\"ID\":\"PAC-001\",\"Instructions\":\"Preserve original requirement wording.\",\"NextAction\":\"review\",\"OGMRefs\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"Status\":\"REVIEW\",\"Title\":\"Maintain retries\"}]},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a051-b814-7d81-ae85-7f75bcf4e545\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"resolve\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14679,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":66,\"reasoning_output_tokens\":24}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3146,
+        "input_sha256": "000b09e39988990dc2353c90a9ad0f2669ddfce8b4a54e089ebc6abedbd32985",
+        "returncode": 0,
+        "seconds": 6.358,
+        "usage": [
+          {
+            "input_tokens": 14700,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 85,
+            "reasoning_output_tokens": 43
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "resolve"
+        },
+        "case": "unresolved",
+        "arm": "operational",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"unresolved_rule\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"UNRESOLVED\",\"dependencies\":{},\"freshness\":\"UNBOUND\",\"id\":\"OGM-001\",\"meaning\":\"cc7bbde02b0df3cb8afc91acca09bb000a9069c84951e14471ccfaf1de22f87b\",\"observed\":null,\"reason\":\"explicit authority and rule required\",\"result\":\"UNRESOLVED\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"tables\":{\"nodule\":{\"columns\":[\"ID\",\"Status\",\"ContextPolicy\",\"UserRequest\",\"TargetOVR\",\"Intent\",\"AbsorptionCriteria\",\"OGMTargets\",\"SpawnedPACs\"],\"rows\":[[\"NDL-001\",\"ACTIVE\",\"REQUIRED\",\"Retries must be at least 2.\",\"OVR-007\",\"Maintain retry contract\",\"Tasks and current rule verified\",\"OGM-001\",\"PAC-001\"]]},\"organism\":{\"columns\":[\"ID\",\"Status\",\"Authority\",\"RuleType\",\"RuleSubject\",\"RuleSelector\",\"RuleValue\",\"OVRRefs\",\"OriginText\",\"Requirement\"],\"rows\":[[\"OGM-001\",\"SCAFFOLD\",\"UNRESOLVED\",\"json_ge\",\"OVR-007\",\"/retries\",\"2\",\"OVR-007\",\"Retries must be at least 2.\",\"Retries must be at least 2.\"]]},\"overlord\":{\"columns\":[\"ID\",\"AssetType\",\"Path\"],\"rows\":[[\"OVR-007\",\"FILE\",\"settings.json\"]]},\"todo\":{\"columns\":[\"ID\",\"Status\",\"DoD\",\"OVRRefs\",\"OGMRefs\",\"Title\",\"Instructions\",\"NextAction\"],\"rows\":[[\"PAC-001\",\"REVIEW\",\"Current verified retry contract\",\"OVR-007\",\"OGM-001\",\"Maintain retries\",\"Preserve original requirement wording.\",\"review\"]]}},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a051-ce2c-7501-9f5d-686e52a48780\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"resolve\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14700,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":85,\"reasoning_output_tokens\":43}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3062,
+        "input_sha256": "c92f93d608b5acb8532439f00771e3ba6d6b313169b208b1c7dd2cb7f60e31ce",
+        "returncode": 0,
+        "seconds": 8.681,
+        "usage": [
+          {
+            "input_tokens": 14677,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 86,
+            "reasoning_output_tokens": 44
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "resolve"
+        },
+        "case": "unresolved",
+        "arm": "row_json",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"unresolved_rule\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"UNRESOLVED\",\"dependencies\":{},\"freshness\":\"UNBOUND\",\"id\":\"OGM-001\",\"meaning\":\"cc7bbde02b0df3cb8afc91acca09bb000a9069c84951e14471ccfaf1de22f87b\",\"observed\":null,\"reason\":\"explicit authority and rule required\",\"result\":\"UNRESOLVED\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"tables\":{\"nodule\":[{\"AbsorptionCriteria\":\"Tasks and current rule verified\",\"ContextPolicy\":\"REQUIRED\",\"ID\":\"NDL-001\",\"Intent\":\"Maintain retry contract\",\"OGMTargets\":\"OGM-001\",\"SpawnedPACs\":\"PAC-001\",\"Status\":\"ACTIVE\",\"TargetOVR\":\"OVR-007\",\"UserRequest\":\"Retries must be at least 2.\"}],\"organism\":[{\"Authority\":\"UNRESOLVED\",\"ID\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"OriginText\":\"Retries must be at least 2.\",\"Requirement\":\"Retries must be at least 2.\",\"RuleSelector\":\"/retries\",\"RuleSubject\":\"OVR-007\",\"RuleType\":\"json_ge\",\"RuleValue\":\"2\",\"Status\":\"SCAFFOLD\"}],\"overlord\":[{\"AssetType\":\"FILE\",\"ID\":\"OVR-007\",\"Path\":\"settings.json\"}],\"todo\":[{\"DoD\":\"Current verified retry contract\",\"ID\":\"PAC-001\",\"Instructions\":\"Preserve original requirement wording.\",\"NextAction\":\"review\",\"OGMRefs\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"Status\":\"REVIEW\",\"Title\":\"Maintain retries\"}]},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a051-e701-71c0-b2f7-093f8addf8ff\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"resolve\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14677,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":86,\"reasoning_output_tokens\":44}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 2974,
+        "input_sha256": "75235995a0587786cbcc9c4a16d410988d45b435f2df3d55339510c51ae97763",
+        "returncode": 0,
+        "seconds": 7.15,
+        "usage": [
+          {
+            "input_tokens": 14646,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 74,
+            "reasoning_output_tokens": 37
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": true,
+          "next_action": "review"
+        },
+        "case": "current",
+        "arm": "row_json",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"CURRENT\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":3,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"891556821529872599a2d6224010d77269e762d4de6af0153a79e5e887471739\"},\"tables\":{\"nodule\":[{\"AbsorptionCriteria\":\"Tasks and current rule verified\",\"ContextPolicy\":\"REQUIRED\",\"ID\":\"NDL-001\",\"Intent\":\"Maintain retry contract\",\"OGMTargets\":\"OGM-001\",\"SpawnedPACs\":\"PAC-001\",\"Status\":\"ACTIVE\",\"TargetOVR\":\"OVR-007\",\"UserRequest\":\"Retries must be at least 2.\"}],\"organism\":[{\"Authority\":\"USER\",\"ID\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"OriginText\":\"Retries must be at least 2.\",\"Requirement\":\"Retries must be at least 2.\",\"RuleSelector\":\"/retries\",\"RuleSubject\":\"OVR-007\",\"RuleType\":\"json_ge\",\"RuleValue\":\"2\",\"Status\":\"VALIDATED_COMPLETE\"}],\"overlord\":[{\"AssetType\":\"FILE\",\"ID\":\"OVR-007\",\"Path\":\"settings.json\"}],\"todo\":[{\"DoD\":\"Current verified retry contract\",\"ID\":\"PAC-001\",\"Instructions\":\"Preserve original requirement wording.\",\"NextAction\":\"review\",\"OGMRefs\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"Status\":\"REVIEW\",\"Title\":\"Maintain retries\"}]},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a052-08e6-7e32-b8a9-26049485cfbc\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":true,\\\"next_action\\\":\\\"review\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14646,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":74,\"reasoning_output_tokens\":37}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3012,
+        "input_sha256": "42e3abe8e8b56a1e1d8b82d5d13aef68001d697de5c773e18a52a740ec9b928b",
+        "returncode": 0,
+        "seconds": 6.493,
+        "usage": [
+          {
+            "input_tokens": 14669,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 80,
+            "reasoning_output_tokens": 38
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "verify"
+        },
+        "case": "stale",
+        "arm": "row_json",
+        "repetition": 1,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":4,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"},\"tables\":{\"nodule\":[{\"AbsorptionCriteria\":\"Tasks and current rule verified\",\"ContextPolicy\":\"REQUIRED\",\"ID\":\"NDL-001\",\"Intent\":\"Maintain retry contract\",\"OGMTargets\":\"OGM-001\",\"SpawnedPACs\":\"PAC-001\",\"Status\":\"ACTIVE\",\"TargetOVR\":\"OVR-007\",\"UserRequest\":\"Retries must be at least 2.\"}],\"organism\":[{\"Authority\":\"USER\",\"ID\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"OriginText\":\"Retries must be at least 2.\",\"Requirement\":\"Retries must be at least 2.\",\"RuleSelector\":\"/retries\",\"RuleSubject\":\"OVR-007\",\"RuleType\":\"json_ge\",\"RuleValue\":\"2\",\"Status\":\"VALIDATED_COMPLETE\"}],\"overlord\":[{\"AssetType\":\"FILE\",\"ID\":\"OVR-007\",\"Path\":\"settings.json\"}],\"todo\":[{\"DoD\":\"Current verified retry contract\",\"ID\":\"PAC-001\",\"Instructions\":\"Preserve original requirement wording.\",\"NextAction\":\"review\",\"OGMRefs\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"Status\":\"REVIEW\",\"Title\":\"Maintain retries\"}]},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a052-24d9-7172-abdb-6ad8440bc559\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"verify\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14669,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":80,\"reasoning_output_tokens\":38}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3012,
+        "input_sha256": "42e3abe8e8b56a1e1d8b82d5d13aef68001d697de5c773e18a52a740ec9b928b",
+        "returncode": 0,
+        "seconds": 6.604,
+        "usage": [
+          {
+            "input_tokens": 14669,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 83,
+            "reasoning_output_tokens": 41
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "verify"
+        },
+        "case": "stale",
+        "arm": "row_json",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":4,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"},\"tables\":{\"nodule\":[{\"AbsorptionCriteria\":\"Tasks and current rule verified\",\"ContextPolicy\":\"REQUIRED\",\"ID\":\"NDL-001\",\"Intent\":\"Maintain retry contract\",\"OGMTargets\":\"OGM-001\",\"SpawnedPACs\":\"PAC-001\",\"Status\":\"ACTIVE\",\"TargetOVR\":\"OVR-007\",\"UserRequest\":\"Retries must be at least 2.\"}],\"organism\":[{\"Authority\":\"USER\",\"ID\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"OriginText\":\"Retries must be at least 2.\",\"Requirement\":\"Retries must be at least 2.\",\"RuleSelector\":\"/retries\",\"RuleSubject\":\"OVR-007\",\"RuleType\":\"json_ge\",\"RuleValue\":\"2\",\"Status\":\"VALIDATED_COMPLETE\"}],\"overlord\":[{\"AssetType\":\"FILE\",\"ID\":\"OVR-007\",\"Path\":\"settings.json\"}],\"todo\":[{\"DoD\":\"Current verified retry contract\",\"ID\":\"PAC-001\",\"Instructions\":\"Preserve original requirement wording.\",\"NextAction\":\"review\",\"OGMRefs\":\"OGM-001\",\"OVRRefs\":\"OVR-007\",\"Status\":\"REVIEW\",\"Title\":\"Maintain retries\"}]},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a052-3e3b-7a52-9e4c-dbee99c1db45\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"verify\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14669,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":83,\"reasoning_output_tokens\":41}}\n"
+      },
+      {
+        "status": "completed",
+        "input_bytes": 3096,
+        "input_sha256": "b44d23d078ff52d491f6ea238b76f5b179316907049fca29ef678a477c88d40a",
+        "returncode": 0,
+        "seconds": 5.926,
+        "usage": [
+          {
+            "input_tokens": 14692,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 70,
+            "reasoning_output_tokens": 28
+          }
+        ],
+        "tool_events": 0,
+        "answer": {
+          "blockers": [
+            "OGM-001"
+          ],
+          "impacted_assets": [
+            "OVR-007"
+          ],
+          "may_complete": false,
+          "next_action": "verify"
+        },
+        "case": "stale",
+        "arm": "operational",
+        "repetition": 0,
+        "score": {
+          "correct": true,
+          "fields": {
+            "may_complete": true,
+            "blockers": true,
+            "next_action": true,
+            "impacted_assets": true
+          }
+        },
+        "prompt": "Closed-book PACER decision task. Use only the supplied facts. Do not call tools.\nAll serializations contain equivalent facts. A columnar table has columns and matching row cells.\nDecide whether the indicated task may transition REVIEW to DONE now. Report blockers as exact IDs:\ninclude each task's non-DONE hard dependency and each applicable rule whose result is not PASS,\nfreshness is not CURRENT, or requirement status is not VALIDATED_COMPLETE. Soft dependencies do\nnot block. Choose next_action by precedence: UNRESOLVED rule => resolve; FAIL => implement;\notherwise stale/unbound acceptance => verify; otherwise open hard task dependency => resolve;\notherwise review. impacted_assets must equal the supplied impacted set. Do not invent blockers.\nReturn only the requested JSON decision. Facts follow:\n{\"complete\":true,\"diagnostics\":[{\"code\":\"stale_evidence\",\"id\":\"OGM-001\"}],\"impacted\":[\"OVR-007\"],\"next_action\":\"review\",\"profile\":\"0.3\",\"relations\":[{\"relation\":\"OGMTargets\",\"source\":\"NDL-001\",\"target\":\"OGM-001\"},{\"relation\":\"SpawnedPACs\",\"source\":\"NDL-001\",\"target\":\"PAC-001\"},{\"relation\":\"TargetOVR\",\"source\":\"NDL-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OGM-001\",\"target\":\"NDL-001\"},{\"relation\":\"OVRRefs\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"PACRefs\",\"source\":\"OGM-001\",\"target\":\"PAC-001\"},{\"relation\":\"RuleSubject\",\"source\":\"OGM-001\",\"target\":\"OVR-007\"},{\"relation\":\"NDLRefs\",\"source\":\"OVR-007\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"OVR-007\",\"target\":\"OGM-001\"},{\"relation\":\"PACRefs\",\"source\":\"OVR-007\",\"target\":\"PAC-001\"},{\"relation\":\"NDLRefs\",\"source\":\"PAC-001\",\"target\":\"NDL-001\"},{\"relation\":\"OGMRefs\",\"source\":\"PAC-001\",\"target\":\"OGM-001\"},{\"relation\":\"OVRRefs\",\"source\":\"PAC-001\",\"target\":\"OVR-007\"}],\"required_ids\":[\"NDL-001\",\"OGM-001\",\"OVR-007\",\"PAC-001\"],\"rules\":[{\"authority\":\"USER\",\"dependencies\":{},\"freshness\":\"STALE\",\"id\":\"OGM-001\",\"meaning\":\"e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4\",\"observed\":4,\"reason\":\"\",\"result\":\"PASS\",\"rule\":\"json_ge\"}],\"sources\":{\"settings.json\":\"10cd416d3f0cd8ebe790513c6cb8cab01a7bc1f7e86e3b85b697c16fbb92937e\"},\"tables\":{\"nodule\":{\"columns\":[\"ID\",\"Status\",\"ContextPolicy\",\"UserRequest\",\"TargetOVR\",\"Intent\",\"AbsorptionCriteria\",\"OGMTargets\",\"SpawnedPACs\"],\"rows\":[[\"NDL-001\",\"ACTIVE\",\"REQUIRED\",\"Retries must be at least 2.\",\"OVR-007\",\"Maintain retry contract\",\"Tasks and current rule verified\",\"OGM-001\",\"PAC-001\"]]},\"organism\":{\"columns\":[\"ID\",\"Status\",\"Authority\",\"RuleType\",\"RuleSubject\",\"RuleSelector\",\"RuleValue\",\"OVRRefs\",\"OriginText\",\"Requirement\"],\"rows\":[[\"OGM-001\",\"VALIDATED_COMPLETE\",\"USER\",\"json_ge\",\"OVR-007\",\"/retries\",\"2\",\"OVR-007\",\"Retries must be at least 2.\",\"Retries must be at least 2.\"]]},\"overlord\":{\"columns\":[\"ID\",\"AssetType\",\"Path\"],\"rows\":[[\"OVR-007\",\"FILE\",\"settings.json\"]]},\"todo\":{\"columns\":[\"ID\",\"Status\",\"DoD\",\"OVRRefs\",\"OGMRefs\",\"Title\",\"Instructions\",\"NextAction\"],\"rows\":[[\"PAC-001\",\"REVIEW\",\"Current verified retry contract\",\"OVR-007\",\"OGM-001\",\"Maintain retries\",\"Preserve original requirement wording.\",\"review\"]]}},\"task\":\"PAC-001\"}",
+        "events_jsonl": "{\"type\":\"thread.started\",\"thread_id\":\"01a0a052-5809-7e73-a918-e3c2734302dd\"}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"{\\\"blockers\\\":[\\\"OGM-001\\\"],\\\"impacted_assets\\\":[\\\"OVR-007\\\"],\\\"may_complete\\\":false,\\\"next_action\\\":\\\"verify\\\"}\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":14692,\"cached_input_tokens\":0,\"cache_write_input_tokens\":0,\"output_tokens\":70,\"reasoning_output_tokens\":28}}\n"
+      }
+    ]
+  },
+  "references": [
+    "https://learn.chatgpt.com/docs/non-interactive-mode#create-structured-outputs-with-a-schema",
+    "https://learn.chatgpt.com/docs/app-server",
+    "https://learn.chatgpt.com/docs/extend/mcp",
+    "https://learn.chatgpt.com/docs/build-skills",
+    "https://developers.openai.com/plugins/build/plugins"
+  ],
+  "limits": [
+    "Manual evidence binds an authored report to source; it cannot prove the honesty of its author.",
+    "Source hashes identify bytes; the agent still inspects implementation and judges the intended behavior."
+  ],
+  "self_application": {
+    "context_policy": "REQUIRED",
+    "required_rows": 292,
+    "packet_bytes_before_acceptance": 295472,
+    "section_bytes": {
+      "profile": 5,
+      "task": 9,
+      "complete": 4,
+      "required_ids": 2921,
+      "tables": 83627,
+      "relations": 194842,
+      "sources": 6368,
+      "impacted": 2711,
+      "rules": 3958,
+      "diagnostics": 589,
+      "next_action": 8,
+      "delta": 111,
+      "receipt": 142,
+      "required_bytes": 6
+    },
+    "limitation": "Repository-wide scope exceeds default 32000-byte budget and requires an explicit larger budget. Named relation objects dominate the current payload; relation encoding and scope granularity need further measured work."
+  }
+}

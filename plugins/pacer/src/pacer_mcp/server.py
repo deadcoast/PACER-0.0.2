@@ -9,8 +9,9 @@ from typing import Literal
 from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 
-from pacer_mcp.models import Operation
+from pacer_mcp.models import ContextReceipt, Operation
 from pacer_mcp.schema import HEADERS, OGM_STATUSES, PAIRS, REF_FIELDS, TODO_TRANSITIONS, VERSION
+from pacer_mcp.semantics import semantic_schema
 from pacer_mcp.service import Service
 
 
@@ -20,11 +21,12 @@ def build_server(bound_root: Path | None = None) -> FastMCP:
     server = FastMCP(
         "PACER",
         instructions=(
-            "PACER connects tasks, source assets, design requirements and scoped growth in CSV. "
-            "Begin with pacer_onboard using the user's absolute project root, then read README.md "
-            "and AGENTS.md. Query rows and OVR paths before edits. Pace new scope before building. "
-            "Use pacer_preview and pacer_apply with the returned revision and onboarding digest. "
-            "Supply honest evidence before completion. Plugin cwd is not the project root."
+            "PACER is the project's operational context. Onboard with the absolute project root; "
+            "Read authority entry points. Pace original wording and explicit rules. "
+            "Retrieve pacer_context for the PAC before acting; never omit mandatory context. "
+            "Apply with current revision, onboarding and context receipt. Checkpoint next_action. "
+            "Evaluate and verify rules against source; refresh stale evidence before completion. "
+            "Query OVR paths before edits. Plugin cwd is not the project root."
         ),
         log_level="WARNING",
     )
@@ -71,6 +73,16 @@ def build_server(bound_root: Path | None = None) -> FastMCP:
         return service(root).graph(id, depth=depth, limit=limit)
 
     @server.tool(annotations=read)
+    def pacer_context(root: str, id: str, max_bytes: int = 32_000) -> dict[str, object]:
+        """Load task context, typed rules, source freshness, checkpoint delta and receipt."""
+        return service(root).context(id, max_bytes=max_bytes)
+
+    @server.tool(annotations=read)
+    def pacer_evaluate(root: str, id: str) -> dict[str, object]:
+        """Evaluate an OGM rule and inspect exact source bindings without changing acceptance."""
+        return service(root).evaluate(id)
+
+    @server.tool(annotations=read)
     def pacer_schema(register: str = "") -> dict[str, object]:
         """Inspect literal columns, typed refs, reciprocal links and legal status transitions."""
         if register and register not in HEADERS:
@@ -82,6 +94,7 @@ def build_server(bound_root: Path | None = None) -> FastMCP:
             "reciprocal_pairs": PAIRS,
             "task_transitions": sorted(TODO_TRANSITIONS),
             "organism_statuses": sorted(OGM_STATUSES),
+            **semantic_schema(),
         }
 
     @server.tool(annotations=read)
@@ -96,7 +109,12 @@ def build_server(bound_root: Path | None = None) -> FastMCP:
 
     @server.tool(annotations=read)
     def pacer_preview(
-        root: str, operations: list[Operation], actor: str, revision: str, onboarding: str
+        root: str,
+        operations: list[Operation],
+        actor: str,
+        revision: str,
+        onboarding: str,
+        context: ContextReceipt | None = None,
     ) -> dict[str, object]:
         """Validate a candidate command batch and return affected IDs/files without publishing."""
         return service(root).apply(
@@ -105,11 +123,17 @@ def build_server(bound_root: Path | None = None) -> FastMCP:
             revision=revision,
             onboarding=onboarding,
             preview=True,
+            context=context.model_dump() if context else None,
         )
 
     @server.tool(annotations=write)
     def pacer_apply(
-        root: str, operations: list[Operation], actor: str, revision: str, onboarding: str
+        root: str,
+        operations: list[Operation],
+        actor: str,
+        revision: str,
+        onboarding: str,
+        context: ContextReceipt | None = None,
     ) -> dict[str, object]:
         """Publish a validated PACER command batch using one applying writer and revision checks."""
         return service(root).apply(
@@ -117,6 +141,7 @@ def build_server(bound_root: Path | None = None) -> FastMCP:
             actor=actor,
             revision=revision,
             onboarding=onboarding,
+            context=context.model_dump() if context else None,
         )
 
     @server.tool(annotations=write)

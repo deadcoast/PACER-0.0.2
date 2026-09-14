@@ -6,18 +6,20 @@ import re
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
-VERSION = "0.2"
+VERSION = "0.3"
 HEADERS = {
     "todo": "ID Title Phase Status Priority Assignee DoD BlockedBy DependencyType "
     "DependencyReason UnblockingStrategy Context Instructions ExpectedOutput ValidationCriteria "
     "ErrorHandling PreviousAttempts RelatedWork LearningNotes Notes StartedAt DoneAt "
-    "OVRRefs OGMRefs NDLRefs Tags UpdatedAt".split(),
+    "OVRRefs OGMRefs NDLRefs Tags UpdatedAt NextAction ContextCheckpoint".split(),
     "overlord": "ID AssetType Path Symbol Purpose Exports Imports Requires RequiredBy OGMRefs "
-    "PACRefs NDLRefs Tags Notes UpdatedAt".split(),
+    "PACRefs NDLRefs Tags Notes UpdatedAt EvidenceFor".split(),
     "organism": "ID Title Domain Status Requirement AcceptanceEvidence OVRRefs PACRefs "
-    "BlockedByOGM AbsorbedFromNDL Tags Notes UpdatedAt NDLRefs".split(),
+    "BlockedByOGM AbsorbedFromNDL Tags Notes UpdatedAt NDLRefs Authority OriginText "
+    "RuleType RuleSubject RuleSelector RuleValue EvidenceBindings EvidenceArtifact".split(),
     "nodule": "ID NoduleName Intent Status TargetOVR NewAssets OGMTargets SpawnedPACs "
-    "AbsorptionCriteria Tags Notes CreatedAt AbsorbedAt Lane AcceptanceEvidence".split(),
+    "AbsorptionCriteria Tags Notes CreatedAt AbsorbedAt Lane AcceptanceEvidence "
+    "ContextPolicy UserRequest".split(),
 }
 PREFIX = {"todo": "PAC", "overlord": "OVR", "organism": "OGM", "nodule": "NDL"}
 ID_PATTERN = re.compile(r"(?:PAC|OVR|OGM|NDL)-[0-9]{3,}[A-Z]*")
@@ -26,6 +28,7 @@ TAG_PATTERN = re.compile(r"#[a-z][a-z0-9-]*")
 REF_FIELDS = {
     "todo": {"BlockedBy": "PAC", "OVRRefs": "OVR", "OGMRefs": "OGM", "NDLRefs": "NDL"},
     "overlord": {
+        "EvidenceFor": "OGM",
         "Requires": "OVR",
         "RequiredBy": "OVR",
         "OGMRefs": "OGM",
@@ -38,11 +41,14 @@ REF_FIELDS = {
         "BlockedByOGM": "OGM",
         "AbsorbedFromNDL": "NDL",
         "NDLRefs": "NDL",
+        "RuleSubject": "OVR",
+        "EvidenceArtifact": "OVR",
     },
     "nodule": {"TargetOVR": "OVR", "OGMTargets": "OGM", "SpawnedPACs": "PAC"},
 }
 # (source register, column, target register, reciprocal column)
 PAIRS = [
+    ("organism", "EvidenceArtifact", "overlord", "EvidenceFor"),
     ("overlord", "Requires", "overlord", "RequiredBy"),
     ("overlord", "OGMRefs", "organism", "OVRRefs"),
     ("overlord", "PACRefs", "todo", "OVRRefs"),

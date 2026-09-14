@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from collections import Counter
 
-from pacer_mcp.schema import HEADERS, PREFIX, REF_PATTERN, hard_blockers
+from pacer_mcp.schema import HEADERS, PREFIX, hard_blockers
+from pacer_mcp.semantics import typed_edges
 
 DEFAULT_FIELDS = {
     "todo": ["ID", "Title", "Status", "Priority", "Assignee", "BlockedBy", "DoD"],
@@ -82,12 +83,12 @@ def graph(tables: dict, row_id: str, *, depth: int = 1, limit: int = 30) -> dict
     if row_id not in index:
         raise ValueError(f"REFUSAL: Unknown ID {row_id}")
     adjacency = {key: set() for key in index}
-    for key, row in index.items():
-        for value in row.values():
-            for target in REF_PATTERN.findall(value):
-                if target in index and target != key:
-                    adjacency[key].add(target)
-                    adjacency[target].add(key)
+    relations = typed_edges(tables)
+    for edge in relations:
+        key, target = edge["source"], edge["target"]
+        if target in index and target != key:
+            adjacency[key].add(target)
+            adjacency[target].add(key)
     visited = {row_id}
     frontier = [row_id]
     truncated = False
@@ -106,6 +107,7 @@ def graph(tables: dict, row_id: str, *, depth: int = 1, limit: int = 30) -> dict
     return {
         "ids": sorted(visited),
         "edges": [[a, b] for a in sorted(visited) for b in sorted(adjacency[a] & visited) if a < b],
+        "relations": [e for e in relations if e["source"] in visited and e["target"] in visited],
         "truncated": truncated,
     }
 

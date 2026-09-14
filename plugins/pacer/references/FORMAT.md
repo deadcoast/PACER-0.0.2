@@ -1,4 +1,4 @@
-# PACER executable profile 0.2
+# PACER executable profile 0.3
 
 PACER is an agent's connected working memory for a project. The human states
 intent. The agent paces it into a nodule and tasks, maps the code in overlord,
@@ -70,6 +70,9 @@ the canonical files unchanged. Use freshly queried revision values after changes
 | `pace` | `nodule`, `tasks`, `requirements` | Admit scoped work with all refs in one batch |
 | `split` | `id`, `children` | Return stale work to TODO; add narrower children and hard gates |
 | `absorb` | `id`, `evidence` | Check all tasks, requirements, assets and refs; archive the nodule |
+| `checkpoint` | task `id`, `next_action` | Persist task context basis and next action |
+| `verify` | OGM `id`, `evidence`, optional artifact OVR `artifact` | Evaluate and bind acceptance to current meaning/source |
+| `refresh` | task `id` | Record stale evidence and demote demonstrated failures and affected dependents |
 
 Rows supplied to `pace` have explicit IDs. Use `next_ids` to suggest unused
 numbers, then rely on the revision precondition to detect competing allocations.
@@ -115,6 +118,122 @@ adds missing profile columns to live legacy registers, preserves all values and
 extra columns, and repairs reciprocal typed refs. It refuses invalid data rather
 than guessing at incomplete requirements, deleting examples or inventing evidence.
 
+## Operational representation
+
+Storage and delivery have different jobs. The four CSV registers retain canonical
+meaning and history. `context` compiles their relevant rows into columnar JSON
+with directed, named relations and evaluated rules. JSON is MCP's transport; it
+is not a fifth project register. Required SKILL.md files provide discovery and
+the operating bootstrap. They do not duplicate the project's design state.
+
+Profile 0.3 appends these fields without removing original/custom columns:
+
+| Organ | Additions | Purpose |
+|---|---|---|
+| todo | `NextAction`, `ContextCheckpoint` | Durable operational resumption |
+| overlord | `EvidenceFor` | Reciprocal reference from report artifact to requirement |
+| organism | `Authority`, `OriginText`, `RuleType`, `RuleSubject`, `RuleSelector`, `RuleValue`, `EvidenceBindings`, `EvidenceArtifact` | Explicit meaning, observation and source-bound acceptance |
+| nodule | `ContextPolicy`, `UserRequest` | Declare operational workflow and preserve original request |
+
+`USER` attributes a requirement to original user wording. `OBSERVED` identifies
+source or measured behavior. `INFERRED` labels an agent's interpretation;
+`UNRESOLVED` cannot be accepted. `LEGACY` preserves historical rows pending explicit
+adoption. Migration assigns LEGACY where authority was absent, invents no rule,
+and preserves old statuses. A historical VALIDATED_COMPLETE row is not thereby
+current operational proof. Adopt rules deliberately before operational completion.
+
+`OriginText` and `UserRequest` preserve literal language, including apparent IDs
+that are quotations rather than links. Only typed reference columns create graph
+edges. Other historical reference mentions remain checked for existence but do
+not expand a graph. This separates attribution, rules, evidence and connections.
+
+New nodules use `ContextPolicy=REQUIRED` and submit `pace` as a separate intake
+batch. Retrieve `pacer_context(root, id=<PAC>, max_bytes=32000)` afterwards. Its
+receipt is passed as `context` to preview/apply; CLI uses `--context-file` containing
+the receipt object. A receipt binds the project root, authority bytes, required
+rows and source files. It is a freshness precondition, not proof of understanding
+or a security credential. Direct filesystem edits remain possible and are audited.
+
+Context closes hard work dependencies, admitted nodule targets, requirement and
+source dependencies, and affected consumers/dependent requirements. It includes
+operative task guidance and original wording; source hashes identify files that
+still need inspection. Audit Notes and raw evidence bindings remain available by
+projected query. `complete=false` returns no receipt; exceeding the byte budget
+never silently truncates mandatory rows. Increase the explicit budget or split
+the work into independently sufficient scopes. `max_bytes` is UTF-8 bytes, not
+model tokens. Unknown custom column semantics require explicit queries/adoption.
+
+`checkpoint` stores the current row/source basis plus a declared next action:
+inspect, implement, verify, review, absorb or resolve. A fresh process reconstructs
+the packet and reports changed/removed rows and sources relative to that basis.
+It preserves external work state, not private model reasoning.
+
+## Rules, evidence and regression
+
+Use `pacer_schema` or `pacer schema` for the machine-readable vocabulary:
+
+| RuleType | Subject / selector / value |
+|---|---|
+| `json_eq` | OVR source / RFC 6901 JSON pointer / exact canonical JSON value |
+| `json_ge`, `json_le` | OVR source / JSON pointer / finite number lower or upper bound |
+| `row_eq` | OVR row / overlord column / JSON string |
+| `file_sha256` | OVR source / empty selector / lowercase SHA-256 JSON string |
+| `manual` | OVRRefs source basis / empty predicate fields / separate registered report |
+
+RuleSubject must also be in OVRRefs. Booleans and strings are not numbers.
+Canonical equality preserves JSON types and numeric spelling after JSON parsing:
+`2` and `2.0` differ, object key order does not. No rule executes arbitrary code.
+Canonical register files use row rules rather than recursively hashing their own
+evidence bytes. Source dependencies bind their OVR metadata and file digests.
+
+An explicit requirement example, after registering settings.json as OVR-007:
+
+```json
+{"ID":"OGM-001","Title":"Retry lower bound","Requirement":"Retries must be at least 2.","Authority":"USER","OriginText":"Retries must be at least 2.","RuleType":"json_ge","RuleSubject":"OVR-007","RuleSelector":"/retries","RuleValue":"2","OVRRefs":"OVR-007"}
+```
+
+`evaluate` returns observed PASS/FAIL/UNRESOLVED independently of accepted evidence
+CURRENT/STALE/UNBOUND. `verify` requires PASS, records bindings produced by the
+runtime, and checks current dependency acceptance transitively. Requirements with
+explicit rules cannot be accepted by merely supplying evidence text. DONE and
+absorb recheck their current rule evidence against the final transaction candidate.
+
+For manual checks, first evaluate the requirement to obtain `meaning` and `sources`.
+Run its actual test/audit. Write a separate JSON report and register its FILE OVR:
+
+```json
+{"requirement":"OGM-001","meaning":"<evaluated SHA-256>","sources":{"settings.json":"<evaluated SHA-256>"},"result":"PASS","command":["python","check_settings.py"]}
+```
+
+Pass that artifact OVR to verify. The artifact must not be part of its own source
+basis. The runtime checks its exact requirement, meaning, source map and result,
+then binds the artifact bytes. It cannot prove that a report's author ran its
+command: retain actual execution output and have a reviewer assess the assertion.
+
+After source changes, refresh in its own task-context batch. A changed hash makes
+accepted evidence stale; passing-but-stale rules require re-verification. Failed
+rules and affected dependent claims are demoted with previous acceptance retained.
+Refresh can cross a lane boundary only for these context-covered regression
+updates; unrelated lanes are untouched. OGM status definitions remain the README's
+definitions. Freshness is an additional observation, not a fourth organism status.
+
+## Measured comparison
+
+`scripts/evaluate_context.py --model <model> --effort <effort> --repetitions 2`
+runs matched Codex CLI trials with schema-constrained answers and JSONL usage.
+Four synthetic states cover current evidence, passing-but-stale evidence,
+regression plus a hard blocker, and unresolved authority. Each arm receives the
+same frozen facts and instructions; Markdown and row JSON are renditions of those
+facts, not historical version behavior. Receipts, byte accounting and checkpoint
+hashes are excluded uniformly from this decision exercise.
+
+The initial 24 trials all answered correctly. They establish a small baseline,
+not an accuracy or long-term retention advantage. Input bytes and model usage are
+reported separately; fixed Codex overhead and cache effects limit conclusions.
+The evaluator retains every prompt, answer, event stream and failed attempt,
+randomizes arm order with a fixed seed, detects tool use, and never automatically
+retries ambiguous requests. The organism links the retained execution evidence.
+
 ## Atomicity, scope and recovery
 
 One OS-backed repository lock serializes readers and the applying writer across
@@ -154,3 +273,6 @@ silently treated as the user's project.
 - [Codex app-server](https://learn.chatgpt.com/docs/app-server): documented JSONL
   initialization, native plugin/skill discovery and MCP calls. The verification
   script follows the JSON schemas generated by installed Codex 0.154.0.
+- [Codex non-interactive mode](https://learn.chatgpt.com/docs/non-interactive-mode#create-structured-outputs-with-a-schema):
+  official `codex exec --output-schema`, `-o`, `--json` and usage event methodology
+  used by the matched comparison. `openaiDeveloperDocs` supplied this reference.
