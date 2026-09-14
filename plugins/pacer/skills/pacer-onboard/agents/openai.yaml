@@ -1,0 +1,8 @@
+interface:
+  display_name: "PACER onboarding"
+  short_description: "Read authority and query PACER project state"
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pacer"
+      description: "Bundled local PACER register server"

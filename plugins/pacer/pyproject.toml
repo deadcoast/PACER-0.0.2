@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pacer-mcp"
+version = "0.2.0"
+description = "PACER's four connected CSV registers, enforced through a CLI and Codex MCP tools"
+requires-python = ">=3.11"
+dependencies = ["mcp>=1.12.4,<2", "filelock>=3.18,<4"]
+
+[project.scripts]
+pacer = "pacer_mcp.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8,<9", "pytest-asyncio>=1,<2", "ruff>=0.12,<1", "pyyaml>=6,<7"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pacer_mcp"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

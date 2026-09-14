@@ -1,0 +1,22 @@
+{
+  "name": "pacer",
+  "version": "0.2.0+codex.20260914124024",
+  "description": "Operate PACER's connected task, source, design and growth registers in Codex.",
+  "author": {
+    "name": "PACER maintainer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PACER",
+    "shortDescription": "Connected development registers for Codex.",
+    "longDescription": "Query project state, pace development, map source assets and verify evidence through PACER's four connected CSV registers.",
+    "developerName": "PACER maintainer",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": "Use PACER to onboard to this project and pace the development request."
+  },
+  "mcpServers": "./.mcp.json"
+}
