@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -18,7 +19,14 @@ from pacer_mcp.schema import (
     refs,
     utc_now,
 )
-from pacer_mcp.semantics import MEANING_FIELDS, NEXT_ACTIONS, canonical
+from pacer_mcp.semantics import (
+    MEANING_FIELDS,
+    NEXT_ACTIONS,
+    approval_allowed,
+    approval_basis,
+    approval_state,
+    canonical,
+)
 from pacer_mcp.validation import absorption_errors
 
 
@@ -65,6 +73,7 @@ class Editor:
             "verify": {"op", "id", "evidence", "artifact"},
             "checkpoint": {"op", "id", "next_action"},
             "refresh": {"op", "id"},
+            "approval": {"op", "id", "state", "evidence"},
         }
         name = operation.get("op")
         if name not in allowed or set(operation) - allowed[name]:
@@ -83,6 +92,8 @@ class Editor:
                 raise ValueError("Absorbed nodules are immutable history")
             if name == "set":
                 self.set_fields(register, row, operation["fields"])
+            elif name == "approval":
+                self.approval(register, row, operation["state"], operation["evidence"])
             elif name == "append":
                 field = operation["field"]
                 if field not in HISTORY or field not in row or not operation["text"].strip():
@@ -134,10 +145,18 @@ class Editor:
             "EvidenceArtifact",
             "EvidenceFor",
             "ContextCheckpoint",
+            "ApprovalEvidence",
+            "ApprovalActor",
+            "ApprovedAt",
+            "ApprovalBasis",
+            "ApprovalHistory",
         ):
             if row.get(field):
                 raise ValueError(f"Workflow owns {field}")
         if register == "todo":
+            if row.get("ApprovalState") not in {"", "LEGACY", "PENDING"}:
+                raise ValueError("New task approval requires the approval command")
+            row["ApprovalState"] = approval_state(row)
             if row["Status"] not in {"", "TODO"}:
                 raise ValueError(f"REFUSAL: Illegal transition TODO->{row['Status']}")
             row["Status"] = "TODO"
@@ -182,6 +201,12 @@ class Editor:
             "EvidenceFor",
             "ContextCheckpoint",
             "NextAction",
+            "ApprovalState",
+            "ApprovalEvidence",
+            "ApprovalActor",
+            "ApprovedAt",
+            "ApprovalBasis",
+            "ApprovalHistory",
         }
         if register == "nodule":
             protected |= {"Intent", "AbsorptionCriteria", "Lane", "NoduleName"}
@@ -198,6 +223,13 @@ class Editor:
         ):
             raise ValueError("Demote a validated requirement before changing its meaning or basis")
         for field, value in fields.items():
+            if (
+                register == "todo"
+                and field == "Phase"
+                and value == "PROPOSAL"
+                and approval_state(row) == "LEGACY"
+            ):
+                row["ApprovalState"] = "PENDING"
             admitted_scope = (
                 register == "nodule"
                 and field in {"NewAssets", "TargetOVR", "OGMTargets", "SpawnedPACs"}
@@ -256,6 +288,8 @@ class Editor:
         if register == "todo":
             if (old, status) not in TODO_TRANSITIONS:
                 raise ValueError(f"REFUSAL: Illegal transition {old}->{status}")
+            if status != "TODO" and not approval_allowed(row):
+                raise ValueError("Task approval required before activation or advancement")
             if old == "DOING":
                 start = datetime.fromisoformat(row["StartedAt"].replace("Z", "+00:00"))
                 if datetime.now(UTC) - start > timedelta(hours=48):
@@ -387,8 +421,15 @@ class Editor:
 
     def pace(self, nodule: dict, tasks: list[dict], requirements: list[dict]) -> None:
         """Create one growth lane and its tasks and provisional design targets together."""
-        if not tasks:
+        if not tasks and not refs(nodule.get("SpawnedPACs", "")):
             raise ValueError("ACTIVE nodule needs at least one spawned PAC")
+        new_ids = {task.get("ID") for task in tasks}
+        for key in refs(nodule.get("SpawnedPACs", "")):
+            if key in new_ids:
+                continue
+            register, task = self.find(key)
+            if register != "todo" or task["Status"] != "TODO" or not approval_allowed(task):
+                raise ValueError("Existing task admission requires TODO and current approval")
         if nodule.get("Status", "ACTIVE") != "ACTIVE":
             raise ValueError("New nodule must be ACTIVE")
         row = self.add("nodule", nodule | {"Status": "ACTIVE", "CreatedAt": self.now})
@@ -408,11 +449,40 @@ class Editor:
         row["SpawnedPACs"] = ";".join(dict.fromkeys(spawned))
         self.reconcile()
 
+    def approval(self, register: str, row: dict, state: str, evidence: str) -> None:
+        """Record attributable approval or withdrawal without changing task lifecycle."""
+        if register != "todo" or row["Status"] != "TODO":
+            raise ValueError("approval requires a TODO task; return active work to TODO first")
+        if state not in {"APPROVED", "WITHDRAWN"} or not evidence.strip():
+            raise ValueError("approval requires APPROVED/WITHDRAWN and nonempty evidence")
+        history = json.loads(row.get("ApprovalHistory") or "[]")
+        history.append(
+            {
+                k: row.get(k, "")
+                for k in (
+                    "ApprovalState",
+                    "ApprovalEvidence",
+                    "ApprovalActor",
+                    "ApprovedAt",
+                    "ApprovalBasis",
+                )
+            }
+        )
+        row["ApprovalHistory"] = canonical(history)
+        row["ApprovalState"] = state
+        row["ApprovalEvidence"] = evidence
+        row["ApprovalActor"] = self.actor
+        row["ApprovedAt"] = self.now if state == "APPROVED" else ""
+        row["ApprovalBasis"] = approval_basis(row) if state == "APPROVED" else ""
+        self.note(row, "approval decision " + state + "; evidence and previous decisions retained")
+
     def split(self, row_id: str, children: list[dict]) -> None:
         """Preserve the parent's DoD, add child work and block the parent on it."""
         register, parent = self.find(row_id)
         if register != "todo" or parent["Status"] != "DOING" or len(children) < 2:
             raise ValueError("split requires a DOING task and at least two narrower children")
+        if not approval_allowed(parent):
+            raise ValueError("Current parent approval required before deriving split work")
         # Splitting is the only exit for stale work; the original DoD survives.
         parent["Status"] = "TODO"
         self.note(parent, "DOING->TODO; split into narrower work")
@@ -430,6 +500,16 @@ class Editor:
                 for k in ("Phase", "Priority", "Assignee", "OGMRefs", "OVRRefs", "NDLRefs", "Tags")
             }
             child = self.add("todo", inherited | values)
+            if approval_state(parent) == "APPROVED":
+                self.approval(
+                    "todo",
+                    child,
+                    "APPROVED",
+                    "Derived split within approved "
+                    + parent["ID"]
+                    + ": "
+                    + parent["ApprovalEvidence"],
+                )
             blockers.append(child["ID"])
             types.append("hard")
         parent["BlockedBy"], parent["DependencyType"] = ";".join(blockers), ";".join(types)

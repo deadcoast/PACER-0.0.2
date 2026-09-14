@@ -73,9 +73,11 @@ def build_server(bound_root: Path | None = None) -> FastMCP:
         return service(root).graph(id, depth=depth, limit=limit)
 
     @server.tool(annotations=read)
-    def pacer_context(root: str, id: str, max_bytes: int = 32_000) -> dict[str, object]:
+    def pacer_context(
+        root: str, id: str, max_bytes: int = 32_000, encoding: str = "compact"
+    ) -> dict[str, object]:
         """Load task context, typed rules, source freshness, checkpoint delta and receipt."""
-        return service(root).context(id, max_bytes=max_bytes)
+        return service(root).context(id, max_bytes=max_bytes, encoding=encoding)
 
     @server.tool(annotations=read)
     def pacer_evaluate(root: str, id: str) -> dict[str, object]:

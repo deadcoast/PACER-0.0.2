@@ -40,6 +40,7 @@ def main(argv: list[str] | None = None) -> int:
     context = sub.add_parser("context", help="Assemble sufficient task context and a write receipt")
     context.add_argument("id")
     context.add_argument("--max-bytes", type=int, default=32_000)
+    context.add_argument("--encoding", choices=["compact", "expanded"], default="compact")
     evaluate = sub.add_parser("evaluate", help="Evaluate rule and acceptance freshness")
     evaluate.add_argument("id")
     for name in ("apply", "preview", "migrate"):
@@ -87,7 +88,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "graph":
             result = service.graph(args.id, depth=args.depth, limit=args.limit)
         elif args.command == "context":
-            result = service.context(args.id, max_bytes=args.max_bytes)
+            result = service.context(args.id, max_bytes=args.max_bytes, encoding=args.encoding)
         elif args.command == "evaluate":
             result = service.evaluate(args.id)
         elif args.command in {"apply", "preview"}:

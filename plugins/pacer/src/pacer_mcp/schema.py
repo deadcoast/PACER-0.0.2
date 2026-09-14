@@ -6,12 +6,13 @@ import re
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
-VERSION = "0.3"
+VERSION = "0.4"
 HEADERS = {
     "todo": "ID Title Phase Status Priority Assignee DoD BlockedBy DependencyType "
     "DependencyReason UnblockingStrategy Context Instructions ExpectedOutput ValidationCriteria "
     "ErrorHandling PreviousAttempts RelatedWork LearningNotes Notes StartedAt DoneAt "
-    "OVRRefs OGMRefs NDLRefs Tags UpdatedAt NextAction ContextCheckpoint".split(),
+    "OVRRefs OGMRefs NDLRefs Tags UpdatedAt NextAction ContextCheckpoint "
+    "ApprovalState ApprovalEvidence ApprovalActor ApprovedAt ApprovalBasis ApprovalHistory".split(),
     "overlord": "ID AssetType Path Symbol Purpose Exports Imports Requires RequiredBy OGMRefs "
     "PACRefs NDLRefs Tags Notes UpdatedAt EvidenceFor".split(),
     "organism": "ID Title Domain Status Requirement AcceptanceEvidence OVRRefs PACRefs "

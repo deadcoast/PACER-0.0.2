@@ -12,6 +12,11 @@ Read the project's README.md, then its applicable AGENTS.md. Pass the user's
 absolute project directory to `pacer_onboard`. The installed plugin directory
 is not the project. Inspect ready tasks, organism status counts, active nodules,
 validation results and the returned revision/onboarding digest.
+Ready queries exclude pending/withdrawn proposals. If no work is ready, query
+`ApprovalState=PENDING` as needed and use a user's already supplied decision;
+absence of ready work is not permission to invent approval. Compact context
+edges index the packet's `required_ids` and `relations.kinds`; the schema explains
+this wire encoding, and `encoding=expanded` supplies the compatible explicit view.
 
 If live registers are absent and the user has requested PACER setup, use
 `pacer_initialize` after the project authority files exist. It never imports

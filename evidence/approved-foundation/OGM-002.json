@@ -1,0 +1,25 @@
+{
+  "requirement": "OGM-002",
+  "meaning": "b92a30bdd9f544257e56aed153975a6ffc2742860d194fce84c893d344d02461",
+  "sources": {
+    "evidence/approved-foundation-2026-09-14.json": "8812e6fd696c71cfdc28689349018caffc213ebbf1719d1881e18423da19cc49",
+    "plugins/pacer/tests/test_evidence.py": "123e684c4a9234da8008846791f513e497cda59b22c6af3f1d940687df4fee98",
+    "plugins/pacer/src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "9db025e9136e4c9593cbc0c0fdf07e41e7e7a9f5809281c46b4ec141b85fa1e6",
+    "plugins/pacer/tests/test_store.py": "463f414666ace248fe13c9a85a6c2905e0bdcc635416066c454b334658e118c9"
+  },
+  "result": "PASS",
+  "command": [
+    ".cache/dev-env/Scripts/python.exe",
+    "scripts/check.py"
+  ],
+  "checked_at": "2026-09-14T17:13:49Z",
+  "execution_report": "evidence/approved-foundation-2026-09-14.json",
+  "reviewed_clauses": [
+    "Store tests cover lock, revisions, validated temp files, journal recovery and conflicting edits.",
+    "Guard tests enforce CSV, path containment, refs, cycles, evidence and reciprocal edges."
+  ],
+  "audit": "Executed 120 tests, source mapping and 15 examples; official plugin/skill validators; installed source-byte equality and native MCP calls. New sources/rules reverified explicitly; prior acceptance artifacts remain historical."
+}

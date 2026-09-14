@@ -18,6 +18,7 @@ import time
 from pathlib import Path
 from uuid import uuid4
 
+from pacer_mcp.context import expand_context
 from pacer_mcp.semantics import canonical
 from pacer_mcp.service import Service
 
@@ -47,11 +48,12 @@ ANSWER_SCHEMA = {
 
 def render_formats(packet: dict) -> dict[str, str]:
     """Render identical facts as columnar JSON, row objects and ordinary Markdown tables."""
+    expanded = expand_context(packet)
     row_tables = {
         name: [dict(zip(table["columns"], row, strict=True)) for row in table["rows"]]
-        for name, table in packet["tables"].items()
+        for name, table in expanded["tables"].items()
     }
-    metadata = {key: value for key, value in packet.items() if key != "tables"}
+    metadata = {key: value for key, value in expanded.items() if key != "tables"}
     markdown = ["# Task context", "", "```json", canonical(metadata), "```", ""]
     for name, table in packet["tables"].items():
         markdown.extend(
@@ -211,13 +213,22 @@ def prepare_cases(parent: Path) -> list[dict]:
 
 
 def run_trial(
-    executable: str, prompt: str, directory: Path, cwd: str, model: str, effort: str
+    executable: str,
+    prompt: str,
+    directory: Path,
+    cwd: str,
+    model: str,
+    effort: str,
+    *,
+    answer_schema: dict | None = None,
 ) -> dict:
     """Run one recorded attempt; retain failures and never retry an ambiguous model request."""
     directory.mkdir()
     (directory / "input.txt").write_text(prompt, encoding="utf-8")
     schema = directory / "schema.json"
-    schema.write_text(canonical(ANSWER_SCHEMA), encoding="utf-8")
+    schema.write_text(
+        canonical(ANSWER_SCHEMA if answer_schema is None else answer_schema), encoding="utf-8"
+    )
     output = directory / "answer.json"
     command = [
         executable,

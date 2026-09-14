@@ -92,7 +92,27 @@ class Refresh(Command):
     id: str
 
 
+class Approval(Command):
+    """Attest a user decision with preserved evidence; not an authentication boundary."""
+
+    op: Literal["approval"]
+    id: str
+    state: Literal["APPROVED", "WITHDRAWN"]
+    evidence: str = Field(min_length=1)
+
+
 Operation = Annotated[
-    Add | Set | Append | Link | Transition | Pace | Split | Absorb | Verify | Checkpoint | Refresh,
+    Add
+    | Set
+    | Append
+    | Link
+    | Transition
+    | Pace
+    | Split
+    | Absorb
+    | Verify
+    | Checkpoint
+    | Refresh
+    | Approval,
     Field(discriminator="op"),
 ]

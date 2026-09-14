@@ -1,0 +1,32 @@
+{
+  "requirement": "OGM-001",
+  "meaning": "48e6321ea72c4c9bd6b98851a5f9def480ba54edf95b7713b366eb19b44c3337",
+  "sources": {
+    "evidence/approved-foundation-2026-09-14.json": "8812e6fd696c71cfdc28689349018caffc213ebbf1719d1881e18423da19cc49",
+    "plugins/pacer/tests/test_evidence.py": "123e684c4a9234da8008846791f513e497cda59b22c6af3f1d940687df4fee98",
+    "plugins/pacer/src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "9db025e9136e4c9593cbc0c0fdf07e41e7e7a9f5809281c46b4ec141b85fa1e6",
+    "plugins/pacer/references/FORMAT.md": "7f9a2cf0cf7424e1490ed5f6c2e227ff1e78d737995f175736d1518aefa75d2c",
+    "TEMPLATES/nodule.PACER.csv": "bedf05a1fde32f452c61e3873c191960f09b2f8b9c91317fc279d86aae9e77c8",
+    "TEMPLATES/organism.PACER.csv": "ddd972ebfe1d3d2e0bcf124678e1f3042b19a7dbab667d3cb4375b5dc2686403",
+    "TEMPLATES/overlord.PACER.csv": "3e11071bf672f03028484e179179d3b8957426e6e4a664f1635b2d39e50eb3d8",
+    "TEMPLATES/todo.PACER.csv": "58e40ca613e9d70ea7ed4b94c32c9ce763fb2c350536c41203a4aa31540d7d42",
+    "AGENTS.md": "5df69e1abec245db3d728c67241d6c4b2111e87c90a9f6fe2035d24905f9c842",
+    "README.md": "1953fb4eb717d63009c6ab1ef93e5481de9486eedc96ae9e0158678e1aef536a"
+  },
+  "result": "PASS",
+  "command": [
+    ".cache/dev-env/Scripts/python.exe",
+    "scripts/check.py"
+  ],
+  "checked_at": "2026-09-14T17:13:45Z",
+  "execution_report": "evidence/approved-foundation-2026-09-14.json",
+  "reviewed_clauses": [
+    "Four canonical organs and exact status vocabularies retained in README/schema.",
+    "FORMAT documents mixed dependencies, provisional targets and canonical archives.",
+    "check.py validates all 15 supplied examples; official OpenAI MCP and CLI documentation refreshed."
+  ],
+  "audit": "Executed 120 tests, source mapping and 15 examples; official plugin/skill validators; installed source-byte equality and native MCP calls. New sources/rules reverified explicitly; prior acceptance artifacts remain historical."
+}

@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections import Counter
 
 from pacer_mcp.schema import HEADERS, PREFIX, hard_blockers
-from pacer_mcp.semantics import typed_edges
+from pacer_mcp.semantics import approval_allowed, typed_edges
 
 DEFAULT_FIELDS = {
     "todo": ["ID", "Title", "Status", "Priority", "Assignee", "BlockedBy", "DoD"],
@@ -54,6 +54,7 @@ def query_rows(
             continue
         if ready and (
             row["Status"] != "TODO"
+            or not approval_allowed(row)
             or any(index.get(r, {}).get("Status") != "DONE" for r in hard_blockers(row))
         ):
             continue

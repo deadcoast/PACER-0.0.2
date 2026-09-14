@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from pathlib import Path
 
 from pacer_mcp.evidence import evaluate_rule, register_path, source_digest
@@ -29,6 +30,11 @@ CONTEXT_COLUMNS = {
         "NextAction",
         "PreviousAttempts",
         "LearningNotes",
+        "ApprovalState",
+        "ApprovalEvidence",
+        "ApprovalActor",
+        "ApprovedAt",
+        "ApprovalBasis",
     ],
     "overlord": [
         "ID",
@@ -148,10 +154,75 @@ def context_receipt(snapshot: dict, root: Path) -> dict:
     }
 
 
-def build_context(tables: dict, root: Path, task_id: str, max_bytes: int = 32_000) -> dict:
+def compact_context(packet: dict) -> dict:
+    """Encode directed edges with shared ID and relation dictionaries without dropping facts."""
+    if "encoding" in packet:
+        raise ValueError("context is already encoded")
+    result = deepcopy(packet)
+    ids = packet["required_ids"]
+    if len(ids) != len(set(ids)):
+        raise ValueError("context IDs must be unique")
+    positions = {key: number for number, key in enumerate(ids)}
+    kinds = sorted({edge["relation"] for edge in packet["relations"]})
+    relations = {key: number for number, key in enumerate(kinds)}
+    edges = []
+    for edge in packet["relations"]:
+        if set(edge) != {"source", "relation", "target"}:
+            raise ValueError("context edge has unknown fields")
+        edges.append(
+            [positions[edge["source"]], relations[edge["relation"]], positions[edge["target"]]]
+        )
+    result["relations"] = {"kinds": kinds, "edges": edges}
+    result["encoding"] = "pacer-context/2"
+    return result
+
+
+def expand_context(packet: dict) -> dict:
+    """Decode the versioned edge representation; reject malformed indexes instead of guessing."""
+    result = deepcopy(packet)
+    if "encoding" not in result:
+        return result
+    if result.pop("encoding") != "pacer-context/2":
+        raise ValueError("Unsupported context encoding")
+    try:
+        ids, relation = result["required_ids"], result["relations"]
+        kinds, encoded = relation["kinds"], relation["edges"]
+        if set(relation) != {"kinds", "edges"} or not all(
+            isinstance(v, list) for v in (ids, kinds, encoded)
+        ):
+            raise ValueError
+        if (
+            any(not isinstance(v, str) for v in ids + kinds)
+            or len(ids) != len(set(ids))
+            or len(kinds) != len(set(kinds))
+        ):
+            raise ValueError
+        edges = []
+        for edge in encoded:
+            if not isinstance(edge, list) or len(edge) != 3:
+                raise ValueError
+            if any(
+                type(i) is not int or not 0 <= i < len(dictionary)
+                for i, dictionary in zip(edge, (ids, kinds, ids), strict=True)
+            ):
+                raise ValueError
+            edges.append(
+                {"source": ids[edge[0]], "relation": kinds[edge[1]], "target": ids[edge[2]]}
+            )
+        result["relations"] = edges
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("Invalid compact context relation encoding") from exc
+    return result
+
+
+def build_context(
+    tables: dict, root: Path, task_id: str, max_bytes: int = 32_000, *, encoding: str = "compact"
+) -> dict:
     """Return all required context in columnar form or an explicit budget failure."""
     if not 256 <= max_bytes <= 1_000_000:
         raise ValueError("Context max_bytes must be 256..1000000")
+    if encoding not in {"compact", "expanded"}:
+        raise ValueError("context encoding must be compact or expanded")
     snapshot = context_snapshot(tables, root, task_id)
     required = set(snapshot["rows"])
     index = {r["ID"]: r for rows in tables.values() for r in rows}
@@ -219,6 +290,8 @@ def build_context(tables: dict, root: Path, task_id: str, max_bytes: int = 32_00
         "delta": delta,
         "receipt": context_receipt(snapshot, root) if complete else None,
     }
+    if encoding == "compact":
+        packet = compact_context(packet)
     packet["required_bytes"] = 0
     for _ in range(3):
         packet["required_bytes"] = len(canonical(packet).encode("utf-8"))

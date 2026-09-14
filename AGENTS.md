@@ -88,7 +88,7 @@ One canonical copy of each register. Atomic writes (write temp, validate, move).
 
 ## 10. Executable profile and this repository
 
-Use `plugins/pacer/references/FORMAT.md` for profile 0.3's additive columns and
+Use `plugins/pacer/references/FORMAT.md` for profile 0.4's additive columns and
 command lexicon. These clarify the original format while retaining its purposes:
 
 - New OGM targets enter at pace time with `NDLRefs` so forward references resolve;
@@ -111,12 +111,19 @@ command lexicon. These clarify the original format while retaining its purposes:
 - After changes, retrieve fresh context and `refresh` as a separate batch. Source
   drift requires renewed verification; demonstrated failure requires demotion.
   Use `verify` for operational acceptance and `checkpoint` for durable next actions.
+- Proposals awaiting a user decision use `Phase=PROPOSAL` or `ApprovalState=PENDING`.
+  Record existing user authorization with `approval`; then admit the same IDs through
+  nodule `SpawnedPACs`. Preserve the wording and approval history. Do not request
+  authorization again when the user already granted it. LEGACY is compatibility,
+  not proof of consent. Apply the format's approval and split rules.
+- Compact context edges index `required_ids` and `relations.kinds`; consult schema
+  or request `encoding=expanded` if needed. Required closure and receipts are identical.
 
 This repository keeps Python and MCP dependencies in `plugins/pacer/pyproject.toml`
 and `uv.lock`. Use uv and existing Python; do not install through pip. Run
 `uv run --project plugins/pacer --locked python scripts/check.py` before commits.
 `scripts/maintain.py --task <PAC> --nodule <NDL> [--paths <changed-paths>]`
 previews the admitted source index; add `--apply` to publish. It
-it never advances acceptance. Query an OVR path before source edits and include
+never advances acceptance. Query an OVR path before source edits and include
 the matching register changes in the same commit. The evidence report is a test
 artifact; the organism remains the design history and changelog.

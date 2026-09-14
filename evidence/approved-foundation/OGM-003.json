@@ -1,0 +1,31 @@
+{
+  "requirement": "OGM-003",
+  "meaning": "56e400ab973786eb229f8e169ffac99a77a0dc3a12885f800b53c6aecdc41164",
+  "sources": {
+    "evidence/approved-foundation-2026-09-14.json": "8812e6fd696c71cfdc28689349018caffc213ebbf1719d1881e18423da19cc49",
+    "plugins/pacer/tests/test_evidence.py": "123e684c4a9234da8008846791f513e497cda59b22c6af3f1d940687df4fee98",
+    "plugins/pacer/src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "9db025e9136e4c9593cbc0c0fdf07e41e7e7a9f5809281c46b4ec141b85fa1e6",
+    "plugins/pacer/tests/test_approval.py": "4214d0e331fcc9ce079bc2d1fc57286cf765f1960d5edcf3881b50ade8cedd03",
+    "plugins/pacer/src/pacer_mcp/service.py": "12e22eadef6bc2b0b41be3a7d02605c2b0543b3dc8b99130154c49df28d4a798",
+    "plugins/pacer/src/pacer_mcp/query.py": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "ff52ae74662686aaff196a4a0b58b3bb0e2dadcce2002d4b331b72c3b7dbe83e",
+    "plugins/pacer/src/pacer_mcp/context.py": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688",
+    "plugins/pacer/src/pacer_mcp/commands.py": "ef995551174567108cb5ef26fb4c5094f6e4279dee7bbaf012a46364a2586e01",
+    "plugins/pacer/src/pacer_mcp/models.py": "5e5eae483c4a8cf7bf8b96e69d3b49a5685ba5b8f9c26f26a42b53237e429371"
+  },
+  "result": "PASS",
+  "command": [
+    ".cache/dev-env/Scripts/python.exe",
+    "scripts/check.py"
+  ],
+  "checked_at": "2026-09-14T17:13:53Z",
+  "execution_report": "evidence/approved-foundation-2026-09-14.json",
+  "reviewed_clauses": [
+    "Queries retain bounded projections, graph and health; current authority digest checked on writes.",
+    "Pending approval and hard dependencies filter readiness; context remains sufficient or explicitly refuses."
+  ],
+  "audit": "Executed 120 tests, source mapping and 15 examples; official plugin/skill validators; installed source-byte equality and native MCP calls. New sources/rules reverified explicitly; prior acceptance artifacts remain historical."
+}

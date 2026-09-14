@@ -1,0 +1,34 @@
+{
+  "requirement": "OGM-005",
+  "meaning": "74479f1a16404687e9aded2c1ba9d59f5537bd3de55287a2a7a44a3359ec913e",
+  "sources": {
+    "evidence/approved-development-2026-09-14.json": "d25d169c7d8ab04ab8b5ffe8943751e39105024ff6cc575ba8449392776fa0b2",
+    "plugins/pacer/src/pacer_mcp/cli.py": "b4b6796715e5044bcb1bc457b5fe26bee87e245f11b3e0769743888b83fada34",
+    "plugins/pacer/src/pacer_mcp/models.py": "5e5eae483c4a8cf7bf8b96e69d3b49a5685ba5b8f9c26f26a42b53237e429371",
+    "plugins/pacer/src/pacer_mcp/server.py": "3b4cbd5c1504e393c5cbd740c90c2849b0992f2f9431d1842dcccc263728c83e",
+    "plugins/pacer/src/pacer_mcp/service.py": "12e22eadef6bc2b0b41be3a7d02605c2b0543b3dc8b99130154c49df28d4a798",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "9db025e9136e4c9593cbc0c0fdf07e41e7e7a9f5809281c46b4ec141b85fa1e6",
+    "plugins/pacer/src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+    "plugins/pacer/src/pacer_mcp/query.py": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "ff52ae74662686aaff196a4a0b58b3bb0e2dadcce2002d4b331b72c3b7dbe83e",
+    "plugins/pacer/src/pacer_mcp/context.py": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688",
+    "plugins/pacer/src/pacer_mcp/commands.py": "ef995551174567108cb5ef26fb4c5094f6e4279dee7bbaf012a46364a2586e01",
+    "evidence/approved-foundation-2026-09-14.json": "8812e6fd696c71cfdc28689349018caffc213ebbf1719d1881e18423da19cc49",
+    "plugins/pacer/tests/test_evidence.py": "123e684c4a9234da8008846791f513e497cda59b22c6af3f1d940687df4fee98",
+    "plugins/pacer/tests/test_mcp.py": "fc6858c538eb041466c0e410993810d408b0186b5c819cbf523aa640cdf74a3b"
+  },
+  "result": "PASS",
+  "command": [
+    ".cache/dev-env/Scripts/python.exe",
+    "scripts/check.py"
+  ],
+  "checked_at": "2026-09-14T17:24:21Z",
+  "execution_report": "evidence/approved-development-2026-09-14.json",
+  "reviewed_clauses": [
+    "Actual SDK stdio test discovers typed tools, resources and prompt, exercises writes, approval and both context encodings.",
+    "Scope escape is refused; read/write annotations tested; native Codex called installed context/evaluate."
+  ],
+  "audit": "120 tests, 355 registered source interfaces and 15 examples passed. Existing installation/native proof unchanged. Final entrypoint and dependency coverage inspected; fifteen measured candidate trials complete. Prior reports remain historical."
+}

@@ -19,7 +19,14 @@ from pacer_mcp.schema import (
     hard_blockers,
     refs,
 )
-from pacer_mcp.semantics import LITERAL_FIELDS, NEXT_ACTIONS, rule_errors
+from pacer_mcp.semantics import (
+    APPROVAL_STATES,
+    LITERAL_FIELDS,
+    NEXT_ACTIONS,
+    approval_allowed,
+    approval_state,
+    rule_errors,
+)
 
 
 def validate_web(
@@ -67,7 +74,7 @@ def validate_web(
             errors.append(f"{row_id}: invalid Tags")
         if "#template-example" in row.get("Tags", "").split():
             errors.append(f"{row_id}: worked example in live register")
-        for field in ("StartedAt", "DoneAt", "UpdatedAt", "CreatedAt", "AbsorbedAt"):
+        for field in ("StartedAt", "DoneAt", "UpdatedAt", "CreatedAt", "AbsorbedAt", "ApprovedAt"):
             if row.get(field):
                 try:
                     timestamp = datetime.fromisoformat(row[field].replace("Z", "+00:00"))
@@ -76,6 +83,12 @@ def validate_web(
                 except ValueError:
                     errors.append(f"{row_id}.{field}: UTC ISO 8601 required")
         if register == "todo":
+            if approval_state(row) not in APPROVAL_STATES:
+                errors.append(f"{row_id}: invalid approval state")
+            if approval_state(row) == "APPROVED" and not approval_allowed(row):
+                errors.append(f"{row_id}: approval evidence or scope binding invalid")
+            if row.get("Status") in {"DOING", "REVIEW", "DONE"} and not approval_allowed(row):
+                errors.append(f"{row_id}: approval required for active or completed work")
             if row.get("NextAction") and row["NextAction"] not in NEXT_ACTIONS:
                 errors.append(f"{row_id}: invalid NextAction")
             if row.get("Status") not in {"TODO", "DOING", "REVIEW", "DONE"}:

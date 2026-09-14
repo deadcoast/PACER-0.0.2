@@ -23,12 +23,39 @@ MEANING_FIELDS = (
     "OVRRefs",
     "BlockedByOGM",
 )
-LITERAL_FIELDS = {"OriginText", "UserRequest"}
+LITERAL_FIELDS = {"OriginText", "UserRequest", "ApprovalEvidence", "ApprovalHistory"}
+APPROVAL_STATES = {"LEGACY", "PENDING", "APPROVED", "WITHDRAWN"}
+
+
+def approval_basis(row: dict) -> str:
+    """Bind the immutable task identity and DoD plus its declared title."""
+    return fingerprint({k: row.get(k, "") for k in ("ID", "Title", "DoD")})
+
+
+def approval_state(row: dict) -> str:
+    """Interpret pre-profile rows conservatively without manufacturing consent."""
+    state = row.get("ApprovalState") or "LEGACY"
+    if state == "LEGACY" and row.get("Phase") == "PROPOSAL":
+        return "PENDING"
+    return state
+
+
+def approval_allowed(row: dict) -> bool:
+    """Gate opted-in proposals; LEGACY preserves explicitly labelled compatibility."""
+    state = approval_state(row)
+    return state == "LEGACY" or (
+        state == "APPROVED"
+        and row.get("ApprovalBasis") == approval_basis(row)
+        and all(row.get(k, "").strip() for k in ("ApprovalEvidence", "ApprovalActor", "ApprovedAt"))
+    )
 
 
 def semantic_schema() -> dict:
     """Expose the operational vocabulary equally to CLI and MCP consumers."""
     return {
+        "approval_states": sorted(APPROVAL_STATES),
+        "approval": "approval command attests user evidence; PENDING/WITHDRAWN cannot activate; "
+        "LEGACY compatibility is not user consent; approval binds ID, Title and immutable DoD",
         "authorities": sorted(AUTHORITIES),
         "rule_types": sorted(RULE_TYPES),
         "next_actions": sorted(NEXT_ACTIONS),
@@ -49,6 +76,13 @@ def semantic_schema() -> dict:
             "LEGACY": "Historical row awaiting explicit adoption; migration never infers meaning",
         },
         "context_policy": "REQUIRED scopes use current task receipts; pace is separate intake",
+        "context_encoding": {
+            "default": "pacer-context/2",
+            "relations": "edges [source index, kind index, target index]; source/target index "
+            "required_ids, kind indexes relations.kinds; preserve order and direction",
+            "compatibility": "context encoding=expanded returns original edge objects; "
+            "expand_context decodes v2 losslessly; both preserve required facts and receipt",
+        },
         "evidence": "PASS/FAIL/UNRESOLVED is observed outcome; CURRENT/STALE/UNBOUND is "
         "accepted-evidence freshness including transitive rule dependencies",
     }

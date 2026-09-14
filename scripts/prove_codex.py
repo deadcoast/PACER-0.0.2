@@ -191,6 +191,10 @@ async def main() -> None:
                 if tool == "pacer_context":
                     if not payload["complete"] or not payload["receipt"]:
                         raise RuntimeError("Installed context did not return a complete receipt")
+                    if payload.get("encoding") != "pacer-context/2" or not isinstance(
+                        payload["relations"], dict
+                    ):
+                        raise RuntimeError("Installed context lacks versioned lossless compaction")
                     observation = next(r for r in payload["rules"] if r["id"] == "OGM-001")
                 else:
                     observation = payload

@@ -51,6 +51,12 @@ It does not mechanically prove that a manual report is honest or that every chan
 The audit skill and repository verification command handle those boundaries.
 Source-defined organism statuses remain unchanged.
 
+Profile 0.4 gates pending proposals with explicit approval provenance and admits
+their existing IDs into a nodule. Default compact context shares relation IDs;
+request `--encoding expanded` (MCP `encoding="expanded"`) for the earlier view.
+Both formats preserve required facts, freshness and receipts. See FORMAT.md for
+the migration and decoding contracts.
+
 `python scripts/prove_codex.py` installs into a disposable Codex home and proves
 native skill discovery plus real MCP onboarding, context and evaluation calls without a model turn.
 `python scripts/prove_codex.py --installed` checks your current installation.

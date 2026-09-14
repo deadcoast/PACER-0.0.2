@@ -11,6 +11,7 @@ from pacer_mcp.context import build_context, guard_context, operational_nodules
 from pacer_mcp.evidence import evaluate_rule, stale_requirements
 from pacer_mcp.query import graph, health, next_ids, query_rows
 from pacer_mcp.schema import HEADERS, REF_PATTERN, VERSION, contained_path, empty_row, refs, utc_now
+from pacer_mcp.semantics import approval_allowed, approval_state
 from pacer_mcp.store import Store, digest
 from pacer_mcp.validation import validate_web
 
@@ -101,11 +102,13 @@ class Service:
                 "stale_evidence": stale_requirements(snapshot.tables, self.store.root),
             }
 
-    def context(self, task_id: str, *, max_bytes: int = 32_000) -> dict:
+    def context(self, task_id: str, *, max_bytes: int = 32_000, encoding: str = "compact") -> dict:
         """Retrieve sufficient operational state for a task, including a freshness receipt."""
         with self.store.locked():
             snapshot = self.store.load()
-            return build_context(snapshot.tables, self.store.root, task_id, max_bytes)
+            return build_context(
+                snapshot.tables, self.store.root, task_id, max_bytes, encoding=encoding
+            )
 
     def evaluate(self, row_id: str) -> dict:
         """Evaluate a rule without changing its stored acceptance or source files."""
@@ -168,7 +171,18 @@ class Service:
             editor.reconcile()
             guard_context(before_tables, self.store.root, operations, context, snapshot.tables)
             index = {r["ID"]: r for rows in snapshot.tables.values() for r in rows}
+            old_nodules = {r["ID"]: r for r in before_tables["nodule"]}
+            for nodule in snapshot.tables["nodule"]:
+                added = set(refs(nodule["SpawnedPACs"])) - set(
+                    refs(old_nodules.get(nodule["ID"], {}).get("SpawnedPACs", ""))
+                )
+                if nodule["Status"] == "ACTIVE" and any(
+                    not approval_allowed(index[key]) for key in added
+                ):
+                    raise ValueError("Task approval required before nodule admission")
             for operation in operations:
+                if operation.get("op") == "split" and not approval_allowed(index[operation["id"]]):
+                    raise ValueError("Final parent approval required for split admission")
                 if operation.get("op") == "verify":
                     _, verified = editor.find(operation["id"])
                     if evaluate_rule(verified, index, self.store.root)["freshness"] != "CURRENT":
@@ -223,6 +237,7 @@ class Service:
                     for key in HEADERS[register]:
                         row.setdefault(key, "")
                     if register == "todo":
+                        row["ApprovalState"] = approval_state(row)
                         for prefix, field in (
                             ("OVR", "OVRRefs"),
                             ("OGM", "OGMRefs"),
@@ -240,9 +255,11 @@ class Service:
                         row["Lane"] = row["Lane"] or row["NoduleName"] or row["ID"]
                     if register == "organism":
                         row["Authority"] = row["Authority"] or "LEGACY"
-                    editor.note(
-                        row, f"migrated to executable profile {VERSION}; original cells retained"
-                    )
+                    if register != "nodule" or row["Status"] != "ABSORBED":
+                        editor.note(
+                            row,
+                            f"migrated to executable profile {VERSION}; original cells retained",
+                        )
             editor.reconcile()
             report = validate_web(snapshot.tables, self.store.root, snapshot.headers)
             _require_valid(report)

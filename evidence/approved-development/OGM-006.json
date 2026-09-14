@@ -1,0 +1,48 @@
+{
+  "requirement": "OGM-006",
+  "meaning": "3a10c0fa3668369f7ff627d3f23308f252287c7bc2acb2523359e77988a4b69f",
+  "sources": {
+    "evidence/approved-development-2026-09-14.json": "d25d169c7d8ab04ab8b5ffe8943751e39105024ff6cc575ba8449392776fa0b2",
+    "evidence/approved-foundation-2026-09-14.json": "8812e6fd696c71cfdc28689349018caffc213ebbf1719d1881e18423da19cc49",
+    "plugins/pacer/tests/test_evidence.py": "123e684c4a9234da8008846791f513e497cda59b22c6af3f1d940687df4fee98",
+    "plugins/pacer/src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "9db025e9136e4c9593cbc0c0fdf07e41e7e7a9f5809281c46b4ec141b85fa1e6",
+    "plugins/pacer/src/pacer_mcp/models.py": "5e5eae483c4a8cf7bf8b96e69d3b49a5685ba5b8f9c26f26a42b53237e429371",
+    "plugins/pacer/src/pacer_mcp/cli.py": "b4b6796715e5044bcb1bc457b5fe26bee87e245f11b3e0769743888b83fada34",
+    "plugins/pacer/src/pacer_mcp/server.py": "3b4cbd5c1504e393c5cbd740c90c2849b0992f2f9431d1842dcccc263728c83e",
+    "plugins/pacer/src/pacer_mcp/service.py": "12e22eadef6bc2b0b41be3a7d02605c2b0543b3dc8b99130154c49df28d4a798",
+    "plugins/pacer/src/pacer_mcp/query.py": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "ff52ae74662686aaff196a4a0b58b3bb0e2dadcce2002d4b331b72c3b7dbe83e",
+    "plugins/pacer/src/pacer_mcp/context.py": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688",
+    "plugins/pacer/src/pacer_mcp/commands.py": "ef995551174567108cb5ef26fb4c5094f6e4279dee7bbaf012a46364a2586e01",
+    "plugins/pacer/src/pacer_mcp/__init__.py": "00db8b97dc6771ea7df83737a9a8055dbca8f392a8bdbc2a673402473d05722b",
+    "plugins/pacer/skills/pacer-onboard/SKILL.md": "6b1fe1a061e8cae46f6ba956eef2f7b43e357683f553d27b28c4d4ae4cc9713f",
+    "plugins/pacer/skills/pacer-onboard/agents/openai.yaml": "3418c71e5f30297a4302f62aa4045699fe92998b0566ee0012c1fff547da7bb2",
+    "plugins/pacer/skills/pacer-develop/SKILL.md": "dbb0429e52dabbbc342714dbe119b16812278c76bb9491764ef69e08f3dea682",
+    "plugins/pacer/skills/pacer-develop/agents/openai.yaml": "a7e9bce0d039b2413fbd4a89bb0cc5b4c24384c31fa3bd5daf88e4afbc9e948c",
+    "plugins/pacer/skills/pacer-audit/SKILL.md": "00d01fe1d74da6746c803dad6a4c51dfc5ed409b0c2a283a18fdc2f71d7c7a65",
+    "plugins/pacer/skills/pacer-audit/agents/openai.yaml": "179d1c208dfc8a1e5219fae467d68d992e39ae692bc5a3833a68c0cfa40d5f90",
+    "plugins/pacer/README.md": "096083ed507e0ee19afdfec0d12c0b5fcfa101ebdfd266e29fb570de37e63b76",
+    "plugins/pacer/plugin.json": "d261b554b12001b20cd07edd60caa9b0c96d6be74363bcf973e3ea4c8b1fb5b2",
+    "plugins/pacer/mcp.json": "1e36ea01d1e671c2e4e776b3ce869e3471c362af6f4122c05f0717278b3619a8",
+    "plugins/pacer/.mcp.json": "da062489e04b7251d8da76ba7ba5f4cb8fac9aff0f89c805623347323f9aa284",
+    "plugins/pacer/.codex-plugin/plugin.json": "056869bf2ec6e3bfde742f0a76d7917a3fd95487d00aaf7d8acaf0985419d533",
+    "plugins/pacer/uv.lock": "6319a569e9266d66df8469646c82e767c918fda3d087f8b2fc4d4c0479ea5fa2",
+    "plugins/pacer/pyproject.toml": "7d63884b319c2788d6a529b1d46b992650907566a8a451c21d6b96e89f8ca206"
+  },
+  "result": "PASS",
+  "command": [
+    ".cache/dev-env/Scripts/python.exe",
+    "scripts/check.py"
+  ],
+  "checked_at": "2026-09-14T17:24:27Z",
+  "execution_report": "evidence/approved-development-2026-09-14.json",
+  "reviewed_clauses": [
+    "Official plugin validator and all three skill validators passed.",
+    "uv locked offline sync installed package 0.4.0; installed package bytes match all source files.",
+    "Portable and compatibility manifests agree; skills progressively reference FORMAT."
+  ],
+  "audit": "120 tests, 355 registered source interfaces and 15 examples passed. Existing installation/native proof unchanged. Final entrypoint and dependency coverage inspected; fifteen measured candidate trials complete. Prior reports remain historical."
+}

@@ -1,4 +1,4 @@
-# PACER executable profile 0.3
+# PACER executable profile 0.4
 
 PACER is an agent's connected working memory for a project. The human states
 intent. The agent paces it into a nodule and tasks, maps the code in overlord,
@@ -73,9 +73,55 @@ the canonical files unchanged. Use freshly queried revision values after changes
 | `checkpoint` | task `id`, `next_action` | Persist task context basis and next action |
 | `verify` | OGM `id`, `evidence`, optional artifact OVR `artifact` | Evaluate and bind acceptance to current meaning/source |
 | `refresh` | task `id` | Record stale evidence and demote demonstrated failures and affected dependents |
+| `approval` | task `id`, `state`, `evidence` | Attest APPROVED or WITHDRAWN on TODO work; retain exact decision history |
 
 Rows supplied to `pace` have explicit IDs. Use `next_ids` to suggest unused
 numbers, then rely on the revision precondition to detect competing allocations.
+
+## Approval without replacing lifecycle state
+
+Todo adds `ApprovalState`, `ApprovalEvidence`, `ApprovalActor`, `ApprovedAt`,
+`ApprovalBasis` and `ApprovalHistory`. States are LEGACY, PENDING, APPROVED and
+WITHDRAWN. A proposal created with `Phase=PROPOSAL` becomes PENDING; changing its
+phase cannot erase that gate. Explicit PENDING also opts in independently of phase.
+Record a user's existing authorization using `approval`; do not ask again merely
+to populate a receipt. Evidence is exact attributable wording, and prior decisions
+remain in the protected literal JSON history. Quoted IDs create no reference edges.
+
+Approval binds ID, Title and the immutable DoD. Generic metadata cannot forge or
+erase it. A title change requires withdrawal and re-approval on TODO work. Source
+index maintenance is within the admitted intent and does not invalidate approval.
+The agent still judges whether new scope needs another nodule. This is a workflow
+attestation, not authentication of a human or permission for an external action.
+
+Ready selection, advancement and newly admitted nodule tasks require approval for
+opted-in work. Withdrawal requires TODO: return active work through legal lifecycle
+transitions first. `pace` may admit existing TODO IDs via `SpawnedPACs` with an empty
+`tasks` list, or combine them with genuinely new tasks. Splitting approved work
+derives each narrower child's approval from the parent's preserved evidence,
+independent of phase. The writer cannot prove that a child DoD is truly narrower;
+review that claim. New scope must never be disguised as a split.
+
+Migration marks ungated historical tasks LEGACY and historical proposals PENDING.
+LEGACY preserves compatibility and does not claim user consent. Unspecified new
+tasks retain this compatibility mode; use PENDING/PROPOSAL for work awaiting a
+decision. Migration never creates an approval, rule, or current acceptance proof.
+
+## Lossless context encoding
+
+`context` defaults to `encoding=compact`, marked `encoding: pacer-context/2`.
+Columnar tables and all required facts remain unchanged. Directed relations use
+`relations: {kinds: [...], edges: [[source, kind, target], ...]}`. Source and target
+are zero-based indexes into `required_ids`; kind indexes `relations.kinds`.
+Order, direction, relation names, Unicode and exact field values round-trip through
+`pacer_mcp.context.expand_context`. Unknown versions or invalid indexes fail.
+
+CLI `--encoding expanded` and MCP `encoding="expanded"` return the earlier explicit
+edge objects. Both variants retain the same receipt, mandatory closure, source
+freshness and checkpoint delta. Byte budgeting happens after encoding and still
+refuses rather than truncates. This compacts representation, not meaning or history.
+Custom/audit fields omitted by the context projection remain queryable in CSV;
+losslessness applies to the complete projected packet, not every register column.
 Task rows begin TODO. New requirements begin SCAFFOLD or PACED_REQUIREMENT.
 Source files are created by the coding agent and registered in the same change;
 PACER does not execute arbitrary shell commands or modify source through MCP.
@@ -233,6 +279,16 @@ reported separately; fixed Codex overhead and cache effects limit conclusions.
 The evaluator retains every prompt, answer, event stream and failed attempt,
 randomizes arm order with a fixed seed, detects tool use, and never automatically
 retries ambiguous requests. The organism links the retained execution evidence.
+
+`scripts/evaluate_development.py --model <model> --effort <effort>` extends the
+comparison to five bounded development states: code edits, dependency regression,
+ambiguous intent, cold context reconstruction and a subsequent nodule. Models
+receive equivalent frozen facts and propose structured candidates. The host checks
+bounded code behavior, applies only the allowed file to a disposable copy, verifies
+evidence and executes the real lifecycle through a fresh Service. Record decision
+correctness, exact constraint preservation, replay outcomes and native CLI usage
+separately. This does not measure autonomous tool selection, long conversations,
+or long-term retention. Results and failures belong in registered evidence.
 
 ## Atomicity, scope and recovery
 

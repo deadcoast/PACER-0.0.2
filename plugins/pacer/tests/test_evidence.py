@@ -231,6 +231,43 @@ def test_migration_repairs_legacy_acceptance_without_inventing_evidence(paced, a
     assert row["Authority"] == "LEGACY" and not row["EvidenceBindings"]
 
 
+def test_explicit_legacy_adoption_preserves_meaning_and_migration_cannot_refresh(
+    operational, operate
+):
+    """Re-adoption requires actual verification; schema migration cannot renew stale sources."""
+    original = operational.query("organism", fields=["Requirement"])["rows"][0]["Requirement"]
+    operate({"op": "verify", "id": "OGM-001", "evidence": "Reviewed source rule"})
+    (operational.store.root / "settings.json").write_text('{"retries":4}', encoding="utf-8")
+    assert operational.evaluate("OGM-001")["freshness"] == "STALE"
+    state = operational.onboard()
+    operational.migrate(
+        actor="tester", revision=state["revision"], onboarding=state["onboarding"], preview=False
+    )
+    assert operational.evaluate("OGM-001")["freshness"] == "STALE"
+    assert (
+        operational.query("organism", fields=["Requirement"])["rows"][0]["Requirement"] == original
+    )
+    operate({"op": "verify", "id": "OGM-001", "evidence": "Fresh source evaluation"})
+    assert operational.evaluate("OGM-001")["freshness"] == "CURRENT"
+
+
+def test_migration_does_not_rewrite_absorbed_history(operational, operate):
+    operate(
+        {"op": "verify", "id": "OGM-001", "evidence": "Current source checked"},
+        {"op": "transition", "id": "PAC-001", "status": "DOING"},
+        {"op": "transition", "id": "PAC-001", "status": "REVIEW"},
+        {"op": "transition", "id": "PAC-001", "status": "DONE", "evidence": "Checked"},
+        {"op": "absorb", "id": "NDL-001", "evidence": "Checked"},
+    )
+    path = operational.store.root / "archive/nodules/NDL-001.PACER.csv"
+    before = path.read_bytes()
+    state = operational.onboard()
+    operational.migrate(
+        actor="tester", revision=state["revision"], onboarding=state["onboarding"], preview=False
+    )
+    assert path.read_bytes() == before
+
+
 def test_final_batch_cannot_absorb_then_invalidate_evidence(operational, operate):
     operate({"op": "verify", "id": "OGM-001", "evidence": "Observed"})
     before = operational.onboard()["revision"]

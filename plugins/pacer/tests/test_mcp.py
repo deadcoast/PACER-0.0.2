@@ -112,4 +112,56 @@ async def test_stdio_tools_resources_and_prompt(project):
                 },
             )
             assert not result.isError, json.dumps(result.model_dump(), default=str)
+            compact = await client.call_tool(
+                "pacer_context", {"root": str(project.store.root), "id": "PAC-001"}
+            )
+            expanded = await client.call_tool(
+                "pacer_context",
+                {"root": str(project.store.root), "id": "PAC-001", "encoding": "expanded"},
+            )
+            assert compact.structuredContent["encoding"] == "pacer-context/2"
+            assert isinstance(expanded.structuredContent["relations"], list)
+            receipt = (
+                await client.call_tool("pacer_onboard", {"root": str(project.store.root)})
+            ).structuredContent
+            approved = await client.call_tool(
+                "pacer_apply",
+                {
+                    "root": str(project.store.root),
+                    "actor": "mcp-test",
+                    "revision": receipt["revision"],
+                    "onboarding": receipt["onboarding"],
+                    "operations": [
+                        {
+                            "op": "add",
+                            "register": "todo",
+                            "row": {
+                                "ID": "PAC-002",
+                                "Title": "Proposal",
+                                "DoD": "Checked",
+                                "Phase": "PROPOSAL",
+                            },
+                        },
+                        {
+                            "op": "approval",
+                            "id": "PAC-002",
+                            "state": "APPROVED",
+                            "evidence": "User: approve proposal.",
+                        },
+                    ],
+                },
+            )
+            assert not approved.isError
+            query = await client.call_tool(
+                "pacer_query",
+                {
+                    "root": str(project.store.root),
+                    "register": "todo",
+                    "ready": True,
+                    "fields": ["ID", "ApprovalState"],
+                },
+            )
+            assert query.structuredContent["rows"] == [
+                {"ID": "PAC-002", "ApprovalState": "APPROVED"}
+            ]
     assert project.validate()["valid"]

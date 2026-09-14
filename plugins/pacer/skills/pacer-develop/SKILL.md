@@ -21,6 +21,14 @@ Different lanes require disjoint affected assets. Scope beyond the active Intent
 enters another nodule after resolving overlap. Do not weaken or erase admitted
 scope to obtain absorption.
 
+For proposed work awaiting approval, add todo rows with `Phase=PROPOSAL` or
+`ApprovalState=PENDING`. Record approval already supplied by the user through
+`approval` with exact evidence; no repeated permission question is needed.
+Admit those existing IDs via nodule `SpawnedPACs`; `tasks` may be empty. Withdrawn
+or pending proposals cannot activate. Review narrower split DoDs: their approval
+derives from the parent, and cannot authorize expanded scope. LEGACY records
+compatibility, not user consent. See FORMAT.md for provenance and migration.
+
 Use `pacer_preview` for a reviewable candidate when useful, then `pacer_apply`
 with the current revision, onboarding digest, task context `receipt` and actor. The same lexicon is
 available through the bundled `pacer` CLI. A stale revision means requery and
@@ -29,6 +37,9 @@ Respect existing user authorization; PACER adds no permission for external actio
 Retrieve context after changes before the next batch. Use `checkpoint` with the
 next action to preserve a durable resumption point. Context cannot silently shed
 mandatory rows to fit a budget. Its receipt checks freshness, not comprehension.
+Default `pacer-context/2` edges are [source, kind, target] indexes into `required_ids`
+and `relations.kinds`. Use the schema contract or `encoding=expanded`; both carry
+the same facts and receipt. The decoder preserves exact direction and values.
 
 Execute TODO -> DOING -> REVIEW -> DONE. Return DOING -> TODO when appropriate;
 review failures return REVIEW -> DOING. At most three tasks may be DOING per
