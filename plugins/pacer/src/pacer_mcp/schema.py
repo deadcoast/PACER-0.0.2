@@ -6,7 +6,7 @@ import re
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
-VERSION = "0.4"
+VERSION = "0.5"
 HEADERS = {
     "todo": "ID Title Phase Status Priority Assignee DoD BlockedBy DependencyType "
     "DependencyReason UnblockingStrategy Context Instructions ExpectedOutput ValidationCriteria "

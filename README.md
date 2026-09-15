@@ -98,7 +98,7 @@ After installing, start a new Codex thread and invoke `$pacer:pacer-onboard`.
 The plugin's [usage guide](plugins/pacer/README.md) includes native installation
 verification and the boundary between structural validation and agent judgment.
 
-Profile 0.4 makes PACER the shared operational representation between the user's
+Profile 0.5 makes PACER the shared operational representation between the user's
 wording and the agent's development work. It preserves that wording, assigns
 explicit authority to requirements, evaluates bounded rules, retrieves sufficient
 task context, and binds acceptance to source and dependency freshness. Durable
@@ -117,3 +117,9 @@ Approval-pending proposals now have an explicit gate independent of task status.
 The context wire encoding shares IDs and relation kinds without dropping required
 facts; an expanded compatibility view remains available. Migration preserves
 historical meaning and evidence while leaving current verification explicit.
+
+Large packets can be retrieved through `pacer context-page <PAC-ID>` or
+`pacer_context_page`. Follow every cursor to receive the complete context and
+final receipt. Pages preserve readable values and reject continuation after
+source or context changes. This bounds individual JSON responses; it does not
+reduce the full required context or establish a model accuracy advantage.

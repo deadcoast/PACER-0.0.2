@@ -41,6 +41,13 @@ Default `pacer-context/2` edges are [source, kind, target] indexes into `require
 and `relations.kinds`. Use the schema contract or `encoding=expanded`; both carry
 the same facts and receipt. The decoder preserves exact direction and values.
 
+For a response budget, use `pacer_context_page` with empty cursor and a fixed
+`max_bytes` (default 8000). Read each entry's JSON path and value; `append` extends
+a long string at that path. Follow every `next_cursor` in order until complete.
+Only the final page carries a receipt. Restart after a stale cursor; never combine
+pages from different packets. `assemble_context_pages` verifies exact reconstruction.
+The JSON byte limit excludes MCP framing and Codex's separate token budget.
+
 Execute TODO -> DOING -> REVIEW -> DONE. Return DOING -> TODO when appropriate;
 review failures return REVIEW -> DOING. At most three tasks may be DOING per
 agent. Split tasks exceeding 48 hours into narrower children while preserving

@@ -4,9 +4,17 @@
     "pacer": {
       "type": "stdio",
       "command": "uv",
-      "args": ["run", "--locked", "--no-dev", "--project", "${PLUGIN_ROOT}", "pacer", "serve"],
+      "args": [
+        "run",
+        "--locked",
+        "--no-dev",
+        "--project",
+        "${PLUGIN_ROOT}",
+        "pacer",
+        "serve"
+      ],
       "env": {
-        "UV_PROJECT_ENVIRONMENT": "${PLUGIN_DATA}/venv",
+        "UV_PROJECT_ENVIRONMENT": "${PLUGIN_DATA}/venv-15653356d5aad82d",
         "UV_CACHE_DIR": "${PLUGIN_DATA}/uv-cache",
         "UV_PYTHON_DOWNLOADS": "never"
       },

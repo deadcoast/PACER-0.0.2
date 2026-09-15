@@ -1,0 +1,33 @@
+{
+  "requirement": "OGM-016",
+  "meaning": "83ee15f37fbe50179aaf839824049ceabfd322e725cb30c471b61bc3e9164add",
+  "sources": {
+    "evidence/context-delivery-2026-09-15.json": "80ce4ef8e6f18264e0bcc31f3a246f640052bad8146fb25fafcc4a499dee4534",
+    "evidence/approved-foundation-2026-09-14.json": "8812e6fd696c71cfdc28689349018caffc213ebbf1719d1881e18423da19cc49",
+    "plugins/pacer/tests/test_approval.py": "4214d0e331fcc9ce079bc2d1fc57286cf765f1960d5edcf3881b50ade8cedd03",
+    "plugins/pacer/src/pacer_mcp/service.py": "98da88b1cece1e23dfe313e31ed1c622750853c8d3bdf5d6627174a20e8a2d3f",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5",
+    "plugins/pacer/src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+    "plugins/pacer/src/pacer_mcp/query.py": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8",
+    "plugins/pacer/src/pacer_mcp/pages.py": "1c2acbbd0dcc1be99def718db2ee981e3bdfec37e747befe9fc6e3c0a10ea95b",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "ff52ae74662686aaff196a4a0b58b3bb0e2dadcce2002d4b331b72c3b7dbe83e",
+    "plugins/pacer/src/pacer_mcp/context.py": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688",
+    "plugins/pacer/src/pacer_mcp/commands.py": "ef995551174567108cb5ef26fb4c5094f6e4279dee7bbaf012a46364a2586e01",
+    "plugins/pacer/src/pacer_mcp/models.py": "5e5eae483c4a8cf7bf8b96e69d3b49a5685ba5b8f9c26f26a42b53237e429371",
+    "plugins/pacer/skills/pacer-develop/SKILL.md": "caac2ab24cfb4aa92470c3da335ea7e9a8beefb3e60f55bf4c469bcb178f753a",
+    "plugins/pacer/references/FORMAT.md": "2ead1440b5d568926b2133858002f334d1e4629672d316ceb4ef2ecda0a4d7d5"
+  },
+  "result": "PASS",
+  "command": [
+    ".cache/dev-env/Scripts/python.exe",
+    "scripts/check.py"
+  ],
+  "checked_at": "2026-09-15T03:58:25Z",
+  "execution_report": "evidence/context-delivery-2026-09-15.json",
+  "reviewed_clauses": [
+    "Preserved requirement reviewed against current implementation, 120 tests, native Codex proof and retained matched compaction measurements."
+  ],
+  "audit": "143 tests, 401 source interfaces, 15 examples; independent adversarial review and final event replay. Prior requirement wording, authority, origin and four archive bytes preserved. Prior paid comparison trials are historical evidence; not rerun or presented as new measurements. Manual report is attributable review of actual retained checks."
+}

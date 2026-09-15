@@ -37,3 +37,9 @@ For format or archive questions, query the schema and read the relevant section
 of [FORMAT.md](../../references/FORMAT.md). Recovery never discards conflicting
 edits. Audit findings should identify the exact row, source path, evidence and
 remaining work. Only absorb a nodule whose original criteria have been met.
+
+For paged context, check that the complete ordered stream reconstructs the
+original packet and that writes use its current receipt. Partial retrieval is
+insufficient even if a caller can obtain the final page directly. Distinguish
+the JSON byte bound from MCP framing and Codex token limits, and distinguish
+an instructed native tool-use trial from autonomous development evidence.

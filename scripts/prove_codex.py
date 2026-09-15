@@ -16,6 +16,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from evaluate_context import prepare_cases
+from pacer_mcp.pages import assemble_context_pages
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -156,7 +157,9 @@ async def main() -> None:
             ]
             if len(servers) != 1:
                 raise RuntimeError("Codex did not initialize PACER's MCP tool inventory")
-            if not {"pacer_context", "pacer_evaluate"} <= set(servers[0]["tools"]):
+            if not {"pacer_context", "pacer_context_page", "pacer_evaluate"} <= set(
+                servers[0]["tools"]
+            ):
                 raise RuntimeError("Installed PACER lacks operational context tools")
             thread = await request("thread/start", {"cwd": str(ROOT), "ephemeral": True})
             report["onboard"] = await request(
@@ -202,6 +205,39 @@ async def main() -> None:
                     raise RuntimeError(
                         "Installed runtime conflated passing source with current evidence"
                     )
+            pages, cursor = [], ""
+            while True:
+                result = await request(
+                    "mcpServer/tool/call",
+                    {
+                        "threadId": thread["thread"]["id"],
+                        "server": servers[0]["name"],
+                        "tool": "pacer_context_page",
+                        "arguments": {
+                            "root": str(fixture_root),
+                            "id": "PAC-001",
+                            "cursor": cursor,
+                            "max_bytes": 2048,
+                        },
+                    },
+                )
+                if result.get("isError"):
+                    raise RuntimeError("Installed paged context call failed")
+                body = next(i["text"] for i in result["content"] if i["type"] == "text")
+                page = result.get("structuredContent") or json.loads(body)
+                if len(body.encode()) > 2048 or json.loads(body) != page:
+                    raise RuntimeError("Installed page text failed the byte bound")
+                pages.append(page)
+                cursor = page["next_cursor"]
+                if not cursor:
+                    break
+            packet = assemble_context_pages(pages)
+            original = report["pacer_context"].get("structuredContent") or json.loads(
+                next(i["text"] for i in report["pacer_context"]["content"] if i["type"] == "text")
+            )
+            if packet != original or len(pages) < 2:
+                raise RuntimeError("Installed paging did not reconstruct the original context")
+            report["paged_context"] = {"pages": pages, "exact_roundtrip": True}
             report["passed"] = True
             print(
                 json.dumps(

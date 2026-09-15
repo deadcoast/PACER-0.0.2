@@ -32,6 +32,11 @@ resolving the diagnostic or increasing the explicit byte budget; it never grants
 a write receipt. Use projected queries for investigation and `pacer_schema` for
 the rule vocabulary. Do not rebuild project context as a Markdown design document.
 
+For bounded responses use `pacer_context_page` from an empty cursor. Read all
+entries and follow every `next_cursor` with the same byte limit until complete;
+only the final page provides the receipt. Restart on drift. Consult FORMAT.md
+for exact path/value and long-string append semantics and transport limits.
+
 On resumption, inspect `next_action`, `delta`, `diagnostics` and the task's retained
 failed approaches. A checkpoint lives in the task register and works in a fresh
 process. Read source files implicated by the packet; source hashes are identities,

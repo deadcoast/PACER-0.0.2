@@ -88,7 +88,7 @@ One canonical copy of each register. Atomic writes (write temp, validate, move).
 
 ## 10. Executable profile and this repository
 
-Use `plugins/pacer/references/FORMAT.md` for profile 0.4's additive columns and
+Use `plugins/pacer/references/FORMAT.md` for profile 0.5's additive columns and
 command lexicon. These clarify the original format while retaining its purposes:
 
 - New OGM targets enter at pace time with `NDLRefs` so forward references resolve;
@@ -118,6 +118,10 @@ command lexicon. These clarify the original format while retaining its purposes:
   not proof of consent. Apply the format's approval and split rules.
 - Compact context edges index `required_ids` and `relations.kinds`; consult schema
   or request `encoding=expanded` if needed. Required closure and receipts are identical.
+- For bounded delivery, use `pacer_context_page` and read every page in order with
+  unchanged `max_bytes`. Restart with an empty cursor after source or context drift.
+  Only the final page carries a receipt; it proves freshness, not reading or
+  comprehension. Resolve missing sources or packet-limit failures before acting.
 
 This repository keeps Python and MCP dependencies in `plugins/pacer/pyproject.toml`
 and `uv.lock`. Use uv and existing Python; do not install through pip. Run

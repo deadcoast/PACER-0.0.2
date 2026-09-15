@@ -9,6 +9,7 @@ from pathlib import Path
 from pacer_mcp.commands import Editor
 from pacer_mcp.context import build_context, guard_context, operational_nodules
 from pacer_mcp.evidence import evaluate_rule, stale_requirements
+from pacer_mcp.pages import context_page
 from pacer_mcp.query import graph, health, next_ids, query_rows
 from pacer_mcp.schema import HEADERS, REF_PATTERN, VERSION, contained_path, empty_row, refs, utc_now
 from pacer_mcp.semantics import approval_allowed, approval_state
@@ -109,6 +110,13 @@ class Service:
             return build_context(
                 snapshot.tables, self.store.root, task_id, max_bytes, encoding=encoding
             )
+
+    def context_page(self, task_id: str, *, cursor: str = "", max_bytes: int = 8_000) -> dict:
+        """Retrieve one bounded page from a fresh, consistent task packet."""
+        with self.store.locked():
+            snapshot = self.store.load()
+            packet = build_context(snapshot.tables, self.store.root, task_id, 1_000_000)
+            return context_page(packet, cursor=cursor, max_bytes=max_bytes)
 
     def evaluate(self, row_id: str) -> dict:
         """Evaluate a rule without changing its stored acceptance or source files."""

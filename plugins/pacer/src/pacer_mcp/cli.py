@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 from pacer_mcp.schema import HEADERS
-from pacer_mcp.semantics import semantic_schema
+from pacer_mcp.semantics import canonical, semantic_schema
 from pacer_mcp.service import Service
 
 
@@ -41,6 +41,10 @@ def main(argv: list[str] | None = None) -> int:
     context.add_argument("id")
     context.add_argument("--max-bytes", type=int, default=32_000)
     context.add_argument("--encoding", choices=["compact", "expanded"], default="compact")
+    page = sub.add_parser("context-page", help="Retrieve bounded lossless task context pages")
+    page.add_argument("id")
+    page.add_argument("--cursor", default="")
+    page.add_argument("--max-bytes", type=int, default=8_000)
     evaluate = sub.add_parser("evaluate", help="Evaluate rule and acceptance freshness")
     evaluate.add_argument("id")
     for name in ("apply", "preview", "migrate"):
@@ -89,6 +93,8 @@ def main(argv: list[str] | None = None) -> int:
             result = service.graph(args.id, depth=args.depth, limit=args.limit)
         elif args.command == "context":
             result = service.context(args.id, max_bytes=args.max_bytes, encoding=args.encoding)
+        elif args.command == "context-page":
+            result = service.context_page(args.id, cursor=args.cursor, max_bytes=args.max_bytes)
         elif args.command == "evaluate":
             result = service.evaluate(args.id)
         elif args.command in {"apply", "preview"}:
@@ -118,7 +124,11 @@ def main(argv: list[str] | None = None) -> int:
             )
         else:
             result = getattr(service, args.command)()
-        print(json.dumps(result, indent=2, ensure_ascii=False))
+        print(
+            canonical(result)
+            if args.command == "context-page"
+            else json.dumps(result, indent=2, ensure_ascii=False)
+        )
         return 1 if result.get("valid") is False else 0
     except (ValueError, OSError) as exc:
         print(str(exc), file=sys.stderr)

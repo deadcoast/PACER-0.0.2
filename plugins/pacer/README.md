@@ -51,14 +51,30 @@ It does not mechanically prove that a manual report is honest or that every chan
 The audit skill and repository verification command handle those boundaries.
 Source-defined organism statuses remain unchanged.
 
-Profile 0.4 gates pending proposals with explicit approval provenance and admits
+Profile 0.5 gates pending proposals with explicit approval provenance and admits
 their existing IDs into a nodule. Default compact context shares relation IDs;
 request `--encoding expanded` (MCP `encoding="expanded"`) for the earlier view.
 Both formats preserve required facts, freshness and receipts. See FORMAT.md for
 the migration and decoding contracts.
+
+Use `pacer context-page <PAC-ID> --max-bytes 8000` or `pacer_context_page` for
+bounded delivery. Pass the returned cursor to `--cursor` (MCP `cursor`) with the
+same byte limit until complete. Read all pages before using the final receipt.
+The JSON byte bound excludes MCP framing and Codex token truncation; see FORMAT.md.
+`scripts/prove_context_delivery.py --plugin <installed-plugin> --model <model>
+--effort <effort>` runs two authenticated Codex turns in disposable fixtures and
+retains their tool calls, checkpoint persistence and fresh-thread regression result.
 
 `python scripts/prove_codex.py` installs into a disposable Codex home and proves
 native skill discovery plus real MCP onboarding, context and evaluation calls without a model turn.
 `python scripts/prove_codex.py --installed` checks your current installation.
 Run these from the repository root using its uv environment. First startup may
 download the dependencies already pinned in uv.lock. Python downloads are disabled.
+
+Portable MCP environments use a directory derived from the full manifest version.
+This lets a new plugin start while an older Windows process still holds its
+environment's executable open. After the official cachebuster update, synchronize
+both manifest versions and set `mcp.json`'s `UV_PROJECT_ENVIRONMENT` to
+`${PLUGIN_DATA}/venv-<first 16 hex characters of SHA256(version)>`. Packaging checks
+enforce this relationship. Existing environments remain intact for their running
+threads; cleanup happens only after those threads have stopped.

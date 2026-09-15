@@ -7,11 +7,11 @@ from pathlib import Path
 from typing import Literal
 
 from mcp.server.fastmcp import FastMCP
-from mcp.types import ToolAnnotations
+from mcp.types import CallToolResult, TextContent, ToolAnnotations
 
 from pacer_mcp.models import ContextReceipt, Operation
 from pacer_mcp.schema import HEADERS, OGM_STATUSES, PAIRS, REF_FIELDS, TODO_TRANSITIONS, VERSION
-from pacer_mcp.semantics import semantic_schema
+from pacer_mcp.semantics import canonical, semantic_schema
 from pacer_mcp.service import Service
 
 
@@ -23,7 +23,7 @@ def build_server(bound_root: Path | None = None) -> FastMCP:
         instructions=(
             "PACER is the project's operational context. Onboard with the absolute project root; "
             "Read authority entry points. Pace original wording and explicit rules. "
-            "Retrieve pacer_context for the PAC before acting; never omit mandatory context. "
+            "Read pacer_context or every pacer_context_page before acting; restart stale cursors. "
             "Apply with current revision, onboarding and context receipt. Checkpoint next_action. "
             "Evaluate and verify rules against source; refresh stale evidence before completion. "
             "Query OVR paths before edits. Plugin cwd is not the project root."
@@ -78,6 +78,20 @@ def build_server(bound_root: Path | None = None) -> FastMCP:
     ) -> dict[str, object]:
         """Load task context, typed rules, source freshness, checkpoint delta and receipt."""
         return service(root).context(id, max_bytes=max_bytes, encoding=encoding)
+
+    @server.tool(annotations=read)
+    def pacer_context_page(
+        root: str, id: str, cursor: str = "", max_bytes: int = 8_000
+    ) -> CallToolResult:
+        """Read bounded context entries by JSON path. Follow next_cursor with unchanged max_bytes
+        until complete; only the final page provides a receipt. Read every entry in order.
+        value sets a path; append continues a long string. Restart on a stale cursor.
+        max_bytes bounds canonical JSON, not MCP framing or host token truncation.
+        """
+        page = service(root).context_page(id, cursor=cursor, max_bytes=max_bytes)
+        return CallToolResult(
+            content=[TextContent(type="text", text=canonical(page))], structuredContent=page
+        )
 
     @server.tool(annotations=read)
     def pacer_evaluate(root: str, id: str) -> dict[str, object]:

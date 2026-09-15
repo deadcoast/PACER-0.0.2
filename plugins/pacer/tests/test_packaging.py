@@ -1,5 +1,6 @@
 """A copied plugin must execute from its own source, independent of checkout layout."""
 
+import hashlib
 import json
 import os
 import shutil
@@ -54,10 +55,16 @@ def test_manifest_skill_paths_and_versions_agree():
     compatibility = json.loads((PLUGIN / ".codex-plugin/plugin.json").read_text())
     project = tomllib.loads((PLUGIN / "pyproject.toml").read_text())
     assert portable["name"] == compatibility["name"] == "pacer"
+    assert portable["version"] == compatibility["version"]
     assert (
         portable["version"].split("+")[0]
         == compatibility["version"].split("+")[0]
         == project["project"]["version"]
+    )
+    mcp = json.loads((PLUGIN / "mcp.json").read_text())
+    version_key = hashlib.sha256(portable["version"].encode()).hexdigest()[:16]
+    assert mcp["mcpServers"]["pacer"]["env"]["UV_PROJECT_ENVIRONMENT"] == (
+        "${PLUGIN_DATA}/venv-" + version_key
     )
     for entry in (PLUGIN / "skills").iterdir():
         markdown = (entry / "SKILL.md").read_text()

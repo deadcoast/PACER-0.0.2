@@ -1,4 +1,4 @@
-# PACER executable profile 0.4
+# PACER executable profile 0.5
 
 PACER is an agent's connected working memory for a project. The human states
 intent. The agent paces it into a nodule and tasks, maps the code in overlord,
@@ -289,6 +289,52 @@ evidence and executes the real lifecycle through a fresh Service. Record decisio
 correctness, exact constraint preservation, replay outcomes and native CLI usage
 separately. This does not measure autonomous tool selection, long conversations,
 or long-term retention. Results and failures belong in registered evidence.
+
+## Bounded context delivery
+
+`pacer_context_page(root, id, cursor="", max_bytes=8000)` and CLI
+`context-page <PAC-ID> --cursor <cursor> --max-bytes 8000` deliver the complete
+compact packet as readable `pacer-context-page/1` JSON. Page size is 2048..32000
+canonical UTF-8 bytes. Ordinary `pacer_context` remains compatible; use pages
+when its complete response would exceed a practical tool response budget.
+
+Each page contains `task`, `packet_digest`, `max_bytes`, `offset`, `entries`,
+`next_cursor`, `complete` and `receipt`. Entries have a JSON `path` array and
+`value` to set that path. Oversized containers start with an empty container,
+followed by child paths. Oversized strings start empty, followed by `append`
+entries at the same path. Append in order without normalizing Unicode, whitespace
+or escapes. This is transport segmentation, not a new requirement language.
+
+Start with an empty cursor. Read every entry, then pass `next_cursor` unchanged
+with the same task, root and byte limit until `complete=true`. Partial pages have
+`receipt=null`. The final page has an empty cursor and the normal freshness
+receipt. `pacer_mcp.pages.assemble_context_pages(pages)` validates the order,
+complete stream, exact packet digest and canonical page layout, reconstructing
+the identical compact packet including receipt and byte accounting.
+
+Continuation re-reads the locked register snapshot and source basis. Changes to
+source, authority or any delivered packet fact invalidate the cursor: restart
+from an empty cursor. A cursor is an opaque continuation value, not a secret or
+proof of reading. Final receipt checks still run at apply time; a caller fetching
+only the final page has not followed the workflow. Receipt validity never proves
+model comprehension or human approval. No server delivery sessions are stored,
+so continuation works after a server restart if the complete packet is unchanged.
+
+Missing sources, original packet sizes above 1000000 bytes, or indivisible path
+metadata above the page limit refuse without a receipt. Paging preserves the
+whole required closure; it does not lower total context size. Custom/audit fields
+outside the original packet projection remain in the registers for targeted queries.
+
+The bound covers canonical JSON text, also supplied as MCP `structuredContent`.
+MCP envelopes and escaping add bytes; Codex applies a separate token budget and
+may truncate tool output. Choose a smaller page or the documented per-tool
+`output_token_limit` when needed. This plugin does not change user configuration.
+The SDK 1.x `CallToolResult` path supplies identical canonical text and structured
+values; stdio tests check both channels. The native proof uses official `codex
+exec` JSONL and explicit MCP configuration pointing to installed plugin source.
+It retains sequential model-selected page calls, a guarded checkpoint, and a
+fresh-thread source-regression read. That bounded instructed workflow does not
+establish autonomous development performance or long-term retention.
 
 ## Atomicity, scope and recovery
 
