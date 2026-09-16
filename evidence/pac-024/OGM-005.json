@@ -1,0 +1,47 @@
+{
+  "requirement": "OGM-005",
+  "meaning": "ad2015ddf6053663f2b4bbe31a564e75e480ef6ef947db843709eb9342a3da99",
+  "sources": {
+    "evidence/context-delivery-2026-09-15.json": "80ce4ef8e6f18264e0bcc31f3a246f640052bad8146fb25fafcc4a499dee4534",
+    "evidence/approved-development-2026-09-14.json": "d25d169c7d8ab04ab8b5ffe8943751e39105024ff6cc575ba8449392776fa0b2",
+    "plugins/pacer/src/pacer_mcp/cli.py": "1eedc078165c265bb51143865661da7bc6727c9605dbb574e38ab62038a60e8e",
+    "plugins/pacer/src/pacer_mcp/models.py": "5e5eae483c4a8cf7bf8b96e69d3b49a5685ba5b8f9c26f26a42b53237e429371",
+    "plugins/pacer/src/pacer_mcp/server.py": "3aa5a621f4b74b303f41648a864aa7f1b8d3d803848be10d884ad5ef835bb0f7",
+    "plugins/pacer/src/pacer_mcp/service.py": "98da88b1cece1e23dfe313e31ed1c622750853c8d3bdf5d6627174a20e8a2d3f",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5",
+    "plugins/pacer/src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+    "plugins/pacer/src/pacer_mcp/query.py": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8",
+    "plugins/pacer/src/pacer_mcp/pages.py": "1c2acbbd0dcc1be99def718db2ee981e3bdfec37e747befe9fc6e3c0a10ea95b",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564",
+    "plugins/pacer/src/pacer_mcp/context.py": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688",
+    "plugins/pacer/src/pacer_mcp/commands.py": "ef995551174567108cb5ef26fb4c5094f6e4279dee7bbaf012a46364a2586e01",
+    "evidence/approved-foundation-2026-09-14.json": "8812e6fd696c71cfdc28689349018caffc213ebbf1719d1881e18423da19cc49",
+    "plugins/pacer/tests/test_evidence.py": "ee47eeb31f6580d03a9dd11458df522b5afa42240dc492db027b6841252a98d2",
+    "plugins/pacer/tests/test_mcp.py": "fc6858c538eb041466c0e410993810d408b0186b5c819cbf523aa640cdf74a3b"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "environment": {
+    "PYTEST_ADDOPTS": "--basetemp=.pacer/pac024-025-full"
+  },
+  "checked_at": "2026-09-16",
+  "execution_report": "evidence/pac-024/verification.json",
+  "execution_sha256": "84a0b216e2bf46451288c529bf3426c79580f19d9514bfa360aec9adf9ecf3d3",
+  "reviewed_scope": "Current tests launch actual stdio MCP servers and exercise typed tools, resources, prompts and lifecycle operations.",
+  "historical_evidence": "evidence/context-delivery/OGM-005.json",
+  "changed_prior_sources": [
+    "plugins/pacer/src/pacer_mcp/evidence.py",
+    "plugins/pacer/tests/test_evidence.py"
+  ],
+  "limits": "Current local source, regression, real-stdio and packaging checks only. Installed delivery requirements OGM-014 and OGM-021 remain PACED_REQUIREMENT; native and model-comparison trials remain historical."
+}

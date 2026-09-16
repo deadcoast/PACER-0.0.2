@@ -1,0 +1,90 @@
+{
+  "task": "PAC-025",
+  "date": "2026-09-16",
+  "finding": "Source inventory admitted .mypy_cache entries, causing 576 new interface candidates and refusal at the 200-operation batch limit during PAC-024 maintenance.",
+  "red": {
+    "exit_code": 1,
+    "output": ".FFF..                                                                   [100%]\r\n================================== FAILURES ===================================\r\n_________________ test_source_inventory_excludes_mypy_cache[] _________________\r\nplugins\\pacer\\tests\\test_maintain.py:36: in test_source_inventory_excludes_mypy_cache\r\n    assert [row[\"Path\"] for row in inventory.source_assets()] == [\"settings.json\"]\r\nE   AssertionError: assert ['.mypy_cache...ettings.json'] == ['settings.json']\r\nE     \r\nE     At index 0 diff: '.mypy_cache/3.14/module.data.json' != 'settings.json'\r\nE     Left contains 2 more items, first extra item: '.mypy_cache/3.14/module.meta.json'\r\nE     Use -v to get more diff\r\n______________ test_source_inventory_excludes_mypy_cache[nested] ______________\r\nplugins\\pacer\\tests\\test_maintain.py:36: in test_source_inventory_excludes_mypy_cache\r\n    assert [row[\"Path\"] for row in inventory.source_assets()] == [\"settings.json\"]\r\nE   AssertionError: assert ['nested/.myp...ettings.json'] == ['settings.json']\r\nE     \r\nE     At index 0 diff: 'nested/.mypy_cache/3.14/module.data.json' != 'settings.json'\r\nE     Left contains 2 more items, first extra item: 'nested/.mypy_cache/3.14/module.meta.json'\r\nE     Use -v to get more diff\r\n_________ test_source_inventory_prunes_generated_trees_before_descent _________\r\nplugins\\pacer\\tests\\test_maintain.py:57: in test_source_inventory_prunes_generated_trees_before_descent\r\n    inventory.source_assets()\r\nscripts\\maintain.py:78: in source_assets\r\n    tree = ast.parse(path.read_text(encoding=\"utf-8\"))\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n..\\..\\..\\AppData\\Roaming\\uv\\python\\cpython-3.13.9-windows-x86_64-none\\Lib\\ast.py:50: in parse\r\n    return compile(source, filename, mode, flags,\r\nE     File \"<unknown>\", line 1\r\nE       not valid python!\r\nE                 ^^^^^^\r\nE   SyntaxError: invalid syntax\r\n=========================== short test summary info ===========================\r\nFAILED plugins\\pacer\\tests\\test_maintain.py::test_source_inventory_excludes_mypy_cache[]\r\nFAILED plugins\\pacer\\tests\\test_maintain.py::test_source_inventory_excludes_mypy_cache[nested]\r\nFAILED plugins\\pacer\\tests\\test_maintain.py::test_source_inventory_prunes_generated_trees_before_descent\r\n3 failed, 3 passed in 0.12s\r\n",
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "python",
+      "-m",
+      "pytest",
+      "plugins/pacer/tests/test_maintain.py",
+      "-q",
+      "--tb=short"
+    ],
+    "environment": {
+      "PYTEST_ADDOPTS": "--basetemp=.pacer/pac025-red"
+    }
+  },
+  "green": {
+    "exit_code": 0,
+    "output": "6 passed in 0.05s",
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "python",
+      "-m",
+      "pytest",
+      "plugins/pacer/tests/test_maintain.py",
+      "-q"
+    ],
+    "environment": {
+      "PYTEST_ADDOPTS": "--basetemp=.pacer/pac025-green"
+    }
+  },
+  "git_ignore_check": {
+    "command": [
+      "git",
+      "check-ignore",
+      ".mypy_cache/3.14/module.data.json",
+      "nested/.mypy_cache/3.14/module.data.json"
+    ],
+    "exit_code": 0,
+    "output": [
+      ".mypy_cache/3.14/module.data.json",
+      "nested/.mypy_cache/3.14/module.data.json"
+    ]
+  },
+  "scope": "Only generated Mypy cache exclusion; retain actual project files including uncommitted source.",
+  "full_check": {
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "python",
+      "scripts/check.py"
+    ],
+    "environment": {
+      "PYTEST_ADDOPTS": "--basetemp=.pacer/pac024-025-full"
+    },
+    "exit_code": 0,
+    "output": "All checks passed!\n37 files already formatted\n........................................................................ [ 40%]\n........................................................................ [ 80%]\n...................................                                      [100%]\n179 passed in 41.91s\n{\"valid\": true, \"source_interfaces\": 419, \"examples\": 15, \"revision\": \"d4a907c4338f55e09153ae28d51ca6e4a933c827983f6c7f2498aea8a855434e\"}\n",
+    "source_sha256": {
+      "plugins/pacer/src/pacer_mcp/evidence.py": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564",
+      "plugins/pacer/tests/test_evidence.py": "ee47eeb31f6580d03a9dd11458df522b5afa42240dc492db027b6841252a98d2",
+      "scripts/maintain.py": "3dfa9dd1d37c2d9d0ed3c39a864952f1fdfde029038af969675ab84a547f4310",
+      "plugins/pacer/tests/test_maintain.py": "55192d60a15037dcea5beba69c907f442711118f4d932eb6136366f34ffdac75",
+      ".gitignore": "26060581d5179b8bc162605395ed7e5a3c1419262ce77e2ece6d3aef989776fc"
+    }
+  },
+  "delivery_pending": {
+    "requirements": [
+      "OGM-014",
+      "OGM-021"
+    ],
+    "checkout_evaluator": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564",
+    "installed_evaluator": "ff52ae74662686aaff196a4a0b58b3bb0e2dadcce2002d4b331b72c3b7dbe83e",
+    "reason": "Current installed-plugin identity and fresh delivery verification are outstanding. Historical native trials do not verify this changed plugin."
+  }
+}

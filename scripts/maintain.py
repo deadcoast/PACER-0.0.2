@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED = {
     ".git",
     ".codegraph",
+    ".mypy_cache",
     ".cache",
     ".venv",
     "__pycache__",

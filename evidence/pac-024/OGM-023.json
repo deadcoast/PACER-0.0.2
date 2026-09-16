@@ -1,0 +1,33 @@
+{
+  "requirement": "OGM-023",
+  "meaning": "3d966134bb3b7f47afb56c13b5caca61c26e65030b7fc9190297f991eb0013cd",
+  "sources": {
+    "plugins/pacer/tests/test_evidence.py": "ee47eeb31f6580d03a9dd11458df522b5afa42240dc492db027b6841252a98d2",
+    "plugins/pacer/src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564",
+    "evidence/pac-024/verification.json": "84a0b216e2bf46451288c529bf3426c79580f19d9514bfa360aec9adf9ecf3d3"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "environment": {
+    "PYTEST_ADDOPTS": "--basetemp=.pacer/pac024-025-full"
+  },
+  "checked_at": "2026-09-16",
+  "execution_report": "evidence/pac-024/verification.json",
+  "execution_sha256": "84a0b216e2bf46451288c529bf3426c79580f19d9514bfa360aec9adf9ecf3d3",
+  "reviewed_scope": "Thirty new cases cover all three JSON comparison rules, invalid Unicode/mixed/leading-zero/out-of-range array tokens, refusal without register changes, valid ASCII indexes and literal Unicode/escaped object keys.",
+  "historical_evidence": "",
+  "changed_prior_sources": [],
+  "limits": "Current local source, regression, real-stdio and packaging checks only. Installed delivery requirements OGM-014 and OGM-021 remain PACED_REQUIREMENT; native and model-comparison trials remain historical."
+}

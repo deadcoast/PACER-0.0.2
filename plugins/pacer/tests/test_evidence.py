@@ -41,6 +41,66 @@ def test_numeric_rule_does_not_coerce_invalid_values(operational, operate, value
     assert operational.onboard()["revision"] == before
 
 
+@pytest.mark.parametrize("rule", ["json_eq", "json_ge", "json_le"])
+@pytest.mark.parametrize(
+    "token", ["\u0660", "\uff10", "\u0660\u0661", "1\u0660", "01", "-1", "-", "11"]
+)
+def test_invalid_array_index_cannot_publish_verification(operational, operate, rule, token):
+    (operational.store.root / "settings.json").write_text(
+        json.dumps({"items": [3] * 11}), encoding="utf-8"
+    )
+    operate(
+        {
+            "op": "set",
+            "id": "OGM-001",
+            "fields": {"RuleType": rule, "RuleSelector": "/items/" + token, "RuleValue": "3"},
+        }
+    )
+    before = operational.onboard()["revision"]
+    assert operational.evaluate("OGM-001")["result"] == "FAIL"
+    with pytest.raises(ValueError, match="Cannot verify rule"):
+        operate({"op": "verify", "id": "OGM-001", "evidence": "Invalid selector must fail"})
+    assert operational.onboard()["revision"] == before
+    assert operational.query("organism", fields=["EvidenceBindings"])["rows"] == [
+        {"EvidenceBindings": ""}
+    ]
+
+
+@pytest.mark.parametrize(
+    ("document", "selector", "expected"),
+    [
+        ({"items": [3, 4]}, "/items/0", 3),
+        ({"items": list(range(11))}, "/items/10", 10),
+        ({"\u0660": 3}, "/\u0660", 3),
+        ({"\uff10": 4}, "/\uff10", 4),
+        ({"01": 5}, "/01", 5),
+        ({"a/b": {"~1": [{"\u0660": 6}]}}, "/a~1b/~01/0/\u0660", 6),
+    ],
+)
+def test_valid_array_indexes_and_literal_object_keys_verify(
+    operational, operate, document, selector, expected
+):
+    (operational.store.root / "settings.json").write_text(json.dumps(document), encoding="utf-8")
+    operate(
+        {
+            "op": "set",
+            "id": "OGM-001",
+            "fields": {
+                "RuleType": "json_eq",
+                "RuleSelector": selector,
+                "RuleValue": json.dumps(expected),
+            },
+        }
+    )
+    operate({"op": "verify", "id": "OGM-001", "evidence": "Valid literal selector"})
+    result = operational.evaluate("OGM-001")
+    assert (result["result"], result["observed"], result["freshness"]) == (
+        "PASS",
+        expected,
+        "CURRENT",
+    )
+
+
 def test_manual_report_requires_matching_meaning_and_sources(operational, operate):
     operate(
         {

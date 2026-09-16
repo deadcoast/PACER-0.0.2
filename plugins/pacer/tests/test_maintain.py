@@ -26,9 +26,27 @@ def test_source_inventory_excludes_local_codegraph_data(inventory):
     assert [row["Path"] for row in inventory.source_assets()] == ["settings.json"]
 
 
+@pytest.mark.parametrize("prefix", ["", "nested"])
+def test_source_inventory_excludes_mypy_cache(inventory, prefix):
+    generated = inventory.ROOT / prefix / ".mypy_cache" / "3.14"
+    generated.mkdir(parents=True)
+    (generated / "module.data.json").write_text("{}", encoding="utf-8")
+    (generated / "module.meta.json").write_text("{}", encoding="utf-8")
+    (inventory.ROOT / "settings.json").write_text("{}", encoding="utf-8")
+    assert [row["Path"] for row in inventory.source_assets()] == ["settings.json"]
+
+
 def test_source_inventory_prunes_generated_trees_before_descent(inventory, monkeypatch):
     # A scanner that merely filters returned files still touches live or inaccessible caches.
-    excluded = [".codegraph", ".venv", ".cache", "nested/cache.egg-info", "archive/nodules"]
+    excluded = [
+        ".codegraph",
+        ".mypy_cache",
+        "nested/.mypy_cache",
+        ".venv",
+        ".cache",
+        "nested/cache.egg-info",
+        "archive/nodules",
+    ]
     for name in excluded:
         path = inventory.ROOT / name
         path.mkdir(parents=True)

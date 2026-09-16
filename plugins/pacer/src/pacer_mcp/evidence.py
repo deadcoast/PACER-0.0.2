@@ -76,7 +76,8 @@ def json_pointer(value: object, pointer: str) -> object:
     for raw in pointer.split("/")[1:]:
         key = raw.replace("~1", "/").replace("~0", "~")
         if isinstance(value, list):
-            if not key.isdecimal() or (key != "0" and key.startswith("0")):
+            # RFC 6901 array indexes use ASCII digits; object keys stay literal.
+            if not key.isascii() or not key.isdecimal() or (key != "0" and key.startswith("0")):
                 raise KeyError(key)
             value = value[int(key)]
         elif isinstance(value, dict):
