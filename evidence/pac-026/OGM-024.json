@@ -1,0 +1,32 @@
+{
+  "requirement": "OGM-024",
+  "meaning": "f1c67e85a0e3fcb3b07b21437c38035765d26f19f65b7a3d89c7f34b4ab33487",
+  "sources": {
+    "evidence/pac-026/verification.json": "81899eee312a147b403887e2b3bdcb61a845fcbba859d918c204bad62a2ff491",
+    "plugins/pacer/tests/test_store.py": "dfa5cce3b07ce4bffed6265e00eee0ea0b20b014700fbb9228a5cfb48db7ea8b",
+    "plugins/pacer/src/pacer_mcp/store.py": "266d6613f49e216567e4143afa1e8eebc4739e01914c851a6cdfefb87c29af33",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "checked_at": "2026-09-16T15:13:51.610977+00:00",
+  "execution_report": "evidence/pac-024/delivery.json",
+  "execution_sha256": "cf4d3dd5c4709b8f70b89286f2a878385d0a803fe6ed0cb2fc91618e7e345d3e",
+  "reviewed_scope": "The retained red run reproduces the parser-capacity failure. Fourteen persistence tests pass, including 185003-character quoted Unicode multiline history surviving real publication and a fresh CLI read exactly; malformed input, recovery and concurrency checks remain passing. Final installed evidence/persistence suite passes 61 tests.",
+  "limits": [
+    "Two instructed native turns in a synthetic fixture; no autonomous-development or long-term benefit claim.",
+    "Native paging turns use explicit stdio configuration pointed at installed source. Ordinary installed discovery is verified separately.",
+    "Prior model-comparison measurements remain historical; this continuation does not rerun those evaluations.",
+    "Current native verification supersedes the prior no-new-native-trial reporting boundary only for this authorized continuation."
+  ]
+}

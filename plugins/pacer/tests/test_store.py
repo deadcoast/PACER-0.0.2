@@ -17,6 +17,36 @@ def test_malformed_csv_is_never_silently_normalized(data):
         parse_csv(data, "input.csv")
 
 
+def test_large_history_survives_publication_and_fresh_process(paced, apply):
+    history = 'Retained "quoted", Unicode \u03bb history\n' * 5000 + "end"
+    assert len(history) > 131072
+    apply({"op": "append", "id": "PAC-001", "field": "Notes", "text": history})
+    saved = paced.query("todo", where={"ID": "PAC-001"}, fields=["Notes"])["rows"][0]["Notes"]
+    assert " | " + history + " | " in saved
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pacer_mcp.cli",
+            "--root",
+            str(paced.store.root),
+            "query",
+            "todo",
+            "--where",
+            "ID=PAC-001",
+            "--fields",
+            "Notes",
+        ],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        env=dict(os.environ, PYTHONIOENCODING="utf-8"),
+        check=True,
+    )
+    assert json.loads(result.stdout)["rows"] == [{"Notes": saved}]
+    assert paced.validate()["valid"]
+
+
 def test_initialize_never_overwrites_partial_registers(project):
     path = project.store.root / "organism.PACER.csv"
     path.unlink()

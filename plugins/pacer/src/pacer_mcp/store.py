@@ -11,10 +11,13 @@ import os
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
+from threading import Lock
 
 from filelock import FileLock, Timeout
 
 from pacer_mcp.schema import HEADERS, ID_PATTERN, contained_path
+
+_CSV_LIMIT_LOCK = Lock()
 
 
 def digest(content: bytes) -> str:
@@ -24,6 +27,10 @@ def digest(content: bytes) -> str:
 
 def parse_csv(content: bytes, name: str) -> tuple[list[str], list[dict[str, str]]]:
     """Reject lossy CSV parsing, including duplicate headers and ragged records."""
+    # A decoded field cannot exceed its already-loaded UTF-8 input in length.
+    # Grow the process-wide limit under a lock; another parse must not shrink it.
+    with _CSV_LIMIT_LOCK:
+        csv.field_size_limit(max(csv.field_size_limit(), len(content)))
     try:
         reader = csv.reader(io.StringIO(content.decode("utf-8-sig"), newline=""), strict=True)
         headers = next(reader)
