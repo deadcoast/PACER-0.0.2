@@ -182,7 +182,13 @@ try {
     $sha = [Security.Cryptography.SHA256]::Create()
     try { $digest = ([BitConverter]::ToString($sha.ComputeHash($utf8.GetBytes($hashInput)))).Replace('-', '').ToLowerInvariant() } finally { $sha.Dispose() }
     $manifest = Get-Content -LiteralPath (Join-Path $pluginRoot 'plugin.json') -Raw | ConvertFrom-Json
-    $version = ($manifest.version -split '\+')[0] + '+local.' + $digest.Substring(0, 16)
+    # Codex backs up an existing cache directory before replacing it. Windows
+    # refuses that rename while an agent holds files open, even for identical source.
+    # Keep the content fingerprint stable and give each install its own directory.
+    # Codex selects the greatest remaining cache version. Put the increasing
+    # generation before the fingerprint; 'r' sorts above legacy hex digests.
+    $generation = [DateTime]::UtcNow.Ticks
+    $version = ($manifest.version -split '\+')[0] + '+local.r' + $generation + '.' + $digest.Substring(0, 16)
     $sha = [Security.Cryptography.SHA256]::Create()
     try { $environmentKey = ([BitConverter]::ToString($sha.ComputeHash($utf8.GetBytes($version)))).Replace('-', '').ToLowerInvariant().Substring(0, 16) }
     finally { $sha.Dispose() }
@@ -234,7 +240,28 @@ try {
                 $null = Invoke-InstallCli $cli @('plugin', 'marketplace', 'remove', $market.name) 'Updating Codex marketplace location'
             }
             $null = Invoke-InstallCli $cli @('plugin', 'marketplace', 'add', $workRoot) 'Registering Codex marketplace'
-            $install = Invoke-InstallCli $cli @('plugin', 'add', $pluginId, '--json') 'Installing PACER in Codex' | ConvertFrom-Json
+            $previous = $before.installed | Where-Object { $_.pluginId -eq $pluginId } | Select-Object -First 1
+            $protectedFiles = @()
+            try {
+                if ($previous) {
+                    $codexDataRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) '.codex' }
+                    $previousPath = Join-Path $codexDataRoot "plugins/cache/$($market.name)/pacer"
+                    if (Test-Path -LiteralPath $previousPath) {
+                        # Codex also prunes older versions after installing. Keep their
+                        # files readable/writable but deny deletion during that cleanup,
+                        # so a running session does not lose part of its package.
+                        foreach ($cachedVersion in (Get-ChildItem -LiteralPath $previousPath -Directory -Force)) {
+                            foreach ($file in (Get-ChildItem -LiteralPath $cachedVersion.FullName -Recurse -File -Force)) {
+                                $protectedFiles += [IO.File]::Open($file.FullName, 'Open', 'Read', 'ReadWrite')
+                            }
+                        }
+                        Write-InstallLog 'PRESERVE' "$($protectedFiles.Count) files in $previousPath"
+                    }
+                }
+                $install = Invoke-InstallCli $cli @('plugin', 'add', $pluginId, '--json') 'Installing PACER in Codex' | ConvertFrom-Json
+            } finally {
+                foreach ($stream in $protectedFiles) { $stream.Dispose() }
+            }
             if ($install.version -ne $version) { throw 'Codex did not install the current PACER version.' }
             $installedPath = $install.installedPath
         } else {

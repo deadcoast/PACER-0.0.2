@@ -1,0 +1,21 @@
+{
+  "requirement": "OGM-027",
+  "meaning": "d3cb209aa88f262b19440399a3d8a72666f1d41bbc0109941583ed3d3e33cecd",
+  "sources": {
+    "scripts/test_install.ps1": "deb5df71f6fa46915d22cd1d8e0d35b4ac1a489e00220c1e94e5a5f60a15f97e",
+    "install.ps1": "71e62bbb2614b207beb5118fdd6e01dd8093c4a074d87a97b3d29694ab5465be",
+    "errror_output.txt": "b0355d06f0b0b4cfc2872ab6a3df6afbebceaee2bfead7250cbb5228cb8bd47f"
+  },
+  "result": "PASS",
+  "command": [
+    "pwsh",
+    "-NoProfile",
+    "-File",
+    "scripts/test_install.ps1"
+  ],
+  "execution_report": "evidence/pac-030/run.json",
+  "execution_sha256": "d9d2161f0bfd4c6f25e36aa383ce1484bd110d5db47627c95128a8bd7eef5304",
+  "checked_at": "2026-09-16T21:38:04.821679+00:00",
+  "reviewed_scope": "30 assertions per PowerShell 5.1/7 run with real isolated CLI profiles, including held-file repeat refresh, all previous file hashes and distinct environments. Live refresh preserves 108 old files with two held handles; both hosts load skills and MCP. Required repository checks pass.",
+  "limits": "Verified on Windows with Codex 0.154.0 and Claude Code 2.1.263. Controlled native CLI/MCP checks use no model turns. The existing progress renderer is unchanged; this fix did not repeat visual acceptance. Existing sessions retain their old code; new sessions load the installed update. Clock rollback, release downgrade, and competing simultaneous installer processes were not exercised."
+}

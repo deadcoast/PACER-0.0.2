@@ -1,0 +1,660 @@
+{
+  "task": "PAC-030",
+  "result": "PASS",
+  "checked_at": "2026-09-16T21:38:04.821679+00:00",
+  "sources": {
+    "install.ps1": "71e62bbb2614b207beb5118fdd6e01dd8093c4a074d87a97b3d29694ab5465be",
+    "scripts/test_install.ps1": "deb5df71f6fa46915d22cd1d8e0d35b4ac1a489e00220c1e94e5a5f60a15f97e",
+    "errror_output.txt": "b0355d06f0b0b4cfc2872ab6a3df6afbebceaee2bfead7250cbb5228cb8bd47f"
+  },
+  "reported_failure": {
+    "path": "errror_output.txt",
+    "sha256": "b0355d06f0b0b4cfc2872ab6a3df6afbebceaee2bfead7250cbb5228cb8bd47f"
+  },
+  "pre_fix_reproduction": {
+    "commit": "1464303",
+    "trial": ".cache/install-tests/5ccf0bdbf8794845b593adf331e592a8",
+    "outcome": "FAIL as expected with a delete-denying open handle on commands.py",
+    "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  Codex  codex-cli 0.154.0\n  Claude  2.1.263 (Claude Code)\n  Prepared 48 files  /  0.5.0+local.14600570129d53d3\nError: failed to back up plugin cache entry: Access is denied. (os error 5)\n\nCaused by:\n    0: failed to back up plugin cache entry: Access is denied. (os error 5)\n    1: Access is denied. (os error 5)\n\n\n  PACER / installation failed\n\nPSMessageDetails      : \nException             : System.Management.Automation.RuntimeException: Installing PACER in Codex failed (exit 1). Command: C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\nTargetObject          : Installing PACER in Codex failed (exit 1). Command: C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\nCategoryInfo          : OperationStopped: (Installing PACER in.cer@personal --json:String) [], RuntimeException\nFullyQualifiedErrorId : Installing PACER in Codex failed (exit 1). Command: C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\nErrorDetails          : \nInvocationInfo        : System.Management.Automation.InvocationInfo\nScriptStackTrace      : at Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\5ccf0bdbf8794845b593adf331e592a8\\source with spaces and 'quote\\install.ps1: line 119\n                        at <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\5ccf0bdbf8794845b593adf331e592a8\\source with spaces and 'quote\\install.ps1: line 237\nPipelineIterationInfo : {}\n\n\nat Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\5ccf0bdbf8794845b593adf331e592a8\\source with spaces and 'quote\\install.ps1: line 119\nat <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\5ccf0bdbf8794845b593adf331e592a8\\source with spaces and 'quote\\install.ps1: line 237\n  Full logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\5ccf0bdbf8794845b593adf331e592a8\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-142304-134-37512\n\n"
+  },
+  "failed_approaches": [
+    {
+      "approach": "Unique random version without protecting old cache files",
+      "outcome": "New install completed but old cache was partially deleted; old refresh-marker.txt was missing.",
+      "trials": [
+        "12c69c50ba044010b0c254da52bab3d4",
+        "83f245d38a0048ccab92961720ba861b"
+      ],
+      "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  Codex  codex-cli 0.154.0\n  Claude  2.1.263 (Claude Code)\n  Prepared 48 files  /  0.5.0+local.745a15a2b46e9cdf.a27c32cd9a7b\n  Codex  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\12c69c50ba044010b0c254da52bab3d4\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.745a15a2b46e9cdf.a27c32cd9a7b\n  Claude  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\12c69c50ba044010b0c254da52bab3d4\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.745a15a2b46e9cdf.a27c32cd9a7b\n  Complete  /  8.5s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\12c69c50ba044010b0c254da52bab3d4\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-142407-032-30948\n\n"
+    },
+    {
+      "approach": "Protect files with random, unordered installation versions",
+      "outcome": "CLI refused activation because the preserved older version sorted above the new version.",
+      "trials": [
+        "1484f5b82ca34369babf410fc8b0ba13",
+        "b79609991d564254bafa62d8334853b0"
+      ],
+      "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  Codex  codex-cli 0.154.0\n  Claude  2.1.263 (Claude Code)\n  Prepared 48 files  /  0.5.0+local.3490f45f93f2c062.3f40a96245df\nError: failed to activate updated plugin cache version `0.5.0+local.3490f45f93f2c062.3f40a96245df` while `0.5.0+local.d304112690e23655.542752c8e5e7` remains active\n\nCaused by:\n    failed to activate updated plugin cache version `0.5.0+local.3490f45f93f2c062.3f40a96245df` while `0.5.0+local.d304112690e23655.542752c8e5e7` remains active\n\n\n  PACER / installation failed\n\nPSMessageDetails      : \nException             : System.Management.Automation.RuntimeException: Installing PACER in Codex failed (exit 1). Command: C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\nTargetObject          : Installing PACER in Codex failed (exit 1). Command: C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\nCategoryInfo          : OperationStopped: (Installing PACER in.cer@personal --json:String) [], RuntimeException\nFullyQualifiedErrorId : Installing PACER in Codex failed (exit 1). Command: C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\nErrorDetails          : \nInvocationInfo        : System.Management.Automation.InvocationInfo\nScriptStackTrace      : at Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\1484f5b82ca34369babf410fc8b0ba13\\source with spaces and 'quote\\install.ps1: line 119\n                        at <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\1484f5b82ca34369babf410fc8b0ba13\\source with spaces and 'quote\\install.ps1: line 257\nPipelineIterationInfo : {}\n\n\nat Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\1484f5b82ca34369babf410fc8b0ba13\\source with spaces and 'quote\\install.ps1: line 119\nat <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\1484f5b82ca34369babf410fc8b0ba13\\source with spaces and 'quote\\install.ps1: line 257\n  Full logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\1484f5b82ca34369babf410fc8b0ba13\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-142628-570-38212\n\n"
+    }
+  ],
+  "upstream_implementation": "https://github.com/openai/codex/blob/rust-v0.154.0/codex-rs/core-plugins/src/store.rs",
+  "fix": "Fresh timestamp generation before content digest, so the new version sorts above legacy digest versions and earlier generations. Temporary read handles preserve all prior Codex cache files while the native CLI installs and activates the new version. The environment key includes the full version.",
+  "powershell_trials": [
+    {
+      "engine": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "passed": true,
+      "checks": [
+        "Initial installation succeeds (logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f)",
+        "Both absent plugins are installed",
+        "Refresh succeeds",
+        "Changed and removed files select a new version",
+        "Codex detects the existing installation",
+        "Codex receives changed contents",
+        "Codex drops removed contents",
+        "Codex installs pacer-onboard",
+        "Codex installs pacer-develop",
+        "Codex installs pacer-audit",
+        "Claude detects the existing installation",
+        "Claude receives changed contents",
+        "Claude drops removed contents",
+        "Claude installs pacer-onboard",
+        "Claude installs pacer-develop",
+        "Claude installs pacer-audit",
+        "An unchanged refresh succeeds while installed files are open (logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f)",
+        "Unchanged source keeps the same content fingerprint",
+        "Codex refresh uses a fresh cache version",
+        "Codex preserves the old installed contents",
+        "Codex preserves every file in both previous installations",
+        "Codex refresh selects a separate Python environment",
+        "Claude refresh uses a fresh cache version",
+        "Claude preserves the old installed contents",
+        "Claude preserves every file in both previous installations",
+        "Claude refresh selects a separate Python environment",
+        "Open handles remain usable throughout refresh",
+        "A failed CLI exits nonzero",
+        "Failure displays stdout, stderr and the original exit code",
+        "The full failure is retained in the durable log"
+      ],
+      "trial": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f",
+      "logs": {
+        "initial": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  Codex  codex-cli 0.154.0\n  Claude  2.1.263 (Claude Code)\n  Prepared 49 files  /  0.5.0+local.r639251911940713328.1d335e2bc9c78d79\n  Codex  installed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251911940713328.1d335e2bc9c78d79\n  Claude  installed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251911940713328.1d335e2bc9c78d79\n  Complete  /  7.7s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-143312-721-35048\n\n",
+          "stderr": ""
+        },
+        "refresh": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  Codex  codex-cli 0.154.0\n  Claude  2.1.263 (Claude Code)\n  Prepared 48 files  /  0.5.0+local.r639251912022080724.7084621722a8cce9\n  Codex  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251912022080724.7084621722a8cce9\n  Claude  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251912022080724.7084621722a8cce9\n  Complete  /  8.7s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-143320-930-5420\n\n",
+          "stderr": ""
+        },
+        "repeat": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  Codex  codex-cli 0.154.0\n  Claude  2.1.263 (Claude Code)\n  Prepared 48 files  /  0.5.0+local.r639251912114719163.7084621722a8cce9\n  Codex  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251912114719163.7084621722a8cce9\n  Claude  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251912114719163.7084621722a8cce9\n  Complete  /  8.5s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-143330-208-33504\n\n",
+          "stderr": ""
+        },
+        "failure": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\nstdout diagnostic\n\nspecific CLI error: test failure\n\n\n  PACER / installation failed\n\nPSMessageDetails      : \nException             : System.Management.Automation.RuntimeException: Finding Codex failed (exit 23). Command: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\failing-cli\\codex.ps1 --version\nTargetObject          : Finding Codex failed (exit 23). Command: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\failing-cli\\codex.ps1 --version\nCategoryInfo          : OperationStopped: (Finding Codex faile.codex.ps1 --version:String) [], RuntimeException\nFullyQualifiedErrorId : Finding Codex failed (exit 23). Command: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\failing-cli\\codex.ps1 --version\nErrorDetails          : \nInvocationInfo        : System.Management.Automation.InvocationInfo\nScriptStackTrace      : at Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\source with spaces and 'quote\\install.ps1: line 119\n                        at <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\source with spaces and 'quote\\install.ps1: line 155\nPipelineIterationInfo : {}\n\n\nat Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\source with spaces and 'quote\\install.ps1: line 119\nat <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\source with spaces and 'quote\\install.ps1: line 155\n  Full logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\a2e765efd37d4b65a34e4003443ddb0f\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-143339-093-20780\n\n",
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "passed": true,
+      "trial": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c",
+      "engine": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "checks": [
+        "Initial installation succeeds (logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c)",
+        "Both absent plugins are installed",
+        "Refresh succeeds",
+        "Changed and removed files select a new version",
+        "Codex detects the existing installation",
+        "Codex receives changed contents",
+        "Codex drops removed contents",
+        "Codex installs pacer-onboard",
+        "Codex installs pacer-develop",
+        "Codex installs pacer-audit",
+        "Claude detects the existing installation",
+        "Claude receives changed contents",
+        "Claude drops removed contents",
+        "Claude installs pacer-onboard",
+        "Claude installs pacer-develop",
+        "Claude installs pacer-audit",
+        "An unchanged refresh succeeds while installed files are open (logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c)",
+        "Unchanged source keeps the same content fingerprint",
+        "Codex refresh uses a fresh cache version",
+        "Codex preserves the old installed contents",
+        "Codex preserves every file in both previous installations",
+        "Codex refresh selects a separate Python environment",
+        "Claude refresh uses a fresh cache version",
+        "Claude preserves the old installed contents",
+        "Claude preserves every file in both previous installations",
+        "Claude refresh selects a separate Python environment",
+        "Open handles remain usable throughout refresh",
+        "A failed CLI exits nonzero",
+        "Failure displays stdout, stderr and the original exit code",
+        "The full failure is retained in the durable log"
+      ],
+      "logs": {
+        "initial": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  Codex  codex-cli 0.154.0\n  Claude  2.1.263 (Claude Code)\n  Prepared 49 files  /  0.5.0+local.r639251911940476642.1d335e2bc9c78d79\n  Codex  installed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251911940476642.1d335e2bc9c78d79\n  Claude  installed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251911940476642.1d335e2bc9c78d79\n  Complete  /  6.8s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-143312-794-32260\n\n",
+          "stderr": ""
+        },
+        "refresh": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  Codex  codex-cli 0.154.0\n  Claude  2.1.263 (Claude Code)\n  Prepared 48 files  /  0.5.0+local.r639251912012296573.7084621722a8cce9\n  Codex  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251912012296573.7084621722a8cce9\n  Claude  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251912012296573.7084621722a8cce9\n  Complete  /  7.5s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-143320-076-37712\n\n",
+          "stderr": ""
+        },
+        "repeat": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  Codex  codex-cli 0.154.0\n  Claude  2.1.263 (Claude Code)\n  Prepared 48 files  /  0.5.0+local.r639251912091910772.7084621722a8cce9\n  Codex  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251912091910772.7084621722a8cce9\n  Claude  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251912091910772.7084621722a8cce9\n  Complete  /  7.6s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-143328-015-10108\n\n",
+          "stderr": ""
+        },
+        "failure": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\nstdout diagnostic\n\nspecific CLI error: test failure\n\n\n  PACER / installation failed\n\n\nPSMessageDetails      : \nException             : System.Management.Automation.RuntimeException: Finding Codex failed (exit 23). Command: C:\\User\n                        s\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\failing-cli\\c\n                        odex.ps1 --version\nTargetObject          : Finding Codex failed (exit 23). Command: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-test\n                        s\\84fe7e4514fd426996fbbc3e98d74d5c\\failing-cli\\codex.ps1 --version\nCategoryInfo          : OperationStopped: (Finding Codex f...x.ps1 --version:String) [], RuntimeException\nFullyQualifiedErrorId : Finding Codex failed (exit 23). Command: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-test\n                        s\\84fe7e4514fd426996fbbc3e98d74d5c\\failing-cli\\codex.ps1 --version\nErrorDetails          : \nInvocationInfo        : System.Management.Automation.InvocationInfo\nScriptStackTrace      : at Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd42699\n                        6fbbc3e98d74d5c\\source with spaces and 'quote\\install.ps1: line 119\n                        at <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbb\n                        c3e98d74d5c\\source with spaces and 'quote\\install.ps1: line 155\nPipelineIterationInfo : {}\n\n\n\n\nat Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\source with spaces and 'quote\\install.ps1: line 119\nat <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\source with spaces and 'quote\\install.ps1: line 155\n  Full logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\84fe7e4514fd426996fbbc3e98d74d5c\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-143335-891-36716\n\n",
+          "stderr": ""
+        }
+      }
+    }
+  ],
+  "live_install": {
+    "result": {
+      "source": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+      "digest": "23a3f874131577facb267e67d0d07e08543f6bc2b22317cb3cb48d0d0ae3af81",
+      "files": [
+        {
+          "path": ".claude-plugin/plugin.json",
+          "sha256": "77df68df4ae7563e41b9329df9d06cd3d88c44ee5d97ec363290e22ab35f7078"
+        },
+        {
+          "path": ".codex-plugin/plugin.json",
+          "sha256": "b25da4f1c2967b593b5f5f5ff8c91b7242794c73524adc4974785aecd4a6ffa3"
+        },
+        {
+          "path": ".mcp.json",
+          "sha256": "fac8f1de4047538a2746295fab5f19e9f4a84136a69343d096208243bba36276"
+        },
+        {
+          "path": "README.md",
+          "sha256": "5d7674938bf7121a74d0a78472ef1c94a2a5ff7133905acf485f56719a12f4ef"
+        },
+        {
+          "path": "codex.mcp.json",
+          "sha256": "9311c36938664fe2085a23419a31c67db4c8bae07e0469f6ba043601643dcccd"
+        },
+        {
+          "path": "mcp.json",
+          "sha256": "57531efa2cc5289fb355f93e2f3c1ab20f3437904801dfc9b6539873672c1f1c"
+        },
+        {
+          "path": "plugin.json",
+          "sha256": "cc487d4572a3b30bd147821b18e7cfc4751c4cf600c67d0419696228b9b2387e"
+        },
+        {
+          "path": "pyproject.toml",
+          "sha256": "dc1c8a955a5024602035f2f336018cf16a231f781d9f8adeff21be86488c77c5"
+        },
+        {
+          "path": "references/FORMAT.md",
+          "sha256": "2ead1440b5d568926b2133858002f334d1e4629672d316ceb4ef2ecda0a4d7d5"
+        },
+        {
+          "path": "skills/pacer-audit/SKILL.md",
+          "sha256": "774e36b054edd1e38a1bda75df4f13d292706d0300c783c244cc03c879eed555"
+        },
+        {
+          "path": "skills/pacer-audit/agents/openai.yaml",
+          "sha256": "179d1c208dfc8a1e5219fae467d68d992e39ae692bc5a3833a68c0cfa40d5f90"
+        },
+        {
+          "path": "skills/pacer-develop/SKILL.md",
+          "sha256": "caac2ab24cfb4aa92470c3da335ea7e9a8beefb3e60f55bf4c469bcb178f753a"
+        },
+        {
+          "path": "skills/pacer-develop/agents/openai.yaml",
+          "sha256": "a7e9bce0d039b2413fbd4a89bb0cc5b4c24384c31fa3bd5daf88e4afbc9e948c"
+        },
+        {
+          "path": "skills/pacer-onboard/SKILL.md",
+          "sha256": "6980b14ab417c3b16a0c99a479919ee16660781401b330a24fb5fed96985da84"
+        },
+        {
+          "path": "skills/pacer-onboard/agents/openai.yaml",
+          "sha256": "3418c71e5f30297a4302f62aa4045699fe92998b0566ee0012c1fff547da7bb2"
+        },
+        {
+          "path": "src/pacer_mcp/__init__.py",
+          "sha256": "00db8b97dc6771ea7df83737a9a8055dbca8f392a8bdbc2a673402473d05722b"
+        },
+        {
+          "path": "src/pacer_mcp/cli.py",
+          "sha256": "1eedc078165c265bb51143865661da7bc6727c9605dbb574e38ab62038a60e8e"
+        },
+        {
+          "path": "src/pacer_mcp/commands.py",
+          "sha256": "0c22263da162048bd4264ab3a7d85baa1ebf843a59dac8153d4348135623f3ee"
+        },
+        {
+          "path": "src/pacer_mcp/context.py",
+          "sha256": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688"
+        },
+        {
+          "path": "src/pacer_mcp/evidence.py",
+          "sha256": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564"
+        },
+        {
+          "path": "src/pacer_mcp/models.py",
+          "sha256": "5e5eae483c4a8cf7bf8b96e69d3b49a5685ba5b8f9c26f26a42b53237e429371"
+        },
+        {
+          "path": "src/pacer_mcp/pages.py",
+          "sha256": "1c2acbbd0dcc1be99def718db2ee981e3bdfec37e747befe9fc6e3c0a10ea95b"
+        },
+        {
+          "path": "src/pacer_mcp/query.py",
+          "sha256": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8"
+        },
+        {
+          "path": "src/pacer_mcp/schema.py",
+          "sha256": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5"
+        },
+        {
+          "path": "src/pacer_mcp/semantics.py",
+          "sha256": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2"
+        },
+        {
+          "path": "src/pacer_mcp/server.py",
+          "sha256": "3aa5a621f4b74b303f41648a864aa7f1b8d3d803848be10d884ad5ef835bb0f7"
+        },
+        {
+          "path": "src/pacer_mcp/service.py",
+          "sha256": "98da88b1cece1e23dfe313e31ed1c622750853c8d3bdf5d6627174a20e8a2d3f"
+        },
+        {
+          "path": "src/pacer_mcp/store.py",
+          "sha256": "266d6613f49e216567e4143afa1e8eebc4739e01914c851a6cdfefb87c29af33"
+        },
+        {
+          "path": "src/pacer_mcp/validation.py",
+          "sha256": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed"
+        },
+        {
+          "path": "tests/conftest.py",
+          "sha256": "a44c4cc91ecaae783b2ef5b06797da359dc615539a1b32cd4bc2c98afccea8c5"
+        },
+        {
+          "path": "tests/test_approval.py",
+          "sha256": "4214d0e331fcc9ce079bc2d1fc57286cf765f1960d5edcf3881b50ade8cedd03"
+        },
+        {
+          "path": "tests/test_cli.py",
+          "sha256": "2cbcbe1ef6ad09658879b4eb25e55c5d7eb5470efe59e2e177a7824183c57429"
+        },
+        {
+          "path": "tests/test_compaction.py",
+          "sha256": "4df30af1ed3f62357109e6813de412c7d1934425739e72c8858586335389be5b"
+        },
+        {
+          "path": "tests/test_context.py",
+          "sha256": "6d03ccdb532f0926dff3eb848af21a7f8133ed907d65893b776f06644e26c157"
+        },
+        {
+          "path": "tests/test_context_evaluation.py",
+          "sha256": "ab6efb5bf3fb62f15e801f14f736311e5caa63d3df23e2f708cdf52fd027e01f"
+        },
+        {
+          "path": "tests/test_development_evaluation.py",
+          "sha256": "4b54bcef7e85759b2c2aa287ad9c94902c4017fd33bc2d4b0ba22c36cc08c2fb"
+        },
+        {
+          "path": "tests/test_evidence.py",
+          "sha256": "ee47eeb31f6580d03a9dd11458df522b5afa42240dc492db027b6841252a98d2"
+        },
+        {
+          "path": "tests/test_guards.py",
+          "sha256": "d5066bed10e90655d475a16f9916089727f60967933a6f26021c41dab9c62ebc"
+        },
+        {
+          "path": "tests/test_lifecycle.py",
+          "sha256": "be786c46ee1787411f8be62510718569aa6e6053969e9d682f0e56afd0b7fa56"
+        },
+        {
+          "path": "tests/test_maintain.py",
+          "sha256": "55192d60a15037dcea5beba69c907f442711118f4d932eb6136366f34ffdac75"
+        },
+        {
+          "path": "tests/test_mcp.py",
+          "sha256": "fc6858c538eb041466c0e410993810d408b0186b5c819cbf523aa640cdf74a3b"
+        },
+        {
+          "path": "tests/test_operational_lifecycle.py",
+          "sha256": "0689a1e79b6b5c8c2827ebda5c86570d0dee67d391ec4e1ffb6ff5709ed0b276"
+        },
+        {
+          "path": "tests/test_packaging.py",
+          "sha256": "89e629971f38e1060585ac51264e9bf6da081484c1b549feccd342c7ab6e1387"
+        },
+        {
+          "path": "tests/test_pages.py",
+          "sha256": "bcb4e0c4071696b0ef4fd17598a69362d9649bede82c939268a7218fef6a3db5"
+        },
+        {
+          "path": "tests/test_semantics.py",
+          "sha256": "53240d98b06e7e2887b4d301ec890950610bae8ee7636baabdc7c507c9d84326"
+        },
+        {
+          "path": "tests/test_store.py",
+          "sha256": "dfa5cce3b07ce4bffed6265e00eee0ea0b20b014700fbb9228a5cfb48db7ea8b"
+        },
+        {
+          "path": "uv.lock",
+          "sha256": "59bd80f92d65d7663029cfe7c52d7f23d8ecc0311d4e8effa485bc4b731a76bd"
+        }
+      ],
+      "installs": [
+        {
+          "agent": "Codex",
+          "action": "refreshed",
+          "version": "0.5.0+local.r639251912800549231.23a3f874131577fa",
+          "path": "C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251912800549231.23a3f874131577fa"
+        },
+        {
+          "agent": "Claude",
+          "action": "refreshed",
+          "version": "0.5.0+local.r639251912800549231.23a3f874131577fa",
+          "path": "C:\\Users\\ryanf\\.claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251912800549231.23a3f874131577fa"
+        }
+      ]
+    },
+    "locked_files_proof": {
+      "passed": true,
+      "held_handles": 2,
+      "prior_files_preserved": 108,
+      "previous_paths": [
+        "C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.16b0ba1fc32251c8",
+        "C:\\Users\\ryanf\\.claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.16b0ba1fc32251c8"
+      ],
+      "handles_usable": true
+    },
+    "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  Codex  codex-cli 0.154.0\n  Claude  2.1.263 (Claude Code)\n  Prepared 47 files  /  0.5.0+local.r639251912800549231.23a3f874131577fa\n  Codex  refreshed\n  C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251912800549231.23a3f874131577fa\n  Claude  refreshed\n  C:\\Users\\ryanf\\.claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251912800549231.23a3f874131577fa\n  Complete  /  9.3s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install\\logs\\20260916-143438-790-33732\n\n",
+    "installed_files_equal_staged_files": {
+      "Codex": [
+        ".claude-plugin/plugin.json",
+        ".codex-plugin/plugin.json",
+        ".mcp.json",
+        "README.md",
+        "codex.mcp.json",
+        "mcp.json",
+        "plugin.json",
+        "pyproject.toml",
+        "references/FORMAT.md",
+        "skills/pacer-audit/SKILL.md",
+        "skills/pacer-audit/agents/openai.yaml",
+        "skills/pacer-develop/SKILL.md",
+        "skills/pacer-develop/agents/openai.yaml",
+        "skills/pacer-onboard/SKILL.md",
+        "skills/pacer-onboard/agents/openai.yaml",
+        "src/pacer_mcp/__init__.py",
+        "src/pacer_mcp/cli.py",
+        "src/pacer_mcp/commands.py",
+        "src/pacer_mcp/context.py",
+        "src/pacer_mcp/evidence.py",
+        "src/pacer_mcp/models.py",
+        "src/pacer_mcp/pages.py",
+        "src/pacer_mcp/query.py",
+        "src/pacer_mcp/schema.py",
+        "src/pacer_mcp/semantics.py",
+        "src/pacer_mcp/server.py",
+        "src/pacer_mcp/service.py",
+        "src/pacer_mcp/store.py",
+        "src/pacer_mcp/validation.py",
+        "tests/conftest.py",
+        "tests/test_approval.py",
+        "tests/test_cli.py",
+        "tests/test_compaction.py",
+        "tests/test_context.py",
+        "tests/test_context_evaluation.py",
+        "tests/test_development_evaluation.py",
+        "tests/test_evidence.py",
+        "tests/test_guards.py",
+        "tests/test_lifecycle.py",
+        "tests/test_maintain.py",
+        "tests/test_mcp.py",
+        "tests/test_operational_lifecycle.py",
+        "tests/test_packaging.py",
+        "tests/test_pages.py",
+        "tests/test_semantics.py",
+        "tests/test_store.py",
+        "uv.lock"
+      ],
+      "Claude": [
+        ".claude-plugin/plugin.json",
+        ".codex-plugin/plugin.json",
+        ".mcp.json",
+        "README.md",
+        "codex.mcp.json",
+        "mcp.json",
+        "plugin.json",
+        "pyproject.toml",
+        "references/FORMAT.md",
+        "skills/pacer-audit/SKILL.md",
+        "skills/pacer-audit/agents/openai.yaml",
+        "skills/pacer-develop/SKILL.md",
+        "skills/pacer-develop/agents/openai.yaml",
+        "skills/pacer-onboard/SKILL.md",
+        "skills/pacer-onboard/agents/openai.yaml",
+        "src/pacer_mcp/__init__.py",
+        "src/pacer_mcp/cli.py",
+        "src/pacer_mcp/commands.py",
+        "src/pacer_mcp/context.py",
+        "src/pacer_mcp/evidence.py",
+        "src/pacer_mcp/models.py",
+        "src/pacer_mcp/pages.py",
+        "src/pacer_mcp/query.py",
+        "src/pacer_mcp/schema.py",
+        "src/pacer_mcp/semantics.py",
+        "src/pacer_mcp/server.py",
+        "src/pacer_mcp/service.py",
+        "src/pacer_mcp/store.py",
+        "src/pacer_mcp/validation.py",
+        "tests/conftest.py",
+        "tests/test_approval.py",
+        "tests/test_cli.py",
+        "tests/test_compaction.py",
+        "tests/test_context.py",
+        "tests/test_context_evaluation.py",
+        "tests/test_development_evaluation.py",
+        "tests/test_evidence.py",
+        "tests/test_guards.py",
+        "tests/test_lifecycle.py",
+        "tests/test_maintain.py",
+        "tests/test_mcp.py",
+        "tests/test_operational_lifecycle.py",
+        "tests/test_packaging.py",
+        "tests/test_pages.py",
+        "tests/test_semantics.py",
+        "tests/test_store.py",
+        "uv.lock"
+      ]
+    }
+  },
+  "native_codex": {
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "python",
+      "scripts/prove_codex.py",
+      "--installed"
+    ],
+    "passed": true,
+    "report": ".cache/c/8eecb3bf/report.json",
+    "sha256": "e38a1ea87da1bd71ff9fd23b5f44027a6bbecc8af42c818ef8b24c3aaf5abf8b",
+    "version": {
+      "code": 0,
+      "stdout": "codex-cli 0.154.0\n",
+      "stderr": ""
+    },
+    "plugins": {
+      "installed": [
+        {
+          "pluginId": "pacer@personal",
+          "name": "pacer",
+          "marketplaceName": "personal",
+          "version": "0.5.0+local.r639251912800549231.23a3f874131577fa",
+          "installed": true,
+          "enabled": true,
+          "source": {
+            "source": "local",
+            "path": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install\\builds\\0.5.0+local.r639251912800549231.23a3f874131577fa\\pacer"
+          },
+          "marketplaceSource": {
+            "sourceType": "local",
+            "source": "\\\\?\\C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install"
+          },
+          "installPolicy": "AVAILABLE",
+          "authPolicy": "ON_INSTALL"
+        }
+      ],
+      "available": []
+    },
+    "skills": {
+      "data": [
+        {
+          "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+          "skills": [
+            {
+              "name": "pacer:pacer-audit",
+              "description": "Audit PACER register integrity and compare design claims with changed source, tests and evidence. Use for PACER health checks, pre-commit review, stale work, reference drift or completion verification.",
+              "interface": {
+                "displayName": "Audit PACER",
+                "shortDescription": "Verify register integrity and source evidence",
+                "iconSmall": null,
+                "iconLarge": null,
+                "iconSmallUrl": null,
+                "iconLargeUrl": null,
+                "brandColor": null,
+                "defaultPrompt": null
+              },
+              "dependencies": {
+                "tools": [
+                  {
+                    "type": "mcp",
+                    "value": "pacer",
+                    "description": "Bundled local PACER register server"
+                  }
+                ]
+              },
+              "path": "C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251912800549231.23a3f874131577fa\\skills\\pacer-audit\\SKILL.md",
+              "scope": "user",
+              "enabled": true,
+              "pluginId": "pacer@personal"
+            },
+            {
+              "name": "pacer:pacer-develop",
+              "description": "Pace and execute development requests in PACER repositories, keeping tasks, source assets, requirements, evidence and nodule absorption connected through the guarded command lexicon.",
+              "interface": {
+                "displayName": "Develop with PACER",
+                "shortDescription": "Keep development, source and evidence connected",
+                "iconSmall": null,
+                "iconLarge": null,
+                "iconSmallUrl": null,
+                "iconLargeUrl": null,
+                "brandColor": null,
+                "defaultPrompt": null
+              },
+              "dependencies": {
+                "tools": [
+                  {
+                    "type": "mcp",
+                    "value": "pacer",
+                    "description": "Bundled local PACER register server"
+                  }
+                ]
+              },
+              "path": "C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251912800549231.23a3f874131577fa\\skills\\pacer-develop\\SKILL.md",
+              "scope": "user",
+              "enabled": true,
+              "pluginId": "pacer@personal"
+            },
+            {
+              "name": "pacer:pacer-onboard",
+              "description": "Start or resume work in a PACER-governed repository by reading its authority and querying ready tasks, design health, active growth and source references. Use when onboarding to PACER or recovering project context.",
+              "interface": {
+                "displayName": "PACER onboarding",
+                "shortDescription": "Read authority and query PACER project state",
+                "iconSmall": null,
+                "iconLarge": null,
+                "iconSmallUrl": null,
+                "iconLargeUrl": null,
+                "brandColor": null,
+                "defaultPrompt": null
+              },
+              "dependencies": {
+                "tools": [
+                  {
+                    "type": "mcp",
+                    "value": "pacer",
+                    "description": "Bundled local PACER register server"
+                  }
+                ]
+              },
+              "path": "C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251912800549231.23a3f874131577fa\\skills\\pacer-onboard\\SKILL.md",
+              "scope": "user",
+              "enabled": true,
+              "pluginId": "pacer@personal"
+            }
+          ],
+          "errors": []
+        }
+      ]
+    },
+    "tools": [
+      "pacer_graph",
+      "pacer_onboard",
+      "pacer_query",
+      "pacer_initialize",
+      "pacer_validate",
+      "pacer_migrate",
+      "pacer_evaluate",
+      "pacer_context",
+      "pacer_preview",
+      "pacer_recover",
+      "pacer_context_page",
+      "pacer_schema",
+      "pacer_apply"
+    ],
+    "paged_context_exact_roundtrip": true,
+    "fresh_thread_next_action": "verify",
+    "fresh_thread_rules": [
+      {
+        "id": "OGM-001",
+        "rule": "json_ge",
+        "authority": "USER",
+        "result": "FAIL",
+        "observed": 0,
+        "reason": "",
+        "freshness": "STALE",
+        "dependencies": {},
+        "meaning": "e1112281fd0abece0276b8d86838ef4086194f7815623eb377ed1a81229893a4"
+      }
+    ],
+    "model_turns": 0
+  },
+  "native_claude": {
+    "connection_exit": 0,
+    "details_exit": 0,
+    "connection": "plugin:pacer:pacer:\n  Scope: Dynamic config (from command line)\n  Status: \u2714 Connected",
+    "details": "pacer 0.5.0+local.r639251912800549231.23a3f874131577fa\n  Description: Operate PACER's connected task, source, design and growth registers.\n  Source: pacer@personal\n\nComponent inventory\n  Skills (3)  pacer-audit, pacer-develop, pacer-onboard\n  Agents (0)\n  Hooks (0)\n  MCP servers (1)  pacer  (tool schemas resolved at runtime; not counted)\n  LSP servers (0)\n\nProjected token cost\n  Always-on:   ~214 tok   added to every session\n\nPer-component (rounded)\n  component      always-on  on-invoke\n  pacer-audit          ~70       ~910\n  pacer-develop        ~70      ~1.9k\n  pacer-onboard        ~80        ~1k\n\n  On-invoke cost is paid each time a skill or agent fires.\n  Token counts are estimates and may differ from actual usage."
+  },
+  "repository_check": {
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "python",
+      "scripts/check.py"
+    ],
+    "exit": 0,
+    "stdout": "All checks passed!\n37 files already formatted\n........................................................................ [ 38%]\n........................................................................ [ 77%]\n.........................................                                [100%]\n185 passed in 49.87s\n{\"valid\": true, \"source_interfaces\": 495, \"examples\": 15, \"revision\": \"1cd4e7497dffafa21a92075c14ca5444fcf36fd5eea5e07db60c352e51cd750a\"}\n"
+  },
+  "limits": "Verified on Windows with Codex 0.154.0 and Claude Code 2.1.263. Controlled native CLI/MCP checks use no model turns. The existing progress renderer is unchanged; this fix did not repeat visual acceptance. Existing sessions retain their old code; new sessions load the installed update. Clock rollback, release downgrade, and competing simultaneous installer processes were not exercised."
+}
