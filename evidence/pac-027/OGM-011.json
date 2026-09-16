@@ -1,0 +1,60 @@
+{
+  "requirement": "OGM-011",
+  "meaning": "2ca0ad827d525a68afad6507111696913193501348bb58180d624ce58a3096ac",
+  "sources": {
+    "plugins/pacer/tests/test_evidence.py": "ee47eeb31f6580d03a9dd11458df522b5afa42240dc492db027b6841252a98d2",
+    "plugins/pacer/src/pacer_mcp/store.py": "266d6613f49e216567e4143afa1e8eebc4739e01914c851a6cdfefb87c29af33",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5",
+    "evidence/pac-024/verification.json": "84a0b216e2bf46451288c529bf3426c79580f19d9514bfa360aec9adf9ecf3d3",
+    "evidence/context-delivery-2026-09-15.json": "80ce4ef8e6f18264e0bcc31f3a246f640052bad8146fb25fafcc4a499dee4534",
+    "evidence/approved-foundation-2026-09-14.json": "8812e6fd696c71cfdc28689349018caffc213ebbf1719d1881e18423da19cc49",
+    "TEMPLATES/todo.PACER.csv": "58e40ca613e9d70ea7ed4b94c32c9ce763fb2c350536c41203a4aa31540d7d42",
+    "scripts/evaluate_development.py": "f470b512d121df517015c58b009c2fb601f9845f589a90fab50412a8e074f6c8",
+    "plugins/pacer/src/pacer_mcp/service.py": "98da88b1cece1e23dfe313e31ed1c622750853c8d3bdf5d6627174a20e8a2d3f",
+    "plugins/pacer/src/pacer_mcp/query.py": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8",
+    "plugins/pacer/src/pacer_mcp/pages.py": "1c2acbbd0dcc1be99def718db2ee981e3bdfec37e747befe9fc6e3c0a10ea95b",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564",
+    "plugins/pacer/src/pacer_mcp/context.py": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688",
+    "plugins/pacer/src/pacer_mcp/commands.py": "0c22263da162048bd4264ab3a7d85baa1ebf843a59dac8153d4348135623f3ee",
+    "scripts/evaluate_context.py": "006e2d70fea07cd75fca3c3339569b9d1d0ad2f6f6acd7ee200b3b68657a3897",
+    "README.md": "2fcade8778c204dd68a125c1320507cb3d3abcdacc6d119f2e105309b48b3865",
+    "plugins/pacer/uv.lock": "59bd80f92d65d7663029cfe7c52d7f23d8ecc0311d4e8effa485bc4b731a76bd",
+    "plugins/pacer/tests/test_development_evaluation.py": "4b54bcef7e85759b2c2aa287ad9c94902c4017fd33bc2d4b0ba22c36cc08c2fb",
+    "plugins/pacer/tests/test_approval.py": "4214d0e331fcc9ce079bc2d1fc57286cf765f1960d5edcf3881b50ade8cedd03",
+    "plugins/pacer/skills/pacer-onboard/SKILL.md": "6980b14ab417c3b16a0c99a479919ee16660781401b330a24fb5fed96985da84",
+    "plugins/pacer/skills/pacer-develop/SKILL.md": "caac2ab24cfb4aa92470c3da335ea7e9a8beefb3e60f55bf4c469bcb178f753a",
+    "plugins/pacer/references/FORMAT.md": "2ead1440b5d568926b2133858002f334d1e4629672d316ceb4ef2ecda0a4d7d5",
+    "plugins/pacer/README.md": "b90c8b49d6e59176c609dd463012967880e4aaa912115758406cdea430115e72",
+    "plugins/pacer/pyproject.toml": "dc1c8a955a5024602035f2f336018cf16a231f781d9f8adeff21be86488c77c5",
+    "AGENTS.md": "9f1815844f75e8f38ed0ae4e1c536caa4a27adfaa09ee99edfc2548e599598f5",
+    "plugins/pacer/tests/test_context.py": "6d03ccdb532f0926dff3eb848af21a7f8133ed907d65893b776f06644e26c157",
+    "plugins/pacer/plugin.json": "cc487d4572a3b30bd147821b18e7cfc4751c4cf600c67d0419696228b9b2387e",
+    "plugins/pacer/.mcp.json": "da062489e04b7251d8da76ba7ba5f4cb8fac9aff0f89c805623347323f9aa284",
+    "plugins/pacer/.codex-plugin/plugin.json": "56421967f1d5739d36157947777d98b28c78724cd328645ecd7b5399ce0b5769",
+    ".gitattributes": "01e0b9a0eaee481024a461656e254d5d704fd2466a14278002eba28d60d642b7"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "execution_report": "evidence/pac-027/run.json",
+  "historical_report": {
+    "path": "evidence/pac-024/OGM-011.json",
+    "sha256": "be840833f28a8b272db71574cf1984e6eabbc494aeeebc1691ef70298b82628f"
+  },
+  "limits": "Local source, regression, stdio and copied-plugin verification only. No plugin installation or native model turn in this task; OGM-014 and OGM-021 remain PACED_REQUIREMENT. Historical model measurements are retained unchanged.",
+  "changed_prior_sources": [
+    "plugins/pacer/src/pacer_mcp/commands.py"
+  ],
+  "checked_at": "2026-09-16T17:41:20.171683+00:00",
+  "execution_sha256": "d75bcbafa92b4a6585933fd48d5eed314d4a924afe5f8d4d6939f285ef2129e2",
+  "reviewed_scope": "Current deterministic/manual evidence, source drift, transitive dependency and acceptance guard tests pass. Prior historical reports remain intact."
+}

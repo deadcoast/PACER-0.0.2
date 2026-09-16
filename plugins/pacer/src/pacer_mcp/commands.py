@@ -477,7 +477,7 @@ class Editor:
         self.note(row, "approval decision " + state + "; evidence and previous decisions retained")
 
     def split(self, row_id: str, children: list[dict]) -> None:
-        """Preserve the parent's DoD, add child work and block the parent on it."""
+        """Preserve the parent's scope and DoD, add child work and block the parent on it."""
         register, parent = self.find(row_id)
         if register != "todo" or parent["Status"] != "DOING" or len(children) < 2:
             raise ValueError("split requires a DOING task and at least two narrower children")
@@ -499,7 +499,10 @@ class Editor:
                 k: parent[k]
                 for k in ("Phase", "Priority", "Assignee", "OGMRefs", "OVRRefs", "NDLRefs", "Tags")
             }
-            child = self.add("todo", inherited | values)
+            child_values = inherited | values
+            if set(refs(parent["NDLRefs"])) - set(refs(child_values["NDLRefs"])):
+                raise ValueError("Cannot remove admitted nodule scope from split children")
+            child = self.add("todo", child_values)
             if approval_state(parent) == "APPROVED":
                 self.approval(
                     "todo",

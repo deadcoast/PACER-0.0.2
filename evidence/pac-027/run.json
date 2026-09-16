@@ -1,0 +1,119 @@
+{
+  "task": "PAC-027",
+  "nodule": "NDL-010",
+  "recorded_at": "2026-09-16T17:41:20.171683+00:00",
+  "base_commit": "716d7ed",
+  "source_hashes": {
+    "plugins/pacer/src/pacer_mcp/commands.py": "0c22263da162048bd4264ab3a7d85baa1ebf843a59dac8153d4348135623f3ee",
+    "plugins/pacer/tests/test_guards.py": "d5066bed10e90655d475a16f9916089727f60967933a6f26021c41dab9c62ebc"
+  },
+  "baseline": {
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "python",
+      "scripts/check.py"
+    ],
+    "returncode": 0,
+    "stdout": "All checks passed!\n37 files already formatted\n180 passed in 45.57s\nsource_interfaces=446; examples=15; valid=true",
+    "capture": "Summary transcribed from tool execution; subsequent runs retain full subprocess output."
+  },
+  "environment": {
+    "UV_CACHE_DIR": "temporary writable pacer-uv-cache"
+  },
+  "attempts": {
+    "red": {
+      "command": [
+        "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\plugins\\pacer\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "plugins/pacer/tests/test_guards.py",
+        "-k",
+        "split",
+        "-q"
+      ],
+      "returncode": 1,
+      "stdout": ".FFFFF                                                                   [100%]\n================================== FAILURES ===================================\n_________________ test_split_cannot_discard_parent_nodule[0] __________________\n\noperational = <pacer_mcp.service.Service object at 0x000001FD46AD4550>\noperate = <function operate.<locals>.run at 0x000001FD46ACF600>\nchild_position = 0\n\n    @pytest.mark.parametrize(\"child_position\", [0, 1])\n    def test_split_cannot_discard_parent_nodule(operational, operate, child_position):\n        operate({\"op\": \"transition\", \"id\": \"PAC-001\", \"status\": \"DOING\"})\n        children = [\n            {\"ID\": \"PAC-001A\", \"Title\": \"Part A\", \"DoD\": \"A checked\"},\n            {\"ID\": \"PAC-001B\", \"Title\": \"Part B\", \"DoD\": \"B checked\"},\n        ]\n        children[child_position].update(NDLRefs=\"\", OGMRefs=\"\", OVRRefs=\"\")\n        with operational.store.locked():\n            before = operational.store.load().files\n>       with pytest.raises(ValueError, match=\"Cannot remove admitted nodule scope\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'ValueError'>\n\nplugins\\pacer\\tests\\test_guards.py:222: Failed\n_________________ test_split_cannot_discard_parent_nodule[1] __________________\n\noperational = <pacer_mcp.service.Service object at 0x000001FD46AD51D0>\noperate = <function operate.<locals>.run at 0x000001FD46B699E0>\nchild_position = 1\n\n    @pytest.mark.parametrize(\"child_position\", [0, 1])\n    def test_split_cannot_discard_parent_nodule(operational, operate, child_position):\n        operate({\"op\": \"transition\", \"id\": \"PAC-001\", \"status\": \"DOING\"})\n        children = [\n            {\"ID\": \"PAC-001A\", \"Title\": \"Part A\", \"DoD\": \"A checked\"},\n            {\"ID\": \"PAC-001B\", \"Title\": \"Part B\", \"DoD\": \"B checked\"},\n        ]\n        children[child_position].update(NDLRefs=\"\", OGMRefs=\"\", OVRRefs=\"\")\n        with operational.store.locked():\n            before = operational.store.load().files\n>       with pytest.raises(ValueError, match=\"Cannot remove admitted nodule scope\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'ValueError'>\n\nplugins\\pacer\\tests\\test_guards.py:222: Failed\n____________ test_split_cannot_drop_one_of_multiple_parent_nodules ____________\n\npaced = <pacer_mcp.service.Service object at 0x000001FD46B642B0>\napply = <function apply.<locals>.run at 0x000001FD46B69C60>\n\n    def test_split_cannot_drop_one_of_multiple_parent_nodules(paced, apply):\n        apply(\n            {\n                \"op\": \"pace\",\n                \"nodule\": {\n                    \"ID\": \"NDL-002\",\n                    \"NoduleName\": \"shared-task\",\n                    \"Intent\": \"Track an additional requirement of the same task\",\n                    \"Lane\": \"two\",\n                    \"SpawnedPACs\": \"PAC-001\",\n                    \"AbsorptionCriteria\": \"Task checked\",\n                },\n                \"tasks\": [],\n            },\n            {\"op\": \"transition\", \"id\": \"PAC-001\", \"status\": \"DOING\"},\n        )\n        before = paced.onboard()[\"revision\"]\n>       with pytest.raises(ValueError, match=\"Cannot remove admitted nodule scope\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'ValueError'>\n\nplugins\\pacer\\tests\\test_guards.py:245: Failed\n_____ test_split_retains_child_context_gate_and_parent_approval[fields0] ______\n\noperational = <pacer_mcp.service.Service object at 0x000001FD46B649D0>\noperate = <function operate.<locals>.run at 0x000001FD46B6A0C0>, fields = {}\n\n    @pytest.mark.parametrize(\"fields\", [{}, {\"NDLRefs\": \"NDL-001\"}])\n    def test_split_retains_child_context_gate_and_parent_approval(operational, operate, fields):\n        operate(\n            {\"op\": \"approval\", \"id\": \"PAC-001\", \"state\": \"APPROVED\", \"evidence\": \"Maintain retries\"},\n            {\"op\": \"transition\", \"id\": \"PAC-001\", \"status\": \"DOING\"},\n        )\n        operate(\n            {\n                \"op\": \"split\",\n                \"id\": \"PAC-001\",\n                \"children\": [\n                    {\"ID\": \"PAC-001A\", \"Title\": \"Part A\", \"DoD\": \"A checked\", **fields},\n                    {\"ID\": \"PAC-001B\", \"Title\": \"Part B\", \"DoD\": \"B checked\", **fields},\n                ],\n            }\n        )\n        parent = operational.query(\"todo\", where={\"ID\": \"PAC-001\"})[\"rows\"][0]\n        assert parent[\"DoD\"] == \"Rule holds\"\n        assert parent[\"BlockedBy\"] == \"PAC-001A;PAC-001B\"\n        nodule = operational.query(\"nodule\", where={\"ID\": \"NDL-001\"})[\"rows\"][0]\n        assert nodule[\"SpawnedPACs\"] == \"PAC-001;PAC-001A;PAC-001B\"\n        for child_id in (\"PAC-001A\", \"PAC-001B\"):\n            child = operational.query(\"todo\", where={\"ID\": child_id})[\"rows\"][0]\n>           assert child[\"NDLRefs\"] == \"NDL-001\"\n                   ^^^^^^^^^^^^^^^^\nE           KeyError: 'NDLRefs'\n\nplugins\\pacer\\tests\\test_guards.py:287: KeyError\n_____ test_split_retains_child_context_gate_and_parent_approval[fields1] ______\n\noperational = <pacer_mcp.service.Service object at 0x000001FD46B35FD0>\noperate = <function operate.<locals>.run at 0x000001FD46B6AF20>\nfields = {'NDLRefs': 'NDL-001'}\n\n    @pytest.mark.parametrize(\"fields\", [{}, {\"NDLRefs\": \"NDL-001\"}])\n    def test_split_retains_child_context_gate_and_parent_approval(operational, operate, fields):\n        operate(\n            {\"op\": \"approval\", \"id\": \"PAC-001\", \"state\": \"APPROVED\", \"evidence\": \"Maintain retries\"},\n            {\"op\": \"transition\", \"id\": \"PAC-001\", \"status\": \"DOING\"},\n        )\n        operate(\n            {\n                \"op\": \"split\",\n                \"id\": \"PAC-001\",\n                \"children\": [\n                    {\"ID\": \"PAC-001A\", \"Title\": \"Part A\", \"DoD\": \"A checked\", **fields},\n                    {\"ID\": \"PAC-001B\", \"Title\": \"Part B\", \"DoD\": \"B checked\", **fields},\n                ],\n            }\n        )\n        parent = operational.query(\"todo\", where={\"ID\": \"PAC-001\"})[\"rows\"][0]\n        assert parent[\"DoD\"] == \"Rule holds\"\n        assert parent[\"BlockedBy\"] == \"PAC-001A;PAC-001B\"\n        nodule = operational.query(\"nodule\", where={\"ID\": \"NDL-001\"})[\"rows\"][0]\n        assert nodule[\"SpawnedPACs\"] == \"PAC-001;PAC-001A;PAC-001B\"\n        for child_id in (\"PAC-001A\", \"PAC-001B\"):\n            child = operational.query(\"todo\", where={\"ID\": child_id})[\"rows\"][0]\n>           assert child[\"NDLRefs\"] == \"NDL-001\"\n                   ^^^^^^^^^^^^^^^^\nE           KeyError: 'NDLRefs'\n\nplugins\\pacer\\tests\\test_guards.py:287: KeyError\n=========================== short test summary info ===========================\nFAILED plugins\\pacer\\tests\\test_guards.py::test_split_cannot_discard_parent_nodule[0]\nFAILED plugins\\pacer\\tests\\test_guards.py::test_split_cannot_discard_parent_nodule[1]\nFAILED plugins\\pacer\\tests\\test_guards.py::test_split_cannot_drop_one_of_multiple_parent_nodules\nFAILED plugins\\pacer\\tests\\test_guards.py::test_split_retains_child_context_gate_and_parent_approval[fields0]\nFAILED plugins\\pacer\\tests\\test_guards.py::test_split_retains_child_context_gate_and_parent_approval[fields1]\n5 failed, 1 passed, 38 deselected in 1.39s\n",
+      "stderr": ""
+    },
+    "red-corrected": {
+      "command": [
+        "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\plugins\\pacer\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "plugins/pacer/tests/test_guards.py",
+        "-k",
+        "split",
+        "-q"
+      ],
+      "returncode": 1,
+      "stdout": ".FFF..                                                                   [100%]\n================================== FAILURES ===================================\n_________________ test_split_cannot_discard_parent_nodule[0] __________________\n\noperational = <pacer_mcp.service.Service object at 0x000002B306AE4550>\noperate = <function operate.<locals>.run at 0x000002B306ADB600>\nchild_position = 0\n\n    @pytest.mark.parametrize(\"child_position\", [0, 1])\n    def test_split_cannot_discard_parent_nodule(operational, operate, child_position):\n        operate({\"op\": \"transition\", \"id\": \"PAC-001\", \"status\": \"DOING\"})\n        children = [\n            {\"ID\": \"PAC-001A\", \"Title\": \"Part A\", \"DoD\": \"A checked\"},\n            {\"ID\": \"PAC-001B\", \"Title\": \"Part B\", \"DoD\": \"B checked\"},\n        ]\n        children[child_position].update(NDLRefs=\"\", OGMRefs=\"\", OVRRefs=\"\")\n        with operational.store.locked():\n            before = operational.store.load().files\n>       with pytest.raises(ValueError, match=\"Cannot remove admitted nodule scope\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'ValueError'>\n\nplugins\\pacer\\tests\\test_guards.py:222: Failed\n_________________ test_split_cannot_discard_parent_nodule[1] __________________\n\noperational = <pacer_mcp.service.Service object at 0x000002B306AE51D0>\noperate = <function operate.<locals>.run at 0x000002B306B419E0>\nchild_position = 1\n\n    @pytest.mark.parametrize(\"child_position\", [0, 1])\n    def test_split_cannot_discard_parent_nodule(operational, operate, child_position):\n        operate({\"op\": \"transition\", \"id\": \"PAC-001\", \"status\": \"DOING\"})\n        children = [\n            {\"ID\": \"PAC-001A\", \"Title\": \"Part A\", \"DoD\": \"A checked\"},\n            {\"ID\": \"PAC-001B\", \"Title\": \"Part B\", \"DoD\": \"B checked\"},\n        ]\n        children[child_position].update(NDLRefs=\"\", OGMRefs=\"\", OVRRefs=\"\")\n        with operational.store.locked():\n            before = operational.store.load().files\n>       with pytest.raises(ValueError, match=\"Cannot remove admitted nodule scope\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'ValueError'>\n\nplugins\\pacer\\tests\\test_guards.py:222: Failed\n____________ test_split_cannot_drop_one_of_multiple_parent_nodules ____________\n\npaced = <pacer_mcp.service.Service object at 0x000002B306B8C2B0>\napply = <function apply.<locals>.run at 0x000002B306B41C60>\n\n    def test_split_cannot_drop_one_of_multiple_parent_nodules(paced, apply):\n        apply(\n            {\n                \"op\": \"pace\",\n                \"nodule\": {\n                    \"ID\": \"NDL-002\",\n                    \"NoduleName\": \"shared-task\",\n                    \"Intent\": \"Track an additional requirement of the same task\",\n                    \"Lane\": \"two\",\n                    \"SpawnedPACs\": \"PAC-001\",\n                    \"AbsorptionCriteria\": \"Task checked\",\n                },\n                \"tasks\": [],\n            },\n            {\"op\": \"transition\", \"id\": \"PAC-001\", \"status\": \"DOING\"},\n        )\n        before = paced.onboard()[\"revision\"]\n>       with pytest.raises(ValueError, match=\"Cannot remove admitted nodule scope\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'ValueError'>\n\nplugins\\pacer\\tests\\test_guards.py:245: Failed\n=========================== short test summary info ===========================\nFAILED plugins\\pacer\\tests\\test_guards.py::test_split_cannot_discard_parent_nodule[0]\nFAILED plugins\\pacer\\tests\\test_guards.py::test_split_cannot_discard_parent_nodule[1]\nFAILED plugins\\pacer\\tests\\test_guards.py::test_split_cannot_drop_one_of_multiple_parent_nodules\n3 failed, 3 passed, 38 deselected in 1.61s\n",
+      "stderr": ""
+    },
+    "green": {
+      "command": [
+        "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\plugins\\pacer\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "plugins/pacer/tests/test_guards.py",
+        "plugins/pacer/tests/test_approval.py",
+        "plugins/pacer/tests/test_context.py",
+        "-q"
+      ],
+      "returncode": 0,
+      "stdout": "....................................................................     [100%]\n68 passed in 9.98s\n",
+      "stderr": ""
+    },
+    "full-lint-failure": {
+      "command": [
+        "uv",
+        "run",
+        "--project",
+        "plugins/pacer",
+        "--locked",
+        "python",
+        "scripts/check.py"
+      ],
+      "returncode": 1,
+      "stdout": "E501 Line too long (101 > 100)\n   --> plugins\\pacer\\tests\\test_guards.py:293:101\n    |\n291 |         assert child[\"NDLRefs\"] == \"NDL-001\"\n292 |         assert child[\"ApprovalState\"] == \"APPROVED\"\n293 |         assert child[\"ApprovalEvidence\"] == \"Derived split within approved PAC-001: Maintain retries\"\n    |                                                                                                     ^\n294 |         receipt = operational.onboard()\n295 |         options = {\n    |\n\nFound 1 error.\n",
+      "stderr": ""
+    }
+  },
+  "full_check": {
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "python",
+      "scripts/check.py"
+    ],
+    "returncode": 0,
+    "stdout": "All checks passed!\n37 files already formatted\n........................................................................ [ 38%]\n........................................................................ [ 77%]\n.........................................                                [100%]\n185 passed in 49.88s\n{\"valid\": true, \"source_interfaces\": 470, \"examples\": 15, \"revision\": \"6569bb390ff8924b72bcf12767d50ff94378bb269c64160bf30a5a3bc7d99675\"}\n",
+    "stderr": ""
+  },
+  "review": {
+    "defect": "Split child overrides could clear NDLRefs and activate outside REQUIRED context; reproduced through public Service.",
+    "context_measurement": {
+      "required_bytes": 186813,
+      "rows": 407,
+      "relations": 3907
+    },
+    "documentation_followup": "plugins/pacer/README.md says 12 tools; actual server exposes 14.",
+    "limits": "Local source, regression, stdio and copied-plugin verification only. No plugin installation or native model turn in this task; OGM-014 and OGM-021 remain PACED_REQUIREMENT. Historical model measurements are retained unchanged."
+  },
+  "installed_identity": {
+    "plugins/pacer/src/pacer_mcp/commands.py": {
+      "source": "0c22263da162048bd4264ab3a7d85baa1ebf843a59dac8153d4348135623f3ee",
+      "installed": "ef995551174567108cb5ef26fb4c5094f6e4279dee7bbaf012a46364a2586e01"
+    },
+    "plugins/pacer/tests/test_guards.py": {
+      "source": "d5066bed10e90655d475a16f9916089727f60967933a6f26021c41dab9c62ebc",
+      "installed": "ce91a9864e2085d2c7f4ced1f5c67e9220d428c2e8d61285b6ff97edd431e72c"
+    }
+  }
+}

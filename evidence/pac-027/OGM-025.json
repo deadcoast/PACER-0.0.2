@@ -1,0 +1,30 @@
+{
+  "requirement": "OGM-025",
+  "meaning": "5d1fec94abfc4eb4f0c8ff6411094817ec3bc1e716be3c2dee4b14548fbbb485",
+  "sources": {
+    "plugins/pacer/tests/test_guards.py": "d5066bed10e90655d475a16f9916089727f60967933a6f26021c41dab9c62ebc",
+    "plugins/pacer/src/pacer_mcp/store.py": "266d6613f49e216567e4143afa1e8eebc4739e01914c851a6cdfefb87c29af33",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5",
+    "plugins/pacer/src/pacer_mcp/commands.py": "0c22263da162048bd4264ab3a7d85baa1ebf843a59dac8153d4348135623f3ee",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564",
+    "plugins/pacer/src/pacer_mcp/context.py": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "execution_report": "evidence/pac-027/run.json",
+  "historical_report": null,
+  "limits": "Local source, regression, stdio and copied-plugin verification only. No plugin installation or native model turn in this task; OGM-014 and OGM-021 remain PACED_REQUIREMENT. Historical model measurements are retained unchanged.",
+  "checked_at": "2026-09-16T17:41:20.171683+00:00",
+  "execution_sha256": "d75bcbafa92b4a6585933fd48d5eed314d4a924afe5f8d4d6939f285ef2129e2",
+  "reviewed_scope": "Three pre-fix failures prove the escaped split-child admission defect. Five added cases and the complete 185-test suite now pass, including atomic rollback, all parent nodule retention, inherited/explicit membership, child context and approval provenance."
+}
