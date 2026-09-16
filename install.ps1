@@ -22,7 +22,9 @@ $logPath = Join-Path $logRoot 'install.log'
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 $script:step = 0
 $script:drawn = $false
-$script:interactive = -not $NoAnimation -and -not [Console]::IsOutputRedirected
+$script:interactive = -not $NoAnimation -and ($Host.UI.SupportsVirtualTerminal -or -not [Console]::IsOutputRedirected)
+$script:progressLabel = ''
+$script:progressPercent = -1
 $script:started = [Diagnostics.Stopwatch]::StartNew()
 $script:results = @()
 
@@ -33,28 +35,41 @@ function Write-InstallLog([string]$Kind, [string]$Message) {
 function Clear-InstallProgress {
     if ($script:drawn) {
         $esc = [char]27
-        [Console]::Write("${esc}[2K`r${esc}[1A${esc}[2K`r")
+        Write-Host "${esc}[2K`r${esc}[1A${esc}[2K`r" -NoNewline
         $script:drawn = $false
     }
 }
 
 function Show-InstallProgress([string]$Label, [string]$Current, [int]$Percent = -1) {
-    if (-not $script:interactive) { return }
     $esc = [char]27
-    $width = [Math]::Max(20, [Console]::WindowWidth - 5)
+    $width = 115
+    try {
+        if ($Host.UI.RawUI.WindowSize.Width -gt 10) { $width = $Host.UI.RawUI.WindowSize.Width - 5 }
+    } catch { } # Some PowerShell hosts expose output without a console window.
     if ($Percent -ge 0) {
         $filled = [int][Math]::Floor($Percent / 5)
         $bar = ('=' * $filled).PadRight(20, ' ')
         $line = "  [$bar] $($Percent.ToString().PadLeft(3))%  $Label"
     } else {
-        $frame = @('|', '/', '-', '\')[[int]($script:started.ElapsedMilliseconds / 120) % 4]
-        $line = "  [$frame] $Label  $([int]$script:started.Elapsed.TotalSeconds)s"
+        # This moving segment means busy; CLI operations expose no percentage.
+        $position = [int]($script:started.ElapsedMilliseconds / 120) % 34
+        if ($position -gt 17) { $position = 34 - $position }
+        $bar = (' ' * $position + '===').PadRight(20, ' ')
+        $line = "  [$bar] $Label  $([int]$script:started.Elapsed.TotalSeconds)s"
     }
     if ($line.Length -gt $width) { $line = $line.Substring(0, $width) }
     if ($Current.Length -gt $width - 2) { $Current = '...' + $Current.Substring($Current.Length - ($width - 5)) }
-    if ($script:drawn) { [Console]::Write("${esc}[1A`r") }
-    [Console]::Write("${esc}[2K${esc}[90m$line${esc}[0m`r`n${esc}[2K${esc}[90m  $Current${esc}[0m`r")
-    $script:drawn = $true
+    if ($script:interactive) {
+        if ($script:drawn) { Write-Host "${esc}[1A`r" -NoNewline }
+        Write-Host "${esc}[2K$line`r`n${esc}[2K  $Current`r" -NoNewline -ForegroundColor DarkGray
+        $script:drawn = $true
+    } elseif ($Label -ne $script:progressLabel -or ($Percent -eq 100 -and $script:progressPercent -ne 100)) {
+        # Keep progress visible without cursor controls in transcripts and plain hosts.
+        Write-Host $line -ForegroundColor DarkGray
+        Write-Host "  $Current" -ForegroundColor DarkGray
+    }
+    $script:progressLabel = $Label
+    $script:progressPercent = $Percent
 }
 
 function Write-InstallMilestone([string]$Message, [ConsoleColor]$Color = 'Cyan') {
@@ -145,6 +160,7 @@ try {
     Write-Host "`n  PACER / install" -ForegroundColor White
     Write-Host "  Current source -> your agent CLIs`n" -ForegroundColor DarkGray
     Write-InstallLog 'START' "source=$pacerRoot; agent=$Agent; PowerShell=$($PSVersionTable.PSVersion); user=$([Environment]::UserName)"
+    Write-InstallLog 'DISPLAY' "animated=$script:interactive; host=$($Host.Name); virtualTerminal=$($Host.UI.SupportsVirtualTerminal); outputRedirected=$([Console]::IsOutputRedirected)"
     $null = Get-Command uv -ErrorAction Stop
     $hosts = @()
     foreach ($name in @('Codex', 'Claude')) {
@@ -288,7 +304,9 @@ try {
         Write-InstallMilestone $installedPath DarkGray
     }
     Write-InstallJson (Join-Path $logRoot 'result.json') ([ordered]@{ source = $pacerRoot; digest = $digest; files = $inventory; installs = $script:results })
-    Write-InstallMilestone "Complete  /  $([Math]::Round($script:started.Elapsed.TotalSeconds, 1))s" Green
+    Show-InstallProgress 'Complete' "$($script:results.Count) agent CLI(s)  /  $($files.Count) files  /  $([Math]::Round($script:started.Elapsed.TotalSeconds, 1))s" 100
+    if ($script:drawn) { Write-Host ''; $script:drawn = $false }
+    Write-InstallLog 'INFO' 'Installation complete'
     Write-Host '  Start a new agent session to load the updated skills and MCP server.' -ForegroundColor Gray
     Write-Host "  Logs: $logRoot`n" -ForegroundColor DarkGray
 } catch {

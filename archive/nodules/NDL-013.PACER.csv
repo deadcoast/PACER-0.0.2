@@ -1,0 +1,26 @@
+ID,NoduleName,Intent,Status,TargetOVR,NewAssets,OGMTargets,SpawnedPACs,AbsorptionCriteria,Tags,Notes,CreatedAt,AbsorbedAt,Lane,AcceptanceEvidence,UserRequest,ContextPolicy
+NDL-013,Visible installer progress through the PowerShell host,Correct absent installer progress and keep the bar visible during file and CLI work with subdued current-item detail and a retained completion display.,ABSORBED,OVR-472;OVR-475;OVR-499;OVR-500;OVR-501;OVR-502,evidence/pac-031/run.json;evidence/pac-031/OGM-026.json;evidence/pac-031/OGM-027.json;evidence/pac-031/cache-failure.txt,OGM-026;OGM-027,PAC-031,"Default installation displays a bar and current file or CLI detail throughout work in supported PowerShell hosts; nonanimated output retains useful progress without cursor control; completion remains visible and failures remain complete. Exercise the rendered progress branch and both PowerShell engines, refresh the live integrations under existing approval, and retain current acceptance.",,"2026-09-16T22:35:29Z codex: added nodule row | 2026-09-16T22:44:37Z codex: updated NewAssets | 2026-09-16T22:44:37Z codex: linked TargetOVR to OVR-499 | 2026-09-16T22:50:21Z codex: linked TargetOVR to OVR-500 | 2026-09-16T22:50:21Z codex: linked TargetOVR to OVR-501 | 2026-09-16T22:50:21Z codex: linked TargetOVR to OVR-502 | 2026-09-16T22:51:52Z codex: ACTIVE->ABSORBED; evidence: Progress regression reproduced and fixed; both terminal default refreshes and all 35 checks per engine pass. Four evidence assets mapped, manual acceptance current, full candidate check passes 185 tests and final source inventory validates 502 interfaces. User's concurrent uv/log changes remain separate.",2026-09-16T22:35:29Z,2026-09-16T22:51:52Z,main,"Progress regression reproduced and fixed; both terminal default refreshes and all 35 checks per engine pass. Four evidence assets mapped, manual acceptance current, full candidate check passes 185 tests and final source inventory validates 502 interfaces. User's concurrent uv/log changes remain separate.","> INSTALLATION AND REFRESH WAS APPROVED.
+> There still seems to be no progress bar.
+
+```
+PACER on  codex/operational-context 
+❯ .\install.ps1
+
+  PACER / install
+  Current source -> your agent CLIs
+
+  Codex  codex-cli 0.154.0
+  Claude  2.1.263 (Claude Code)
+  Prepared 47 files  /  0.5.0+local.r639251946004361685.23a3f874131577fa
+  Codex  refreshed
+  C:\Users\ryanf\.codex\plugins\cache\personal\pacer\0.5.0+local.r639251946004361685.23a3f874131577fa
+  Claude  refreshed
+  C:\Users\ryanf\.claude\plugins\cache\personal\pacer\0.5.0-local.r639251946004361685.23a3f874131577fa
+  Complete  /  9.8s
+  Start a new agent session to load the updated skills and MCP server.
+  Logs: C:\Users\ryanf\github\ASSETS\PACER\.cache\install\logs\20260916-152959-189-18868
+
+
+PACER on  codex/operational-context took 9s 
+❯ 
+```",REQUIRED

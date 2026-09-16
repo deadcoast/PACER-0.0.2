@@ -18,10 +18,12 @@ function Assert-Install($Condition, [string]$Message) {
     $script:checks += $Message
 }
 
-function Run-Installer([string]$Label, [string]$ExtraPath = '') {
+function Run-Installer([string]$Label, [string]$ExtraPath = '', [string]$ScriptPath = '') {
     $info = New-Object Diagnostics.ProcessStartInfo
     $info.FileName = $Engine
-    $info.Arguments = '-NoProfile -ExecutionPolicy Bypass -File "' + (Join-Path $fixture 'install.ps1') + '" -NoAnimation'
+    if (-not $ScriptPath) { $ScriptPath = Join-Path $fixture 'install.ps1' }
+    $info.Arguments = '-NoProfile -ExecutionPolicy Bypass -File "' + $ScriptPath + '"'
+    if ($Label -notin @('initial', 'renderer')) { $info.Arguments += ' -NoAnimation' }
     $info.UseShellExecute = $false
     $info.CreateNoWindow = $true
     $info.WindowStyle = 'Hidden'
@@ -71,6 +73,9 @@ $obsolete = Join-Path $fixture 'plugins/pacer/removed-marker.txt'
 [IO.File]::WriteAllText($obsolete, 'obsolete', $utf8)
 $first = Run-Installer 'initial'
 Assert-Install ($first.exit -eq 0) "Initial installation succeeds (logs: $trial)"
+Assert-Install ($first.stdout -match '\[[= ]{20}\].*Reading source') 'Default output includes the source progress bar'
+Assert-Install ($first.stdout -match '\[[= ]{20}\].*Installing PACER in Codex' -and $first.stdout -match '\[[= ]{20}\].*Installing PACER in Claude') 'Both CLI installations display a bar while working'
+Assert-Install ($first.stdout -match '\[={20}\]\s+100%\s+Complete') 'The completed bar remains in default output'
 $initial = Read-InstallResult
 Assert-Install (@($initial.installs | Where-Object action -ne 'installed').Count -eq 0) 'Both absent plugins are installed'
 $originalFiles = @{}
@@ -81,6 +86,7 @@ foreach ($install in $initial.installs) {
 Remove-Item -LiteralPath $obsolete
 $second = Run-Installer 'refresh'
 Assert-Install ($second.exit -eq 0) 'Refresh succeeds'
+Assert-Install ($second.stdout -match '\[={20}\]\s+100%\s+Complete' -and -not $second.stdout.Contains([string][char]27)) 'NoAnimation retains a completed bar without cursor controls'
 $refreshed = Read-InstallResult
 Assert-Install ($initial.digest -ne $refreshed.digest) 'Changed and removed files select a new version'
 foreach ($install in $refreshed.installs) {
@@ -127,6 +133,37 @@ Assert-Install ($failure.exit -ne 0) 'A failed CLI exits nonzero'
 Assert-Install ($failure.stdout.Contains('stdout diagnostic') -and $failure.stdout.Contains('specific CLI error: test failure') -and $failure.stdout.Contains('exit 23')) 'Failure displays stdout, stderr and the original exit code'
 $latest = Get-ChildItem -LiteralPath (Join-Path $fixture '.cache/install/logs') -Directory | Sort-Object Name | Select-Object -Last 1
 Assert-Install ((Get-Content -LiteralPath (Join-Path $latest.FullName 'install.log') -Raw).Contains('specific CLI error: test failure')) 'The full failure is retained in the durable log'
+$probe = @'
+$ErrorActionPreference = 'Stop'
+$installer = Join-Path $PSScriptRoot "source with spaces and 'quote/install.ps1"
+$ast = [Management.Automation.Language.Parser]::ParseFile($installer, [ref]$null, [ref]$null)
+foreach ($function in ($ast.EndBlock.Statements | Where-Object { $_ -is [Management.Automation.Language.FunctionDefinitionAst] -and $_.Name -in @('Show-InstallProgress', 'Clear-InstallProgress') })) {
+    . ([scriptblock]::Create($function.Extent.Text))
+}
+$script:interactive = $true
+$script:drawn = $false
+$script:progressLabel = ''
+$script:progressPercent = -1
+$script:started = [Diagnostics.Stopwatch]::StartNew()
+$messages = @(& {
+    Show-InstallProgress 'Preparing PACER' 'src/pacer_mcp/commands.py' 25
+    Show-InstallProgress 'Preparing PACER' 'skills/pacer-develop/SKILL.md' 75
+    Show-InstallProgress 'Installing PACER in Codex' 'codex plugin add pacer@personal --json'
+    Clear-InstallProgress
+    Show-InstallProgress 'Complete' '2 agent CLIs' 100
+} 6>&1)
+$frames = @($messages | Where-Object { $_.MessageData.ForegroundColor -eq 'DarkGray' } | ForEach-Object { $_.ToString() })
+if ($frames.Count -ne 4) { throw 'Expected four subdued frames through the host information stream' }
+if ($frames[0] -notmatch '\[={5} {15}\].*25%' -or $frames[0] -notmatch 'commands.py') { throw 'First file frame was not rendered' }
+if ($frames[1] -notmatch '\[={15} {5}\].*75%' -or $frames[1] -notmatch 'SKILL.md') { throw 'The current file did not change with progress' }
+if ($frames[2] -notmatch '\[[= ]{20}\].*Installing PACER in Codex') { throw 'CLI work did not render a full bar' }
+if ($frames[3] -notmatch '\[={20}\].*100%') { throw 'Completion did not render' }
+@{ passed = $true; engine = $PSVersionTable.PSVersion.ToString(); frames = $frames; events = @($messages | ForEach-Object { $_.ToString() }) } | ConvertTo-Json -Depth 6
+'@
+$probePath = Join-Path $trial 'renderer.ps1'
+[IO.File]::WriteAllText($probePath, $probe, $utf8)
+$rendered = Run-Installer 'renderer' '' $probePath
+Assert-Install ($rendered.exit -eq 0) "Animated rendering updates the bar and file in subdued host output (logs: $trial)"
 $report = @{ passed = $true; engine = $Engine; checks = $checks; trial = $trial }
 [IO.File]::WriteAllText((Join-Path $trial 'report.json'), ($report | ConvertTo-Json -Depth 10), $utf8)
 $report | ConvertTo-Json -Depth 10

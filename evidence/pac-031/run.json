@@ -1,0 +1,698 @@
+{
+  "task": "PAC-031",
+  "result": "PASS",
+  "checked_at": "2026-09-16T22:48:37.703153+00:00",
+  "sources": {
+    "install.ps1": "d84fd8c2b5a115bd3d50325ba18a83e3b6f1df4ca02ed487c999ccf196c04eb3",
+    "scripts/test_install.ps1": "1b45daa124c74308633e3f29c4128ce6ee297c68cb913d62de24a748511b3b19",
+    "evidence/pac-031/cache-failure.txt": "b0355d06f0b0b4cfc2872ab6a3df6afbebceaee2bfead7250cbb5228cb8bd47f"
+  },
+  "original_failure_bytes": {
+    "source": "a1d0d27:errror_output.txt",
+    "snapshot": "evidence/pac-031/cache-failure.txt",
+    "sha256": "b0355d06f0b0b4cfc2872ab6a3df6afbebceaee2bfead7250cbb5228cb8bd47f"
+  },
+  "progress_regression": {
+    "baseline_commit": "a1d0d27",
+    "before": {
+      "ps51": {
+        "animated": false,
+        "frames": [],
+        "redirected": true,
+        "frame_count": 0
+      },
+      "ps7": {
+        "animated": false,
+        "frames": [],
+        "frame_count": 0,
+        "redirected": true
+      }
+    },
+    "after": {
+      "ps51": {
+        "animated": true,
+        "frames": [
+          "\u001b[2K  [=====               ]  25%  Reading source\r\n\u001b[2K  src/pacer_mcp/commands.py\r"
+        ],
+        "redirected": true,
+        "frame_count": 1
+      },
+      "ps7": {
+        "redirected": true,
+        "frames": [
+          "  [=====               ]  25%  Reading source",
+          "  src/pacer_mcp/commands.py"
+        ],
+        "frame_count": 2,
+        "animated": false
+      }
+    }
+  },
+  "powershell_trials": [
+    {
+      "checks": [
+        "Initial installation succeeds (logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0)",
+        "Default output includes the source progress bar",
+        "Both CLI installations display a bar while working",
+        "The completed bar remains in default output",
+        "Both absent plugins are installed",
+        "Refresh succeeds",
+        "NoAnimation retains a completed bar without cursor controls",
+        "Changed and removed files select a new version",
+        "Codex detects the existing installation",
+        "Codex receives changed contents",
+        "Codex drops removed contents",
+        "Codex installs pacer-onboard",
+        "Codex installs pacer-develop",
+        "Codex installs pacer-audit",
+        "Claude detects the existing installation",
+        "Claude receives changed contents",
+        "Claude drops removed contents",
+        "Claude installs pacer-onboard",
+        "Claude installs pacer-develop",
+        "Claude installs pacer-audit",
+        "An unchanged refresh succeeds while installed files are open (logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0)",
+        "Unchanged source keeps the same content fingerprint",
+        "Codex refresh uses a fresh cache version",
+        "Codex preserves the old installed contents",
+        "Codex preserves every file in both previous installations",
+        "Codex refresh selects a separate Python environment",
+        "Claude refresh uses a fresh cache version",
+        "Claude preserves the old installed contents",
+        "Claude preserves every file in both previous installations",
+        "Claude refresh selects a separate Python environment",
+        "Open handles remain usable throughout refresh",
+        "A failed CLI exits nonzero",
+        "Failure displays stdout, stderr and the original exit code",
+        "The full failure is retained in the durable log",
+        "Animated rendering updates the bar and file in subdued host output (logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0)"
+      ],
+      "trial": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0",
+      "engine": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "passed": true,
+      "renderer": {
+        "frames": [
+          "\u001b[2K  [=====               ]  25%  Preparing PACER\r\n\u001b[2K  src/pacer_mcp/commands.py\r",
+          "\u001b[2K  [===============     ]  75%  Preparing PACER\r\n\u001b[2K  skills/pacer-develop/SKILL.md\r",
+          "\u001b[2K  [===                 ] Installing PACER in Codex  0s\r\n\u001b[2K  codex plugin add pacer@personal --json\r",
+          "\u001b[2K  [====================] 100%  Complete\r\n\u001b[2K  2 agent CLIs\r"
+        ],
+        "passed": true,
+        "engine": "7.6.6",
+        "events": [
+          "\u001b[2K  [=====               ]  25%  Preparing PACER\r\n\u001b[2K  src/pacer_mcp/commands.py\r",
+          "\u001b[1A\r",
+          "\u001b[2K  [===============     ]  75%  Preparing PACER\r\n\u001b[2K  skills/pacer-develop/SKILL.md\r",
+          "\u001b[1A\r",
+          "\u001b[2K  [===                 ] Installing PACER in Codex  0s\r\n\u001b[2K  codex plugin add pacer@personal --json\r",
+          "\u001b[2K\r\u001b[1A\u001b[2K\r",
+          "\u001b[2K  [====================] 100%  Complete\r\n\u001b[2K  2 agent CLIs\r"
+        ]
+      },
+      "logs": {
+        "initial": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  [ ===                ] Finding Codex  0s\n  C:\\nvm4w\\nodejs\\codex.ps1 --version\n  Codex  codex-cli 0.154.0\n  [     ===            ] Finding Claude  1s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\n  Claude  2.1.263 (Claude Code)\n  [                    ]   0%  Reading source\n  .claude-plugin/plugin.json\n  [                    ]   0%  Preparing PACER\n  .claude-plugin/plugin.json\n  [====================] 100%  Preparing PACER\n  uv.lock\n  Prepared 49 files  /  0.5.0+local.r639251950918070758.fa4d010da478a1d8\n  [             ===    ] Checking Codex installation  2s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\n  [              ===   ] Checking Codex marketplace  2s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\n  [        ===         ] Registering Codex marketplace  3s\n  ...SSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\.cache\\install\n  [ ===                ] Installing PACER in Codex  4s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n  Codex  installed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251950918070758.fa4d010da478a1d8\n  [     ===            ] Checking Claude installation  5s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n  [            ===     ] Registering Claude marketplace  6s\n  ...cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\.cache\\install --scope user\n  [                === ] Installing PACER in Claude  6s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin install pacer@personal --scope user\n  [        ===         ] Locating installed Claude plugin  7s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n  Claude  installed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251950918070758.fa4d010da478a1d8\n  [====================] 100%  Complete\n  2 agent CLI(s)  /  49 files  /  7.9s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-153810-432-38808\n\n",
+          "stderr": ""
+        },
+        "refresh": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  [ ===                ] Finding Codex  0s\n  C:\\nvm4w\\nodejs\\codex.ps1 --version\n  Codex  codex-cli 0.154.0\n  [     ===            ] Finding Claude  1s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\n  Claude  2.1.263 (Claude Code)\n  [                    ]   0%  Reading source\n  .claude-plugin/plugin.json\n  [                    ]   0%  Preparing PACER\n  .claude-plugin/plugin.json\n  [====================] 100%  Preparing PACER\n  uv.lock\n  Prepared 48 files  /  0.5.0+local.r639251951003481412.034102eddcf627d8\n  [             ===    ] Checking Codex installation  2s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\n  [              ===   ] Checking Codex marketplace  2s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\n  [        ===         ] Registering Codex marketplace  3s\n  ...SSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\.cache\\install\n  [ ===                ] Installing PACER in Codex  4s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n  Codex  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251951003481412.034102eddcf627d8\n  [      ===           ] Checking Claude installation  5s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n  [            ===     ] Registering Claude marketplace  6s\n  ...cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\.cache\\install --scope user\n  [                === ] Refreshing Claude marketplace  6s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal\n  [        ===         ] Installing PACER in Claude  7s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user\n  [ ===                ] Locating installed Claude plugin  8s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n  Claude  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251951003481412.034102eddcf627d8\n  [====================] 100%  Complete\n  2 agent CLI(s)  /  48 files  /  8.8s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-153818-953-17440\n\n",
+          "stderr": ""
+        },
+        "repeat": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  [ ===                ] Finding Codex  0s\n  C:\\nvm4w\\nodejs\\codex.ps1 --version\n  Codex  codex-cli 0.154.0\n  [     ===            ] Finding Claude  1s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\n  Claude  2.1.263 (Claude Code)\n  [                    ]   0%  Reading source\n  .claude-plugin/plugin.json\n  [                    ]   0%  Preparing PACER\n  .claude-plugin/plugin.json\n  [====================] 100%  Preparing PACER\n  uv.lock\n  Prepared 48 files  /  0.5.0+local.r639251951095158624.034102eddcf627d8\n  [            ===     ] Checking Codex installation  1s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\n  [               ===  ] Checking Codex marketplace  2s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\n  [        ===         ] Registering Codex marketplace  3s\n  ...SSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\.cache\\install\n  [  ===               ] Installing PACER in Codex  4s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n  Codex  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251951095158624.034102eddcf627d8\n  [     ===            ] Checking Claude installation  5s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n  [           ===      ] Registering Claude marketplace  5s\n  ...cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\.cache\\install --scope user\n  [               ===  ] Refreshing Claude marketplace  6s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal\n  [        ===         ] Installing PACER in Claude  7s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user\n  [  ===               ] Locating installed Claude plugin  8s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n  Claude  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251951095158624.034102eddcf627d8\n  [====================] 100%  Complete\n  2 agent CLI(s)  /  48 files  /  8.7s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-153828-234-37756\n\n",
+          "stderr": ""
+        },
+        "failure": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  [ ===                ] Finding Codex  0s\n  ...yanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\failing-cli\\codex.ps1 --version\nstdout diagnostic\n\nspecific CLI error: test failure\n\n\n  PACER / installation failed\n\nPSMessageDetails      : \nException             : System.Management.Automation.RuntimeException: Finding Codex failed (exit 23). Command: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\failing-cli\\codex.ps1 --version\nTargetObject          : Finding Codex failed (exit 23). Command: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\failing-cli\\codex.ps1 --version\nCategoryInfo          : OperationStopped: (Finding Codex faile.codex.ps1 --version:String) [], RuntimeException\nFullyQualifiedErrorId : Finding Codex failed (exit 23). Command: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\failing-cli\\codex.ps1 --version\nErrorDetails          : \nInvocationInfo        : System.Management.Automation.InvocationInfo\nScriptStackTrace      : at Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\install.ps1: line 134\n                        at <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\install.ps1: line 171\nPipelineIterationInfo : {}\n\n\nat Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\install.ps1: line 134\nat <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\install.ps1: line 171\n  Full logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\7bad0eae4fd840c894d1aa00492a7ac0\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-153837-332-22776\n\n",
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "passed": true,
+      "engine": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "checks": [
+        "Initial installation succeeds (logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013)",
+        "Default output includes the source progress bar",
+        "Both CLI installations display a bar while working",
+        "The completed bar remains in default output",
+        "Both absent plugins are installed",
+        "Refresh succeeds",
+        "NoAnimation retains a completed bar without cursor controls",
+        "Changed and removed files select a new version",
+        "Codex detects the existing installation",
+        "Codex receives changed contents",
+        "Codex drops removed contents",
+        "Codex installs pacer-onboard",
+        "Codex installs pacer-develop",
+        "Codex installs pacer-audit",
+        "Claude detects the existing installation",
+        "Claude receives changed contents",
+        "Claude drops removed contents",
+        "Claude installs pacer-onboard",
+        "Claude installs pacer-develop",
+        "Claude installs pacer-audit",
+        "An unchanged refresh succeeds while installed files are open (logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013)",
+        "Unchanged source keeps the same content fingerprint",
+        "Codex refresh uses a fresh cache version",
+        "Codex preserves the old installed contents",
+        "Codex preserves every file in both previous installations",
+        "Codex refresh selects a separate Python environment",
+        "Claude refresh uses a fresh cache version",
+        "Claude preserves the old installed contents",
+        "Claude preserves every file in both previous installations",
+        "Claude refresh selects a separate Python environment",
+        "Open handles remain usable throughout refresh",
+        "A failed CLI exits nonzero",
+        "Failure displays stdout, stderr and the original exit code",
+        "The full failure is retained in the durable log",
+        "Animated rendering updates the bar and file in subdued host output (logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013)"
+      ],
+      "trial": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013",
+      "renderer": {
+        "events": [
+          "\u001b[2K  [=====               ]  25%  Preparing PACER\r\n\u001b[2K  src/pacer_mcp/commands.py\r",
+          "\u001b[1A\r",
+          "\u001b[2K  [===============     ]  75%  Preparing PACER\r\n\u001b[2K  skills/pacer-develop/SKILL.md\r",
+          "\u001b[1A\r",
+          "\u001b[2K  [===                 ] Installing PACER in Codex  0s\r\n\u001b[2K  codex plugin add pacer@personal --json\r",
+          "\u001b[2K\r\u001b[1A\u001b[2K\r",
+          "\u001b[2K  [====================] 100%  Complete\r\n\u001b[2K  2 agent CLIs\r"
+        ],
+        "engine": "5.1.26100.9444",
+        "frames": [
+          "\u001b[2K  [=====               ]  25%  Preparing PACER\r\n\u001b[2K  src/pacer_mcp/commands.py\r",
+          "\u001b[2K  [===============     ]  75%  Preparing PACER\r\n\u001b[2K  skills/pacer-develop/SKILL.md\r",
+          "\u001b[2K  [===                 ] Installing PACER in Codex  0s\r\n\u001b[2K  codex plugin add pacer@personal --json\r",
+          "\u001b[2K  [====================] 100%  Complete\r\n\u001b[2K  2 agent CLIs\r"
+        ],
+        "passed": true
+      },
+      "logs": {
+        "initial": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n\u001b[2K  [ ===                ] Finding Codex  0s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 --version\n\u001b[1A\n\u001b[2K  [  ===               ] Finding Codex  0s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 --version\n\u001b[1A\n\u001b[2K  [   ===              ] Finding Codex  0s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 --version\n\u001b[2K\n\u001b[1A\u001b[2K\n  Codex  codex-cli 0.154.0\n\u001b[2K  [    ===             ] Finding Claude  1s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\n\u001b[1A\n\u001b[2K  [      ===           ] Finding Claude  1s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\n\u001b[1A\n\u001b[2K  [       ===          ] Finding Claude  1s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\n\u001b[1A\n\u001b[2K  [        ===         ] Finding Claude  1s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\n\u001b[2K\n\u001b[1A\u001b[2K\n  Claude  2.1.263 (Claude Code)\n\u001b[2K  [                    ]   0%  Reading source\n\u001b[2K  .claude-plugin/plugin.json\n\u001b[1A\n\u001b[2K  [                    ]   2%  Reading source\n\u001b[2K  .codex-plugin/plugin.json\n\u001b[1A\n\u001b[2K  [                    ]   4%  Reading source\n\u001b[2K  .mcp.json\n\u001b[1A\n\u001b[2K  [=                   ]   6%  Reading source\n\u001b[2K  README.md\n\u001b[1A\n\u001b[2K  [=                   ]   8%  Reading source\n\u001b[2K  codex.mcp.json\n\u001b[1A\n\u001b[2K  [==                  ]  10%  Reading source\n\u001b[2K  mcp.json\n\u001b[1A\n\u001b[2K  [==                  ]  12%  Reading source\n\u001b[2K  plugin.json\n\u001b[1A\n\u001b[2K  [==                  ]  14%  Reading source\n\u001b[2K  pyproject.toml\n\u001b[1A\n\u001b[2K  [===                 ]  16%  Reading source\n\u001b[2K  references/FORMAT.md\n\u001b[1A\n\u001b[2K  [===                 ]  18%  Reading source\n\u001b[2K  refresh-marker.txt\n\u001b[1A\n\u001b[2K  [====                ]  20%  Reading source\n\u001b[2K  removed-marker.txt\n\u001b[1A\n\u001b[2K  [====                ]  22%  Reading source\n\u001b[2K  skills/pacer-audit/SKILL.md\n\u001b[1A\n\u001b[2K  [====                ]  24%  Reading source\n\u001b[2K  skills/pacer-audit/agents/openai.yaml\n\u001b[1A\n\u001b[2K  [=====               ]  27%  Reading source\n\u001b[2K  skills/pacer-develop/SKILL.md\n\u001b[1A\n\u001b[2K  [=====               ]  29%  Reading source\n\u001b[2K  skills/pacer-develop/agents/openai.yaml\n\u001b[1A\n\u001b[2K  [======              ]  31%  Reading source\n\u001b[2K  skills/pacer-onboard/SKILL.md\n\u001b[1A\n\u001b[2K  [======              ]  33%  Reading source\n\u001b[2K  skills/pacer-onboard/agents/openai.yaml\n\u001b[1A\n\u001b[2K  [=======             ]  35%  Reading source\n\u001b[2K  src/pacer_mcp/__init__.py\n\u001b[1A\n\u001b[2K  [=======             ]  37%  Reading source\n\u001b[2K  src/pacer_mcp/cli.py\n\u001b[1A\n\u001b[2K  [=======             ]  39%  Reading source\n\u001b[2K  src/pacer_mcp/commands.py\n\u001b[1A\n\u001b[2K  [========            ]  41%  Reading source\n\u001b[2K  src/pacer_mcp/context.py\n\u001b[1A\n\u001b[2K  [========            ]  43%  Reading source\n\u001b[2K  src/pacer_mcp/evidence.py\n\u001b[1A\n\u001b[2K  [=========           ]  45%  Reading source\n\u001b[2K  src/pacer_mcp/models.py\n\u001b[1A\n\u001b[2K  [=========           ]  47%  Reading source\n\u001b[2K  src/pacer_mcp/pages.py\n\u001b[1A\n\u001b[2K  [=========           ]  49%  Reading source\n\u001b[2K  src/pacer_mcp/query.py\n\u001b[1A\n\u001b[2K  [==========          ]  51%  Reading source\n\u001b[2K  src/pacer_mcp/schema.py\n\u001b[1A\n\u001b[2K  [==========          ]  53%  Reading source\n\u001b[2K  src/pacer_mcp/semantics.py\n\u001b[1A\n\u001b[2K  [===========         ]  55%  Reading source\n\u001b[2K  src/pacer_mcp/server.py\n\u001b[1A\n\u001b[2K  [===========         ]  57%  Reading source\n\u001b[2K  src/pacer_mcp/service.py\n\u001b[1A\n\u001b[2K  [===========         ]  59%  Reading source\n\u001b[2K  src/pacer_mcp/store.py\n\u001b[1A\n\u001b[2K  [============        ]  61%  Reading source\n\u001b[2K  src/pacer_mcp/validation.py\n\u001b[1A\n\u001b[2K  [============        ]  63%  Reading source\n\u001b[2K  tests/conftest.py\n\u001b[1A\n\u001b[2K  [=============       ]  65%  Reading source\n\u001b[2K  tests/test_approval.py\n\u001b[1A\n\u001b[2K  [=============       ]  67%  Reading source\n\u001b[2K  tests/test_cli.py\n\u001b[1A\n\u001b[2K  [=============       ]  69%  Reading source\n\u001b[2K  tests/test_compaction.py\n\u001b[1A\n\u001b[2K  [==============      ]  71%  Reading source\n\u001b[2K  tests/test_context.py\n\u001b[1A\n\u001b[2K  [==============      ]  73%  Reading source\n\u001b[2K  tests/test_context_evaluation.py\n\u001b[1A\n\u001b[2K  [===============     ]  76%  Reading source\n\u001b[2K  tests/test_development_evaluation.py\n\u001b[1A\n\u001b[2K  [===============     ]  78%  Reading source\n\u001b[2K  tests/test_evidence.py\n\u001b[1A\n\u001b[2K  [================    ]  80%  Reading source\n\u001b[2K  tests/test_guards.py\n\u001b[1A\n\u001b[2K  [================    ]  82%  Reading source\n\u001b[2K  tests/test_lifecycle.py\n\u001b[1A\n\u001b[2K  [================    ]  84%  Reading source\n\u001b[2K  tests/test_maintain.py\n\u001b[1A\n\u001b[2K  [=================   ]  86%  Reading source\n\u001b[2K  tests/test_mcp.py\n\u001b[1A\n\u001b[2K  [=================   ]  88%  Reading source\n\u001b[2K  tests/test_operational_lifecycle.py\n\u001b[1A\n\u001b[2K  [==================  ]  90%  Reading source\n\u001b[2K  tests/test_packaging.py\n\u001b[1A\n\u001b[2K  [==================  ]  92%  Reading source\n\u001b[2K  tests/test_pages.py\n\u001b[1A\n\u001b[2K  [==================  ]  94%  Reading source\n\u001b[2K  tests/test_semantics.py\n\u001b[1A\n\u001b[2K  [=================== ]  96%  Reading source\n\u001b[2K  tests/test_store.py\n\u001b[1A\n\u001b[2K  [=================== ]  98%  Reading source\n\u001b[2K  uv.lock\n\u001b[1A\n\u001b[2K  [                    ]   0%  Preparing PACER\n\u001b[2K  .claude-plugin/plugin.json\n\u001b[1A\n\u001b[2K  [                    ]   2%  Preparing PACER\n\u001b[2K  .codex-plugin/plugin.json\n\u001b[1A\n\u001b[2K  [                    ]   4%  Preparing PACER\n\u001b[2K  .mcp.json\n\u001b[1A\n\u001b[2K  [=                   ]   6%  Preparing PACER\n\u001b[2K  README.md\n\u001b[1A\n\u001b[2K  [=                   ]   8%  Preparing PACER\n\u001b[2K  codex.mcp.json\n\u001b[1A\n\u001b[2K  [==                  ]  10%  Preparing PACER\n\u001b[2K  mcp.json\n\u001b[1A\n\u001b[2K  [==                  ]  12%  Preparing PACER\n\u001b[2K  plugin.json\n\u001b[1A\n\u001b[2K  [==                  ]  14%  Preparing PACER\n\u001b[2K  pyproject.toml\n\u001b[1A\n\u001b[2K  [===                 ]  16%  Preparing PACER\n\u001b[2K  references/FORMAT.md\n\u001b[1A\n\u001b[2K  [===                 ]  18%  Preparing PACER\n\u001b[2K  refresh-marker.txt\n\u001b[1A\n\u001b[2K  [====                ]  20%  Preparing PACER\n\u001b[2K  removed-marker.txt\n\u001b[1A\n\u001b[2K  [====                ]  22%  Preparing PACER\n\u001b[2K  skills/pacer-audit/SKILL.md\n\u001b[1A\n\u001b[2K  [====                ]  24%  Preparing PACER\n\u001b[2K  skills/pacer-audit/agents/openai.yaml\n\u001b[1A\n\u001b[2K  [=====               ]  27%  Preparing PACER\n\u001b[2K  skills/pacer-develop/SKILL.md\n\u001b[1A\n\u001b[2K  [=====               ]  29%  Preparing PACER\n\u001b[2K  skills/pacer-develop/agents/openai.yaml\n\u001b[1A\n\u001b[2K  [======              ]  31%  Preparing PACER\n\u001b[2K  skills/pacer-onboard/SKILL.md\n\u001b[1A\n\u001b[2K  [======              ]  33%  Preparing PACER\n\u001b[2K  skills/pacer-onboard/agents/openai.yaml\n\u001b[1A\n\u001b[2K  [=======             ]  35%  Preparing PACER\n\u001b[2K  src/pacer_mcp/__init__.py\n\u001b[1A\n\u001b[2K  [=======             ]  37%  Preparing PACER\n\u001b[2K  src/pacer_mcp/cli.py\n\u001b[1A\n\u001b[2K  [=======             ]  39%  Preparing PACER\n\u001b[2K  src/pacer_mcp/commands.py\n\u001b[1A\n\u001b[2K  [========            ]  41%  Preparing PACER\n\u001b[2K  src/pacer_mcp/context.py\n\u001b[1A\n\u001b[2K  [========            ]  43%  Preparing PACER\n\u001b[2K  src/pacer_mcp/evidence.py\n\u001b[1A\n\u001b[2K  [=========           ]  45%  Preparing PACER\n\u001b[2K  src/pacer_mcp/models.py\n\u001b[1A\n\u001b[2K  [=========           ]  47%  Preparing PACER\n\u001b[2K  src/pacer_mcp/pages.py\n\u001b[1A\n\u001b[2K  [=========           ]  49%  Preparing PACER\n\u001b[2K  src/pacer_mcp/query.py\n\u001b[1A\n\u001b[2K  [==========          ]  51%  Preparing PACER\n\u001b[2K  src/pacer_mcp/schema.py\n\u001b[1A\n\u001b[2K  [==========          ]  53%  Preparing PACER\n\u001b[2K  src/pacer_mcp/semantics.py\n\u001b[1A\n\u001b[2K  [===========         ]  55%  Preparing PACER\n\u001b[2K  src/pacer_mcp/server.py\n\u001b[1A\n\u001b[2K  [===========         ]  57%  Preparing PACER\n\u001b[2K  src/pacer_mcp/service.py\n\u001b[1A\n\u001b[2K  [===========         ]  59%  Preparing PACER\n\u001b[2K  src/pacer_mcp/store.py\n\u001b[1A\n\u001b[2K  [============        ]  61%  Preparing PACER\n\u001b[2K  src/pacer_mcp/validation.py\n\u001b[1A\n\u001b[2K  [============        ]  63%  Preparing PACER\n\u001b[2K  tests/conftest.py\n\u001b[1A\n\u001b[2K  [=============       ]  65%  Preparing PACER\n\u001b[2K  tests/test_approval.py\n\u001b[1A\n\u001b[2K  [=============       ]  67%  Preparing PACER\n\u001b[2K  tests/test_cli.py\n\u001b[1A\n\u001b[2K  [=============       ]  69%  Preparing PACER\n\u001b[2K  tests/test_compaction.py\n\u001b[1A\n\u001b[2K  [==============      ]  71%  Preparing PACER\n\u001b[2K  tests/test_context.py\n\u001b[1A\n\u001b[2K  [==============      ]  73%  Preparing PACER\n\u001b[2K  tests/test_context_evaluation.py\n\u001b[1A\n\u001b[2K  [===============     ]  76%  Preparing PACER\n\u001b[2K  tests/test_development_evaluation.py\n\u001b[1A\n\u001b[2K  [===============     ]  78%  Preparing PACER\n\u001b[2K  tests/test_evidence.py\n\u001b[1A\n\u001b[2K  [================    ]  80%  Preparing PACER\n\u001b[2K  tests/test_guards.py\n\u001b[1A\n\u001b[2K  [================    ]  82%  Preparing PACER\n\u001b[2K  tests/test_lifecycle.py\n\u001b[1A\n\u001b[2K  [================    ]  84%  Preparing PACER\n\u001b[2K  tests/test_maintain.py\n\u001b[1A\n\u001b[2K  [=================   ]  86%  Preparing PACER\n\u001b[2K  tests/test_mcp.py\n\u001b[1A\n\u001b[2K  [=================   ]  88%  Preparing PACER\n\u001b[2K  tests/test_operational_lifecycle.py\n\u001b[1A\n\u001b[2K  [==================  ]  90%  Preparing PACER\n\u001b[2K  tests/test_packaging.py\n\u001b[1A\n\u001b[2K  [==================  ]  92%  Preparing PACER\n\u001b[2K  tests/test_pages.py\n\u001b[1A\n\u001b[2K  [==================  ]  94%  Preparing PACER\n\u001b[2K  tests/test_semantics.py\n\u001b[1A\n\u001b[2K  [=================== ]  96%  Preparing PACER\n\u001b[2K  tests/test_store.py\n\u001b[1A\n\u001b[2K  [=================== ]  98%  Preparing PACER\n\u001b[2K  uv.lock\n\u001b[1A\n\u001b[2K  [====================] 100%  Preparing PACER\n\u001b[2K  uv.lock\n\u001b[2K\n\u001b[1A\u001b[2K\n  Prepared 49 files  /  0.5.0+local.r639251950918671173.fa4d010da478a1d8\n\u001b[2K  [             ===    ] Checking Codex installation  2s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\n\u001b[1A\n\u001b[2K  [              ===   ] Checking Codex installation  2s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\n\u001b[1A\n\u001b[2K  [               ===  ] Checking Codex installation  2s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\n\u001b[1A\n\u001b[2K  [                === ] Checking Codex installation  2s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\n\u001b[1A\n\u001b[2K  [                 ===] Checking Codex installation  2s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\n\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[2K  [               ===  ] Checking Codex marketplace  2s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\n\u001b[1A\n\u001b[2K  [              ===   ] Checking Codex marketplace  2s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\n\u001b[1A\n\u001b[2K  [             ===    ] Checking Codex marketplace  2s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\n\u001b[1A\n\u001b[2K  [            ===     ] Checking Codex marketplace  3s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\n\u001b[1A\n\u001b[2K  [           ===      ] Checking Codex marketplace  3s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\n\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[2K  [          ===       ] Registering Codex marketplace  3s\n\u001b[2K  ...SSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\n\u001b[1A\n\u001b[2K  [         ===        ] Registering Codex marketplace  3s\n\u001b[2K  ...SSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\n\u001b[1A\n\u001b[2K  [        ===         ] Registering Codex marketplace  3s\n\u001b[2K  ...SSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\n\u001b[1A\n\u001b[2K  [       ===          ] Registering Codex marketplace  3s\n\u001b[2K  ...SSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\n\u001b[1A\n\u001b[2K  [      ===           ] Registering Codex marketplace  3s\n\u001b[2K  ...SSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\n\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[2K  [     ===            ] Installing PACER in Codex  4s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n\u001b[1A\n\u001b[2K  [    ===             ] Installing PACER in Codex  4s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n\u001b[1A\n\u001b[2K  [  ===               ] Installing PACER in Codex  4s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n\u001b[1A\n\u001b[2K  [ ===                ] Installing PACER in Codex  4s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n\u001b[1A\n\u001b[2K  [===                 ] Installing PACER in Codex  4s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n\u001b[1A\n\u001b[2K  [ ===                ] Installing PACER in Codex  4s\n\u001b[2K  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n\u001b[2K\n\u001b[1A\u001b[2K\n  Codex  installed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251950918671173.fa4d010da478a1d8\n\u001b[2K  [  ===               ] Checking Claude installation  4s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n\u001b[1A\n\u001b[2K  [   ===              ] Checking Claude installation  4s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n\u001b[1A\n\u001b[2K  [    ===             ] Checking Claude installation  5s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n\u001b[1A\n\u001b[2K  [     ===            ] Checking Claude installation  5s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n\u001b[1A\n\u001b[2K  [      ===           ] Checking Claude installation  5s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[2K  [       ===          ] Registering Claude marketplace  5s\n\u001b[2K  ...cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install --scope user\n\u001b[1A\n\u001b[2K  [        ===         ] Registering Claude marketplace  5s\n\u001b[2K  ...cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install --scope user\n\u001b[1A\n\u001b[2K  [         ===        ] Registering Claude marketplace  5s\n\u001b[2K  ...cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install --scope user\n\u001b[1A\n\u001b[2K  [           ===      ] Registering Claude marketplace  5s\n\u001b[2K  ...cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install --scope user\n\u001b[1A\n\u001b[2K  [            ===     ] Registering Claude marketplace  5s\n\u001b[2K  ...cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install --scope user\n\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[2K  [             ===    ] Installing PACER in Claude  6s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin install pacer@personal --scope user\n\u001b[1A\n\u001b[2K  [              ===   ] Installing PACER in Claude  6s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin install pacer@personal --scope user\n\u001b[1A\n\u001b[2K  [               ===  ] Installing PACER in Claude  6s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin install pacer@personal --scope user\n\u001b[1A\n\u001b[2K  [                === ] Installing PACER in Claude  6s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin install pacer@personal --scope user\n\u001b[1A\n\u001b[2K  [                 ===] Installing PACER in Claude  6s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin install pacer@personal --scope user\n\u001b[1A\n\u001b[2K  [                === ] Installing PACER in Claude  6s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin install pacer@personal --scope user\n\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[2K  [               ===  ] Locating installed Claude plugin  6s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n\u001b[1A\n\u001b[2K  [              ===   ] Locating installed Claude plugin  7s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n\u001b[1A\n\u001b[2K  [             ===    ] Locating installed Claude plugin  7s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n\u001b[1A\n\u001b[2K  [            ===     ] Locating installed Claude plugin  7s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n\u001b[1A\n\u001b[2K  [           ===      ] Locating installed Claude plugin  7s\n\u001b[2K  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n\u001b[2K\n\u001b[1A\u001b[2K\n  Claude  installed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251950918671173.fa4d010da478a1d8\n\u001b[2K  [====================] 100%  Complete\n\u001b[2K  2 agent CLI(s)  /  49 files  /  7s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-153810-522-5844\n\n",
+          "stderr": ""
+        },
+        "refresh": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  [ ===                ] Finding Codex  0s\n  C:\\nvm4w\\nodejs\\codex.ps1 --version\n  Codex  codex-cli 0.154.0\n  [     ===            ] Finding Claude  1s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\n  Claude  2.1.263 (Claude Code)\n  [                    ]   0%  Reading source\n  .claude-plugin/plugin.json\n  [                    ]   0%  Preparing PACER\n  .claude-plugin/plugin.json\n  [====================] 100%  Preparing PACER\n  uv.lock\n  Prepared 48 files  /  0.5.0+local.r639251950992605463.034102eddcf627d8\n  [           ===      ] Checking Codex installation  1s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\n  [                 ===] Checking Codex marketplace  2s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\n  [            ===     ] Registering Codex marketplace  3s\n  ...SSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\n  [      ===           ] Installing PACER in Codex  3s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n  Codex  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251950992605463.034102eddcf627d8\n  [===                 ] Checking Claude installation  4s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n  [      ===           ] Registering Claude marketplace  5s\n  ...cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install --scope user\n  [           ===      ] Refreshing Claude marketplace  5s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal\n  [                === ] Installing PACER in Claude  6s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user\n  [          ===       ] Locating installed Claude plugin  7s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n  Claude  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251950992605463.034102eddcf627d8\n  [====================] 100%  Complete\n  2 agent CLI(s)  /  48 files  /  7.6s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-153818-068-37140\n\n",
+          "stderr": ""
+        },
+        "repeat": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  [ ===                ] Finding Codex  0s\n  C:\\nvm4w\\nodejs\\codex.ps1 --version\n  Codex  codex-cli 0.154.0\n  [     ===            ] Finding Claude  1s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\n  Claude  2.1.263 (Claude Code)\n  [                    ]   0%  Reading source\n  .claude-plugin/plugin.json\n  [                    ]   0%  Preparing PACER\n  .claude-plugin/plugin.json\n  [====================] 100%  Preparing PACER\n  uv.lock\n  Prepared 48 files  /  0.5.0+local.r639251951072582767.034102eddcf627d8\n  [           ===      ] Checking Codex installation  1s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\n  [                 ===] Checking Codex marketplace  2s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\n  [            ===     ] Registering Codex marketplace  3s\n  ...SSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\n  [      ===           ] Installing PACER in Codex  3s\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\n  Codex  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251951072582767.034102eddcf627d8\n  [===                 ] Checking Claude installation  4s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n  [      ===           ] Registering Claude marketplace  5s\n  ...cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install --scope user\n  [           ===      ] Refreshing Claude marketplace  5s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal\n  [                 ===] Installing PACER in Claude  6s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user\n  [          ===       ] Locating installed Claude plugin  7s\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\n  Claude  refreshed\n  C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251951072582767.034102eddcf627d8\n  [====================] 100%  Complete\n  2 agent CLI(s)  /  48 files  /  7.6s\n  Start a new agent session to load the updated skills and MCP server.\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-153826-058-5876\n\n",
+          "stderr": ""
+        },
+        "failure": {
+          "stdout": "\n  PACER / install\n  Current source -> your agent CLIs\n\n  [ ===                ] Finding Codex  0s\n  ...yanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\failing-cli\\codex.ps1 --version\nstdout diagnostic\n\nspecific CLI error: test failure\n\n\n  PACER / installation failed\n\n\nPSMessageDetails      : \nException             : System.Management.Automation.RuntimeException: Finding Codex failed (exit 23). Command: C:\\User\n                        s\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\failing-cli\\c\n                        odex.ps1 --version\nTargetObject          : Finding Codex failed (exit 23). Command: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-test\n                        s\\c450b2bd542446158d1777a7556df013\\failing-cli\\codex.ps1 --version\nCategoryInfo          : OperationStopped: (Finding Codex f...x.ps1 --version:String) [], RuntimeException\nFullyQualifiedErrorId : Finding Codex failed (exit 23). Command: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-test\n                        s\\c450b2bd542446158d1777a7556df013\\failing-cli\\codex.ps1 --version\nErrorDetails          : \nInvocationInfo        : System.Management.Automation.InvocationInfo\nScriptStackTrace      : at Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158\n                        d1777a7556df013\\source with spaces and 'quote\\install.ps1: line 134\n                        at <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d177\n                        7a7556df013\\source with spaces and 'quote\\install.ps1: line 171\nPipelineIterationInfo : {}\n\n\n\n\nat Invoke-InstallCli, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\install.ps1: line 134\nat <ScriptBlock>, C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\install.ps1: line 171\n  Full logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install-tests\\c450b2bd542446158d1777a7556df013\\source with spaces and 'quote\\.cache\\install\\logs\\20260916-153833-971-40164\n\n",
+          "stderr": ""
+        }
+      }
+    }
+  ],
+  "live_refreshes": [
+    {
+      "path": ".cache/install/logs/20260916-153925-399-39816",
+      "result": {
+        "source": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "digest": "e44a5db2572faa039b8a4c1b091e04d6c4540242df8875f80e6178f70bf001ef",
+        "files": [
+          {
+            "path": ".claude-plugin/plugin.json",
+            "sha256": "77df68df4ae7563e41b9329df9d06cd3d88c44ee5d97ec363290e22ab35f7078"
+          },
+          {
+            "path": ".codex-plugin/plugin.json",
+            "sha256": "b25da4f1c2967b593b5f5f5ff8c91b7242794c73524adc4974785aecd4a6ffa3"
+          },
+          {
+            "path": ".mcp.json",
+            "sha256": "fac8f1de4047538a2746295fab5f19e9f4a84136a69343d096208243bba36276"
+          },
+          {
+            "path": "README.md",
+            "sha256": "5d7674938bf7121a74d0a78472ef1c94a2a5ff7133905acf485f56719a12f4ef"
+          },
+          {
+            "path": "codex.mcp.json",
+            "sha256": "9311c36938664fe2085a23419a31c67db4c8bae07e0469f6ba043601643dcccd"
+          },
+          {
+            "path": "mcp.json",
+            "sha256": "57531efa2cc5289fb355f93e2f3c1ab20f3437904801dfc9b6539873672c1f1c"
+          },
+          {
+            "path": "plugin.json",
+            "sha256": "cc487d4572a3b30bd147821b18e7cfc4751c4cf600c67d0419696228b9b2387e"
+          },
+          {
+            "path": "pyproject.toml",
+            "sha256": "dc1c8a955a5024602035f2f336018cf16a231f781d9f8adeff21be86488c77c5"
+          },
+          {
+            "path": "references/FORMAT.md",
+            "sha256": "2ead1440b5d568926b2133858002f334d1e4629672d316ceb4ef2ecda0a4d7d5"
+          },
+          {
+            "path": "skills/pacer-audit/SKILL.md",
+            "sha256": "774e36b054edd1e38a1bda75df4f13d292706d0300c783c244cc03c879eed555"
+          },
+          {
+            "path": "skills/pacer-audit/agents/openai.yaml",
+            "sha256": "179d1c208dfc8a1e5219fae467d68d992e39ae692bc5a3833a68c0cfa40d5f90"
+          },
+          {
+            "path": "skills/pacer-develop/SKILL.md",
+            "sha256": "caac2ab24cfb4aa92470c3da335ea7e9a8beefb3e60f55bf4c469bcb178f753a"
+          },
+          {
+            "path": "skills/pacer-develop/agents/openai.yaml",
+            "sha256": "a7e9bce0d039b2413fbd4a89bb0cc5b4c24384c31fa3bd5daf88e4afbc9e948c"
+          },
+          {
+            "path": "skills/pacer-onboard/SKILL.md",
+            "sha256": "6980b14ab417c3b16a0c99a479919ee16660781401b330a24fb5fed96985da84"
+          },
+          {
+            "path": "skills/pacer-onboard/agents/openai.yaml",
+            "sha256": "3418c71e5f30297a4302f62aa4045699fe92998b0566ee0012c1fff547da7bb2"
+          },
+          {
+            "path": "src/pacer_mcp/__init__.py",
+            "sha256": "00db8b97dc6771ea7df83737a9a8055dbca8f392a8bdbc2a673402473d05722b"
+          },
+          {
+            "path": "src/pacer_mcp/cli.py",
+            "sha256": "1eedc078165c265bb51143865661da7bc6727c9605dbb574e38ab62038a60e8e"
+          },
+          {
+            "path": "src/pacer_mcp/commands.py",
+            "sha256": "0c22263da162048bd4264ab3a7d85baa1ebf843a59dac8153d4348135623f3ee"
+          },
+          {
+            "path": "src/pacer_mcp/context.py",
+            "sha256": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688"
+          },
+          {
+            "path": "src/pacer_mcp/evidence.py",
+            "sha256": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564"
+          },
+          {
+            "path": "src/pacer_mcp/models.py",
+            "sha256": "5e5eae483c4a8cf7bf8b96e69d3b49a5685ba5b8f9c26f26a42b53237e429371"
+          },
+          {
+            "path": "src/pacer_mcp/pages.py",
+            "sha256": "1c2acbbd0dcc1be99def718db2ee981e3bdfec37e747befe9fc6e3c0a10ea95b"
+          },
+          {
+            "path": "src/pacer_mcp/query.py",
+            "sha256": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8"
+          },
+          {
+            "path": "src/pacer_mcp/schema.py",
+            "sha256": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5"
+          },
+          {
+            "path": "src/pacer_mcp/semantics.py",
+            "sha256": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2"
+          },
+          {
+            "path": "src/pacer_mcp/server.py",
+            "sha256": "3aa5a621f4b74b303f41648a864aa7f1b8d3d803848be10d884ad5ef835bb0f7"
+          },
+          {
+            "path": "src/pacer_mcp/service.py",
+            "sha256": "98da88b1cece1e23dfe313e31ed1c622750853c8d3bdf5d6627174a20e8a2d3f"
+          },
+          {
+            "path": "src/pacer_mcp/store.py",
+            "sha256": "266d6613f49e216567e4143afa1e8eebc4739e01914c851a6cdfefb87c29af33"
+          },
+          {
+            "path": "src/pacer_mcp/validation.py",
+            "sha256": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed"
+          },
+          {
+            "path": "tests/conftest.py",
+            "sha256": "a44c4cc91ecaae783b2ef5b06797da359dc615539a1b32cd4bc2c98afccea8c5"
+          },
+          {
+            "path": "tests/test_approval.py",
+            "sha256": "4214d0e331fcc9ce079bc2d1fc57286cf765f1960d5edcf3881b50ade8cedd03"
+          },
+          {
+            "path": "tests/test_cli.py",
+            "sha256": "2cbcbe1ef6ad09658879b4eb25e55c5d7eb5470efe59e2e177a7824183c57429"
+          },
+          {
+            "path": "tests/test_compaction.py",
+            "sha256": "4df30af1ed3f62357109e6813de412c7d1934425739e72c8858586335389be5b"
+          },
+          {
+            "path": "tests/test_context.py",
+            "sha256": "6d03ccdb532f0926dff3eb848af21a7f8133ed907d65893b776f06644e26c157"
+          },
+          {
+            "path": "tests/test_context_evaluation.py",
+            "sha256": "ab6efb5bf3fb62f15e801f14f736311e5caa63d3df23e2f708cdf52fd027e01f"
+          },
+          {
+            "path": "tests/test_development_evaluation.py",
+            "sha256": "4b54bcef7e85759b2c2aa287ad9c94902c4017fd33bc2d4b0ba22c36cc08c2fb"
+          },
+          {
+            "path": "tests/test_evidence.py",
+            "sha256": "ee47eeb31f6580d03a9dd11458df522b5afa42240dc492db027b6841252a98d2"
+          },
+          {
+            "path": "tests/test_guards.py",
+            "sha256": "d5066bed10e90655d475a16f9916089727f60967933a6f26021c41dab9c62ebc"
+          },
+          {
+            "path": "tests/test_lifecycle.py",
+            "sha256": "be786c46ee1787411f8be62510718569aa6e6053969e9d682f0e56afd0b7fa56"
+          },
+          {
+            "path": "tests/test_maintain.py",
+            "sha256": "55192d60a15037dcea5beba69c907f442711118f4d932eb6136366f34ffdac75"
+          },
+          {
+            "path": "tests/test_mcp.py",
+            "sha256": "fc6858c538eb041466c0e410993810d408b0186b5c819cbf523aa640cdf74a3b"
+          },
+          {
+            "path": "tests/test_operational_lifecycle.py",
+            "sha256": "0689a1e79b6b5c8c2827ebda5c86570d0dee67d391ec4e1ffb6ff5709ed0b276"
+          },
+          {
+            "path": "tests/test_packaging.py",
+            "sha256": "89e629971f38e1060585ac51264e9bf6da081484c1b549feccd342c7ab6e1387"
+          },
+          {
+            "path": "tests/test_pages.py",
+            "sha256": "bcb4e0c4071696b0ef4fd17598a69362d9649bede82c939268a7218fef6a3db5"
+          },
+          {
+            "path": "tests/test_semantics.py",
+            "sha256": "53240d98b06e7e2887b4d301ec890950610bae8ee7636baabdc7c507c9d84326"
+          },
+          {
+            "path": "tests/test_store.py",
+            "sha256": "dfa5cce3b07ce4bffed6265e00eee0ea0b20b014700fbb9228a5cfb48db7ea8b"
+          },
+          {
+            "path": "uv.lock",
+            "sha256": "59bd80f92d65d7663029cfe7c52d7f23d8ecc0311d4e8effa485bc4b731a76bd"
+          }
+        ],
+        "installs": [
+          {
+            "agent": "Codex",
+            "action": "refreshed",
+            "version": "0.5.0+local.r639251951666548223.e44a5db2572faa03",
+            "path": "C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251951666548223.e44a5db2572faa03"
+          },
+          {
+            "agent": "Claude",
+            "action": "refreshed",
+            "version": "0.5.0+local.r639251951666548223.e44a5db2572faa03",
+            "path": "C:\\Users\\ryanf\\.claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251951666548223.e44a5db2572faa03"
+          }
+        ]
+      },
+      "display": [
+        "2026-09-16T15:39:25.4175043-07:00 [DISPLAY] animated=True; host=ConsoleHost; virtualTerminal=False; outputRedirected=False"
+      ],
+      "installed_files_match_staged": true
+    },
+    {
+      "path": ".cache/install/logs/20260916-154029-120-16016",
+      "result": {
+        "source": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "digest": "e44a5db2572faa039b8a4c1b091e04d6c4540242df8875f80e6178f70bf001ef",
+        "files": [
+          {
+            "path": ".claude-plugin/plugin.json",
+            "sha256": "77df68df4ae7563e41b9329df9d06cd3d88c44ee5d97ec363290e22ab35f7078"
+          },
+          {
+            "path": ".codex-plugin/plugin.json",
+            "sha256": "b25da4f1c2967b593b5f5f5ff8c91b7242794c73524adc4974785aecd4a6ffa3"
+          },
+          {
+            "path": ".mcp.json",
+            "sha256": "fac8f1de4047538a2746295fab5f19e9f4a84136a69343d096208243bba36276"
+          },
+          {
+            "path": "README.md",
+            "sha256": "5d7674938bf7121a74d0a78472ef1c94a2a5ff7133905acf485f56719a12f4ef"
+          },
+          {
+            "path": "codex.mcp.json",
+            "sha256": "9311c36938664fe2085a23419a31c67db4c8bae07e0469f6ba043601643dcccd"
+          },
+          {
+            "path": "mcp.json",
+            "sha256": "57531efa2cc5289fb355f93e2f3c1ab20f3437904801dfc9b6539873672c1f1c"
+          },
+          {
+            "path": "plugin.json",
+            "sha256": "cc487d4572a3b30bd147821b18e7cfc4751c4cf600c67d0419696228b9b2387e"
+          },
+          {
+            "path": "pyproject.toml",
+            "sha256": "dc1c8a955a5024602035f2f336018cf16a231f781d9f8adeff21be86488c77c5"
+          },
+          {
+            "path": "references/FORMAT.md",
+            "sha256": "2ead1440b5d568926b2133858002f334d1e4629672d316ceb4ef2ecda0a4d7d5"
+          },
+          {
+            "path": "skills/pacer-audit/SKILL.md",
+            "sha256": "774e36b054edd1e38a1bda75df4f13d292706d0300c783c244cc03c879eed555"
+          },
+          {
+            "path": "skills/pacer-audit/agents/openai.yaml",
+            "sha256": "179d1c208dfc8a1e5219fae467d68d992e39ae692bc5a3833a68c0cfa40d5f90"
+          },
+          {
+            "path": "skills/pacer-develop/SKILL.md",
+            "sha256": "caac2ab24cfb4aa92470c3da335ea7e9a8beefb3e60f55bf4c469bcb178f753a"
+          },
+          {
+            "path": "skills/pacer-develop/agents/openai.yaml",
+            "sha256": "a7e9bce0d039b2413fbd4a89bb0cc5b4c24384c31fa3bd5daf88e4afbc9e948c"
+          },
+          {
+            "path": "skills/pacer-onboard/SKILL.md",
+            "sha256": "6980b14ab417c3b16a0c99a479919ee16660781401b330a24fb5fed96985da84"
+          },
+          {
+            "path": "skills/pacer-onboard/agents/openai.yaml",
+            "sha256": "3418c71e5f30297a4302f62aa4045699fe92998b0566ee0012c1fff547da7bb2"
+          },
+          {
+            "path": "src/pacer_mcp/__init__.py",
+            "sha256": "00db8b97dc6771ea7df83737a9a8055dbca8f392a8bdbc2a673402473d05722b"
+          },
+          {
+            "path": "src/pacer_mcp/cli.py",
+            "sha256": "1eedc078165c265bb51143865661da7bc6727c9605dbb574e38ab62038a60e8e"
+          },
+          {
+            "path": "src/pacer_mcp/commands.py",
+            "sha256": "0c22263da162048bd4264ab3a7d85baa1ebf843a59dac8153d4348135623f3ee"
+          },
+          {
+            "path": "src/pacer_mcp/context.py",
+            "sha256": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688"
+          },
+          {
+            "path": "src/pacer_mcp/evidence.py",
+            "sha256": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564"
+          },
+          {
+            "path": "src/pacer_mcp/models.py",
+            "sha256": "5e5eae483c4a8cf7bf8b96e69d3b49a5685ba5b8f9c26f26a42b53237e429371"
+          },
+          {
+            "path": "src/pacer_mcp/pages.py",
+            "sha256": "1c2acbbd0dcc1be99def718db2ee981e3bdfec37e747befe9fc6e3c0a10ea95b"
+          },
+          {
+            "path": "src/pacer_mcp/query.py",
+            "sha256": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8"
+          },
+          {
+            "path": "src/pacer_mcp/schema.py",
+            "sha256": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5"
+          },
+          {
+            "path": "src/pacer_mcp/semantics.py",
+            "sha256": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2"
+          },
+          {
+            "path": "src/pacer_mcp/server.py",
+            "sha256": "3aa5a621f4b74b303f41648a864aa7f1b8d3d803848be10d884ad5ef835bb0f7"
+          },
+          {
+            "path": "src/pacer_mcp/service.py",
+            "sha256": "98da88b1cece1e23dfe313e31ed1c622750853c8d3bdf5d6627174a20e8a2d3f"
+          },
+          {
+            "path": "src/pacer_mcp/store.py",
+            "sha256": "266d6613f49e216567e4143afa1e8eebc4739e01914c851a6cdfefb87c29af33"
+          },
+          {
+            "path": "src/pacer_mcp/validation.py",
+            "sha256": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed"
+          },
+          {
+            "path": "tests/conftest.py",
+            "sha256": "a44c4cc91ecaae783b2ef5b06797da359dc615539a1b32cd4bc2c98afccea8c5"
+          },
+          {
+            "path": "tests/test_approval.py",
+            "sha256": "4214d0e331fcc9ce079bc2d1fc57286cf765f1960d5edcf3881b50ade8cedd03"
+          },
+          {
+            "path": "tests/test_cli.py",
+            "sha256": "2cbcbe1ef6ad09658879b4eb25e55c5d7eb5470efe59e2e177a7824183c57429"
+          },
+          {
+            "path": "tests/test_compaction.py",
+            "sha256": "4df30af1ed3f62357109e6813de412c7d1934425739e72c8858586335389be5b"
+          },
+          {
+            "path": "tests/test_context.py",
+            "sha256": "6d03ccdb532f0926dff3eb848af21a7f8133ed907d65893b776f06644e26c157"
+          },
+          {
+            "path": "tests/test_context_evaluation.py",
+            "sha256": "ab6efb5bf3fb62f15e801f14f736311e5caa63d3df23e2f708cdf52fd027e01f"
+          },
+          {
+            "path": "tests/test_development_evaluation.py",
+            "sha256": "4b54bcef7e85759b2c2aa287ad9c94902c4017fd33bc2d4b0ba22c36cc08c2fb"
+          },
+          {
+            "path": "tests/test_evidence.py",
+            "sha256": "ee47eeb31f6580d03a9dd11458df522b5afa42240dc492db027b6841252a98d2"
+          },
+          {
+            "path": "tests/test_guards.py",
+            "sha256": "d5066bed10e90655d475a16f9916089727f60967933a6f26021c41dab9c62ebc"
+          },
+          {
+            "path": "tests/test_lifecycle.py",
+            "sha256": "be786c46ee1787411f8be62510718569aa6e6053969e9d682f0e56afd0b7fa56"
+          },
+          {
+            "path": "tests/test_maintain.py",
+            "sha256": "55192d60a15037dcea5beba69c907f442711118f4d932eb6136366f34ffdac75"
+          },
+          {
+            "path": "tests/test_mcp.py",
+            "sha256": "fc6858c538eb041466c0e410993810d408b0186b5c819cbf523aa640cdf74a3b"
+          },
+          {
+            "path": "tests/test_operational_lifecycle.py",
+            "sha256": "0689a1e79b6b5c8c2827ebda5c86570d0dee67d391ec4e1ffb6ff5709ed0b276"
+          },
+          {
+            "path": "tests/test_packaging.py",
+            "sha256": "89e629971f38e1060585ac51264e9bf6da081484c1b549feccd342c7ab6e1387"
+          },
+          {
+            "path": "tests/test_pages.py",
+            "sha256": "bcb4e0c4071696b0ef4fd17598a69362d9649bede82c939268a7218fef6a3db5"
+          },
+          {
+            "path": "tests/test_semantics.py",
+            "sha256": "53240d98b06e7e2887b4d301ec890950610bae8ee7636baabdc7c507c9d84326"
+          },
+          {
+            "path": "tests/test_store.py",
+            "sha256": "dfa5cce3b07ce4bffed6265e00eee0ea0b20b014700fbb9228a5cfb48db7ea8b"
+          },
+          {
+            "path": "uv.lock",
+            "sha256": "59bd80f92d65d7663029cfe7c52d7f23d8ecc0311d4e8effa485bc4b731a76bd"
+          }
+        ],
+        "installs": [
+          {
+            "agent": "Codex",
+            "action": "refreshed",
+            "version": "0.5.0+local.r639251952305992091.e44a5db2572faa03",
+            "path": "C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251952305992091.e44a5db2572faa03"
+          },
+          {
+            "agent": "Claude",
+            "action": "refreshed",
+            "version": "0.5.0+local.r639251952305992091.e44a5db2572faa03",
+            "path": "C:\\Users\\ryanf\\.claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251952305992091.e44a5db2572faa03"
+          }
+        ]
+      },
+      "display": [
+        "2026-09-16T15:40:29.1447370-07:00 [DISPLAY] animated=True; host=ConsoleHost; virtualTerminal=True; outputRedirected=False"
+      ],
+      "installed_files_match_staged": true
+    }
+  ],
+  "live_terminal": {
+    "engine": "Windows PowerShell 5.1",
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File install.ps1",
+    "exit": 0,
+    "tty": true,
+    "output": "\u001b[?9001h\u001b[?1004h\u001b[?25l\u001b[2J\u001b[m\u001b[38;5;15m\u001b[2;1H  PACER / install\u001b]0;C:\\Program Files\\PowerShell\\7\\pwsh.exe\u0007\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\r\n  Current source -> your agent CLIs\u001b[5;1H\u001b[?25h\u001b[m\u001b[38;5;8m  [ ===                ] Finding Codex  0s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 --version\u001b[K\r\u001b[m\u001b[?25l\u001b[5;1H\u001b[?25h\u001b[38;5;8m  [  ===               ] Finding Codex  0s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 --version\u001b[K\r\u001b[?25l\u001b[m\u001b[5;1H\u001b[?25h\u001b[38;5;8m  [   ===              ] Finding Codex  0s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 --version\u001b[K\r\u001b[?25l\u001b[m\u001b[5;1H\u001b[?25h\u001b[38;5;8m  [    ===             ] Finding Codex  1s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 --version\u001b[K\r\u001b[?25l\u001b[m\u001b[5;1H\u001b[K\r\n\u001b[K\u001b[5;1H\u001b[?25h  Codex  codex-cli 0.154.0\r\n\u001b[38;5;8m  [      ===           ] Finding Claude  1s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\u001b[K\r\u001b[m\u001b[?25l\u001b[6;1H\u001b[?25h\u001b[38;5;8m  [       ===          ] Finding Claude  1s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\u001b[K\r\u001b[?25l\u001b[m\u001b[6;1H\u001b[?25h\u001b[38;5;8m  [        ===         ] Finding Claude  1s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\u001b[K\r\u001b[?25l\u001b[m\u001b[6;1H\u001b[?25h\u001b[38;5;8m  [         ===        ] Finding Claude  1s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe --version\u001b[K\r\u001b[?25l\u001b[m\u001b[6;1H\u001b[K\r\n\u001b[K\u001b[6;1H\u001b[?25h  Claude  2.1.263 (Claude Code)\r\n\u001b[38;5;8m  [                    ]   0%  Reading source\u001b[K\r\n  .claude-plugin/plugin.json\u001b[K\r\u001b[m\u001b[?25l\u001b[7;1H\u001b[?25h\u001b[38;5;8m  [==                  ]  11%  Reading source\u001b[K\r\n  mcp.json\u001b[K\r\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [===                 ]  19%  Reading source\u001b[K\r\n  skills/pacer-audit/SKILL.md\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [=====               ]  28%  Reading source\u001b[K\r\n  skills/pacer-onboard/SKILL.md\u001b[K\u001b[7;1H\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m  [======              ]  32%  Reading source\u001b[K\r\n  src/pacer_mcp/__init__.py\u001b[K\u001b[7;1H\u001b[?25h\u001b[m\u001b[38;5;8m  [======              ]  34%  Reading source\u001b[K\r\n  src/pacer_mcp/cli.py\u001b[K\r\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [========            ]  43%  Reading source\u001b[K\r\n  src/pacer_mcp/models.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [==========          ]  51%  Reading source\u001b[K\r\n  src/pacer_mcp/semantics.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [============        ]  62%  Reading source\u001b[K\r\n  tests/conftest.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [==============      ]  72%  Reading source\u001b[K\r\n  tests/test_context_evaluation.py\u001b[K\u001b[7;1H\u001b[?25h\u001b[m\u001b[38;5;8m  [=================   ]  85%  Reading source\u001b[K\r\n  tests/test_mcp.py\u001b[K\r\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [=================== ]  96%  Reading source\u001b[K\r\n  tests/test_store.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [=================== ]  98%  Reading source\u001b[K\r\n  uv.lock\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[7;1H\u001b[?25h\u001b[38;5;8m  [                    ]   2%  Preparing PACER\u001b[K\r\n  .codex-plugin/plugin.json\u001b[K\r\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [=                   ]   9%  Preparing PACER\u001b[K\r\n  codex.mcp.json\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [===                 ]  15%  Preparing PACER\u001b[K\r\n  pyproject.toml\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [====                ]  21%  Preparing PACER\u001b[K\r\n  skills/pacer-audit/agents/openai.yaml\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [=====               ]  28%  Preparing PACER\u001b[K\r\n  skills/pacer-onboard/SKILL.md\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [======              ]  32%  Preparing PACER\u001b[K\r\n  src/pacer_mcp/__init__.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [=======             ]  38%  Preparing PACER\u001b[K\r\n  src/pacer_mcp/context.py\u001b[K\u001b[7;1H\u001b[?25h\u001b[m\u001b[38;5;8m  [=========           ]  47%  Preparing PACER\u001b[K\r\n  src/pacer_mcp/query.py\u001b[K\r\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [==========          ]  53%  Preparing PACER\u001b[K\r\n  src/pacer_mcp/server.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [============        ]  60%  Preparing PACER\u001b[K\r\n  src/pacer_mcp/validation.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [=============       ]  66%  Preparing PACER\u001b[K\r\n  tests/test_cli.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [==============      ]  70%  Preparing PACER\u001b[K\r\n  tests/test_context.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [==============      ]  74%  Preparing PACER\u001b[K\r\n  tests/test_development_evaluation.py\u001b[K\u001b[7;1H\u001b[?25h\u001b[m\u001b[38;5;8m  [================    ]  83%  Preparing PACER\u001b[K\r\n  tests/test_maintain.py\u001b[K\r\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [=================   ]  89%  Preparing PACER\u001b[K\r\n  tests/test_packaging.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [=================== ]  96%  Preparing PACER\u001b[K\r\n  tests/test_store.py\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[38;5;8m\u001b[7;1H  [====================] 100%  Preparing PACER\u001b[K\r\n  uv.lock\u001b[K\r\u001b[?25h\u001b[?25l\u001b[m\u001b[7;1H\u001b[K\r\n\u001b[K\u001b[7;1H\u001b[?25h\u001b[38;5;14m  Prepared 47 files  /  0.5.0+local.r639251952305992091.e44a5db2572faa03\r\n\u001b[m\u001b[38;5;8m  [              ===   ] Checking Codex installation  2s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\u001b[K\r\u001b[m\u001b[?25l\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [               ===  ] Checking Codex installation  2s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [                === ] Checking Codex installation  2s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [                 ===] Checking Codex installation  2s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [                === ] Checking Codex installation  2s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [               ===  ] Checking Codex installation  2s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin list --marketplace personal --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[K\r\n\u001b[K\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [              ===   ] Checking Codex marketplace  2s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\u001b[K\r\u001b[m\u001b[?25l\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [             ===    ] Checking Codex marketplace  3s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [            ===     ] Checking Codex marketplace  3s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [          ===       ] Checking Codex marketplace  3s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [         ===        ] Checking Codex marketplace  3s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [        ===         ] Checking Codex marketplace  3s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin marketplace list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[K\r\n\u001b[K\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [       ===          ] Registering Codex marketplace  3s\u001b[K\r\n  ...ugin marketplace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install     \u001b[9;1H\u001b[m\u001b[?25l\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [      ===           ] Registering Codex marketplace  3s\u001b[K\r\n  ...ugin marketplace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install     \u001b[9;1H\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [     ===            ] Registering Codex marketplace  3s\u001b[K\r\n  ...ugin marketplace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install     \u001b[9;1H\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [    ===             ] Registering Codex marketplace  4s\u001b[K\r\n  ...ugin marketplace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install     \u001b[9;1H\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [   ===              ] Registering Codex marketplace  4s\u001b[K\r\n  ...ugin marketplace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install     \u001b[9;1H\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [  ===               ] Registering Codex marketplace  4s\u001b[K\r\n  ...ugin marketplace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install     \u001b[9;1H\u001b[?25l\u001b[m\u001b[8;1H\u001b[K\r\n\u001b[K\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [===                 ] Installing PACER in Codex  4s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\u001b[K\r\u001b[m\u001b[?25l\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [ ===                ] Installing PACER in Codex  4s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [  ===               ] Installing PACER in Codex  4s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [   ===              ] Installing PACER in Codex  4s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [    ===             ] Installing PACER in Codex  5s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[?25h\u001b[38;5;8m  [     ===            ] Installing PACER in Codex  5s\u001b[K\r\n  C:\\nvm4w\\nodejs\\codex.ps1 plugin add pacer@personal --json\u001b[K\r\u001b[?25l\u001b[m\u001b[8;1H\u001b[K\r\n\u001b[K\u001b[8;1H\u001b[?25h\u001b[38;5;10m  Codex  refreshed\u001b[38;5;8m\r\n  C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.5.0+local.r639251952305992091.e44a5db2572faa03\r\n\u001b[m\u001b[38;5;8m  [       ===          ] Checking Claude installation  5s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[m\u001b[?25l\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [        ===         ] Checking Claude installation  5s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [         ===        ] Checking Claude installation  5s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [          ===       ] Checking Claude installation  5s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [           ===      ] Checking Claude installation  5s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [            ===     ] Checking Claude installation  6s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[K\r\n\u001b[K\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [             ===    ] Registering Claude marketplace  6s\u001b[K\r\n  ...ace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install --scope user     \u001b[12;1H\u001b[m\u001b[?25l\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [              ===   ] Registering Claude marketplace  6s\u001b[K\r\n  ...ace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [               ===  ] Registering Claude marketplace  6s\u001b[K\r\n  ...ace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [                === ] Registering Claude marketplace  6s\u001b[K\r\n  ...ace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [                 ===] Registering Claude marketplace  6s\u001b[K\r\n  ...ace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [                === ] Registering Claude marketplace  6s\u001b[K\r\n  ...ace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [               ===  ] Registering Claude marketplace  6s\u001b[K\r\n  ...ace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [              ===   ] Registering Claude marketplace  7s\u001b[K\r\n  ...ace add C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[K\r\n\u001b[K\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [            ===     ] Refreshing Claude marketplace  7s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal       \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [           ===      ] Refreshing Claude marketplace  7s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal       \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [          ===       ] Refreshing Claude marketplace  7s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal       \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [         ===        ] Refreshing Claude marketplace  7s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal       \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [        ===         ] Refreshing Claude marketplace  7s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal       \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [       ===          ] Refreshing Claude marketplace  7s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal       \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [      ===           ] Refreshing Claude marketplace  7s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal       \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [     ===            ] Refreshing Claude marketplace  8s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin marketplace update personal       \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[K\r\n\u001b[K\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [    ===             ] Installing PACER in Claude  8s\u001b[K\r\n  ...\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user     \u001b[12;1H\u001b[m\u001b[?25l\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [   ===              ] Installing PACER in Claude  8s\u001b[K\r\n  ...\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [  ===               ] Installing PACER in Claude  8s\u001b[K\r\n  ...\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [ ===                ] Installing PACER in Claude  8s\u001b[K\r\n  ...\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [===                 ] Installing PACER in Claude  8s\u001b[K\r\n  ...\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [ ===                ] Installing PACER in Claude  8s\u001b[K\r\n  ...\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [  ===               ] Installing PACER in Claude  8s\u001b[K\r\n  ...\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [   ===              ] Installing PACER in Claude  9s\u001b[K\r\n  ...\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [    ===             ] Installing PACER in Claude  9s\u001b[K\r\n  ...\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [      ===           ] Installing PACER in Claude  9s\u001b[K\r\n  ...\\ryanf\\.local\\bin\\claude.exe plugin update pacer@personal --scope user     \u001b[12;1H\u001b[?25l\u001b[m\u001b[11;1H\u001b[K\r\n\u001b[K\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [       ===          ] Locating installed Claude plugin  9s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [        ===         ] Locating installed Claude plugin  9s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [         ===        ] Locating installed Claude plugin  9s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [          ===       ] Locating installed Claude plugin  9s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [           ===      ] Locating installed Claude plugin  9s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[?25h\u001b[38;5;8m  [            ===     ] Locating installed Claude plugin  10s\u001b[K\r\n  C:\\Users\\ryanf\\.local\\bin\\claude.exe plugin list --json\u001b[K\r\u001b[?25l\u001b[m\u001b[11;1H\u001b[K\r\n\u001b[K\u001b[11;1H\u001b[?25h\u001b[38;5;10m  Claude  refreshed\u001b[38;5;8m\r\n  C:\\Users\\ryanf\\.claude\\plugins\\cache\\personal\\pacer\\0.5.0-local.r639251952305992091.e44a5db2572faa03\r\n\u001b[?25l\u001b[m\u001b[38;5;8m  [====================] 100%  Complete\u001b[K\r\n  2 agent CLI(s)  /  47 files  /  9.7s\u001b[K\u001b[m\r\n  Start a new agent session to load the updated skills and MCP server.\u001b[38;5;8m\r\n  Logs: C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\install\\logs\\20260916-154029-120-16016\u001b[20;1H\u001b[?25h\u001b[m"
+  },
+  "native_claude": {
+    "connection": "plugin:pacer:pacer:\n  Scope: Dynamic config (from command line)\n  Status: \u2714 Connected",
+    "details": "pacer 0.5.0+local.r639251952305992091.e44a5db2572faa03\n  Description: Operate PACER's connected task, source, design and growth registers.\n  Source: pacer@personal\n\nComponent inventory\n  Skills (3)  pacer-audit, pacer-develop, pacer-onboard\n  Agents (0)\n  Hooks (0)\n  MCP servers (1)  pacer  (tool schemas resolved at runtime; not counted)\n  LSP servers (0)\n\nProjected token cost\n  Always-on:   ~214 tok   added to every session\n\nPer-component (rounded)\n  component      always-on  on-invoke\n  pacer-audit          ~70       ~910\n  pacer-develop        ~70      ~1.9k\n  pacer-onboard        ~80        ~1k\n\n  On-invoke cost is paid each time a skill or agent fires.\n  Token counts are estimates and may differ from actual usage.",
+    "details_exit": 0,
+    "connection_exit": 0
+  },
+  "workspace_check": {
+    "exit": 1,
+    "log": "All checks passed!\n37 files already formatted\n........................................................................ [ 38%]\n........................................................................ [ 77%]\n.........................................                                [100%]\n185 passed in 42.00s\n{\n  \"valid\": false,\n  \"errors\": [\n    \"Off-register source interface: ('.python-version', 'FILE', '')\",\n    \"Off-register source interface: ('archive/error_logs/master_error_log.txt', 'FILE', '')\",\n    \"Off-register source interface: ('pyproject.toml', 'FILE', '')\",\n    \"Off-register source interface: ('uv.lock', 'FILE', '')\"\n  ]\n}\n",
+    "boundary": "185 tests passed; source mapping failed on separate user-added root uv setup and error-log files."
+  },
+  "candidate_check": {
+    "exit": 0,
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "--no-sync",
+      "python",
+      "scripts/check.py"
+    ],
+    "candidate": {
+      "path": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\progress-candidate-e23d687b",
+      "overlays": [
+        "install.ps1",
+        "scripts/test_install.ps1",
+        "todo.PACER.csv",
+        "overlord.PACER.csv",
+        "organism.PACER.csv",
+        "nodule.PACER.csv",
+        "evidence/pac-031/cache-failure.txt"
+      ]
+    },
+    "environment": "Existing repository uv-managed environment; source and installer bytes match the isolated candidate.",
+    "log": "All checks passed!\n37 files already formatted\n........................................................................ [ 38%]\n........................................................................ [ 77%]\n.........................................                                [100%]\n185 passed in 42.54s\n{\"valid\": true, \"source_interfaces\": 499, \"examples\": 15, \"revision\": \"e42d65a1fc3f469a4ad7d4dd11cc6d04ae4f30ea684fbd77edb2326ec85a5088\"}\n"
+  },
+  "candidate_setup_attempt": {
+    "exit": 1,
+    "log": "Using CPython 3.13.9\nCreating virtual environment at: plugins\\pacer\\.venv\n   Building pacer-mcp @ file:///C:/Users/ryanf/github/ASSETS/PACER/.cache/progress-candidate-e23d687b/plugins/pacer\n  \u00d7 Failed to download `cffi==2.1.1`\n  \u251c\u2500\u25b6 Failed to fetch:\n  \u2502   `https://files.pythonhosted.org/packages/60/a6/8b149b2c3f2e11aaa1618ef64500b45f50f22c57a977a4dff1aff1f91042/cffi-2.1.1-cp313-cp313-win_amd64.whl`\n  \u251c\u2500\u25b6 Request failed after 3 retries\n  \u251c\u2500\u25b6 error sending request for url\n  \u2502   (https://files.pythonhosted.org/packages/60/a6/8b149b2c3f2e11aaa1618ef64500b45f50f22c57a977a4dff1aff1f91042/cffi-2.1.1-cp313-cp313-win_amd64.whl)\n  \u251c\u2500\u25b6 client error (Connect)\n  \u251c\u2500\u25b6 tcp connect error\n  \u2570\u2500\u25b6 An attempt was made to access a socket in a way forbidden by its access\n      permissions. (os error 10013)\n  help: `cffi` (v2.1.1) was included because `pacer-mcp` (v0.5.0) depends\n        on `mcp` (v1.30.0) which depends on `pyjwt[crypto]` (v2.14.0) which\n        depends on `cryptography` (v50.0.1) which depends on `cffi`\n",
+    "resolution": "Reused the existing uv-managed environment without synchronization or Python installation."
+  },
+  "references": [
+    "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/write-host?view=powershell-7.6",
+    "https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.host.pshostuserinterface.supportsvirtualterminal?view=powershellsdk-7.4.0"
+  ],
+  "limits": "Progress tested in Windows PowerShell 5.1 and PowerShell 7, both host-stream renderer probes and actual terminal refreshes. The user terminal was not directly observed. CLI progress is indeterminate because native CLIs do not provide percentages. Separate root uv packaging/log edits are excluded from candidate verification. No model turns, packaging repair or broader agent-behavior claims."
+}

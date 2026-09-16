@@ -1,0 +1,21 @@
+{
+  "requirement": "OGM-027",
+  "meaning": "88828d608852c4da78efd44ea37f5cbace6c1301881cd61ba26761ad85cf1cd5",
+  "sources": {
+    "evidence/pac-031/cache-failure.txt": "b0355d06f0b0b4cfc2872ab6a3df6afbebceaee2bfead7250cbb5228cb8bd47f",
+    "scripts/test_install.ps1": "1b45daa124c74308633e3f29c4128ce6ee297c68cb913d62de24a748511b3b19",
+    "install.ps1": "d84fd8c2b5a115bd3d50325ba18a83e3b6f1df4ca02ed487c999ccf196c04eb3"
+  },
+  "result": "PASS",
+  "command": [
+    "pwsh",
+    "-NoProfile",
+    "-File",
+    "scripts/test_install.ps1"
+  ],
+  "execution_report": "evidence/pac-031/run.json",
+  "execution_sha256": "93f6408fb127049c2468e0f53bb4939f6127387e01a16023917ba73f5766c52c",
+  "checked_at": "2026-09-16T22:48:37.703153+00:00",
+  "reviewed_scope": "35 assertions per PowerShell engine with real isolated CLIs, rendered host frames and held-file refresh. Actual default live terminal runs show moving bars, current files, subdued coloring and retained completion. Both installed packages match 47 staged files. Full isolated-candidate repository check passes 185 tests and source mappings.",
+  "limits": "Progress tested in Windows PowerShell 5.1 and PowerShell 7, both host-stream renderer probes and actual terminal refreshes. The user terminal was not directly observed. CLI progress is indeterminate because native CLIs do not provide percentages. Separate root uv packaging/log edits are excluded from candidate verification. No model turns, packaging repair or broader agent-behavior claims."
+}
