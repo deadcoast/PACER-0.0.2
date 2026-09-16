@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "pacer": {
+      "command": "uv",
+      "args": ["run", "--locked", "--no-dev", "pacer", "serve"],
+      "cwd": ".",
+      "env": {"UV_PYTHON_DOWNLOADS": "never"}
+    }
+  }
+}

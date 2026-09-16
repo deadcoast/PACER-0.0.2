@@ -53,9 +53,10 @@ def test_manifest_skill_paths_and_versions_agree():
 
     portable = json.loads((PLUGIN / "plugin.json").read_text())
     compatibility = json.loads((PLUGIN / ".codex-plugin/plugin.json").read_text())
+    claude = json.loads((PLUGIN / ".claude-plugin/plugin.json").read_text())
     project = tomllib.loads((PLUGIN / "pyproject.toml").read_text())
-    assert portable["name"] == compatibility["name"] == "pacer"
-    assert portable["version"] == compatibility["version"]
+    assert portable["name"] == compatibility["name"] == claude["name"] == "pacer"
+    assert portable["version"] == compatibility["version"] == claude["version"]
     assert (
         portable["version"].split("+")[0]
         == compatibility["version"].split("+")[0]
@@ -66,6 +67,20 @@ def test_manifest_skill_paths_and_versions_agree():
     assert mcp["mcpServers"]["pacer"]["env"]["UV_PROJECT_ENVIRONMENT"] == (
         "${PLUGIN_DATA}/venv-" + version_key
     )
+    claude_mcp = json.loads((PLUGIN / ".mcp.json").read_text())["mcpServers"]["pacer"]
+    assert claude_mcp["args"] == [
+        "run",
+        "--locked",
+        "--no-dev",
+        "--project",
+        "${CLAUDE_PLUGIN_ROOT}",
+        "pacer",
+        "serve",
+    ]
+    assert claude_mcp["env"]["UV_PROJECT_ENVIRONMENT"] == (
+        "${CLAUDE_PLUGIN_DATA}/venv-" + version_key
+    )
+    assert (PLUGIN / compatibility["mcpServers"]).is_file()
     for entry in (PLUGIN / "skills").iterdir():
         markdown = (entry / "SKILL.md").read_text()
         frontmatter = yaml.safe_load(markdown.split("---", 2)[1])

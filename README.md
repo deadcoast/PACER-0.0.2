@@ -60,10 +60,10 @@ PACER/
 
 Templates ship with worked example rows demonstrating the cross-reference web (tagged `#template-example`, plus neutral rows showing a config/auth dependency chain). On instantiating a new project: copy `TEMPLATES/` contents to the repository root, keep the example rows until your first real rows exist if you need the pattern in front of you, then purge every example row before first commit. `AGENTS.md` governs everything after that.
 
-## Executable PACER and Codex integration
+## Executable PACER and agent integration
 
 PACER is in active development. This repository now develops its own format and
-Codex integration under its live root registers. Query them for design state and
+Codex and Claude Code integration under its live root registers. Query them for design state and
 work history; the examples in `TEMPLATES/` are never the project's actual status.
 
 The [executable format profile](plugins/pacer/references/FORMAT.md) specifies
@@ -71,7 +71,7 @@ additive columns, the command lexicon, mixed dependency types and canonical
 nodule archives. It records the rationale for resolving ambiguities in the
 original templates. The four organs and their status meanings remain authoritative.
 
-[PACER for Codex](plugins/pacer/README.md) contains the runtime and usage guide.
+[PACER for Codex and Claude Code](plugins/pacer/README.md) contains the runtime and usage guide.
 The installable plugin provides an official stdio MCP server, typed tools, schema
 resources, an onboarding prompt and three skills: onboard, develop and audit.
 The CLI and MCP use the same validating writer. The server requires explicit
@@ -80,7 +80,7 @@ project roots and does not substitute its installed directory for your project.
 For this repository, use the existing uv/Python environment:
 
 ```powershell
-./scripts/install.ps1
+./install.ps1
 uv sync --project plugins/pacer --locked
 uv run --project plugins/pacer --locked pacer --root . onboard
 uv run --project plugins/pacer --locked pacer --root . query todo --ready
@@ -94,7 +94,10 @@ worked example data into live state. Migration preserves existing rows and extra
 project columns; it previews before publishing and refuses unresolved evidence
 or reference errors.
 
-After installing, start a new Codex thread and invoke `$pacer:pacer-onboard`.
+Run `./install.ps1` again after source changes to refresh both live CLI plugins.
+It shows file progress and retains full logs under `.cache/install/logs/`.
+After installing, start a new agent session and invoke `$pacer:pacer-onboard`
+in Codex or `/pacer:pacer-onboard` in Claude Code.
 The plugin's [usage guide](plugins/pacer/README.md) includes native installation
 verification and the boundary between structural validation and agent judgment.
 

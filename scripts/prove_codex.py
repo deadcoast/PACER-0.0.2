@@ -238,6 +238,58 @@ async def main() -> None:
             if packet != original or len(pages) < 2:
                 raise RuntimeError("Installed paging did not reconstruct the original context")
             report["paged_context"] = {"pages": pages, "exact_roundtrip": True}
+
+            async def fixture_call(tool, arguments, thread_id):
+                result = await request(
+                    "mcpServer/tool/call",
+                    {
+                        "threadId": thread_id,
+                        "server": servers[0]["name"],
+                        "tool": tool,
+                        "arguments": {"root": str(fixture_root), **arguments},
+                    },
+                )
+                if result.get("isError"):
+                    raise RuntimeError(f"Installed {tool} failed: {result}")
+                return result.get("structuredContent") or json.loads(
+                    next(i["text"] for i in result["content"] if i["type"] == "text")
+                )
+
+            thread_id = thread["thread"]["id"]
+            authority = await fixture_call("pacer_onboard", {}, thread_id)
+            report["checkpoint"] = await fixture_call(
+                "pacer_apply",
+                {
+                    "actor": "native-cli-proof",
+                    "revision": authority["revision"],
+                    "onboarding": authority["onboarding"],
+                    "context": packet["receipt"],
+                    "operations": [{"op": "checkpoint", "id": "PAC-001", "next_action": "verify"}],
+                },
+                thread_id,
+            )
+            (fixture_root / "settings.json").write_text('{"retries":0}', encoding="utf-8")
+            fresh = await request("thread/start", {"cwd": str(ROOT), "ephemeral": True})
+            resumed = await fixture_call("pacer_context", {"id": "PAC-001"}, fresh["thread"]["id"])
+            table = resumed["tables"]["todo"]
+            task = next(
+                dict(zip(table["columns"], row, strict=True))
+                for row in table["rows"]
+                if row[0] == "PAC-001"
+            )
+            rule = next(rule for rule in resumed["rules"] if rule["id"] == "OGM-001")
+            if (
+                task["NextAction"] != "verify"
+                or task["Status"] != "REVIEW"
+                or rule["result"] != "FAIL"
+                or "settings.json" not in resumed["delta"]["changed_sources"]
+            ):
+                raise RuntimeError("Fresh native thread lost the checkpoint or source regression")
+            report["fresh_thread"] = resumed
+            report["limits"] = (
+                "Controlled native CLI/MCP calls and two fresh threads; no model turn, "
+                "autonomous behavior or long-term retention claim."
+            )
             report["passed"] = True
             print(
                 json.dumps(

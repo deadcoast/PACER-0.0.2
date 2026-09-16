@@ -1,0 +1,7 @@
+{
+  "name": "personal",
+  "owner": { "name": "MIVIM" },
+  "plugins": [
+    { "name": "pacer", "source": "./plugins/pacer", "description": "PACER development workflow, skills and MCP server." }
+  ]
+}
