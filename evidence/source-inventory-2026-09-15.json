@@ -1,0 +1,127 @@
+{
+  "task": "PAC-023",
+  "nodule": "NDL-006",
+  "created_at": "2026-09-15T14:01:04.274536+00:00",
+  "baseline_commit": "0bec6c3",
+  "scope": "Repository source inventory and its regression tests; user-fixed hooks untouched.",
+  "baseline": {
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "python",
+      "scripts/check.py"
+    ],
+    "exit_code": 1,
+    "tests": "143 passed in 33.27s",
+    "ruff": "passed",
+    "errors": [
+      "Off-register source interface: ('.codegraph/.gitignore', 'FILE', '')",
+      "Off-register source interface: ('.codegraph/codegraph.db', 'FILE', '')",
+      "Off-register source interface: ('.codegraph/codegraph.db-shm', 'FILE', '')",
+      "Off-register source interface: ('.codegraph/codegraph.db-wal', 'FILE', '')",
+      "Off-register source interface: ('.codegraph/daemon.log', 'FILE', '')",
+      "Off-register source interface: ('.codegraph/daemon.pid', 'FILE', '')"
+    ],
+    "evidence_origin": "Observed baseline tool output retained in PAC-023 PreviousAttempts and this report."
+  },
+  "regressions": {
+    "before_fix": "2 failed, 1 passed: CodeGraph data admitted and malformed generated Python parsed.",
+    "after_fix": "4 passed in 0.03s",
+    "cases": [
+      "CodeGraph runtime files excluded",
+      "Generated trees not scanned",
+      "Uncommitted source and Python interfaces preserved",
+      "Inaccessible project source refuses"
+    ]
+  },
+  "verification": {
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "python",
+      "scripts/check.py"
+    ],
+    "environment": {
+      "UV_CACHE_DIR": ".cache/uv"
+    },
+    "exit_code": 0,
+    "output": "All checks passed!\n37 files already formatted\n........................................................................ [ 48%]\n........................................................................ [ 97%]\n...                                                                      [100%]\n147 passed in 31.39s\n{\"valid\": true, \"source_interfaces\": 408, \"examples\": 15, \"revision\": \"cf00f30a906e2795b2cb5b59652119fe9b32011108d6a4f1f82d211e5f8411a1\"}\n",
+    "source_interfaces_at_run": 408,
+    "examples": 15,
+    "sources": {
+      ".gitignore": "1323382019f77e8f8a30d7c37cb2d1d6b9dd159dbb12231aafa4516c31602af9",
+      "scripts/maintain.py": "ca986fdd1ba97069fd62704380454f2ea0869ae4111f345baeae4d38152a41fa",
+      "plugins/pacer/tests/test_maintain.py": "8d1c1378975698a0b88554af5da42f92158f34e39b8328ffaf99708d2786e239"
+    }
+  },
+  "historical_native_evidence": {
+    "report": "evidence/context-delivery-2026-09-15.json",
+    "sha256": "80ce4ef8e6f18264e0bcc31f3a246f640052bad8146fb25fafcc4a499dee4534",
+    "previously_delivered_files_currently_byte_equal": {
+      ".mcp.json": "da062489e04b7251d8da76ba7ba5f4cb8fac9aff0f89c805623347323f9aa284",
+      "mcp.json": "83e7d63f270ea9faefea0ab6a370a7342818571fa4982e6f3f620655bbc83de4",
+      "plugin.json": "ae398ae572332b3a0f04280a5038282ec4f5bbdd09817206671e9bd0035103ae",
+      "pyproject.toml": "dc1c8a955a5024602035f2f336018cf16a231f781d9f8adeff21be86488c77c5",
+      "README.md": "b90c8b49d6e59176c609dd463012967880e4aaa912115758406cdea430115e72",
+      "uv.lock": "59bd80f92d65d7663029cfe7c52d7f23d8ecc0311d4e8effa485bc4b731a76bd",
+      ".codex-plugin/plugin.json": "6d754500efedc99ba1c71880e8be30fee2fca9dddfa02cbd871fa214c6b54607",
+      "references/FORMAT.md": "2ead1440b5d568926b2133858002f334d1e4629672d316ceb4ef2ecda0a4d7d5",
+      "tests/conftest.py": "a44c4cc91ecaae783b2ef5b06797da359dc615539a1b32cd4bc2c98afccea8c5",
+      "tests/test_approval.py": "4214d0e331fcc9ce079bc2d1fc57286cf765f1960d5edcf3881b50ade8cedd03",
+      "tests/test_cli.py": "2cbcbe1ef6ad09658879b4eb25e55c5d7eb5470efe59e2e177a7824183c57429",
+      "tests/test_compaction.py": "4df30af1ed3f62357109e6813de412c7d1934425739e72c8858586335389be5b",
+      "tests/test_context.py": "6d03ccdb532f0926dff3eb848af21a7f8133ed907d65893b776f06644e26c157",
+      "tests/test_context_evaluation.py": "ab6efb5bf3fb62f15e801f14f736311e5caa63d3df23e2f708cdf52fd027e01f",
+      "tests/test_development_evaluation.py": "4b54bcef7e85759b2c2aa287ad9c94902c4017fd33bc2d4b0ba22c36cc08c2fb",
+      "tests/test_evidence.py": "123e684c4a9234da8008846791f513e497cda59b22c6af3f1d940687df4fee98",
+      "tests/test_guards.py": "ce91a9864e2085d2c7f4ced1f5c67e9220d428c2e8d61285b6ff97edd431e72c",
+      "tests/test_lifecycle.py": "be786c46ee1787411f8be62510718569aa6e6053969e9d682f0e56afd0b7fa56",
+      "tests/test_mcp.py": "fc6858c538eb041466c0e410993810d408b0186b5c819cbf523aa640cdf74a3b",
+      "tests/test_operational_lifecycle.py": "0689a1e79b6b5c8c2827ebda5c86570d0dee67d391ec4e1ffb6ff5709ed0b276",
+      "tests/test_packaging.py": "5db1705f7428831d7e50fa25ed1834c9c267ec44b4b7db2538a46b82554ea5ff",
+      "tests/test_pages.py": "bcb4e0c4071696b0ef4fd17598a69362d9649bede82c939268a7218fef6a3db5",
+      "tests/test_semantics.py": "53240d98b06e7e2887b4d301ec890950610bae8ee7636baabdc7c507c9d84326",
+      "tests/test_store.py": "463f414666ace248fe13c9a85a6c2905e0bdcc635416066c454b334658e118c9",
+      "src/pacer_mcp/cli.py": "1eedc078165c265bb51143865661da7bc6727c9605dbb574e38ab62038a60e8e",
+      "src/pacer_mcp/commands.py": "ef995551174567108cb5ef26fb4c5094f6e4279dee7bbaf012a46364a2586e01",
+      "src/pacer_mcp/context.py": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688",
+      "src/pacer_mcp/evidence.py": "ff52ae74662686aaff196a4a0b58b3bb0e2dadcce2002d4b331b72c3b7dbe83e",
+      "src/pacer_mcp/models.py": "5e5eae483c4a8cf7bf8b96e69d3b49a5685ba5b8f9c26f26a42b53237e429371",
+      "src/pacer_mcp/pages.py": "1c2acbbd0dcc1be99def718db2ee981e3bdfec37e747befe9fc6e3c0a10ea95b",
+      "src/pacer_mcp/query.py": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8",
+      "src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5",
+      "src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+      "src/pacer_mcp/server.py": "3aa5a621f4b74b303f41648a864aa7f1b8d3d803848be10d884ad5ef835bb0f7",
+      "src/pacer_mcp/service.py": "98da88b1cece1e23dfe313e31ed1c622750853c8d3bdf5d6627174a20e8a2d3f",
+      "src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+      "src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+      "src/pacer_mcp/__init__.py": "00db8b97dc6771ea7df83737a9a8055dbca8f392a8bdbc2a673402473d05722b",
+      "skills/pacer-audit/SKILL.md": "774e36b054edd1e38a1bda75df4f13d292706d0300c783c244cc03c879eed555",
+      "skills/pacer-develop/SKILL.md": "caac2ab24cfb4aa92470c3da335ea7e9a8beefb3e60f55bf4c469bcb178f753a",
+      "skills/pacer-onboard/SKILL.md": "6980b14ab417c3b16a0c99a479919ee16660781401b330a24fb5fed96985da84",
+      "skills/pacer-onboard/agents/openai.yaml": "3418c71e5f30297a4302f62aa4045699fe92998b0566ee0012c1fff547da7bb2",
+      "skills/pacer-develop/agents/openai.yaml": "a7e9bce0d039b2413fbd4a89bb0cc5b4c24384c31fa3bd5daf88e4afbc9e948c",
+      "skills/pacer-audit/agents/openai.yaml": "179d1c208dfc8a1e5219fae467d68d992e39ae692bc5a3833a68c0cfa40d5f90"
+    },
+    "installed_path": "C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.5.0+codex.20260915034730",
+    "new_repository_test_not_in_previous_install": "tests/test_maintain.py",
+    "native_trials_rerun": false,
+    "boundary": "All 44 previously delivered files still match source and cached installation; the added repository-only regression file is not installed. Historical native trials remain historical."
+  },
+  "review": [
+    "Only traversal and generated-directory exclusion changed in the indexer.",
+    "No Git tracked-file filter: ordinary ignored or uncommitted project source stays discoverable.",
+    "Directory scanning errors propagate; generated directory contents remain untouched.",
+    "Source parser and interface metadata extraction retained; original requirement text preserved."
+  ],
+  "limitations": [
+    "No new model trial or autonomous-development performance measurement.",
+    "This run verifies repository maintenance, regression tests, source correspondence and prior installed-file identity."
+  ]
+}

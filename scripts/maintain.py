@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import os
 from pathlib import Path
 
 from pacer_mcp.schema import HEADERS
@@ -17,6 +18,7 @@ from pacer_mcp.service import Service
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED = {
     ".git",
+    ".codegraph",
     ".cache",
     ".venv",
     "__pycache__",
@@ -27,10 +29,29 @@ EXCLUDED = {
 }
 
 
+def _raise_scan_error(error):
+    raise error
+
+
+def _source_paths():
+    # Prune generated trees before reading them, including live tool databases.
+    for directory, children, files in os.walk(ROOT, onerror=_raise_scan_error):
+        relative = Path(directory).relative_to(ROOT)
+        children[:] = [
+            name
+            for name in children
+            if name not in EXCLUDED
+            and not name.endswith(".egg-info")
+            and (relative / name).as_posix() != "archive/nodules"
+        ]
+        for name in files:
+            yield Path(directory) / name
+
+
 def source_assets() -> list[dict]:
     """Map repository files and exported Python interfaces to registration metadata."""
     assets = []
-    for path in sorted(ROOT.rglob("*")):
+    for path in sorted(_source_paths()):
         relative = path.relative_to(ROOT)
         if (
             not path.is_file()
