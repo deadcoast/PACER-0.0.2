@@ -1,0 +1,26 @@
+{
+  "requirement": "OGM-028",
+  "meaning": "5a1c33bfc6e5da210093941268f365f60c799473c4ecd2bc83d1a1cf4ba287ca",
+  "sources": {
+    "uv.lock": "678a68b7d9353097ea09db4b2808fc14cd5678a64894211c132547cf74409fe5",
+    "pyproject.toml": "25f5f712c0aa19603dc992a597d0dfa2b42ef686d702c7f2d5d42ed03c8a3fab",
+    ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
+    "active_errors.txt": "d8b93fd9104d4f916379f7ee78a63f8e7b22667b44505e5bed0213f2dd231b6c",
+    "archive/error_logs/00_master_error_log.txt": "0761ae4b6da972350cf8379fa7cba662570dceb0ecb68371fc8e6205b6c1878e"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "execution_report": "evidence/pac-032/run.json",
+  "execution_sha256": "98576e5ed5de9601f5f8f9dac9468561ef88546156404281abb47d5ad035ecff",
+  "checked_at": "2026-09-16T23:03:22.710405+00:00",
+  "reviewed_scope": "Five current user files have matching OVR paths and unchanged SHA256 hashes. Original diagnostic identity and history are retained. The complete workspace check passes 185 tests, source correspondence for 506 interfaces and 15 examples before registering these two evidence artifacts.",
+  "limits": "Inventory reconciliation only. User source files were preserved byte-for-byte. The root uv build failure is recorded from active_errors.txt and remains unresolved; this work does not claim root packaging acceptance or rerun the installer."
+}
