@@ -1,0 +1,130 @@
+[00] // [active_errors]
+-----------------------
+! Once Numeric-Error-Identifier(NEI) section is complete,
+! (MARK error archived; see 01):(TRANSFER data; "NEI":"archive\error_logs\00_master_error_log.txt")
+
+
+[01] // OUTPUT FROM 'install.ps1'
+----
+"""
+ARCHIVED AS COMPLETE; SEE OUTPUT AT [master_error_log](archive\error_logs\master_error_log.txt)
+"""
+----
+[02] // PORTING TO uv Python Package Manager, ERROR ON PACKAGE BUILD
+"""
+
+PACER on  codex/operational-context 
+❯ .\install.ps1
+
+  PACER / install
+  Current source -> your agent CLIs
+
+  Codex  codex-cli 0.154.0
+  Claude  2.1.263 (Claude Code)
+  Prepared 47 files  /  0.5.0+local.r639251946004361685.23a3f874131577fa
+  Codex  refreshed
+  C:\Users\ryanf\.codex\plugins\cache\personal\pacer\0.5.0+local.r639251946004361685.23a3f874131577fa
+  Claude  refreshed
+  C:\Users\ryanf\.claude\plugins\cache\personal\pacer\0.5.0-local.r639251946004361685.23a3f874131577fa
+  Complete  /  9.8s
+  Start a new agent session to load the updated skills and MCP server.
+  Logs: C:\Users\ryanf\github\ASSETS\PACER\.cache\install\logs\20260916-152959-189-18868
+
+
+PACER on  codex/operational-context took 9s 
+❯ uv venv --python 3.14
+Using CPython 3.14.3 interpreter at: C:\Python314\python.exe
+Creating virtual environment at: .venv
+Activate with: .venv\Scripts\activate
+
+PACER on  codex/operational-context 
+❯ .venv\Scripts\activate
+
+PACER on  codex/operational-context via 🐍 v3.14.3 (PACER) 
+❯ uv sync
+error: No `pyproject.toml` found in current directory or any parent directory
+
+PACER on  codex/operational-context via 🐍 v3.14.3 (PACER) 
+❯ uv init
+Initialized project `pacer`
+
+PACER on  codex/operational-context [?] is 📦 v0.1.0 via 🐍 v3.14.3 (PACER) 
+❯  uv sync
+Resolved 1 package in 3ms
+Audited in 0.00ms
+
+PACER on  codex/operational-context [!?] is 📦 v0.1.0 via 🐍 v3.14.3 (PACER) 
+❯ uv build
+Building source distribution...
+error: Multiple top-level packages discovered in a flat-layout: ['archive', 'plugins', 'evidence', 'TEMPLATES'].
+
+To avoid accidental inclusion of unwanted files or directories,
+setuptools will not proceed with this build.
+
+If you are trying to create a single distribution with multiple packages
+on purpose, you should not rely on automatic discovery.
+Instead, consider the following options:
+
+1. set up custom discovery (`find` directive with `include` or `exclude`)
+2. use a `src-layout`
+3. explicitly set `py_modules` or `packages` with a list of names
+
+To find more information, look for "package discovery" on setuptools docs.
+  × Failed to build `C:\Users\ryanf\github\ASSETS\PACER`
+  ├─▶ The build backend returned an error
+  ╰─▶ Call to `setuptools.build_meta:__legacy__.build_sdist` failed (exit code: 1)
+      hint: This usually indicates a problem with the package or the build environment.
+
+PACER on  codex/operational-context [!?] is 📦 v0.1.0 via 🐍 v3.14.3 (PACER) 
+❯ .\install.ps1
+
+  PACER / install
+  Current source -> your agent CLIs
+
+  Codex  codex-cli 0.154.0
+  Claude  2.1.263 (Claude Code)
+  Prepared 47 files  /  0.5.0+local.r639251949866190128.23a3f874131577fa
+  Codex  refreshed
+  C:\Users\ryanf\.codex\plugins\cache\personal\pacer\0.5.0+local.r639251949866190128.23a3f874131577fa
+  Claude  refreshed
+  C:\Users\ryanf\.claude\plugins\cache\personal\pacer\0.5.0-local.r639251949866190128.23a3f874131577fa
+  Complete  /  9.1s
+  Start a new agent session to load the updated skills and MCP server.
+  Logs: C:\Users\ryanf\github\ASSETS\PACER\.cache\install\logs\20260916-153625-408-18868
+
+
+PACER on  codex/operational-context [!?] is 📦 v0.1.0 via 🐍 v3.14.3 (PACER) took 9s 
+❯ 
+"""
+----
+[03] //
+"""
+"""
+----
+[04] //
+"""
+"""
+----
+[05] //
+"""
+"""
+----
+[06] //
+"""
+"""
+----
+[07] //
+"""
+"""
+----
+[08] //
+"""
+"""
+----
+[09] //
+"""
+"""
+----
+[10] //
+"""
+"""
