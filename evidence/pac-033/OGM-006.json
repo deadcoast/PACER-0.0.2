@@ -1,0 +1,62 @@
+{
+  "requirement": "OGM-006",
+  "meaning": "5ead66691d4982f5bba2bfe021e0b250d3570a742665c4dcab7e44ca57b94543",
+  "sources": {
+    "evidence/context-delivery-2026-09-15.json": "80ce4ef8e6f18264e0bcc31f3a246f640052bad8146fb25fafcc4a499dee4534",
+    "evidence/approved-development-2026-09-14.json": "d25d169c7d8ab04ab8b5ffe8943751e39105024ff6cc575ba8449392776fa0b2",
+    "evidence/approved-foundation-2026-09-14.json": "8812e6fd696c71cfdc28689349018caffc213ebbf1719d1881e18423da19cc49",
+    "plugins/pacer/tests/test_evidence.py": "ee47eeb31f6580d03a9dd11458df522b5afa42240dc492db027b6841252a98d2",
+    "plugins/pacer/src/pacer_mcp/store.py": "266d6613f49e216567e4143afa1e8eebc4739e01914c851a6cdfefb87c29af33",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5",
+    "plugins/pacer/src/pacer_mcp/models.py": "5e5eae483c4a8cf7bf8b96e69d3b49a5685ba5b8f9c26f26a42b53237e429371",
+    "plugins/pacer/src/pacer_mcp/cli.py": "1eedc078165c265bb51143865661da7bc6727c9605dbb574e38ab62038a60e8e",
+    "plugins/pacer/src/pacer_mcp/server.py": "3aa5a621f4b74b303f41648a864aa7f1b8d3d803848be10d884ad5ef835bb0f7",
+    "plugins/pacer/src/pacer_mcp/service.py": "98da88b1cece1e23dfe313e31ed1c622750853c8d3bdf5d6627174a20e8a2d3f",
+    "plugins/pacer/src/pacer_mcp/query.py": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8",
+    "plugins/pacer/src/pacer_mcp/pages.py": "1c2acbbd0dcc1be99def718db2ee981e3bdfec37e747befe9fc6e3c0a10ea95b",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564",
+    "plugins/pacer/src/pacer_mcp/context.py": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688",
+    "plugins/pacer/src/pacer_mcp/commands.py": "0c22263da162048bd4264ab3a7d85baa1ebf843a59dac8153d4348135623f3ee",
+    "plugins/pacer/src/pacer_mcp/__init__.py": "00db8b97dc6771ea7df83737a9a8055dbca8f392a8bdbc2a673402473d05722b",
+    "plugins/pacer/skills/pacer-onboard/SKILL.md": "6980b14ab417c3b16a0c99a479919ee16660781401b330a24fb5fed96985da84",
+    "plugins/pacer/skills/pacer-onboard/agents/openai.yaml": "3418c71e5f30297a4302f62aa4045699fe92998b0566ee0012c1fff547da7bb2",
+    "plugins/pacer/skills/pacer-develop/SKILL.md": "caac2ab24cfb4aa92470c3da335ea7e9a8beefb3e60f55bf4c469bcb178f753a",
+    "plugins/pacer/skills/pacer-develop/agents/openai.yaml": "a7e9bce0d039b2413fbd4a89bb0cc5b4c24384c31fa3bd5daf88e4afbc9e948c",
+    "plugins/pacer/skills/pacer-audit/SKILL.md": "774e36b054edd1e38a1bda75df4f13d292706d0300c783c244cc03c879eed555",
+    "plugins/pacer/skills/pacer-audit/agents/openai.yaml": "179d1c208dfc8a1e5219fae467d68d992e39ae692bc5a3833a68c0cfa40d5f90",
+    "plugins/pacer/README.md": "f1867e944be8dc8581039cacc037cb7857a557a3bf40afde456154f3818ba8d9",
+    "plugins/pacer/plugin.json": "cc487d4572a3b30bd147821b18e7cfc4751c4cf600c67d0419696228b9b2387e",
+    "plugins/pacer/mcp.json": "57531efa2cc5289fb355f93e2f3c1ab20f3437904801dfc9b6539873672c1f1c",
+    "plugins/pacer/.mcp.json": "fac8f1de4047538a2746295fab5f19e9f4a84136a69343d096208243bba36276",
+    "plugins/pacer/.codex-plugin/plugin.json": "b25da4f1c2967b593b5f5f5ff8c91b7242794c73524adc4974785aecd4a6ffa3",
+    "plugins/pacer/uv.lock": "59bd80f92d65d7663029cfe7c52d7f23d8ecc0311d4e8effa485bc4b731a76bd",
+    "plugins/pacer/pyproject.toml": "ef1bd8ddbb620f3653dba6496c503448a64c1a243fffcbb478921c1c4b2b86c6"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "execution_report": "evidence/pac-033/run.json",
+  "execution_sha256": "2ed9c64342966411f1d35ae053308dd69030a5a1d0302175927b314303cc9e51",
+  "checked_at": "2026-09-16T23:37:14.680062+00:00",
+  "reviewed_scope": "Reviewed the changed configuration and instructions; unchanged runtime/test/evaluation source retains its prior meaning. 185 tests and source/example checks pass on root Python 3.14. Three entry points choose root .venv, both exact syncs retain development tools, named package builds from sdist, and an independent plugin starts CLI and 13 MCP tools with unchanged standalone pins.",
+  "previous_report": {
+    "path": "evidence/pac-029/OGM-006.json",
+    "sha256": "8bff13a4af6a64550cbe2b05d2c0ae901b08daea6c61a04b7439ff0755f5a08e",
+    "reviewed_scope": "Both installed plugins contain all prepared files. Codex discovers three namespaced skills and 13 tools; Claude discovers three skills and one connected MCP server. Host-specific root/data variables are exercised.",
+    "limits": "Historical model behavior is not reasserted as a new execution. Current native proof uses controlled CLI/MCP calls without model turns; no autonomous or long-term benefit is inferred."
+  },
+  "changed_prior_sources": [
+    "plugins/pacer/README.md",
+    "plugins/pacer/pyproject.toml"
+  ],
+  "limits": "Current proof covers uv environment selection, stable exact sync, compatible pinned package versions, sdist-to-wheel build and a copied standalone CLI/MCP process, plus the repository checks. Native Codex/Claude plugin installation and model turns were not repeated. Earlier native/visual evidence remains historical; unchanged implementation bytes and focused current regression checks support this configuration-only review. Bare root uv build still targets the non-package development project; the documented build is uv build --package pacer-mcp."
+}

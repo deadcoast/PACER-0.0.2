@@ -1,0 +1,55 @@
+{
+  "requirement": "OGM-026",
+  "meaning": "6558cebe72ad76f0aa56904c3615cb3b7e5e0d55c7f7640296d449d5df260dc7",
+  "sources": {
+    "evidence/pac-031/cache-failure.txt": "b0355d06f0b0b4cfc2872ab6a3df6afbebceaee2bfead7250cbb5228cb8bd47f",
+    "scripts/prove_codex.py": "67d45f9094d4b4e544ee62e73b554ed4c7dd3793f5fbc1f4c99fee00972ebab5",
+    "plugins/pacer/src/pacer_mcp/pages.py": "1c2acbbd0dcc1be99def718db2ee981e3bdfec37e747befe9fc6e3c0a10ea95b",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5",
+    "scripts/evaluate_context.py": "006e2d70fea07cd75fca3c3339569b9d1d0ad2f6f6acd7ee200b3b68657a3897",
+    "plugins/pacer/src/pacer_mcp/service.py": "98da88b1cece1e23dfe313e31ed1c622750853c8d3bdf5d6627174a20e8a2d3f",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/store.py": "266d6613f49e216567e4143afa1e8eebc4739e01914c851a6cdfefb87c29af33",
+    "plugins/pacer/src/pacer_mcp/query.py": "b4b01528d761b12d0ce0cd77d05578d08767cf3ae4ba2c1b7ad31ff20aff3ee8",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564",
+    "plugins/pacer/src/pacer_mcp/context.py": "2f7f30903ebc555f65d5c7c6f97d780184aeb1b64c8a2396ed2876016b181688",
+    "plugins/pacer/src/pacer_mcp/commands.py": "0c22263da162048bd4264ab3a7d85baa1ebf843a59dac8153d4348135623f3ee",
+    "scripts/test_install.ps1": "1b45daa124c74308633e3f29c4128ce6ee297c68cb913d62de24a748511b3b19",
+    "scripts/install.ps1": "4146237dad3c34f323a499cd781ee9ab1848883ffa986cc7f10bdc88a2557933",
+    "README.md": "ca1b3f822dbc89e04714eb9181e3cd16fde795a9cb71ad7993c42a1bea8edcf4",
+    "plugins/pacer/tests/test_packaging.py": "89e629971f38e1060585ac51264e9bf6da081484c1b549feccd342c7ab6e1387",
+    "plugins/pacer/README.md": "f1867e944be8dc8581039cacc037cb7857a557a3bf40afde456154f3818ba8d9",
+    "plugins/pacer/codex.mcp.json": "9311c36938664fe2085a23419a31c67db4c8bae07e0469f6ba043601643dcccd",
+    "plugins/pacer/.mcp.json": "fac8f1de4047538a2746295fab5f19e9f4a84136a69343d096208243bba36276",
+    "plugins/pacer/.codex-plugin/plugin.json": "b25da4f1c2967b593b5f5f5ff8c91b7242794c73524adc4974785aecd4a6ffa3",
+    "plugins/pacer/.claude-plugin/plugin.json": "77df68df4ae7563e41b9329df9d06cd3d88c44ee5d97ec363290e22ab35f7078",
+    "install.ps1": "d84fd8c2b5a115bd3d50325ba18a83e3b6f1df4ca02ed487c999ccf196c04eb3",
+    ".claude-plugin/marketplace.json": "b6a9edd383bdb70442f20a97552d60072ba2e2ba38b32350d02c08ae96d89c5d"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "execution_report": "evidence/pac-033/run.json",
+  "execution_sha256": "2ed9c64342966411f1d35ae053308dd69030a5a1d0302175927b314303cc9e51",
+  "checked_at": "2026-09-16T23:37:14.680062+00:00",
+  "reviewed_scope": "Reviewed the changed configuration and instructions; unchanged runtime/test/evaluation source retains its prior meaning. 185 tests and source/example checks pass on root Python 3.14. Three entry points choose root .venv, both exact syncs retain development tools, named package builds from sdist, and an independent plugin starts CLI and 13 MCP tools with unchanged standalone pins.",
+  "previous_report": {
+    "path": "evidence/pac-031/OGM-026.json",
+    "sha256": "8fa399bff4c6066c527e1b4f4c4eabb30f41505ba89bd2ffe7690938af73f019",
+    "reviewed_scope": "35 assertions per PowerShell engine with real isolated CLIs, rendered host frames and held-file refresh. Actual default live terminal runs show moving bars, current files, subdued coloring and retained completion. Both installed packages match 47 staged files. Full isolated-candidate repository check passes 185 tests and source mappings.",
+    "limits": "Progress tested in Windows PowerShell 5.1 and PowerShell 7, both host-stream renderer probes and actual terminal refreshes. The user terminal was not directly observed. CLI progress is indeterminate because native CLIs do not provide percentages. Separate root uv packaging/log edits are excluded from candidate verification. No model turns, packaging repair or broader agent-behavior claims."
+  },
+  "changed_prior_sources": [
+    "README.md",
+    "plugins/pacer/README.md"
+  ],
+  "limits": "Current proof covers uv environment selection, stable exact sync, compatible pinned package versions, sdist-to-wheel build and a copied standalone CLI/MCP process, plus the repository checks. Native Codex/Claude plugin installation and model turns were not repeated. Earlier native/visual evidence remains historical; unchanged implementation bytes and focused current regression checks support this configuration-only review. Bare root uv build still targets the non-package development project; the documented build is uv build --package pacer-mcp."
+}

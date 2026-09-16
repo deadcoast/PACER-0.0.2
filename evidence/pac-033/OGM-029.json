@@ -1,0 +1,30 @@
+{
+  "requirement": "OGM-029",
+  "meaning": "2575a3c43893c01b8a061dd6fe58b04e56c7ea77e2863886f3d23c67c18a24c6",
+  "sources": {
+    "plugins/pacer/README.md": "f1867e944be8dc8581039cacc037cb7857a557a3bf40afde456154f3818ba8d9",
+    "AGENTS.md": "9e4c71f5ba2948bb2dd4eb2264c0efa10b8426042c3a7924b96c1f34202061e5",
+    "README.md": "ca1b3f822dbc89e04714eb9181e3cd16fde795a9cb71ad7993c42a1bea8edcf4",
+    "plugins/pacer/uv.lock": "59bd80f92d65d7663029cfe7c52d7f23d8ecc0311d4e8effa485bc4b731a76bd",
+    "plugins/pacer/pyproject.toml": "ef1bd8ddbb620f3653dba6496c503448a64c1a243fffcbb478921c1c4b2b86c6",
+    "uv.lock": "8937aa0e084a8bc210f01a2e789ecc9b11c582a0f886396862930c9a1981b172",
+    "pyproject.toml": "a6d8b20de87634606a4f3299f54c83df27723638e2169f4ebeaba7dce5686987"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "execution_report": "evidence/pac-033/run.json",
+  "execution_sha256": "2ed9c64342966411f1d35ae053308dd69030a5a1d0302175927b314303cc9e51",
+  "checked_at": "2026-09-16T23:37:14.680062+00:00",
+  "reviewed_scope": "Reviewed the changed configuration and instructions; unchanged runtime/test/evaluation source retains its prior meaning. 185 tests and source/example checks pass on root Python 3.14. Three entry points choose root .venv, both exact syncs retain development tools, named package builds from sdist, and an independent plugin starts CLI and 13 MCP tools with unchanged standalone pins.",
+  "previous_report": null,
+  "changed_prior_sources": [],
+  "limits": "Current proof covers uv environment selection, stable exact sync, compatible pinned package versions, sdist-to-wheel build and a copied standalone CLI/MCP process, plus the repository checks. Native Codex/Claude plugin installation and model turns were not repeated. Earlier native/visual evidence remains historical; unchanged implementation bytes and focused current regression checks support this configuration-only review. Bare root uv build still targets the non-package development project; the documented build is uv build --package pacer-mcp."
+}

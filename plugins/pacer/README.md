@@ -12,12 +12,20 @@ API key and makes no model calls. Register data stays in the selected project.
 From the PACER repository root:
 
 ```powershell
-uv sync --project plugins/pacer --locked
-uv run --project plugins/pacer --locked pacer --root . onboard
-uv run --project plugins/pacer --locked pacer --root . query todo --ready
-uv run --project plugins/pacer --locked pacer --root . query overlord --where Path=README.md
-uv run --project plugins/pacer --locked pacer --root . validate
+uv sync --locked
+uv run --locked pacer --root . onboard
+uv run --locked pacer --root . query todo --ready
+uv run --locked pacer --root . query overlord --where Path=README.md
+uv run --locked pacer --root . validate
+uv build --package pacer-mcp
 ```
+
+Repository development uses Python 3.14 and one root `.venv` and `uv.lock`.
+The root and member declare matching default development groups, so syncing either
+retains the same tools. This member owns the runtime dependencies.
+Running uv from this member directory also uses that root environment. Installed
+plugin copies remain standalone Python 3.11+ packages and use their bundled
+lock with `--no-dev` and a host-specific environment.
 
 For another project, first read its README.md and AGENTS.md, then initialize
 absent registers with `pacer --root <project> initialize`. Initialization never

@@ -13,6 +13,7 @@ dependencies = ["mcp>=1.12.4,<2", "filelock>=3.18,<4"]
 pacer = "pacer_mcp.cli:main"
 
 [dependency-groups]
+# Match the workspace root so syncing either project retains the same tools.
 dev = ["pytest>=8,<9", "pytest-asyncio>=1,<2", "ruff>=0.12,<1", "pyyaml>=6,<7"]
 
 [tool.hatch.build.targets.wheel]

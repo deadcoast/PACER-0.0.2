@@ -77,16 +77,27 @@ resources, an onboarding prompt and three skills: onboard, develop and audit.
 The CLI and MCP use the same validating writer. The server requires explicit
 project roots and does not substitute its installed directory for your project.
 
-For this repository, use the existing uv/Python environment:
+For this repository, the root uv workspace owns `.venv`, `uv.lock` and development
+dependencies. Its `pacer-mcp` member is the package in `plugins/pacer`. Use the
+existing Python 3.14 selected by `.python-version`:
 
 ```powershell
 ./install.ps1
-uv sync --project plugins/pacer --locked
-uv run --project plugins/pacer --locked pacer --root . onboard
-uv run --project plugins/pacer --locked pacer --root . query todo --ready
-uv run --project plugins/pacer --locked pacer --root . validate
-uv run --project plugins/pacer --locked python scripts/check.py
+uv sync --locked
+uv run --locked pacer --root . onboard
+uv run --locked pacer --root . query todo --ready
+uv run --locked pacer --root . validate
+uv run --locked python scripts/check.py
+uv build --package pacer-mcp
 ```
+
+Commands run inside `plugins/pacer` or with `--project plugins/pacer` also use
+the root environment. Do not activate or recreate `plugins/pacer/.venv`.
+The root is a development project; build the named `pacer-mcp` package as above.
+Keep the root and member `dev` groups aligned so syncing either project retains
+the development tools. The plugin retains its own lock for standalone Codex/Claude installs;
+uv ignores that member lock inside this workspace. After runtime dependency changes,
+refresh the root lock and regenerate the plugin lock from a copy outside the workspace.
 
 For a new project, `pacer initialize` creates empty real registers and indexes
 the project's existing README.md and AGENTS.md. This is preferable to copying

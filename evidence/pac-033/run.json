@@ -1,0 +1,398 @@
+{
+  "task": "PAC-033",
+  "result": "PASS",
+  "checked_at": "2026-09-16T23:37:14.680062+00:00",
+  "workspace_check": {
+    "command": [
+      "uv",
+      "run",
+      "--project",
+      "plugins/pacer",
+      "--locked",
+      "python",
+      "scripts/check.py"
+    ],
+    "exit": 0,
+    "log": "All checks passed!\n37 files already formatted\n........................................................................ [ 38%]\n........................................................................ [ 77%]\n.........................................                                [100%]\n185 passed in 41.31s\n{\"valid\": true, \"source_interfaces\": 508, \"examples\": 15, \"revision\": \"685cf1582e1fc3b1e4fa987b707400ec581d865610cfbac62b414e63eb7a8c1a\"}\n"
+  },
+  "uv_verification": {
+    "commands": [
+      {
+        "command": [
+          "uv",
+          "run",
+          "--locked",
+          "python",
+          "-c",
+          "import json,sys,pacer_mcp; print(json.dumps(dict(prefix=sys.prefix, executable=sys.executable, module=pacer_mcp.__file__)))"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "{\"prefix\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\", \"executable\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\\\\Scripts\\\\python.exe\", \"module\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\plugins\\\\pacer\\\\src\\\\pacer_mcp\\\\__init__.py\"}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--project",
+          "plugins/pacer",
+          "--locked",
+          "python",
+          "-c",
+          "import json,sys,pacer_mcp; print(json.dumps(dict(prefix=sys.prefix, executable=sys.executable, module=pacer_mcp.__file__)))"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "{\"prefix\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\", \"executable\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\\\\Scripts\\\\python.exe\", \"module\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\plugins\\\\pacer\\\\src\\\\pacer_mcp\\\\__init__.py\"}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--locked",
+          "python",
+          "-c",
+          "import json,sys,pacer_mcp; print(json.dumps(dict(prefix=sys.prefix, executable=sys.executable, module=pacer_mcp.__file__)))"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\plugins\\pacer",
+        "exit": 0,
+        "stdout": "{\"prefix\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\", \"executable\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\\\\Scripts\\\\python.exe\", \"module\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\plugins\\\\pacer\\\\src\\\\pacer_mcp\\\\__init__.py\"}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "uv",
+          "sync",
+          "--locked"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Resolved 42 packages in 1ms\nAudited 41 packages in 2ms\n"
+      },
+      {
+        "command": [
+          "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.venv\\Scripts\\python.exe",
+          "-c",
+          "import pytest,pytest_asyncio,ruff,yaml; print(\"Development tools available\")"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "Development tools available\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "uv",
+          "sync",
+          "--locked"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\plugins\\pacer",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Resolved 42 packages in 1ms\nAudited 41 packages in 2ms\n"
+      },
+      {
+        "command": [
+          "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.venv\\Scripts\\python.exe",
+          "-c",
+          "import pytest,pytest_asyncio,ruff,yaml; print(\"Development tools available\")"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "Development tools available\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "uv",
+          "lock",
+          "--check"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Resolved 42 packages in 1ms\n"
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--locked",
+          "pacer",
+          "--root",
+          ".",
+          "validate"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "{\n  \"revision\": \"e38145326823f22a37118acf43bc69266339bb02a94dd2ed9752b94ccf6f78c0\",\n  \"valid\": true,\n  \"errors\": [],\n  \"warnings\": [],\n  \"stale_evidence\": []\n}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "uv",
+          "build",
+          "--package",
+          "pacer-mcp",
+          "--out-dir",
+          "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\pac033-dist"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Building source distribution...\nBuilding wheel from source distribution...\nSuccessfully built .cache\\pac033-dist\\pacer_mcp-0.5.0.tar.gz\nSuccessfully built .cache\\pac033-dist\\pacer_mcp-0.5.0-py3-none-any.whl\n"
+      },
+      {
+        "command": [
+          "uv",
+          "lock",
+          "--project",
+          "C:\\Users\\ryanf\\AppData\\Local\\Temp\\pacer standalone cm8_h1z4\\plugin",
+          "--check"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Using CPython 3.13.9\nResolved 41 packages in 1ms\n"
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--project",
+          "C:\\Users\\ryanf\\AppData\\Local\\Temp\\pacer standalone cm8_h1z4\\plugin",
+          "--locked",
+          "--no-dev",
+          "python",
+          "-c",
+          "import json,sys,pacer_mcp; print(json.dumps(dict(prefix=sys.prefix, executable=sys.executable, module=pacer_mcp.__file__)))"
+        ],
+        "cwd": "C:\\Users\\ryanf\\AppData\\Local\\Temp\\pacer standalone cm8_h1z4",
+        "exit": 0,
+        "stdout": "{\"prefix\": \"C:\\\\Users\\\\ryanf\\\\AppData\\\\Local\\\\Temp\\\\pacer standalone cm8_h1z4\\\\runtime\", \"executable\": \"C:\\\\Users\\\\ryanf\\\\AppData\\\\Local\\\\Temp\\\\pacer standalone cm8_h1z4\\\\runtime\\\\Scripts\\\\python.exe\", \"module\": \"C:\\\\Users\\\\ryanf\\\\AppData\\\\Local\\\\Temp\\\\pacer standalone cm8_h1z4\\\\plugin\\\\src\\\\pacer_mcp\\\\__init__.py\"}\n",
+        "stderr": "Using CPython 3.13.9\nCreating virtual environment at: runtime\n   Building pacer-mcp @ file:///C:/Users/ryanf/AppData/Local/Temp/pacer%20standalone%20cm8_h1z4/plugin\n      Built pacer-mcp @ file:///C:/Users/ryanf/AppData/Local/Temp/pacer%20standalone%20cm8_h1z4/plugin\nInstalled 32 packages in 543ms\n"
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--project",
+          "C:\\Users\\ryanf\\AppData\\Local\\Temp\\pacer standalone cm8_h1z4\\plugin",
+          "--locked",
+          "--no-dev",
+          "pacer",
+          "--root",
+          "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+          "validate"
+        ],
+        "cwd": "C:\\Users\\ryanf\\AppData\\Local\\Temp\\pacer standalone cm8_h1z4",
+        "exit": 0,
+        "stdout": "{\n  \"revision\": \"e38145326823f22a37118acf43bc69266339bb02a94dd2ed9752b94ccf6f78c0\",\n  \"valid\": true,\n  \"errors\": [],\n  \"warnings\": [],\n  \"stale_evidence\": []\n}\n",
+        "stderr": ""
+      }
+    ],
+    "mcp": {
+      "onboard_root": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+      "tool_count": 13,
+      "result": "PASS"
+    },
+    "runtime_versions_compatible": true,
+    "root_lock_packages": 42,
+    "plugin_lock_packages": 41,
+    "wheel": {
+      "name": "pacer_mcp-0.5.0-py3-none-any.whl",
+      "sha256": "5b659482f533abb064f390ec8eb8f3bc7866b2b2d9b4a755b71db9807fcfa260"
+    }
+  },
+  "first_trial": {
+    "commands": [
+      {
+        "command": [
+          "uv",
+          "run",
+          "--locked",
+          "python",
+          "-c",
+          "import json,sys,pacer_mcp; print(json.dumps(dict(prefix=sys.prefix, executable=sys.executable, module=pacer_mcp.__file__)))"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "{\"prefix\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\", \"executable\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\\\\Scripts\\\\python.exe\", \"module\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\plugins\\\\pacer\\\\src\\\\pacer_mcp\\\\__init__.py\"}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--project",
+          "plugins/pacer",
+          "--locked",
+          "python",
+          "-c",
+          "import json,sys,pacer_mcp; print(json.dumps(dict(prefix=sys.prefix, executable=sys.executable, module=pacer_mcp.__file__)))"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "{\"prefix\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\", \"executable\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\\\\Scripts\\\\python.exe\", \"module\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\plugins\\\\pacer\\\\src\\\\pacer_mcp\\\\__init__.py\"}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--locked",
+          "python",
+          "-c",
+          "import json,sys,pacer_mcp; print(json.dumps(dict(prefix=sys.prefix, executable=sys.executable, module=pacer_mcp.__file__)))"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\plugins\\pacer",
+        "exit": 0,
+        "stdout": "{\"prefix\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\", \"executable\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\.venv\\\\Scripts\\\\python.exe\", \"module\": \"C:\\\\Users\\\\ryanf\\\\github\\\\ASSETS\\\\PACER\\\\plugins\\\\pacer\\\\src\\\\pacer_mcp\\\\__init__.py\"}\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "uv",
+          "sync",
+          "--locked"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Resolved 42 packages in 1ms\nAudited 41 packages in 2ms\n"
+      },
+      {
+        "command": [
+          "uv",
+          "sync",
+          "--locked"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\plugins\\pacer",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Resolved 42 packages in 0.92ms\nUninstalled 9 packages in 63ms\n - colorama==0.4.6\n - iniconfig==2.3.0\n - packaging==26.3\n - pluggy==1.6.0\n - pygments==2.21.0\n - pytest==8.4.2\n - pytest-asyncio==1.4.0\n - pyyaml==6.0.3\n - ruff==0.16.7\n"
+      },
+      {
+        "command": [
+          "uv",
+          "lock",
+          "--check"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Resolved 42 packages in 0.81ms\n"
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--locked",
+          "pacer",
+          "--root",
+          ".",
+          "validate"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "{\n  \"revision\": \"e38145326823f22a37118acf43bc69266339bb02a94dd2ed9752b94ccf6f78c0\",\n  \"valid\": true,\n  \"errors\": [],\n  \"warnings\": [],\n  \"stale_evidence\": []\n}\n",
+        "stderr": "Installed 9 packages in 214ms\n"
+      },
+      {
+        "command": [
+          "uv",
+          "build",
+          "--package",
+          "pacer-mcp",
+          "--out-dir",
+          "C:\\Users\\ryanf\\github\\ASSETS\\PACER\\.cache\\pac033-dist"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Building source distribution...\nBuilding wheel from source distribution...\nSuccessfully built .cache\\pac033-dist\\pacer_mcp-0.5.0.tar.gz\nSuccessfully built .cache\\pac033-dist\\pacer_mcp-0.5.0-py3-none-any.whl\n"
+      },
+      {
+        "command": [
+          "uv",
+          "lock",
+          "--project",
+          "C:\\Users\\ryanf\\AppData\\Local\\Temp\\pacer standalone 3o85xbbn\\plugin",
+          "--check"
+        ],
+        "cwd": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "Using CPython 3.13.9\nResolved 32 packages in 1ms\n"
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--project",
+          "C:\\Users\\ryanf\\AppData\\Local\\Temp\\pacer standalone 3o85xbbn\\plugin",
+          "--locked",
+          "--no-dev",
+          "python",
+          "-c",
+          "import json,sys,pacer_mcp; print(json.dumps(dict(prefix=sys.prefix, executable=sys.executable, module=pacer_mcp.__file__)))"
+        ],
+        "cwd": "C:\\Users\\ryanf\\AppData\\Local\\Temp\\pacer standalone 3o85xbbn",
+        "exit": 0,
+        "stdout": "{\"prefix\": \"C:\\\\Users\\\\ryanf\\\\AppData\\\\Local\\\\Temp\\\\pacer standalone 3o85xbbn\\\\runtime\", \"executable\": \"C:\\\\Users\\\\ryanf\\\\AppData\\\\Local\\\\Temp\\\\pacer standalone 3o85xbbn\\\\runtime\\\\Scripts\\\\python.exe\", \"module\": \"C:\\\\Users\\\\ryanf\\\\AppData\\\\Local\\\\Temp\\\\pacer standalone 3o85xbbn\\\\plugin\\\\src\\\\pacer_mcp\\\\__init__.py\"}\n",
+        "stderr": "Using CPython 3.13.9\nCreating virtual environment at: runtime\n   Building pacer-mcp @ file:///C:/Users/ryanf/AppData/Local/Temp/pacer%20standalone%203o85xbbn/plugin\nDownloading pydantic-core (1.9MiB)\nDownloading pywin32 (6.6MiB)\n Downloading pydantic-core\n Downloading pywin32\n      Built pacer-mcp @ file:///C:/Users/ryanf/AppData/Local/Temp/pacer%20standalone%203o85xbbn/plugin\nInstalled 32 packages in 551ms\n"
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--project",
+          "C:\\Users\\ryanf\\AppData\\Local\\Temp\\pacer standalone 3o85xbbn\\plugin",
+          "--locked",
+          "--no-dev",
+          "pacer",
+          "--root",
+          "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+          "validate"
+        ],
+        "cwd": "C:\\Users\\ryanf\\AppData\\Local\\Temp\\pacer standalone 3o85xbbn",
+        "exit": 0,
+        "stdout": "{\n  \"revision\": \"e38145326823f22a37118acf43bc69266339bb02a94dd2ed9752b94ccf6f78c0\",\n  \"valid\": true,\n  \"errors\": [],\n  \"warnings\": [],\n  \"stale_evidence\": []\n}\n",
+        "stderr": ""
+      }
+    ],
+    "mcp": {
+      "onboard_root": "C:\\Users\\ryanf\\github\\ASSETS\\PACER",
+      "tool_count": 13,
+      "result": "PASS"
+    },
+    "runtime_versions_compatible": true,
+    "root_lock_packages": 42,
+    "plugin_lock_packages": 32,
+    "wheel": {
+      "name": "pacer_mcp-0.5.0-py3-none-any.whl",
+      "sha256": "5b659482f533abb064f390ec8eb8f3bc7866b2b2d9b4a755b71db9807fcfa260"
+    }
+  },
+  "first_trial_result": "REJECTED: member exact sync removed development tools; corrected by matching dev groups and rerun with explicit tool imports after each sync.",
+  "offline_trial": "Disposable offline trial could not resolve uncached filelock and setuptools. The final commands used existing uv cache/network access and UV_PYTHON_DOWNLOADS=never.",
+  "retired_environment": {
+    "previous": "plugins/pacer/.venv",
+    "preserved_at": ".cache/retired-environments/pac-033-plugin-venv",
+    "root_preserved": ".venv"
+  },
+  "preserved_from_head": {
+    "active_errors.txt": "f764c999cf8b1c26be04e585826b19b28b968f68e9bf85663b72002424a1fae1",
+    "archive/error_logs/00_master_error_log.txt": "c0763d32cc859d239bb5aa75d80d2f60e672e37d0767b51bff1c5aa908436e54",
+    ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
+    "plugins/pacer/uv.lock": "59bd80f92d65d7663029cfe7c52d7f23d8ecc0311d4e8effa485bc4b731a76bd"
+  },
+  "references": [
+    "https://docs.astral.sh/uv/concepts/projects/workspaces/",
+    "https://docs.astral.sh/uv/concepts/projects/config/"
+  ],
+  "limits": "Current proof covers uv environment selection, stable exact sync, compatible pinned package versions, sdist-to-wheel build and a copied standalone CLI/MCP process, plus the repository checks. Native Codex/Claude plugin installation and model turns were not repeated. Earlier native/visual evidence remains historical; unchanged implementation bytes and focused current regression checks support this configuration-only review. Bare root uv build still targets the non-package development project; the documented build is uv build --package pacer-mcp."
+}

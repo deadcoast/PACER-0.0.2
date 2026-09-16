@@ -1,0 +1,39 @@
+{
+  "requirement": "OGM-028",
+  "meaning": "5a1c33bfc6e5da210093941268f365f60c799473c4ecd2bc83d1a1cf4ba287ca",
+  "sources": {
+    "uv.lock": "8937aa0e084a8bc210f01a2e789ecc9b11c582a0f886396862930c9a1981b172",
+    "pyproject.toml": "a6d8b20de87634606a4f3299f54c83df27723638e2169f4ebeaba7dce5686987",
+    "plugins/pacer/pyproject.toml": "ef1bd8ddbb620f3653dba6496c503448a64c1a243fffcbb478921c1c4b2b86c6",
+    ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135",
+    "active_errors.txt": "f764c999cf8b1c26be04e585826b19b28b968f68e9bf85663b72002424a1fae1",
+    "archive/error_logs/00_master_error_log.txt": "c0763d32cc859d239bb5aa75d80d2f60e672e37d0767b51bff1c5aa908436e54"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "execution_report": "evidence/pac-033/run.json",
+  "execution_sha256": "2ed9c64342966411f1d35ae053308dd69030a5a1d0302175927b314303cc9e51",
+  "checked_at": "2026-09-16T23:37:14.680062+00:00",
+  "reviewed_scope": "Existing log paths, OVR identities and original acceptance history remain intact. Logs, Python pin and plugin lock match HEAD. This new user-authorized task changes the root configuration and lock. Prior inventory-only acceptance remains historical; package-build proof belongs to OGM-029 and uses the named plugin target.",
+  "previous_report": {
+    "path": "evidence/pac-032/OGM-028.json",
+    "sha256": "944cb2533f364c8f0e540a976d91fc2b0ad10411828bc1a73046564540f6a0f9",
+    "reviewed_scope": "Five current user files have matching OVR paths and unchanged SHA256 hashes. Original diagnostic identity and history are retained. The complete workspace check passes 185 tests, source correspondence for 506 interfaces and 15 examples before registering these two evidence artifacts.",
+    "limits": "Inventory reconciliation only. User source files were preserved byte-for-byte. The root uv build failure is recorded from active_errors.txt and remains unresolved; this work does not claim root packaging acceptance or rerun the installer."
+  },
+  "changed_prior_sources": [
+    "uv.lock",
+    "pyproject.toml",
+    "active_errors.txt",
+    "archive/error_logs/00_master_error_log.txt"
+  ],
+  "limits": "Current proof covers uv environment selection, stable exact sync, compatible pinned package versions, sdist-to-wheel build and a copied standalone CLI/MCP process, plus the repository checks. Native Codex/Claude plugin installation and model turns were not repeated. Earlier native/visual evidence remains historical; unchanged implementation bytes and focused current regression checks support this configuration-only review. Bare root uv build still targets the non-package development project; the documented build is uv build --package pacer-mcp."
+}

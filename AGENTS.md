@@ -123,9 +123,15 @@ command lexicon. These clarify the original format while retaining its purposes:
   Only the final page carries a receipt; it proves freshness, not reading or
   comprehension. Resolve missing sources or packet-limit failures before acting.
 
-This repository keeps Python and MCP dependencies in `plugins/pacer/pyproject.toml`
-and `uv.lock`. Use uv and existing Python; do not install through pip. Run
-`uv run --project plugins/pacer --locked python scripts/check.py` before commits.
+The root `pyproject.toml` defines the uv workspace and development dependencies;
+`plugins/pacer/pyproject.toml` defines the installable runtime package. Repository
+commands share root `.venv` and `uv.lock`, including `--project plugins/pacer`.
+Use uv and existing Python; do not install through pip or recreate a member `.venv`.
+Run `uv run --project plugins/pacer --locked python scripts/check.py` before commits.
+Keep the root and plugin default `dev` groups aligned; uv selects groups per project.
+Build with `uv build --package pacer-mcp`. The plugin's `uv.lock` is
+for copies installed outside the workspace; regenerate it from a standalone copy
+when runtime dependencies change, alongside the root workspace lock.
 `scripts/maintain.py --task <PAC> --nodule <NDL> [--paths <changed-paths>]`
 previews the admitted source index; add `--apply` to publish. It
 never advances acceptance. Query an OVR path before source edits and include
