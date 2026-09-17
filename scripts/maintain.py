@@ -80,8 +80,8 @@ def source_assets() -> list[dict]:
             values["Purpose"] = (
                 ast.get_docstring(tree) or f"Python module {path.stem}"
             ).splitlines()[0]
-            imports = []
-            exported = []
+            imports: list[str] = []
+            exported: list[str] = []
             for node in ast.walk(tree):
                 if isinstance(node, ast.ImportFrom):
                     imports.extend(f"{node.module}.{alias.name}" for alias in node.names)

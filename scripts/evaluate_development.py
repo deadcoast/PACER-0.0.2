@@ -119,14 +119,17 @@ def check_code(code: str) -> bool:
         ):
             return False
         if any(
-            type(node.value) not in {int, float} or abs(node.value) > 100
+            not isinstance(node.value, (int, float))
+            or isinstance(node.value, bool)
+            or abs(node.value) > 100
             for node in ast.walk(tree)
             if isinstance(node, ast.Constant)
         ):
             return False
-        namespace = {"__builtins__": {}}
+        namespace: dict[str, object] = {"__builtins__": {}}
         exec(compile(tree, "<bounded candidate>", "exec"), namespace)
-        return all(namespace["scale"](value) == value * 2 for value in (-7, 0, 1, 4, 1.5))
+        scale = namespace["scale"]
+        return callable(scale) and all(scale(value) == value * 2 for value in (-7, 0, 1, 4, 1.5))
     except (SyntaxError, ValueError, TypeError, AttributeError, NameError, OverflowError):
         return False
 

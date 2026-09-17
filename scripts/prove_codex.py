@@ -56,7 +56,7 @@ async def main() -> None:
     ]:
         if options.installed and label in {"marketplace_add", "plugin_add"}:
             continue
-        result = subprocess.run(
+        command_result = subprocess.run(
             [executable, *arguments],
             cwd=ROOT,
             env=env,
@@ -66,14 +66,14 @@ async def main() -> None:
             check=False,
         )
         report[label] = {
-            "code": result.returncode,
-            "stdout": result.stdout,
-            "stderr": result.stderr,
+            "code": command_result.returncode,
+            "stdout": command_result.stdout,
+            "stderr": command_result.stderr,
         }
-        print(label, result.returncode, flush=True)
+        print(label, command_result.returncode, flush=True)
         (trial / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
-        if result.returncode:
-            raise RuntimeError(f"{label} failed: {result.stderr}")
+        if command_result.returncode:
+            raise RuntimeError(f"{label} failed: {command_result.stderr}")
     # Scope this process to PACER so unrelated user servers cannot stall the proof.
     listed_servers = json.loads(report["mcp_list"]["stdout"])
     overrides = []
@@ -94,19 +94,21 @@ async def main() -> None:
             stderr=errors,
             limit=8 * 1024 * 1024,
         )
+        stdin, stdout = process.stdin, process.stdout
+        assert stdin is not None and stdout is not None, "Requested subprocess pipes are missing"
         serial = 0
 
         async def request(method: str, params: dict) -> dict:
             nonlocal serial
             serial += 1
-            process.stdin.write(
+            stdin.write(
                 (json.dumps({"id": serial, "method": method, "params": params}) + "\n").encode()
             )
-            await process.stdin.drain()
+            await stdin.drain()
             print("request", method, flush=True)
             async with asyncio.timeout(60):
                 while True:
-                    line = await process.stdout.readline()
+                    line = await stdout.readline()
                     if not line:
                         raise RuntimeError("Codex app-server closed its stream")
                     message = json.loads(line)
@@ -125,8 +127,8 @@ async def main() -> None:
                     "capabilities": {"experimentalApi": True},
                 },
             )
-            process.stdin.write(b'{"method":"initialized","params":{}}\n')
-            await process.stdin.drain()
+            stdin.write(b'{"method":"initialized","params":{}}\n')
+            await stdin.drain()
             skills = await request("skills/list", {"cwds": [str(ROOT)], "forceReload": True})
             report["skills"] = skills
             names = {
@@ -304,7 +306,7 @@ async def main() -> None:
             )
         finally:
             (trial / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
-            process.stdin.close()
+            stdin.close()
             try:
                 await asyncio.wait_for(process.wait(), 10)
             except TimeoutError:
@@ -321,7 +323,11 @@ async def main() -> None:
                     await asyncio.wait_for(process.wait(), 10)
                 except TimeoutError:
                     # A launcher can exit before descendants close inherited pipes.
-                    process._transport.close()
+                    transport = getattr(process, "_transport", None)
+                    if isinstance(transport, asyncio.BaseTransport):
+                        transport.close()
+                    else:
+                        raise RuntimeError("Cannot close inherited subprocess pipes") from None
 
 
 if __name__ == "__main__":

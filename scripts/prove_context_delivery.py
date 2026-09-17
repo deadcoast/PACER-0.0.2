@@ -63,7 +63,9 @@ def inspect_delivery(events: list[dict], expected: dict, *, checkpoint: bool) ->
     ]
     if not calls or calls[0]["tool"] != "pacer_onboard":
         raise ValueError("Native workflow must start with onboarding")
-    pages, applies, onboard = [], [], None
+    pages: list[dict] = []
+    applies: list[dict] = []
+    onboard: dict | None = None
     for call in calls:
         if call["tool"] not in {"pacer_onboard", "pacer_context_page", "pacer_apply"}:
             raise ValueError("Native model used an undeclared MCP tool")
@@ -101,7 +103,8 @@ def inspect_delivery(events: list[dict], expected: dict, *, checkpoint: bool) ->
             pages.append(payload)
         elif call["tool"] == "pacer_apply":
             if (
-                any(arguments.get(key) != onboard[key] for key in ("revision", "onboarding"))
+                onboard is None
+                or any(arguments.get(key) != onboard[key] for key in ("revision", "onboarding"))
                 or arguments.get("actor") != "native-delivery"
             ):
                 raise ValueError("Native writer did not use current onboarding and actor")
@@ -287,11 +290,12 @@ def main() -> None:
     trial.mkdir(parents=True)
     prepare_cases(trial / "fixtures")
     root = trial / "fixtures/current"
+    attempts: list[dict] = []
     report = {
         "trial": str(trial),
         "harness_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "plugin": str(args.plugin.resolve()),
-        "attempts": [],
+        "attempts": attempts,
         "passed": False,
         "limitations": [
             "Two instructed native tool-use turns in one synthetic fixture; "
@@ -315,7 +319,7 @@ def main() -> None:
                 args.effort,
                 checkpoint=checkpoint,
             )
-            report["attempts"].append(attempt)
+            attempts.append(attempt)
             (trial / "report.json").write_text(canonical(report), encoding="utf-8")
             print(
                 json.dumps(

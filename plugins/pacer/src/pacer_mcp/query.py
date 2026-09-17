@@ -83,7 +83,7 @@ def graph(tables: dict, row_id: str, *, depth: int = 1, limit: int = 30) -> dict
     index = {r["ID"]: r for rows in tables.values() for r in rows}
     if row_id not in index:
         raise ValueError(f"REFUSAL: Unknown ID {row_id}")
-    adjacency = {key: set() for key in index}
+    adjacency: dict[str, set[str]] = {key: set() for key in index}
     relations = typed_edges(tables)
     for edge in relations:
         key, target = edge["source"], edge["target"]

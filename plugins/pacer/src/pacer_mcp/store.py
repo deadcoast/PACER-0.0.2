@@ -121,7 +121,7 @@ class Store:
             raise ValueError("PACER recovery required; run recover before queries or writes")
         files = {}
         headers = {}
-        tables = {}
+        tables: dict[str, list[dict[str, str]]] = {}
         for register in HEADERS:
             name = f"{register}.PACER.csv"
             path = contained_path(self.root, name)
@@ -234,7 +234,7 @@ class Store:
                     candidate.pop(name, None)
                 else:
                     candidate[name] = data
-            tables = {name: [] for name in HEADERS}
+            tables: dict[str, list[dict[str, str]]] = {name: [] for name in HEADERS}
             headers = {}
             for name, data in candidate.items():
                 register = "nodule" if name.startswith("archive/") else name.split(".")[0]

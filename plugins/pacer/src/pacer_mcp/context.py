@@ -112,7 +112,7 @@ def required_closure(tables: dict, task_id: str) -> tuple[set[str], set[str]]:
         if key.startswith("PAC-"):
             admit_impact(refs(row.get("OVRRefs", "")))
             pending.extend(hard_blockers(row))
-            fields = ("OVRRefs", "OGMRefs", "NDLRefs")
+            fields: tuple[str, ...] = ("OVRRefs", "OGMRefs", "NDLRefs")
         elif key.startswith("NDL-"):
             admit_impact(refs(row.get("TargetOVR", "")))
             fields = ("TargetOVR", "OGMTargets", "SpawnedPACs")

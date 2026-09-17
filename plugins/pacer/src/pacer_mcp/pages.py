@@ -116,7 +116,7 @@ def assemble_context_pages(pages: list[dict]) -> dict:
     """
     if not pages or len(pages) > 100_000:
         raise ValueError("Complete ordered context pages required")
-    packet = {}
+    packet: dict = {}
     try:
         for page in pages:
             for entry in page["entries"]:

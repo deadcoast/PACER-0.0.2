@@ -122,6 +122,8 @@ class Editor:
             elif name == "checkpoint":
                 if register != "todo" or operation["next_action"] not in NEXT_ACTIONS:
                     raise ValueError("checkpoint needs a task and defined next_action")
+                if self.root is None:
+                    raise ValueError("checkpoint requires a project root")
                 row["NextAction"] = operation["next_action"]
                 row["ContextCheckpoint"] = canonical(
                     context_snapshot(self.tables, self.root, row["ID"])
@@ -250,13 +252,13 @@ class Editor:
             for a, f, b, g in PAIRS + [(b, g, a, f) for a, f, b, g in PAIRS]:
                 if register == a and field == f:
                     for added in refs(value):
-                        target = next((r for r in self.tables[b] if r["ID"] == added), None)
-                        if target is not None and row["ID"] not in refs(target[g]):
-                            if b == "nodule" and target["Status"] == "ABSORBED":
+                        added_target = next((r for r in self.tables[b] if r["ID"] == added), None)
+                        if added_target is not None and row["ID"] not in refs(added_target[g]):
+                            if b == "nodule" and added_target["Status"] == "ABSORBED":
                                 raise ValueError("Cannot add scope to absorbed history")
-                            self._guard_inverse_basis(b, target, g)
-                            target[g] = ";".join(refs(target[g]) + [row["ID"]])
-                            self.note(target, f"linked {g} to {row['ID']}")
+                            self._guard_inverse_basis(b, added_target, g)
+                            added_target[g] = ";".join(refs(added_target[g]) + [row["ID"]])
+                            self.note(added_target, f"linked {g} to {row['ID']}")
         self.note(row, "updated " + ";".join(fields))
 
     def reconcile(self, *, allow_forward: bool = False) -> None:
@@ -304,6 +306,8 @@ class Editor:
                     raise ValueError("REFUSAL: Evidence required")
                 index = {r["ID"]: r for rows in self.tables.values() for r in rows}
                 if operational_nodules(row, index):
+                    if self.root is None:
+                        raise ValueError("Operational task completion requires a project root")
                     for key in refs(row["OGMRefs"]):
                         requirement = index[key]
                         if (
@@ -529,6 +533,8 @@ class Editor:
         if errors:
             raise ValueError(errors[0])
         if row.get("ContextPolicy") == "REQUIRED":
+            if self.root is None:
+                raise ValueError("Operational absorption requires a project root")
             index = {r["ID"]: r for rows in self.tables.values() for r in rows}
             for key in refs(row["OGMTargets"]):
                 if evaluate_rule(index[key], index, self.root)["freshness"] != "CURRENT":
