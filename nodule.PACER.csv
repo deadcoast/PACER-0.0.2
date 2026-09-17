@@ -1,1 +1,10 @@
 ID,NoduleName,Intent,Status,TargetOVR,NewAssets,OGMTargets,SpawnedPACs,AbsorptionCriteria,Tags,Notes,CreatedAt,AbsorbedAt,Lane,AcceptanceEvidence,UserRequest,ContextPolicy
+NDL-018,Evidence truth,"Correct manual outcome/freshness and truthful refresh classification without weakening acceptance, as scoped by PAC-036's preserved DoD.",ACTIVE,OVR-195;OVR-192;OVR-193;OVR-028;OVR-179;OVR-178;OVR-050;OVR-042;OVR-044;OVR-222;OVR-218;OVR-015,evidence/pac-036/verification.json,OGM-009;OGM-010;OGM-011,PAC-036,"PAC-036 meets its unchanged DoD with source-only/meaning drift, missing/malformed/forged/failed reports, deterministic failure, dependent propagation, repeated refresh and stale completion refusal covered through current receipts. The locked repository check passes, the source web validates, scoped OGM-009/OGM-010/OGM-011 acceptance is current in dependency order, evidence/pac-036/verification.json and changed public symbols are registered, and original reports and acceptance history remain retained.",#core #codex,"Selected first of four prospective nodules. This lane admits PAC-036 only. Implementation planning and verification decisions remain in its TODO row. Admission preserves existing requirement wording, authority, statuses and historical evidence. | 2026-09-17T01:42:29Z codex: added nodule row",2026-09-17T01:42:29Z,,evidence-truth,,"• Added PAC-036–041 directly to todo.PACER.csv.
+
+  The six proposals define four prospective nodules, with findings, priorities, dependencies, scope, DoDs, verification, and absorption criteria.
+
+  Next pace: PAC-036 — distinguish stale manual evidence from demonstrated failure.
+
+  All development planning is in TODO. Reciprocal references were updated; PACER validation passed.
+
+> BEGIN PROPOSALS. SELECT NODULE. SET PACE.",REQUIRED
