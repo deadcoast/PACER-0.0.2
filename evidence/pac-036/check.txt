@@ -1,0 +1,8 @@
+warning: `VIRTUAL_ENV=C:\Users\ryanf\github\_new\image-riposte\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+All checks passed!
+38 files already formatted
+........................................................................ [ 34%]
+........................................................................ [ 69%]
+................................................................         [100%]
+208 passed in 46.48s
+{"valid": true, "source_interfaces": 565, "examples": 15, "revision": "92988b110cf4ec5c11ce64fc2a1c719556a9f19da0b1921009422895890886c7"}

@@ -1,0 +1,69 @@
+{
+  "requirement": "OGM-031",
+  "meaning": "bd655f32ccd36547c932f626f804ab587b0402bbefa8069b3a8c2d3df7d248c8",
+  "sources": {
+    "mypy_errors.txt": "72df24ec2f5908a49b74c36e2e705a356c1ccdedb49e5cea078a81624741490f",
+    "plugins/pacer/uv.lock": "684b5e7337efad8b4e4176f38d0e5cc42997deffeb9f82a8d1aff52870e20101",
+    "uv.lock": "2c92621a53b2dd003275990e0bb547f8fab5fac6d8fd53bd32684a872f0cd470",
+    "pyproject.toml": "199fdbc2534e157be56d7b37e03411169f8875a3ade13a6669779253c32653e8",
+    "plugins/pacer/pyproject.toml": "c39fdfaad29d94fc3f60ecba7b79daf1dcdfb6caf0479501a397d94fb0523769",
+    "plugins/pacer/tests/test_packaging.py": "89e629971f38e1060585ac51264e9bf6da081484c1b549feccd342c7ab6e1387",
+    "scripts/evaluate_development.py": "b0a8d06c7a705efa62cce9f993a264ccc83b0965f200bfd865924afb5000c593",
+    "plugins/pacer/src/pacer_mcp/service.py": "98da88b1cece1e23dfe313e31ed1c622750853c8d3bdf5d6627174a20e8a2d3f",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5",
+    "plugins/pacer/src/pacer_mcp/store.py": "bb03c6f8c7915a8f95df50875105606556d2946a7635e83a22ba16e4193da349",
+    "plugins/pacer/src/pacer_mcp/query.py": "bd22baabfd5c6d1b34f55b2ca5ba04975d1cf1d76aa0d3638b91ae9740b70f7d",
+    "plugins/pacer/src/pacer_mcp/pages.py": "853cb17dd6f7bc69d3eb9bda8aaf77e75df7596062f402c3ea2d12e01d9a1b94",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564",
+    "plugins/pacer/src/pacer_mcp/context.py": "2c7beebd315a2f781c07fee0ec743b3645e01359e5755ac007af2eac0643c827",
+    "plugins/pacer/src/pacer_mcp/commands.py": "dcf6d8965381e737a31b344c9f51766e7cfd80c16ae509c1b7e259df9fd7ec5e",
+    "scripts/evaluate_context.py": "006e2d70fea07cd75fca3c3339569b9d1d0ad2f6f6acd7ee200b3b68657a3897",
+    "scripts/prove_codex.py": "6728c107a2997897a1d9499a03384cbb8752eff48667a985c4a8063f4657fb22",
+    "scripts/prove_context_delivery.py": "2b899455cb8361bae82090a2e7eb5b6010e2de44f660c26e65d736de53127ef6",
+    "scripts/maintain.py": "20f779179dcf0f2f282917c3908262dcef4aabb6bb0448270230696559ca0187"
+  },
+  "result": "PASS",
+  "task": "PAC-036",
+  "command": [
+    "uv",
+    "run",
+    "--locked",
+    "--no-sync",
+    "python",
+    "scripts/check.py"
+  ],
+  "checks": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "--no-sync",
+        "mypy",
+        "."
+      ],
+      "result": "Success: no issues found in 38 source files",
+      "output": "evidence/pac-036/mypy.txt"
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "--no-sync",
+        "python",
+        "scripts/check.py"
+      ],
+      "environment": {
+        "PYTEST_ADDOPTS": "--basetemp=.cache/pac-036/full-final-temp"
+      },
+      "result": "208 passed; Ruff and registered source correspondence pass",
+      "output": "evidence/pac-036/check.txt"
+    }
+  ],
+  "review": "Current behavior and mypy checks remain passing after the additive correction command. Original mypy_errors.txt is retained.",
+  "evidence": "evidence/pac-036/verification.json",
+  "scope": "Runtime, tests and scripts under the existing uv workspace."
+}

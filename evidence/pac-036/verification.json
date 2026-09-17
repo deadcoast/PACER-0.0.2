@@ -1,0 +1,940 @@
+{
+  "result": "PASS",
+  "task": "PAC-036",
+  "scope": "Guarded correction of active legacy NewAssets through shared CLI and MCP; no global plugin install.",
+  "checks": [
+    {
+      "command": "uv run --locked --no-sync python -m pytest plugins/pacer/tests/test_asset_correction.py -q --basetemp .cache/pac-036/focused-final-temp",
+      "result": "23 passed",
+      "output": "focused.txt"
+    },
+    {
+      "command": "uv run --locked --no-sync python scripts/check.py",
+      "environment": {
+        "PYTEST_ADDOPTS": "--basetemp=.cache/pac-036/full-final-temp"
+      },
+      "result": "208 passed; Ruff and 565 registered source interfaces passed",
+      "output": "check.txt"
+    },
+    {
+      "command": "uv run --locked --no-sync mypy .",
+      "result": "Success: no issues found in 38 source files",
+      "output": "mypy.txt"
+    }
+  ],
+  "sources": {
+    "plugins/pacer/src/pacer_mcp/commands.py": "dcf6d8965381e737a31b344c9f51766e7cfd80c16ae509c1b7e259df9fd7ec5e",
+    "plugins/pacer/src/pacer_mcp/models.py": "8f4bfbc2adee5439e288450df9d895c085f26fb0e757eaf4bb26acb9ebf8982e",
+    "plugins/pacer/tests/test_asset_correction.py": "e458a348c8c7fb48157b7f31c6d44c3e7eea3c440b5d665c9d87c61c25e95eea",
+    "plugins/pacer/references/FORMAT.md": "452f33fb174536781dc0edd047ad05a603795a1fc57dc61e04dff0574e932343"
+  },
+  "negative_control": "red-command.txt: the same successful correction test failed before implementation with Unknown operation or fields: correct_assets.",
+  "consumer": {
+    "root": "C:\\Users\\ryanf\\github\\_new\\image-riposte",
+    "review": {
+      "task": "PAC-006",
+      "nodule": "NDL-003",
+      "operation": {
+        "op": "correct_assets",
+        "id": "NDL-003",
+        "expected": "Reviewed terminal interaction, palette and semantic report modules; regression tests; matching external stubs; selective merge report; original ZIP archived under packages.;OVR-148;OVR-149;OVR-150;OVR-151;OVR-152;OVR-153;OVR-154;OVR-155;OVR-156;OVR-157;OVR-158;OVR-159;OVR-160;OVR-161;OVR-162;OVR-163;OVR-164;OVR-165;OVR-166;OVR-167;OVR-168;OVR-169;OVR-170;OVR-171;OVR-172;OVR-173;OVR-174;OVR-175;OVR-176;OVR-177;OVR-178;OVR-179;OVR-180;OVR-181;OVR-182;OVR-183;OVR-184;OVR-185;OVR-186;OVR-187;OVR-188;OVR-189;OVR-190;OVR-191;OVR-192;OVR-193;OVR-194;OVR-195;OVR-196;OVR-197;OVR-198;OVR-199;OVR-200;OVR-201;OVR-202;OVR-203;OVR-204;OVR-205",
+        "replacements": {
+          "Reviewed terminal interaction, palette and semantic report modules": [
+            "OVR-160",
+            "OVR-161",
+            "OVR-162"
+          ],
+          "regression tests": [
+            "OVR-163"
+          ],
+          "matching external stubs": [
+            "OVR-167",
+            "OVR-168",
+            "OVR-169"
+          ],
+          "selective merge report": [
+            "OVR-152"
+          ],
+          "original ZIP archived under packages.": [
+            "OVR-171"
+          ],
+          "OVR-148": [
+            "OVR-148"
+          ],
+          "OVR-149": [
+            "OVR-149"
+          ],
+          "OVR-150": [
+            "OVR-150"
+          ],
+          "OVR-151": [
+            "OVR-151"
+          ],
+          "OVR-152": [
+            "OVR-152"
+          ],
+          "OVR-153": [
+            "OVR-153"
+          ],
+          "OVR-154": [
+            "OVR-154"
+          ],
+          "OVR-155": [
+            "OVR-155"
+          ],
+          "OVR-156": [
+            "OVR-156"
+          ],
+          "OVR-157": [
+            "OVR-157"
+          ],
+          "OVR-158": [
+            "OVR-158"
+          ],
+          "OVR-159": [
+            "OVR-159"
+          ],
+          "OVR-160": [
+            "OVR-160"
+          ],
+          "OVR-161": [
+            "OVR-161"
+          ],
+          "OVR-162": [
+            "OVR-162"
+          ],
+          "OVR-163": [
+            "OVR-163"
+          ],
+          "OVR-164": [
+            "OVR-164"
+          ],
+          "OVR-165": [
+            "OVR-165"
+          ],
+          "OVR-166": [
+            "OVR-166"
+          ],
+          "OVR-167": [
+            "OVR-167"
+          ],
+          "OVR-168": [
+            "OVR-168"
+          ],
+          "OVR-169": [
+            "OVR-169"
+          ],
+          "OVR-170": [
+            "OVR-170"
+          ],
+          "OVR-171": [
+            "OVR-171"
+          ],
+          "OVR-172": [
+            "OVR-172"
+          ],
+          "OVR-173": [
+            "OVR-173"
+          ],
+          "OVR-174": [
+            "OVR-174"
+          ],
+          "OVR-175": [
+            "OVR-175"
+          ],
+          "OVR-176": [
+            "OVR-176"
+          ],
+          "OVR-177": [
+            "OVR-177"
+          ],
+          "OVR-178": [
+            "OVR-178"
+          ],
+          "OVR-179": [
+            "OVR-179"
+          ],
+          "OVR-180": [
+            "OVR-180"
+          ],
+          "OVR-181": [
+            "OVR-181"
+          ],
+          "OVR-182": [
+            "OVR-182"
+          ],
+          "OVR-183": [
+            "OVR-183"
+          ],
+          "OVR-184": [
+            "OVR-184"
+          ],
+          "OVR-185": [
+            "OVR-185"
+          ],
+          "OVR-186": [
+            "OVR-186"
+          ],
+          "OVR-187": [
+            "OVR-187"
+          ],
+          "OVR-188": [
+            "OVR-188"
+          ],
+          "OVR-189": [
+            "OVR-189"
+          ],
+          "OVR-190": [
+            "OVR-190"
+          ],
+          "OVR-191": [
+            "OVR-191"
+          ],
+          "OVR-192": [
+            "OVR-192"
+          ],
+          "OVR-193": [
+            "OVR-193"
+          ],
+          "OVR-194": [
+            "OVR-194"
+          ],
+          "OVR-195": [
+            "OVR-195"
+          ],
+          "OVR-196": [
+            "OVR-196"
+          ],
+          "OVR-197": [
+            "OVR-197"
+          ],
+          "OVR-198": [
+            "OVR-198"
+          ],
+          "OVR-199": [
+            "OVR-199"
+          ],
+          "OVR-200": [
+            "OVR-200"
+          ],
+          "OVR-201": [
+            "OVR-201"
+          ],
+          "OVR-202": [
+            "OVR-202"
+          ],
+          "OVR-203": [
+            "OVR-203"
+          ],
+          "OVR-204": [
+            "OVR-204"
+          ],
+          "OVR-205": [
+            "OVR-205"
+          ]
+        },
+        "evidence": "OBSERVED: evidence/patch-closure/correction-review.json maps every original prose and OVR token to the reviewed assets; all 58 original OVR identities are retained. Original text and complete mapping remain dated in Notes. Current source is separately authorized by the audit repair request."
+      },
+      "mappings": [
+        {
+          "original": "Reviewed terminal interaction, palette and semantic report modules",
+          "assets": [
+            {
+              "id": "OVR-160",
+              "path": "src/riposte/terminal/interaction.py",
+              "symbol": ""
+            },
+            {
+              "id": "OVR-161",
+              "path": "src/riposte/terminal/palette.py",
+              "symbol": ""
+            },
+            {
+              "id": "OVR-162",
+              "path": "src/riposte/terminal/reports.py",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "regression tests",
+          "assets": [
+            {
+              "id": "OVR-163",
+              "path": "tests/test_v05_revision.py",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "matching external stubs",
+          "assets": [
+            {
+              "id": "OVR-167",
+              "path": "typing/stubs/riposte/terminal/interaction.pyi",
+              "symbol": ""
+            },
+            {
+              "id": "OVR-168",
+              "path": "typing/stubs/riposte/terminal/palette.pyi",
+              "symbol": ""
+            },
+            {
+              "id": "OVR-169",
+              "path": "typing/stubs/riposte/terminal/reports.pyi",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "selective merge report",
+          "assets": [
+            {
+              "id": "OVR-152",
+              "path": "docs/PATCH-v05-MERGE.md",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "original ZIP archived under packages.",
+          "assets": [
+            {
+              "id": "OVR-171",
+              "path": "packages/RIPOSTE_v0.5.0.zip",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-148",
+          "assets": [
+            {
+              "id": "OVR-148",
+              "path": "START.ps1",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-149",
+          "assets": [
+            {
+              "id": "OVR-149",
+              "path": "START.sh",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-150",
+          "assets": [
+            {
+              "id": "OVR-150",
+              "path": "docs/CHANGELOG.md",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-151",
+          "assets": [
+            {
+              "id": "OVR-151",
+              "path": "docs/CLI.md",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-152",
+          "assets": [
+            {
+              "id": "OVR-152",
+              "path": "docs/PATCH-v05-MERGE.md",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-153",
+          "assets": [
+            {
+              "id": "OVR-153",
+              "path": "docs/REBUILD.md",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-154",
+          "assets": [
+            {
+              "id": "OVR-154",
+              "path": "docs/REVISION-v05.md",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-155",
+          "assets": [
+            {
+              "id": "OVR-155",
+              "path": "docs/TERMINAL-DESIGN.spec.md",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-156",
+          "assets": [
+            {
+              "id": "OVR-156",
+              "path": "docs/VALIDATION.md",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-157",
+          "assets": [
+            {
+              "id": "OVR-157",
+              "path": "scripts/capture_revision.py",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-158",
+          "assets": [
+            {
+              "id": "OVR-158",
+              "path": "scripts/capture_terminal.py",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-159",
+          "assets": [
+            {
+              "id": "OVR-159",
+              "path": "scripts/record_terminal.py",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-160",
+          "assets": [
+            {
+              "id": "OVR-160",
+              "path": "src/riposte/terminal/interaction.py",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-161",
+          "assets": [
+            {
+              "id": "OVR-161",
+              "path": "src/riposte/terminal/palette.py",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-162",
+          "assets": [
+            {
+              "id": "OVR-162",
+              "path": "src/riposte/terminal/reports.py",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-163",
+          "assets": [
+            {
+              "id": "OVR-163",
+              "path": "tests/test_v05_revision.py",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-164",
+          "assets": [
+            {
+              "id": "OVR-164",
+              "path": "typing/evidence/mypy-contracts.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-165",
+          "assets": [
+            {
+              "id": "OVR-165",
+              "path": "typing/evidence/source-reviewed-v050.json",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-166",
+          "assets": [
+            {
+              "id": "OVR-166",
+              "path": "typing/evidence/stubtest.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-167",
+          "assets": [
+            {
+              "id": "OVR-167",
+              "path": "typing/stubs/riposte/terminal/interaction.pyi",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-168",
+          "assets": [
+            {
+              "id": "OVR-168",
+              "path": "typing/stubs/riposte/terminal/palette.pyi",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-169",
+          "assets": [
+            {
+              "id": "OVR-169",
+              "path": "typing/stubs/riposte/terminal/reports.pyi",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-170",
+          "assets": [
+            {
+              "id": "OVR-170",
+              "path": "packages/RIPOSTE_v0.4.0.zip",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-171",
+          "assets": [
+            {
+              "id": "OVR-171",
+              "path": "packages/RIPOSTE_v0.5.0.zip",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-172",
+          "assets": [
+            {
+              "id": "OVR-172",
+              "path": "evidence/patch-v050/baseline-full.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-173",
+          "assets": [
+            {
+              "id": "OVR-173",
+              "path": "evidence/patch-v050/baseline-full.xml",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-174",
+          "assets": [
+            {
+              "id": "OVR-174",
+              "path": "evidence/patch-v050/baseline-terminal.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-175",
+          "assets": [
+            {
+              "id": "OVR-175",
+              "path": "evidence/patch-v050/baseline-terminal.xml",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-176",
+          "assets": [
+            {
+              "id": "OVR-176",
+              "path": "evidence/patch-v050/before-dynamic-boundaries.json",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-177",
+          "assets": [
+            {
+              "id": "OVR-177",
+              "path": "evidence/patch-v050/before-source-current-command.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-178",
+          "assets": [
+            {
+              "id": "OVR-178",
+              "path": "evidence/patch-v050/before-source-current.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-179",
+          "assets": [
+            {
+              "id": "OVR-179",
+              "path": "evidence/patch-v050/before-verification.json",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-180",
+          "assets": [
+            {
+              "id": "OVR-180",
+              "path": "evidence/patch-v050/checkout-before.json",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-181",
+          "assets": [
+            {
+              "id": "OVR-181",
+              "path": "evidence/patch-v050/index-before.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-182",
+          "assets": [
+            {
+              "id": "OVR-182",
+              "path": "evidence/patch-v050/merge-decisions.json",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-183",
+          "assets": [
+            {
+              "id": "OVR-183",
+              "path": "evidence/patch-v050/merge-verification.json",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-184",
+          "assets": [
+            {
+              "id": "OVR-184",
+              "path": "evidence/patch-v050/merged-full.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-185",
+          "assets": [
+            {
+              "id": "OVR-185",
+              "path": "evidence/patch-v050/merged-full.xml",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-186",
+          "assets": [
+            {
+              "id": "OVR-186",
+              "path": "evidence/patch-v050/merged-terminal.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-187",
+          "assets": [
+            {
+              "id": "OVR-187",
+              "path": "evidence/patch-v050/merged-terminal.xml",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-188",
+          "assets": [
+            {
+              "id": "OVR-188",
+              "path": "evidence/patch-v050/root-mypy-default.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-189",
+          "assets": [
+            {
+              "id": "OVR-189",
+              "path": "evidence/patch-v050/root-mypy-dot.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-190",
+          "assets": [
+            {
+              "id": "OVR-190",
+              "path": "evidence/patch-v050/root-mypy.json",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-191",
+          "assets": [
+            {
+              "id": "OVR-191",
+              "path": "evidence/patch-v050/source-mypy.txt",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-192",
+          "assets": [
+            {
+              "id": "OVR-192",
+              "path": "scripts/verify_v05_merge.py",
+              "symbol": ""
+            }
+          ]
+        },
+        {
+          "original": "OVR-193",
+          "assets": [
+            {
+              "id": "OVR-193",
+              "path": "src/riposte/terminal/interaction.py",
+              "symbol": "Hint"
+            }
+          ]
+        },
+        {
+          "original": "OVR-194",
+          "assets": [
+            {
+              "id": "OVR-194",
+              "path": "src/riposte/terminal/interaction.py",
+              "symbol": "fields_for"
+            }
+          ]
+        },
+        {
+          "original": "OVR-195",
+          "assets": [
+            {
+              "id": "OVR-195",
+              "path": "src/riposte/terminal/interaction.py",
+              "symbol": "hints"
+            }
+          ]
+        },
+        {
+          "original": "OVR-196",
+          "assets": [
+            {
+              "id": "OVR-196",
+              "path": "src/riposte/terminal/interaction.py",
+              "symbol": "context"
+            }
+          ]
+        },
+        {
+          "original": "OVR-197",
+          "assets": [
+            {
+              "id": "OVR-197",
+              "path": "src/riposte/terminal/interaction.py",
+              "symbol": "contextual_help"
+            }
+          ]
+        },
+        {
+          "original": "OVR-198",
+          "assets": [
+            {
+              "id": "OVR-198",
+              "path": "src/riposte/terminal/reports.py",
+              "symbol": "Run"
+            }
+          ]
+        },
+        {
+          "original": "OVR-199",
+          "assets": [
+            {
+              "id": "OVR-199",
+              "path": "src/riposte/terminal/reports.py",
+              "symbol": "Line"
+            }
+          ]
+        },
+        {
+          "original": "OVR-200",
+          "assets": [
+            {
+              "id": "OVR-200",
+              "path": "src/riposte/terminal/reports.py",
+              "symbol": "Report"
+            }
+          ]
+        },
+        {
+          "original": "OVR-201",
+          "assets": [
+            {
+              "id": "OVR-201",
+              "path": "src/riposte/terminal/reports.py",
+              "symbol": "Writer"
+            }
+          ]
+        },
+        {
+          "original": "OVR-202",
+          "assets": [
+            {
+              "id": "OVR-202",
+              "path": "src/riposte/terminal/reports.py",
+              "symbol": "overview"
+            }
+          ]
+        },
+        {
+          "original": "OVR-203",
+          "assets": [
+            {
+              "id": "OVR-203",
+              "path": "src/riposte/terminal/reports.py",
+              "symbol": "raw_lines"
+            }
+          ]
+        },
+        {
+          "original": "OVR-204",
+          "assets": [
+            {
+              "id": "OVR-204",
+              "path": "src/riposte/terminal/reports.py",
+              "symbol": "report_lines"
+            }
+          ]
+        },
+        {
+          "original": "OVR-205",
+          "assets": [
+            {
+              "id": "OVR-205",
+              "path": "src/riposte/terminal/reports.py",
+              "symbol": "paint_lines"
+            }
+          ]
+        }
+      ],
+      "target_links_added": [
+        "OVR-148",
+        "OVR-149",
+        "OVR-150",
+        "OVR-151",
+        "OVR-152",
+        "OVR-153",
+        "OVR-154",
+        "OVR-155",
+        "OVR-156",
+        "OVR-157",
+        "OVR-158",
+        "OVR-159",
+        "OVR-160",
+        "OVR-161",
+        "OVR-162",
+        "OVR-163",
+        "OVR-164",
+        "OVR-165",
+        "OVR-166",
+        "OVR-167",
+        "OVR-168",
+        "OVR-169"
+      ],
+      "rationale": "These 22 identities were already named in original NewAssets. Add their reciprocal TargetOVR links before normalization. No original identity or literal asset is removed.",
+      "pacer_source_checkout": "C:/Users/ryanf/github/ASSETS/PACER",
+      "pacer_change": "PAC-036 / NDL-018; correct_assets in commands.py and models.py; scoped CLI, no global installation"
+    },
+    "applied": {
+      "preview": false,
+      "changed_ids": [
+        "NDL-003"
+      ],
+      "changed_files": [
+        "nodule.PACER.csv"
+      ],
+      "validation": {
+        "valid": true,
+        "errors": [],
+        "warnings": []
+      },
+      "revision": "238136f74bda416129038e55bb57b2bd83baa36ca37f55e975a242b463401678"
+    }
+  },
+  "notes": [
+    "Rejected stale, incomplete, lossy, dead, unadmitted and literal-path replacements; ordinary removal/context/revision and absorption gates retained.",
+    "Prose mappings remain reviewed assertions. Runtime enforces exact identity for OVR tokens and preserves original wording in dated actor Notes.",
+    "Initial tests had fixture projection and shared-temp harness errors; retained command-level red control demonstrates the missing operation.",
+    "Global inventory preview wanted unrelated tag/dependency rewrites. Applied only reviewed source-path changes through the guarded writer; existing dependencies preserved."
+  ]
+}

@@ -1,0 +1,49 @@
+warning: `VIRTUAL_ENV=C:\Users\ryanf\github\_new\image-riposte\.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+F                                                                        [100%]
+================================== FAILURES ===================================
+___________ test_correction_preserves_history_and_absorption_gates ____________
+
+legacy = <pacer_mcp.service.Service object at 0x000002A3E5CEC6E0>
+operate = <function operate.<locals>.run at 0x000002A3E5CE96F0>
+
+    def test_correction_preserves_history_and_absorption_gates(legacy, operate):
+        before = legacy.query("nodule")["rows"][0]
+>       preview = operate(correction(), preview=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+plugins\pacer\tests\test_asset_correction.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+plugins\pacer\tests\conftest.py:139: in run
+    return operational.apply(
+plugins\pacer\src\pacer_mcp\service.py:174: in apply
+    editor.execute(operation)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <pacer_mcp.commands.Editor object at 0x000002A3E5C4AD70>
+operation = {'evidence': 'OBSERVED: reviewed the legacy wording against settings.json.', 'expected': 'Reviewed runtime settings;OVR-007;settings.json', 'id': 'NDL-001', 'op': 'correct_assets', ...}
+
+    def execute(self, operation: dict) -> None:
+        """Dispatch only declared operations; unknown fields fail visibly."""
+        allowed = {
+            "add": {"op", "register", "row"},
+            "set": {"op", "id", "fields"},
+            "append": {"op", "id", "field", "text"},
+            "link": {"op", "id", "field", "target", "remove"},
+            "transition": {"op", "id", "status", "evidence"},
+            "pace": {"op", "nodule", "tasks", "requirements"},
+            "split": {"op", "id", "children"},
+            "absorb": {"op", "id", "evidence"},
+            "verify": {"op", "id", "evidence", "artifact"},
+            "checkpoint": {"op", "id", "next_action"},
+            "refresh": {"op", "id"},
+            "approval": {"op", "id", "state", "evidence"},
+        }
+        name = operation.get("op")
+        if name not in allowed or set(operation) - allowed[name]:
+>           raise ValueError(f"Unknown operation or fields: {name}")
+E           ValueError: Unknown operation or fields: correct_assets
+
+plugins\pacer\src\pacer_mcp\commands.py:80: ValueError
+=========================== short test summary info ===========================
+FAILED plugins\pacer\tests\test_asset_correction.py::test_correction_preserves_history_and_absorption_gates
+1 failed in 0.82s

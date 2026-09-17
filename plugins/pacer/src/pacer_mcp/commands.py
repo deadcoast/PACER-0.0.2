@@ -14,6 +14,7 @@ from pacer_mcp.schema import (
     PAIRS,
     REF_FIELDS,
     TODO_TRANSITIONS,
+    contained_path,
     empty_row,
     hard_blockers,
     refs,
@@ -74,6 +75,7 @@ class Editor:
             "checkpoint": {"op", "id", "next_action"},
             "refresh": {"op", "id"},
             "approval": {"op", "id", "state", "evidence"},
+            "correct_assets": {"op", "id", "expected", "replacements", "evidence"},
         }
         name = operation.get("op")
         if name not in allowed or set(operation) - allowed[name]:
@@ -94,6 +96,14 @@ class Editor:
                 self.set_fields(register, row, operation["fields"])
             elif name == "approval":
                 self.approval(register, row, operation["state"], operation["evidence"])
+            elif name == "correct_assets":
+                self.correct_assets(
+                    register,
+                    row,
+                    operation["expected"],
+                    operation["replacements"],
+                    operation["evidence"],
+                )
             elif name == "append":
                 field = operation["field"]
                 if field not in HISTORY or field not in row or not operation["text"].strip():
@@ -131,6 +141,91 @@ class Editor:
                 self.note(row, "checkpoint; next action " + row["NextAction"])
             elif name == "refresh":
                 self.refresh(row)
+
+    def correct_assets(
+        self,
+        register: str,
+        row: dict,
+        expected: str,
+        replacements: dict[str, list[str]],
+        evidence: str,
+    ) -> None:
+        """Correct legacy prose/ID entries without removing literal assets or changing state."""
+        if register != "nodule" or row["Status"] != "ACTIVE" or self.root is None:
+            raise ValueError("Asset correction requires an active nodule and project root")
+        if not isinstance(expected, str) or expected != row["NewAssets"]:
+            raise ValueError("Asset correction expected NewAssets does not match")
+        if not isinstance(evidence, str) or not evidence.strip():
+            raise ValueError("Asset correction requires review evidence")
+        if not isinstance(replacements, dict) or not replacements:
+            raise ValueError("Asset correction requires a complete nonempty mapping")
+        assets = {asset["ID"]: asset for asset in self.tables["overlord"]}
+        identities = {
+            asset["Path"] + (":" + asset["Symbol"] if asset.get("Symbol") else "")
+            for asset in assets.values()
+        }
+        tokens = refs(expected)
+        malformed = set()
+        for token in tokens:
+            # Existing and planned literal paths remain untouched. Ambiguous legacy
+            # prose is deliberately restricted to whitespace-separated descriptions
+            # without path separators, symbol separators or a filename extension.
+            path = contained_path(self.root, token.split(":", 1)[0])
+            if token in identities or path.exists():
+                continue
+            if token.startswith("OVR-") or (
+                any(char.isspace() for char in token)
+                and not any(char in token for char in "/\\:")
+                and not Path(token.rstrip(".")).suffix
+            ):
+                malformed.add(token)
+        if set(replacements) != malformed:
+            raise ValueError(
+                "Asset correction mapping must cover all malformed entries; preserve literal assets"
+            )
+        admitted = set(refs(row["TargetOVR"]))
+        normalized = []
+        for token in tokens:
+            if token not in replacements:
+                normalized.append(token)
+                continue
+            targets = replacements[token]
+            if (
+                not isinstance(targets, list)
+                or not targets
+                or any(not isinstance(target, str) for target in targets)
+            ):
+                raise ValueError("Each correction needs a nonempty list of asset IDs")
+            if token.startswith("OVR-") and targets != [token]:
+                raise ValueError("An OVR entry must retain its exact asset identity")
+            for target in targets:
+                asset = assets.get(target)
+                if asset is None or target not in admitted:
+                    raise ValueError("Correction targets must be registered and already admitted")
+                if (
+                    "#dead" in asset.get("Tags", "").split()
+                    or not contained_path(self.root, asset["Path"]).is_file()
+                ):
+                    raise ValueError("Correction targets must be live assets")
+                normalized.append(
+                    asset["Path"] + (":" + asset["Symbol"] if asset.get("Symbol") else "")
+                )
+        after = ";".join(dict.fromkeys(normalized))
+        if after == expected:
+            raise ValueError("Asset correction must change malformed entries")
+        row["NewAssets"] = after
+        self.note(
+            row,
+            "corrected NewAssets "
+            + canonical(
+                {
+                    "before": expected,
+                    "after": after,
+                    "replacements": replacements,
+                    "evidence": evidence,
+                }
+            ),
+        )
 
     def add(self, register: str, values: dict) -> dict:
         """Add a new row without allowing forged completion or timestamps."""

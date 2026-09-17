@@ -74,9 +74,25 @@ the canonical files unchanged. Use freshly queried revision values after changes
 | `verify` | OGM `id`, `evidence`, optional artifact OVR `artifact` | Evaluate and bind acceptance to current meaning/source |
 | `refresh` | task `id` | Record stale evidence and demote demonstrated failures and affected dependents |
 | `approval` | task `id`, `state`, `evidence` | Attest APPROVED or WITHDRAWN on TODO work; retain exact decision history |
+| `correct_assets` | active NDL `id`, exact `expected`, `replacements`, `evidence` | Normalize reviewed legacy NewAssets prose/IDs to admitted live asset identities |
 
 Rows supplied to `pace` have explicit IDs. Use `next_ids` to suggest unused
 numbers, then rely on the revision precondition to detect competing allocations.
+
+`correct_assets` is a narrow, explicit legacy correction. `expected` must equal the
+current complete `NewAssets` text. `replacements` maps every malformed entry to a
+nonempty list of existing live OVR IDs already in that nodule's `TargetOVR`. An OVR
+token must map to itself; the command derives its exact `path[:symbol]`. Existing
+identities and files remain literal, as do planned paths with a slash, backslash,
+colon or extension, and tokens without whitespace (except OVR IDs). Only remaining
+descriptive prose can receive a reviewed mapping. Ambiguous path-like text is
+refused rather than guessed. The caller must judge that prose mappings preserve
+meaning; the runtime cannot establish semantic equivalence from prose.
+
+All literal entries survive, including unbuilt paths. The command records exact
+before/after text, mappings and review evidence in dated actor Notes. It changes
+no task, requirement or acceptance state. Ordinary scope-removal guards, context
+and revision checks, preview rollback and absorption criteria still apply.
 
 ## Approval without replacing lifecycle state
 

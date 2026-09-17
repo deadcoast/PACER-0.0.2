@@ -68,6 +68,16 @@ class Absorb(Command):
     evidence: str
 
 
+class CorrectAssets(Command):
+    """Normalize reviewed legacy entries while retaining their original scope history."""
+
+    op: Literal["correct_assets"]
+    id: str
+    expected: str
+    replacements: dict[str, list[str]]
+    evidence: str = Field(min_length=1)
+
+
 class ContextReceipt(Command):
     task: str
     root: str
@@ -110,6 +120,7 @@ Operation = Annotated[
     | Pace
     | Split
     | Absorb
+    | CorrectAssets
     | Verify
     | Checkpoint
     | Refresh

@@ -1,0 +1,62 @@
+{
+  "requirement": "OGM-032",
+  "meaning": "e80fa7739e44a602cec00967aa8d7fa7a97be4487c13f2e5300093ee673d89f8",
+  "sources": {
+    "evidence/pac-036/verification.json": "2dc4c6e2fed530efb2b6567c9fce4ff7bdb96c2cb7497c0f0d3ab803c12814be",
+    "evidence/pac-036/red-command.txt": "175d48db93d813e777aaf91cd452d0faccb98caab6b64c585cd2ff26bf4d2fb2",
+    "evidence/pac-036/mypy.txt": "366d6b0024cb5cdedffcf607430969d25885444cd410e68b0b0ca266aa3719c1",
+    "evidence/pac-036/focused.txt": "edee71fd1daa7414069eac7526fd69e5d18a696f9620458af2c7b799e5e9986f",
+    "evidence/pac-036/check.txt": "444c1476459c8c4c60d7b7c6249ed6c3ef0a9bae6e1d01d14db02bd591b1070d",
+    "plugins/pacer/tests/test_asset_correction.py": "e458a348c8c7fb48157b7f31c6d44c3e7eea3c440b5d665c9d87c61c25e95eea",
+    "plugins/pacer/src/pacer_mcp/schema.py": "26e2444b69ec8b5a0ceccd148b59c428f872f866e52fd7d4bd53fc8aa832d0a5",
+    "plugins/pacer/src/pacer_mcp/models.py": "8f4bfbc2adee5439e288450df9d895c085f26fb0e757eaf4bb26acb9ebf8982e",
+    "plugins/pacer/src/pacer_mcp/commands.py": "dcf6d8965381e737a31b344c9f51766e7cfd80c16ae509c1b7e259df9fd7ec5e",
+    "plugins/pacer/src/pacer_mcp/validation.py": "8586a5ab2030377c5d42a28d50dc71b08d7f20df21baaf90d5192c9b53d2a4ed",
+    "plugins/pacer/src/pacer_mcp/semantics.py": "b29869d8596c8dee340d883ca40303a6f1824b7c3976476a33365e8610c99ae2",
+    "plugins/pacer/src/pacer_mcp/evidence.py": "170d25b3b74236fc1705b918515f3f1aa08298c93d656edc1f2b45e073447564",
+    "plugins/pacer/src/pacer_mcp/context.py": "2c7beebd315a2f781c07fee0ec743b3645e01359e5755ac007af2eac0643c827",
+    "plugins/pacer/references/FORMAT.md": "452f33fb174536781dc0edd047ad05a603795a1fc57dc61e04dff0574e932343"
+  },
+  "result": "PASS",
+  "task": "PAC-036",
+  "command": [
+    "uv",
+    "run",
+    "--locked",
+    "--no-sync",
+    "python",
+    "scripts/check.py"
+  ],
+  "checks": [
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "--no-sync",
+        "mypy",
+        "."
+      ],
+      "result": "Success: no issues found in 38 source files",
+      "output": "evidence/pac-036/mypy.txt"
+    },
+    {
+      "command": [
+        "uv",
+        "run",
+        "--locked",
+        "--no-sync",
+        "python",
+        "scripts/check.py"
+      ],
+      "environment": {
+        "PYTEST_ADDOPTS": "--basetemp=.cache/pac-036/full-final-temp"
+      },
+      "result": "208 passed; Ruff and registered source correspondence pass",
+      "output": "evidence/pac-036/check.txt"
+    }
+  ],
+  "review": "23 correction regressions cover active scope, exact prior value, live admitted targets, literal preservation, exact OVR identity, atomic refusals, unchanged generic gates, CLI, MCP, and archived history. Applied via the updated CLI to the reviewed RIPOSTE record; only its nodule file changed.",
+  "evidence": "evidence/pac-036/verification.json",
+  "scope": "Guarded legacy asset correction in the source checkout; no global install."
+}
