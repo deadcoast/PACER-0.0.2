@@ -1,0 +1,44 @@
+{
+  "requirement": "OGM-027",
+  "meaning": "88828d608852c4da78efd44ea37f5cbace6c1301881cd61ba26761ad85cf1cd5",
+  "sources": {
+    "evidence/pac-031/cache-failure.txt": "b0355d06f0b0b4cfc2872ab6a3df6afbebceaee2bfead7250cbb5228cb8bd47f",
+    "scripts/test_install.ps1": "2ba7c94570c7ce90677eb89d7c928828926f68621e41898f11f5335577a956f1",
+    "install.ps1": "61d185a24fddedbc65e05222f031c75392f9288e32409cbfddbd66e063939d30",
+    "uv.lock": "8937aa0e084a8bc210f01a2e789ecc9b11c582a0f886396862930c9a1981b172",
+    "pyproject.toml": "a6d8b20de87634606a4f3299f54c83df27723638e2169f4ebeaba7dce5686987",
+    "plugins/pacer/pyproject.toml": "ef1bd8ddbb620f3653dba6496c503448a64c1a243fffcbb478921c1c4b2b86c6",
+    ".python-version": "a876e0b10411037a012498b9fe18d9bc1df32ed8b722a13564dc944ddcfd9135"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "execution_report": "evidence/pac-034/run.json",
+  "execution_sha256": "9d6144fae5016e1b3c09980e0839ab9c224c63e837f8cd986fb20672f3a812b2",
+  "checked_at": "2026-09-17T00:03:40.220695+00:00",
+  "reviewed_scope": "Reviewed the installer and first-use instructions against the unchanged runtime and requirements. The root workspace is prepared and probed before plugin installation, child routing is explicit, Python downloads are disabled and locks remain unchanged. 48 assertions per PowerShell engine plus 185 repository tests pass. Both live hosts refreshed with 47 files matching the staged bundle; live Codex discovery and controlled MCP calls pass without model turns. Earlier unchanged requirement-specific evidence remains linked; current acceptance covers the reviewed source delta and regression checks.",
+  "previous_report": {
+    "path": "evidence/pac-031/OGM-027.json",
+    "sha256": "919c4ddfc4f34b0bd471ef3e440b80cb5c1c36be5c3b176cb518215b277d966c",
+    "reviewed_scope": "35 assertions per PowerShell engine with real isolated CLIs, rendered host frames and held-file refresh. Actual default live terminal runs show moving bars, current files, subdued coloring and retained completion. Both installed packages match 47 staged files. Full isolated-candidate repository check passes 185 tests and source mappings.",
+    "limits": "Progress tested in Windows PowerShell 5.1 and PowerShell 7, both host-stream renderer probes and actual terminal refreshes. The user terminal was not directly observed. CLI progress is indeterminate because native CLIs do not provide percentages. Separate root uv packaging/log edits are excluded from candidate verification. No model turns, packaging repair or broader agent-behavior claims."
+  },
+  "changed_prior_sources": [
+    "scripts/test_install.ps1",
+    "install.ps1"
+  ],
+  "added_source_dependencies": [
+    ".python-version",
+    "plugins/pacer/pyproject.toml",
+    "pyproject.toml",
+    "uv.lock"
+  ],
+  "limits": "Current proof covers native Windows installer behavior under PowerShell 5.1 and 7, isolated fresh installs and refreshes, conflicting routing, quoted paths, locked-file preservation, failure output and renderer frames; actual live refresh in both CLIs; controlled live Codex skill/MCP discovery and fresh-thread calls; and 185 repository tests. No model turns, autonomous-agent behavior, or observation of the user terminal. uv CLI work uses indeterminate progress. Existing package configuration and locks are unchanged from the previously verified workspace/build task."
+}

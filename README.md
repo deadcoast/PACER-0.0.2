@@ -79,11 +79,24 @@ project roots and does not substitute its installed directory for your project.
 
 For this repository, the root uv workspace owns `.venv`, `uv.lock` and development
 dependencies. Its `pacer-mcp` member is the package in `plugins/pacer`. Use the
-existing Python 3.14 selected by `.python-version`:
+existing Python 3.14 selected by `.python-version`. Start with the installer;
+uv, that Python version and the selected agent CLIs must already be available:
 
 ```powershell
 ./install.ps1
-uv sync --locked
+```
+
+The installer checks uv and the agent CLIs, finds existing Python, runs a locked
+workspace sync, then verifies that root and plugin commands load this checkout
+through the root `.venv`. It preserves an obsolete `plugins/pacer/.venv` under
+`.cache/retired-environments/` before installing or refreshing both live plugins.
+It never installs uv or downloads Python. Missing prerequisites or a stale lock
+stop setup with the full diagnostic before any agent installation changes.
+Use `-Agent Codex` or `-Agent Claude` to select one host.
+
+After installation, these development commands use the prepared environment:
+
+```powershell
 uv run --locked pacer --root . onboard
 uv run --locked pacer --root . query todo --ready
 uv run --locked pacer --root . validate
@@ -106,7 +119,13 @@ project columns; it previews before publishing and refuses unresolved evidence
 or reference errors.
 
 Run `./install.ps1` again after source changes to refresh both live CLI plugins.
-It shows file progress and retains full logs under `.cache/install/logs/`.
+It shows a subdued progress bar, the current file or uv activity beneath it,
+and essential milestones. Full command output and a structured `result.json`
+for success or failure remain under `.cache/install/logs/`. `-NoAnimation` keeps
+the progress and milestones without cursor animation. The script resolves paths
+from its own location and corrects inherited uv routing for its child processes;
+your shell variables remain unchanged. If an old environment is still active in
+your shell, deactivate it and reopen the terminal before running development commands.
 After installing, start a new agent session and invoke `$pacer:pacer-onboard`
 in Codex or `/pacer:pacer-onboard` in Claude Code.
 The plugin's [usage guide](plugins/pacer/README.md) includes native installation

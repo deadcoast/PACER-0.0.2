@@ -4,7 +4,8 @@
 Install or refresh this checkout's PACER plugin for Codex and Claude Code.
 .DESCRIPTION
 Uses the official plugin CLIs. Full logs are retained under .cache/install/logs.
-Requires existing Python 3.11+, uv and the selected agent CLIs.
+Prepares the root uv workspace, then uses the official plugin CLIs.
+Requires existing uv, the Python version in .python-version and the selected CLIs.
 #>
 [CmdletBinding()]
 param(
@@ -27,6 +28,7 @@ $script:progressLabel = ''
 $script:progressPercent = -1
 $script:started = [Diagnostics.Stopwatch]::StartNew()
 $script:results = @()
+$script:workspace = $null
 
 function Write-InstallLog([string]$Kind, [string]$Message) {
     [IO.File]::AppendAllText($logPath, "$(Get-Date -Format o) [$Kind] $Message`n", $utf8)
@@ -78,11 +80,14 @@ function Write-InstallMilestone([string]$Message, [ConsoleColor]$Color = 'Cyan')
     Write-InstallLog 'INFO' $Message
 }
 
-function Invoke-InstallCli([string]$Executable, [string[]]$Arguments, [string]$Label) {
+function Invoke-InstallCli([string]$Executable, [string[]]$Arguments, [string]$Label,
+    [hashtable]$Environment = @{}, [string]$WorkingDirectory = $pacerRoot, [string]$Current = '', [switch]$FollowOutput) {
     $script:step++
     $prefix = Join-Path $logRoot ($script:step.ToString('00'))
     $commandText = $Executable + ' ' + ($Arguments -join ' ')
     Write-InstallLog 'COMMAND' $commandText
+    Write-InstallLog 'CWD' $WorkingDirectory
+    if (-not $Current) { $Current = $commandText }
     # A child PowerShell supports npm shims; encoded arguments preserve shell metacharacters.
     $quoted = @($Executable) + $Arguments | ForEach-Object { "'" + $_.Replace("'", "''") + "'" }
     $invocation = '$ErrorActionPreference = ''Stop''; $ProgressPreference = ''SilentlyContinue''; [Console]::OutputEncoding = New-Object Text.UTF8Encoding($false); try { & ' + ($quoted -join ' ') + '; if ($null -ne $LASTEXITCODE) { exit $LASTEXITCODE } } catch { Write-Error ($_ | Out-String) -ErrorAction Continue; exit 1 }'
@@ -94,6 +99,11 @@ function Invoke-InstallCli([string]$Executable, [string[]]$Arguments, [string]$L
     $info.UseShellExecute = $false
     $info.CreateNoWindow = $true
     $info.WindowStyle = 'Hidden'
+    $info.WorkingDirectory = $WorkingDirectory
+    foreach ($key in $Environment.Keys) {
+        if ($null -eq $Environment[$key]) { $info.EnvironmentVariables.Remove($key) }
+        else { $info.EnvironmentVariables[$key] = $Environment[$key] }
+    }
     $info.RedirectStandardOutput = $true
     $info.RedirectStandardError = $true
     $info.StandardOutputEncoding = $utf8
@@ -113,10 +123,11 @@ function Invoke-InstallCli([string]$Executable, [string[]]$Arguments, [string]$L
                     $line = $stream.Task.GetAwaiter().GetResult()
                     if ($null -eq $line) { $stream.Task = $null; break }
                     [IO.File]::AppendAllText($stream.Path, $line + "`n", $utf8)
+                    if ($FollowOutput -and $line.Trim()) { $Current = $line.Trim() }
                     $stream.Task = $stream.Reader.ReadLineAsync()
                 }
             }
-            Show-InstallProgress $Label $commandText
+            Show-InstallProgress $Label $Current
             Start-Sleep -Milliseconds 120
             $process.Refresh()
         }
@@ -161,7 +172,10 @@ try {
     Write-Host "  Current source -> your agent CLIs`n" -ForegroundColor DarkGray
     Write-InstallLog 'START' "source=$pacerRoot; agent=$Agent; PowerShell=$($PSVersionTable.PSVersion); user=$([Environment]::UserName)"
     Write-InstallLog 'DISPLAY' "animated=$script:interactive; host=$($Host.Name); virtualTerminal=$($Host.UI.SupportsVirtualTerminal); outputRedirected=$([Console]::IsOutputRedirected)"
-    $null = Get-Command uv -ErrorAction Stop
+    $uv = Get-Command uv -ErrorAction SilentlyContinue
+    if (-not $uv) { throw 'uv is not available on PATH. Make your existing uv installation available, then rerun install.ps1.' }
+    $uvVersion = (Invoke-InstallCli $uv.Source @('--version') 'Checking uv').Trim()
+    Write-InstallMilestone $uvVersion Gray
     $hosts = @()
     foreach ($name in @('Codex', 'Claude')) {
         if ($Agent -ne 'All' -and $Agent -ne $name) { continue }
@@ -172,6 +186,57 @@ try {
         Write-InstallMilestone "$name  $($version.Trim())" Gray
     }
     $pluginRoot = Join-Path $pacerRoot 'plugins/pacer'
+    $environmentPath = Join-Path $pacerRoot '.venv'
+    # Scope routing corrections to child processes; never rewrite the caller's shell.
+    $uvEnvironment = @{
+        UV_PROJECT_ENVIRONMENT = $environmentPath; UV_PYTHON_DOWNLOADS = 'never'
+        VIRTUAL_ENV = $null; UV_PROJECT = $null; UV_WORKING_DIRECTORY = $null
+        UV_PYTHON = $null; PYTHONHOME = $null; PYTHONPATH = $null
+    }
+    foreach ($key in @('VIRTUAL_ENV', 'UV_PROJECT_ENVIRONMENT', 'UV_PROJECT', 'UV_WORKING_DIRECTORY', 'UV_PYTHON', 'PYTHONHOME', 'PYTHONPATH')) {
+        if ([Environment]::GetEnvironmentVariable($key)) {
+            Write-InstallLog 'ROUTING' "Ignoring inherited $key for workspace setup"
+        }
+    }
+    Write-InstallLog 'ROUTING' "project=$pacerRoot; environment=$environmentPath; Python downloads=never"
+    $pythonRequest = (Get-Content -LiteralPath (Join-Path $pacerRoot '.python-version') -Raw).Trim()
+    $python = (Invoke-InstallCli $uv.Source @('python', 'find', '--system', '--no-project', '--no-python-downloads', $pythonRequest) "Finding existing Python $pythonRequest" -Environment $uvEnvironment).Trim()
+    Write-InstallMilestone "Python $pythonRequest  /  $python" Gray
+    $existed = Test-Path -LiteralPath (Join-Path $environmentPath 'pyvenv.cfg')
+    $null = Invoke-InstallCli $uv.Source @('sync', '--locked', '--project', $pacerRoot, '--python', $python, '--no-python-downloads') 'Syncing workspace' -Environment $uvEnvironment -Current (Join-Path $pacerRoot 'uv.lock') -FollowOutput
+    # Single quotes survive Windows PowerShell's legacy native argument marshalling.
+    $probe = 'import json, sys, pacer_mcp, pacer_mcp.cli, pacer_mcp.server; from importlib.metadata import version; print(json.dumps(dict(environment=sys.prefix, python=sys.version.split()[0], source=pacer_mcp.__file__, package=version(''pacer-mcp''), pytest=version(''pytest''), ruff=version(''ruff''))))'
+    $verified = @()
+    foreach ($project in @($pacerRoot, $pluginRoot)) {
+        $label = if ($project -eq $pacerRoot) { 'Checking root runtime' } else { 'Checking plugin runtime' }
+        $runtime = Invoke-InstallCli $uv.Source @('run', '--locked', '--no-sync', '--project', $project, 'python', '-c', $probe) $label -Environment $uvEnvironment -Current $project | ConvertFrom-Json
+        if ([IO.Path]::GetFullPath($runtime.environment) -ne $environmentPath -or [IO.Path]::GetFullPath($runtime.source) -ne (Join-Path $pluginRoot 'src/pacer_mcp/__init__.py').Replace('/', '\')) {
+            throw "Wrong PACER runtime for $project : $($runtime | ConvertTo-Json -Compress)"
+        }
+        $verified += $runtime
+    }
+    $script:workspace = [ordered]@{ uv = $uvVersion; python = $verified[0].python; path = $environmentPath; action = $(if ($existed) { 'refreshed' } else { 'created' }); checks = $verified; retired = $null }
+    Write-InstallMilestone "Workspace  $($script:workspace.action)  /  Python $($script:workspace.python)" Green
+    Write-InstallMilestone "$environmentPath  /  root + plugin verified" DarkGray
+    $nested = Join-Path $pluginRoot '.venv'
+    if (Test-Path -LiteralPath $nested) {
+        $old = Get-Item -LiteralPath $nested -Force
+        $retired = [IO.Path]::GetFullPath((Join-Path $pacerRoot ".cache/retired-environments/install-$runId-plugin-venv"))
+        # Never follow an environment junction or move anything outside this checkout.
+        if (-not $old.PSIsContainer -or ($old.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $old.FullName -ne $nested -or -not $retired.StartsWith($pacerRoot + '\', [StringComparison]::OrdinalIgnoreCase)) {
+            throw "Cannot retire the old environment safely: $nested"
+        }
+        $null = New-Item -ItemType Directory -Path (Split-Path -Parent $retired) -Force
+        try {
+            Move-Item -LiteralPath $old.FullName -Destination $retired
+            $script:workspace.retired = $retired
+            Write-InstallMilestone 'Old plugin environment  preserved in .cache/retired-environments' Gray
+            Write-InstallLog 'RETIRED' "$nested -> $retired"
+        } catch {
+            Write-InstallLog 'WARNING' ($_ | Format-List * -Force | Out-String)
+            Write-InstallMilestone "Old plugin environment remains at $nested; close processes using it and rerun. The verified root environment is ready." Yellow
+        }
+    }
     $pending = New-Object 'System.Collections.Generic.Stack[string]'
     $pending.Push($pluginRoot)
     $files = @()
@@ -303,7 +368,7 @@ try {
         Write-InstallMilestone "$name  $action" Green
         Write-InstallMilestone $installedPath DarkGray
     }
-    Write-InstallJson (Join-Path $logRoot 'result.json') ([ordered]@{ source = $pacerRoot; digest = $digest; files = $inventory; installs = $script:results })
+    Write-InstallJson (Join-Path $logRoot 'result.json') ([ordered]@{ status = 'complete'; source = $pacerRoot; workspace = $script:workspace; digest = $digest; files = $inventory; installs = $script:results })
     Show-InstallProgress 'Complete' "$($script:results.Count) agent CLI(s)  /  $($files.Count) files  /  $([Math]::Round($script:started.Elapsed.TotalSeconds, 1))s" 100
     if ($script:drawn) { Write-Host ''; $script:drawn = $false }
     Write-InstallLog 'INFO' 'Installation complete'
@@ -313,6 +378,7 @@ try {
     Clear-InstallProgress
     $details = ($_ | Format-List * -Force | Out-String) + "`n" + $_.ScriptStackTrace
     Write-InstallLog 'ERROR' $details
+    Write-InstallJson (Join-Path $logRoot 'result.json') ([ordered]@{ status = 'failed'; source = $pacerRoot; workspace = $script:workspace; installs = $script:results; error = $details })
     Write-Host "`n  PACER / installation failed" -ForegroundColor Red
     Write-Host $details -ForegroundColor Red
     if ($script:results.Count) { Write-Host ('  Completed before failure: ' + (($script:results | ForEach-Object { $_.agent }) -join ', ')) -ForegroundColor Yellow }

@@ -1,0 +1,39 @@
+{
+  "requirement": "OGM-029",
+  "meaning": "2575a3c43893c01b8a061dd6fe58b04e56c7ea77e2863886f3d23c67c18a24c6",
+  "sources": {
+    "plugins/pacer/README.md": "b4a960af81d486f493d3d4d05ba492b6addb2e19fd066479064e6df61c95bd37",
+    "AGENTS.md": "9e4c71f5ba2948bb2dd4eb2264c0efa10b8426042c3a7924b96c1f34202061e5",
+    "README.md": "2788a2fd5ece6da9bf187cd39276d80f8e7a016cf4ea93195e455fe704f67b12",
+    "plugins/pacer/uv.lock": "59bd80f92d65d7663029cfe7c52d7f23d8ecc0311d4e8effa485bc4b731a76bd",
+    "plugins/pacer/pyproject.toml": "ef1bd8ddbb620f3653dba6496c503448a64c1a243fffcbb478921c1c4b2b86c6",
+    "uv.lock": "8937aa0e084a8bc210f01a2e789ecc9b11c582a0f886396862930c9a1981b172",
+    "pyproject.toml": "a6d8b20de87634606a4f3299f54c83df27723638e2169f4ebeaba7dce5686987"
+  },
+  "result": "PASS",
+  "command": [
+    "uv",
+    "run",
+    "--project",
+    "plugins/pacer",
+    "--locked",
+    "python",
+    "scripts/check.py"
+  ],
+  "execution_report": "evidence/pac-034/run.json",
+  "execution_sha256": "9d6144fae5016e1b3c09980e0839ab9c224c63e837f8cd986fb20672f3a812b2",
+  "checked_at": "2026-09-17T00:03:40.220695+00:00",
+  "reviewed_scope": "Root/member pyprojects, Python pin and both locks are byte-identical to prior workspace acceptance. Fresh installer trials prove the shared environment, both import paths, retained development tools and nested-environment preservation. The prior named package build and standalone Python 3.11+ compatibility evidence remain historical and unchanged; live installed Codex MCP starts successfully.",
+  "previous_report": {
+    "path": "evidence/pac-033/OGM-029.json",
+    "sha256": "d7f4ceed7589df623672b8ca697dbe3b3a93fbf0a14f17069c7b85f4dccd190c",
+    "reviewed_scope": "Reviewed the changed configuration and instructions; unchanged runtime/test/evaluation source retains its prior meaning. 185 tests and source/example checks pass on root Python 3.14. Three entry points choose root .venv, both exact syncs retain development tools, named package builds from sdist, and an independent plugin starts CLI and 13 MCP tools with unchanged standalone pins.",
+    "limits": "Current proof covers uv environment selection, stable exact sync, compatible pinned package versions, sdist-to-wheel build and a copied standalone CLI/MCP process, plus the repository checks. Native Codex/Claude plugin installation and model turns were not repeated. Earlier native/visual evidence remains historical; unchanged implementation bytes and focused current regression checks support this configuration-only review. Bare root uv build still targets the non-package development project; the documented build is uv build --package pacer-mcp."
+  },
+  "changed_prior_sources": [
+    "plugins/pacer/README.md",
+    "README.md"
+  ],
+  "added_source_dependencies": [],
+  "limits": "Current proof covers native Windows installer behavior under PowerShell 5.1 and 7, isolated fresh installs and refreshes, conflicting routing, quoted paths, locked-file preservation, failure output and renderer frames; actual live refresh in both CLIs; controlled live Codex skill/MCP discovery and fresh-thread calls; and 185 repository tests. No model turns, autonomous-agent behavior, or observation of the user terminal. uv CLI work uses indeterminate progress. Existing package configuration and locks are unchanged from the previously verified workspace/build task."
+}

@@ -18,7 +18,7 @@ function Assert-Install($Condition, [string]$Message) {
     $script:checks += $Message
 }
 
-function Run-Installer([string]$Label, [string]$ExtraPath = '', [string]$ScriptPath = '') {
+function Run-Installer([string]$Label, [string]$ExtraPath = '', [string]$ScriptPath = '', [hashtable]$Environment = @{}) {
     $info = New-Object Diagnostics.ProcessStartInfo
     $info.FileName = $Engine
     if (-not $ScriptPath) { $ScriptPath = Join-Path $fixture 'install.ps1' }
@@ -27,17 +27,19 @@ function Run-Installer([string]$Label, [string]$ExtraPath = '', [string]$ScriptP
     $info.UseShellExecute = $false
     $info.CreateNoWindow = $true
     $info.WindowStyle = 'Hidden'
+    $info.WorkingDirectory = $trial # The installer must use its own root from any cwd.
     $info.RedirectStandardOutput = $true
     $info.RedirectStandardError = $true
     $info.EnvironmentVariables['CODEX_HOME'] = $codexProfile
     $info.EnvironmentVariables['CLAUDE_CONFIG_DIR'] = $claudeProfile
+    foreach ($key in $Environment.Keys) { $info.EnvironmentVariables[$key] = $Environment[$key] }
     if ($ExtraPath) { $info.EnvironmentVariables['PATH'] = $ExtraPath + ';' + $env:PATH }
     $process = New-Object Diagnostics.Process
     $process.StartInfo = $info
     $null = $process.Start()
     $out = $process.StandardOutput.ReadToEndAsync()
     $err = $process.StandardError.ReadToEndAsync()
-    if (-not $process.WaitForExit(90000)) { $process.Kill(); throw "Timed out: $Label" }
+    if (-not $process.WaitForExit(180000)) { $process.Kill(); throw "Timed out: $Label" }
     $stdout = $out.GetAwaiter().GetResult()
     $stderr = $err.GetAwaiter().GetResult()
     [IO.File]::WriteAllText((Join-Path $trial "$Label.stdout.log"), $stdout, $utf8)
@@ -55,6 +57,7 @@ function Read-InstallResult {
 $pending = New-Object 'System.Collections.Generic.Stack[string]'
 $pending.Push((Join-Path $root 'plugins/pacer'))
 $sources = @((Join-Path $root 'install.ps1'), (Join-Path $root '.agents/plugins/marketplace.json'), (Join-Path $root '.claude-plugin/marketplace.json'))
+foreach ($relative in @('pyproject.toml', 'uv.lock', '.python-version', 'README.md')) { $sources += Join-Path $root $relative }
 while ($pending.Count) {
     foreach ($item in (Get-ChildItem -LiteralPath $pending.Pop() -Force)) {
         if ($item.PSIsContainer) {
@@ -71,12 +74,26 @@ $marker = Join-Path $fixture 'plugins/pacer/refresh-marker.txt'
 $obsolete = Join-Path $fixture 'plugins/pacer/removed-marker.txt'
 [IO.File]::WriteAllText($marker, 'before', $utf8)
 [IO.File]::WriteAllText($obsolete, 'obsolete', $utf8)
-$first = Run-Installer 'initial'
+$oldEnvironment = Join-Path $fixture 'plugins/pacer/.venv'
+$null = New-Item -ItemType Directory -Path $oldEnvironment
+[IO.File]::WriteAllText((Join-Path $oldEnvironment 'preserve.txt'), 'old environment', $utf8)
+$outsideEnvironment = Join-Path $trial 'unrelated-environment'
+$null = New-Item -ItemType Directory -Path $outsideEnvironment
+[IO.File]::WriteAllText((Join-Path $outsideEnvironment 'preserve.txt'), 'unrelated', $utf8)
+$routing = @{ VIRTUAL_ENV = $oldEnvironment; UV_PROJECT_ENVIRONMENT = $outsideEnvironment; UV_PROJECT = $trial; UV_WORKING_DIRECTORY = $trial; UV_PYTHON = '0.0' }
+$lockHashes = @('uv.lock', 'plugins/pacer/uv.lock') | ForEach-Object { Get-FileHash -LiteralPath (Join-Path $fixture $_) }
+$first = Run-Installer 'initial' -Environment $routing
 Assert-Install ($first.exit -eq 0) "Initial installation succeeds (logs: $trial)"
 Assert-Install ($first.stdout -match '\[[= ]{20}\].*Reading source') 'Default output includes the source progress bar'
 Assert-Install ($first.stdout -match '\[[= ]{20}\].*Installing PACER in Codex' -and $first.stdout -match '\[[= ]{20}\].*Installing PACER in Claude') 'Both CLI installations display a bar while working'
 Assert-Install ($first.stdout -match '\[={20}\]\s+100%\s+Complete') 'The completed bar remains in default output'
 $initial = Read-InstallResult
+Assert-Install ($initial.workspace.action -eq 'created' -and $initial.workspace.path -eq (Join-Path $fixture '.venv')) 'First install creates the root environment despite conflicting caller routing'
+Assert-Install ($initial.workspace.checks.Count -eq 2 -and @($initial.workspace.checks | Where-Object environment -ne $initial.workspace.path).Count -eq 0) 'Root and member load PACER from the shared environment'
+Assert-Install ($first.stdout -match '\[[= ]{20}\].*Syncing workspace' -and $first.stdout.IndexOf('root + plugin verified') -lt $first.stdout.IndexOf('Reading source')) 'uv progress and verification precede plugin preparation'
+Assert-Install (-not (Test-Path -LiteralPath $oldEnvironment) -and [IO.File]::ReadAllText((Join-Path $initial.workspace.retired 'preserve.txt')) -eq 'old environment') 'The obsolete nested environment is retired intact'
+Assert-Install (@(Get-ChildItem -LiteralPath $outsideEnvironment -Force).Count -eq 1 -and [IO.File]::ReadAllText((Join-Path $outsideEnvironment 'preserve.txt')) -eq 'unrelated') 'An inherited external environment remains untouched'
+Assert-Install (@($lockHashes | Where-Object { (Get-FileHash -LiteralPath $_.Path).Hash -ne $_.Hash }).Count -eq 0) 'Workspace setup preserves both lockfiles'
 Assert-Install (@($initial.installs | Where-Object action -ne 'installed').Count -eq 0) 'Both absent plugins are installed'
 $originalFiles = @{}
 foreach ($install in $initial.installs) {
@@ -88,6 +105,7 @@ $second = Run-Installer 'refresh'
 Assert-Install ($second.exit -eq 0) 'Refresh succeeds'
 Assert-Install ($second.stdout -match '\[={20}\]\s+100%\s+Complete' -and -not $second.stdout.Contains([string][char]27)) 'NoAnimation retains a completed bar without cursor controls'
 $refreshed = Read-InstallResult
+Assert-Install ($refreshed.workspace.action -eq 'refreshed' -and $refreshed.workspace.path -eq $initial.workspace.path -and -not (Test-Path -LiteralPath $oldEnvironment)) 'Refresh reuses the root environment without recreating the nested environment'
 Assert-Install ($initial.digest -ne $refreshed.digest) 'Changed and removed files select a new version'
 foreach ($install in $refreshed.installs) {
     Assert-Install ($install.action -eq 'refreshed') "$($install.agent) detects the existing installation"
@@ -133,6 +151,24 @@ Assert-Install ($failure.exit -ne 0) 'A failed CLI exits nonzero'
 Assert-Install ($failure.stdout.Contains('stdout diagnostic') -and $failure.stdout.Contains('specific CLI error: test failure') -and $failure.stdout.Contains('exit 23')) 'Failure displays stdout, stderr and the original exit code'
 $latest = Get-ChildItem -LiteralPath (Join-Path $fixture '.cache/install/logs') -Directory | Sort-Object Name | Select-Object -Last 1
 Assert-Install ((Get-Content -LiteralPath (Join-Path $latest.FullName 'install.log') -Raw).Contains('specific CLI error: test failure')) 'The full failure is retained in the durable log'
+Assert-Install ((Read-InstallResult).status -eq 'failed') 'A failed run retains a structured result'
+$projectPath = Join-Path $fixture 'pyproject.toml'
+$projectText = [IO.File]::ReadAllText($projectPath)
+[IO.File]::WriteAllText($projectPath, $projectText.Replace('version = "0.1.0"', 'version = "0.1.1"'), $utf8)
+try {
+    $lockFailure = Run-Installer 'stale-lock'
+    Assert-Install ($lockFailure.exit -ne 0 -and $lockFailure.stdout.Contains('Syncing workspace failed') -and $lockFailure.stdout.Contains('lockfile')) 'A stale lock stops setup and displays the complete uv failure'
+    Assert-Install (@((Read-InstallResult).installs).Count -eq 0 -and -not $lockFailure.stdout.Contains('Registering Codex marketplace')) 'uv failure stops before agent installation changes'
+    Assert-Install (@($lockHashes | Where-Object { (Get-FileHash -LiteralPath $_.Path).Hash -ne $_.Hash }).Count -eq 0) 'A failed locked sync does not rewrite either lockfile'
+} finally { [IO.File]::WriteAllText($projectPath, $projectText, $utf8) }
+$pythonVersionPath = Join-Path $fixture '.python-version'
+$pythonVersionText = [IO.File]::ReadAllText($pythonVersionPath)
+[IO.File]::WriteAllText($pythonVersionPath, '999.0', $utf8)
+try {
+    $pythonFailure = Run-Installer 'missing-python'
+    Assert-Install ($pythonFailure.exit -ne 0 -and $pythonFailure.stdout.Contains('Finding existing Python 999.0 failed') -and $pythonFailure.stdout.Contains('--no-python-downloads')) 'An unavailable Python version fails with downloads explicitly disabled'
+    Assert-Install (@((Read-InstallResult).installs).Count -eq 0) 'Missing Python stops before agent installation changes'
+} finally { [IO.File]::WriteAllText($pythonVersionPath, $pythonVersionText, $utf8) }
 $probe = @'
 $ErrorActionPreference = 'Stop'
 $installer = Join-Path $PSScriptRoot "source with spaces and 'quote/install.ps1"
