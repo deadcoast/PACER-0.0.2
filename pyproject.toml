@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "PACER development workspace"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = ["pacer-mcp"]
+dependencies = [
+    "mypy>=2.3.1",
+    "pacer-mcp",
+]
 
 [dependency-groups]
 # Match the plugin's default group; uv selects groups per project during sync.
