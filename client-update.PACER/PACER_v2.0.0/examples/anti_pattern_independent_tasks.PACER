@@ -1,0 +1,11 @@
+PACER::TODO version=legacy
+PROJECT "Fragmented Example"
+GLOBAL G001 "feature 1" state=review
+  PHASE P01 "one tiny thing" state=review
+    PACE P01.01 "implement" state=review
+    GATE user reason="please test trivial implementation"
+GLOBAL G002 "feature 2" state=review
+  PHASE P02 "another tiny thing" state=review
+    PACE P02.01 "implement" state=review
+    GATE user reason="please test trivial implementation"
+END

@@ -1,0 +1,3 @@
+SOURCE @project | file="UNSET" | role="authority" | use="Project source of truth"
+SOURCE @active | file="UNSET" | role="implementation" | use="Current phase implementation source"
+SOURCE @reference | file="UNSET" | role="reference" | use="Only load when current theatre needs it"

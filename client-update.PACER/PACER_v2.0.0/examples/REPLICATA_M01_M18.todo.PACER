@@ -1,0 +1,43 @@
+PACER::TODO version=2.0.0
+PROJECT "TAG REPLICATA M01-M18" maturity=integrated
+MODULATION "18[5]X[4]:(2:4:3:4:5)"
+
+GLOBAL G001 "Terminal product maturation" state=integrated
+  SOURCE "docs/practicata-original-organic.md" role=vision
+
+  PHASE P01 "Terminal rebase + operational foundation" state=integrated
+    PACE M01 "real terminal rebase; remove web/dashboard architecture" state=done
+    PACE M02 "functional terminal system; recovery, scope, presets, observer" state=done
+    EXIT coherent="terminal-native operational baseline"
+
+  PHASE P02 "Visual language + topology + motion" state=integrated
+    PACE M03 "terminal visual composition" state=done
+    PACE M04 "core tree visual system" state=done
+    PACE M05 "signal tree" state=done
+    PACE M06 "motion and output grammar" state=done
+    PACE M07 "visual finish restraint pass" state=done
+    PACE M08 "hierarchy, motion, terminal-space composition" state=done
+    PACE M09 "spatial rhythm and transaction landing" state=done
+    PACE M10 "topology, motion, whitespace" state=done
+    EXIT coherent="authored terminal grammar driven by real state"
+
+  PHASE P03 "Scale + operator trust + continuity" state=integrated
+    PACE M11 "large-tree legibility" state=done
+    PACE M12 "operator trust and interaction friction" state=done
+    PACE M13 "session continuity and startup authority" state=done
+    EXIT coherent="large-tree operation remains legible and trustworthy across sessions"
+
+  PHASE P04 "Filesystem + target-environment hardening" state=integrated
+    PACE M14 "adversarial filesystem hardening" state=done
+    PACE M15 "operator flow compression" state=done
+    PACE M16 "Windows terminal compatibility closure" state=done
+    EXIT coherent="destructive authority hardened for target environment"
+
+  PHASE P05 "Performance + plan authorship" state=integrated
+    PACE M17 "scale performance and latency closure" state=done
+    PACE M18 "scope authorship and plan topology" state=done
+    EXIT coherent="large repositories remain fast and operator-authored plans remain exact"
+
+  :loop⠁:
+  OVERLORD update="next-substantive-development-area"
+END

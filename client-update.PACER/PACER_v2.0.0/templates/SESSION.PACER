@@ -1,0 +1,8 @@
+SESSION actor="agent"
+GLOBAL active="UNSET"
+PHASE active="UNSET"
+PACE last="UNSET"
+CHANGED []
+LATCHES []
+BLOCKERS []
+NEXT ["continue-next-eligible-pace"]

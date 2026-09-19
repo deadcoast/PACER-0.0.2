@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mivim.dev/pacer/v2/schema.json",
+  "title": "PACER v2 Machine Model",
+  "type": "object",
+  "required": ["version", "model", "states", "context", "default_transition"],
+  "properties": {
+    "version": {"type": "string"},
+    "model": {"const": "continuity-first"},
+    "states": {"type": "array", "items": {"type": "string"}, "minItems": 3},
+    "context": {
+      "type": "object",
+      "required": ["WELL", "THEATRE"],
+      "properties": {"WELL": {"type": "string"}, "THEATRE": {"type": "string"}}
+    },
+    "default_transition": {"const": "continue"},
+    "approval_latch": {"type": "object"}
+  },
+  "additionalProperties": true
+}

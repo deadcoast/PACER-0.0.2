@@ -1,0 +1,1 @@
+OK: no continuity anti-patterns detected by the advisory audit.

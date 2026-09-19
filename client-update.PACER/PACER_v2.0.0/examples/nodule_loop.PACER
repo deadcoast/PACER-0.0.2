@@ -1,0 +1,14 @@
+PACER::TODO version=2.0.0
+PROJECT "Nodule compatibility example" maturity=prototype
+GLOBAL G001 "Integrated development area" state=active
+  :nodule NDL-003 "shared implementation pattern" state=active
+  PHASE P01 "develop + integrate" state=active
+    PACE P01.01 "develop nodule in source" state=done
+    PACE P01.02 "self-check and integrate with adjacent source" state=done
+    ?if empty_pace="advance"
+    EXIT coherent="nodule works inside the actual system"
+  +approved NDL-003
+  ->:absorb::nodule NDL-003 into=overlord
+  :loop⠁:
+  OVERLORD update="continue-next-eligible-pace"
+END

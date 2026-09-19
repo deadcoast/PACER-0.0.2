@@ -1,0 +1,28 @@
+version = "2.0.0"
+
+[files]
+".MIVIM.spec" = "workflow authority + global project frame"
+"todo.PACER" = "canonical development sequence"
+"rules.overlord.rs" = "parent workflow semantics"
+"task.overlord.md" = "typed task counterpart"
+"PREPROMPT.txt" = "short agent reminder"
+
+[context]
+well = "all authorized project/source knowledge"
+theatre = "active phase + relevant source anchors + inherited decisions + next dependencies"
+
+[precedence]
+order = ["explicit_user_direction", "authorized_project_sources", "overlord_state", "pacer_plan", "bounded_inference"]
+
+[continuation]
+default = "continue"
+loop_marker = ":loop⠁:"
+review_parking = false
+user_gate_by_default = false
+
+[guardrail]
+prototype = "agent_resolves"
+playable = "agent_resolves_then_coherent_checkpoint"
+integrated = "agent_resolves_with_evidence"
+release = "strict_release_gate"
+protected = "strict_content_authority"

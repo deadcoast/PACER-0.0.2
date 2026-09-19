@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+  "model": "continuity-first",
+  "states": ["todo", "active", "integrated", "done"],
+  "review": {"kind": "evidence", "blocking": false},
+  "context": {
+    "WELL": "global project/source knowledge",
+    "THEATRE": "active actionable subset"
+  },
+  "loop": ["orient", "build", "integrate", "self_check", "absorb", "loop", "overlord_update", "continue"],
+  "default_transition": "continue",
+  "maturity": {
+    "sketch": "agent_autonomous",
+    "prototype": "agent_autonomous",
+    "playable": "coherent_checkpoint_optional",
+    "integrated": "agent_evidence",
+    "release": "strict_release_gate",
+    "protected": "strict_content_authority"
+  },
+  "user_gate_classes": [
+    "irreversible_external_action",
+    "missing_secret_or_account_authority",
+    "destructive_change_to_protected_or_released_content",
+    "mutually_exclusive_high_cost_product_direction_without_project_answer",
+    "explicit_user_reserved_decision"
+  ],
+  "agent_resolves_classes": [
+    "ordinary_test_failure",
+    "local_implementation_choice",
+    "researchable_unknown",
+    "greybox_value",
+    "style_choice_within_existing_system",
+    "routine_refactor",
+    "routine_validation",
+    "documentation_update",
+    "subagent_delegation",
+    "prototype_playtest_absence"
+  ],
+  "approval_latch": {"persistent": true, "invalidate_on": "material_subject_change"},
+  "anti_patterns": [
+    "one_pace_one_user_gate",
+    "mandatory_review_parking",
+    "independent_task_fragmentation",
+    "user_test_required_for_trivial_internal_change",
+    "full_context_reload_per_pace"
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "package": "PACER_v2.0.0",
+  "file_count": 49,
+  "files": [
+    {
+      "path": ".MIVIM.spec",
+      "bytes": 1473,
+      "sha256": "af0123c79858523153cb0577225d3c77f2e0d855b66e95823812afb31235095a"
+    },
+    {
+      "path": "AGENT_START.md",
+      "bytes": 1370,
+      "sha256": "58e4e07e67b42d90fec248e9153d679f1b2ef31348d81a597f0decce52687faf"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 780,
+      "sha256": "843dddacc089c65d4369528edacea3d4901876e743586175c8f6431e1daeb6e2"
+    },
+    {
+      "path": "PREPROMPT.txt",
+      "bytes": 619,
+      "sha256": "05d14369040e3f0ba07cf5c2b8629246b57ea8780d5691106dc4336d60d9edc4"
+    },
+    {
+      "path": "QUALIFICATION.md",
+      "bytes": 657,
+      "sha256": "fc72696d95d69f3700701d6e6183cc5691be8e9efd9a02520f44c5a0d19ff47c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3033,
+      "sha256": "5e329e03270ebfdffce6c3ff78e0010a522f2dee79251b381dcba652d55c134e"
+    },
+    {
+      "path": "api/PACER.api.md",
+      "bytes": 849,
+      "sha256": "aaa704cb3b1ee4a5b5ee50cf45243b0b1e60f6dfa4cd40fd79aa1d438f82b493"
+    },
+    {
+      "path": "commands/commands.jsonl",
+      "bytes": 741,
+      "sha256": "756eac1811a857dcbb9914d0f0fdad96c47cac2dfecf6ba2ec4f28022f118c21"
+    },
+    {
+      "path": "contract/PACER.contract.md",
+      "bytes": 1357,
+      "sha256": "5d20807df13a3ed764c0a548e80568de258d0624b93e219d2d6392674fa959dc"
+    },
+    {
+      "path": "docs/APPROVAL_LATCH.md",
+      "bytes": 480,
+      "sha256": "d91e4d04f492f92d5a5f847e95684538f847174d575e283506f0ce062126b12d"
+    },
+    {
+      "path": "docs/CONTINUITY_MODEL.md",
+      "bytes": 1317,
+      "sha256": "6210f47d226cbbb1e06c5ae842f45f691616ab0b45dad803cb6c45ccfa1263a1"
+    },
+    {
+      "path": "docs/GUARDRAIL_DOCTRINE.md",
+      "bytes": 2364,
+      "sha256": "630b67e099775c7976d9066456562ad16b59f6054adfc48790bab35813cd2d88"
+    },
+    {
+      "path": "docs/MIGRATION_FROM_LEGACY.md",
+      "bytes": 1020,
+      "sha256": "683626923e3867a476ca4c1d162d0ae23fa6b11abc66c0ba256217282ceff5cc"
+    },
+    {
+      "path": "docs/MODULATION.md",
+      "bytes": 862,
+      "sha256": "fd29000747aed8b57cdbb328ade76e005982a9346177957c2a7f6092e361ff78"
+    },
+    {
+      "path": "docs/OPERATING_GUIDE.md",
+      "bytes": 3046,
+      "sha256": "fab60afac5032f35a669eb59b38374278241faaea64fe0ec895fed0d7654ea44"
+    },
+    {
+      "path": "docs/PACER_CLIENT_FIXES.md",
+      "bytes": 1206,
+      "sha256": "21badf5fce3127ef45fc87839417b6a11b22b9e5005cd3c3a9db83f99c8ec916"
+    },
+    {
+      "path": "docs/REPLICATA_M01_M18_REVIEW.md",
+      "bytes": 2647,
+      "sha256": "15d8b5adb4a023e084890b61b9580904ff6a1e72fb3df00405d923a7cdf0d7f7"
+    },
+    {
+      "path": "docs/THEATRE_AND_WELL.md",
+      "bytes": 903,
+      "sha256": "70b09b009b4fc1aabba5e003dd64672162a9b62afd8159ce5b9aedf19d67b0cf"
+    },
+    {
+      "path": "examples/ANTI_PATTERN_AUDIT.txt",
+      "bytes": 599,
+      "sha256": "c537e7cbe06a29d6445e61c2aeeff9e7e53b3078d8a7c44886458a16e611f899"
+    },
+    {
+      "path": "examples/PACKAGE_AUDIT.txt",
+      "bytes": 64,
+      "sha256": "37057b76b3769b278ac53abc7727189745e96ebb56f4f55efde6d02987f9525b"
+    },
+    {
+      "path": "examples/REPLICATA_M01_M18.MIVIM.spec",
+      "bytes": 426,
+      "sha256": "acfd06710fa8181f41ff9fe06b6732092183e56424480eb1983bc2c31cae53af"
+    },
+    {
+      "path": "examples/REPLICATA_M01_M18.todo.PACER",
+      "bytes": 2121,
+      "sha256": "08626de031a4e92ee2a384bfd5b6a9fd81a732df894a9ef0d77f2df1cd0f76d3"
+    },
+    {
+      "path": "examples/REPLICATA_P04_THEATRE.txt",
+      "bytes": 571,
+      "sha256": "ea229ec6e08aef01cfe57f13f96ad348998395d68596238d06b6ed5972cb2c7d"
+    },
+    {
+      "path": "examples/anti_pattern_independent_tasks.PACER",
+      "bytes": 420,
+      "sha256": "7bc828cc97fe0b0366301b1d471b1b654050ae070cb5820f03e98e8007b67d1d"
+    },
+    {
+      "path": "examples/modulated_pattern.PACER",
+      "bytes": 587,
+      "sha256": "bce7b4b73cefc38f2a06e3a614693e8f40378eb45c07d304a0d5041601458585"
+    },
+    {
+      "path": "examples/nodule_loop.PACER",
+      "bytes": 591,
+      "sha256": "33087fe70079137a2a12fdd9fdc4d5807f9c67a813b216ee6ad26e0dc2527c45"
+    },
+    {
+      "path": "grammar/PACER.ebnf",
+      "bytes": 1036,
+      "sha256": "b1730c3de90454d1ef5ce96abd4fc30d3b0efa44791b785475a612aa3b7ba091"
+    },
+    {
+      "path": "machine/pacer.machine.json",
+      "bytes": 1586,
+      "sha256": "95196d633afac1db2dd048a27ba58cc003de62c64197226ef925336afdb968f8"
+    },
+    {
+      "path": "machine/pacer.machine.yaml",
+      "bytes": 519,
+      "sha256": "d2761c7ee628bde53e746a8353bd17985942f42f3fbae8a278eb68401c3b1a84"
+    },
+    {
+      "path": "map.overlord.toml",
+      "bytes": 883,
+      "sha256": "f6bade0ffcead4db076d2a084ec60011f685e3ad45250a68be39f0013595bf19"
+    },
+    {
+      "path": "pacer/__init__.py",
+      "bytes": 22,
+      "sha256": "ffb3a541d6d590ae2369dd022dda48d20ad3fb31006feaa01661f9985cc35e20"
+    },
+    {
+      "path": "pacer/__main__.py",
+      "bytes": 47,
+      "sha256": "79ee6f134c5c5193377cf9b189cbdcc3e2095e49ba9cec310114441c15a917c4"
+    },
+    {
+      "path": "pacer/audit.py",
+      "bytes": 1845,
+      "sha256": "8e1cd76f869eec50936a6d8ab3bd845d0aa667f356073c5570e0a05ac6476e29"
+    },
+    {
+      "path": "pacer/cli.py",
+      "bytes": 998,
+      "sha256": "b5396ac4be769945263b3b5f9f73c254703e5cec07e4fe90dc219bb6557f67a7"
+    },
+    {
+      "path": "pacer/model.py",
+      "bytes": 789,
+      "sha256": "13433affc942f8c2486c23beaa7926f76fdfba325163be7cbc7505a9ee1f2fac"
+    },
+    {
+      "path": "pacer/parser.py",
+      "bytes": 2193,
+      "sha256": "edc6e18501ab25e1e237d7ad388a42c7382c4d83c0501e22f1adcf571498b27c"
+    },
+    {
+      "path": "pacer/theatre.py",
+      "bytes": 1578,
+      "sha256": "bd6a8d985e6d3fbea79f5935c7adbb3616134662000dc5debcba1ccc0fd92b03"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 279,
+      "sha256": "1f886ecc9fc2eff09b7f4fd1d4790406f3c0e59a4b300ad5e4eb6299b78ebc6a"
+    },
+    {
+      "path": "rules.overlord.rs",
+      "bytes": 1468,
+      "sha256": "db118663f5a4f43ae317de02e660227e7e107225e3cb981310e50ef5f3707f99"
+    },
+    {
+      "path": "schema/pacer.schema.json",
+      "bytes": 719,
+      "sha256": "332373b1a1bbd83420f266ed0f78810aeff399c47d44270c48ff7766b227afad"
+    },
+    {
+      "path": "task.overlord.md",
+      "bytes": 709,
+      "sha256": "98d95c5fe01e907fc4826254e913610a9f18228dbac0393f05c7596f4aaa8b6c"
+    },
+    {
+      "path": "templates/MIVIM.spec.template",
+      "bytes": 215,
+      "sha256": "ba47da8a8079ae92d49940b0cd2c2e8b878c7ec59e787fbde1c29377303fa2ef"
+    },
+    {
+      "path": "templates/SESSION.PACER",
+      "bytes": 154,
+      "sha256": "6e3bb884903a4948d532cadd11b122136d998c3c049c37af79003857c93638b0"
+    },
+    {
+      "path": "templates/SOURCE_ANCHOR.PACER",
+      "bytes": 280,
+      "sha256": "f0c44543d0c945362c8e4e884ad3ae8a478eb13d5c685b932ad3f480f63809d0"
+    },
+    {
+      "path": "templates/task.overlord.md",
+      "bytes": 709,
+      "sha256": "98d95c5fe01e907fc4826254e913610a9f18228dbac0393f05c7596f4aaa8b6c"
+    },
+    {
+      "path": "templates/todo.PACER.template",
+      "bytes": 274,
+      "sha256": "177c27249f5e5af02a2e9f195f13b0ed7741b9309cbdfeb12a24c67e71bc24a1"
+    },
+    {
+      "path": "tests/test_audit.py",
+      "bytes": 782,
+      "sha256": "e03c2773a357ffd96c4191fa20fa00fee0697bea537cbaf0bb5446886e3e1194"
+    },
+    {
+      "path": "tests/test_theatre.py",
+      "bytes": 808,
+      "sha256": "9ea87d9ef5c5ea833ba72f5c928cd333d602af61fe5eb45ed5edf4d483d21f5b"
+    },
+    {
+      "path": "todo.PACER",
+      "bytes": 2468,
+      "sha256": "70dd10d83a2c4cece4d3918bfe7ce615b2a7e0b8304665d10f1a7b1be34a48e7"
+    }
+  ]
+}

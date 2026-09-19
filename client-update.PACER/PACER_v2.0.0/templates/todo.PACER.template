@@ -1,0 +1,11 @@
+PACER::TODO version=2.0.0
+PROJECT "UNSET" maturity=prototype
+MODULATION "UNSET"
+
+GLOBAL G001 "UNSET" state=active
+  PHASE P01 "UNSET" state=active
+    PACE P01.01 "UNSET" state=active
+    EXIT coherent="UNSET"
+  :loop⠁:
+  OVERLORD update="continue-next-eligible-pace"
+END

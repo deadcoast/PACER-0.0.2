@@ -1,0 +1,6 @@
+{"command":"audit","mutates":false,"purpose":"Report continuity and micro-gating anti-patterns; advisory only."}
+{"command":"theatre","mutates":false,"purpose":"Compile active actionable context from global plan plus phase."}
+{"command":"summary","mutates":false,"purpose":"Summarize global/phase/pace state without creating review gates."}
+{"syntax":":loop⠁:","mutates_state":true,"purpose":"Advance continuous agent development before OVERLORD update."}
+{"syntax":"+approved","mutates_state":true,"purpose":"Latch a user/project approval until the governed subject materially changes."}
+{"syntax":"->:absorb::nodule","mutates_state":true,"purpose":"Consolidate an approved nodule into parent state without ending the development loop."}

@@ -1,0 +1,7 @@
+CONTINUITY: no :loop⠁: marker found; plan can park after a local pace.
+REVIEW_PARKING: REVIEW used as lifecycle state for 6 item(s); v2 treats review as evidence, not a mandatory stop.
+GATE_DENSITY: 2 user gates across 2 paces; user intervention should be exceptional.
+MICRO_GATE: P01 asks user after 1 pace(s): please test trivial implementation
+MICRO_GATE: P02 asks user after 1 pace(s): please test trivial implementation
+COHERENCE: P01 has no phase EXIT condition; agent lacks an integrated stopping point.
+COHERENCE: P02 has no phase EXIT condition; agent lacks an integrated stopping point.

@@ -1,0 +1,14 @@
+PACER::TODO version=2.0.0
+PROJECT "Integrated Example" maturity=prototype
+MODULATION "50[10]X[5]:(1:1:1:1:1:1:1:1:1:1)"
+GLOBAL G001 "Playable core" state=active
+  SOURCE "src/" role=implementation
+  PHASE P01 "movement + camera + collision" state=active
+    PACE P01.01 "movement baseline" state=done
+    PACE P01.02 "camera integration" state=done
+    PACE P01.03 "collision integration" state=active
+    PACE P01.04 "repair cross-system feel" state=todo
+    EXIT coherent="player can traverse a greybox level end-to-end"
+  :loop⠁:
+  OVERLORD update="continue-next-eligible-pace"
+END

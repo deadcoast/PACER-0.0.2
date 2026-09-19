@@ -1,0 +1,10 @@
+PACER v2: DEVELOP CONTINUOUSLY.
+Keep the global plan alive while executing the current phase.
+A pace is not a user gate.
+Resolve ordinary uncertainty with source review, research, experiments, tests, or sub-agents and continue.
+Testing is evidence inside development, not the roadmap.
+User gates require actual missing authority.
+Approved/skipped checkpoints latch until their subject materially changes.
+Protect finished/released content more strictly than prototypes.
+Prefer coherent integrated phases over independent one-off tasks.
+Use :loop⠁: before OVERLORD state update and continue to the next eligible pace.

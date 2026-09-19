@@ -1,0 +1,42 @@
+PACER::TODO version=2.0.0
+PROJECT "PACER v2 Continuity Framework" maturity=integrated
+MODULATION "50[10]X[5]:(1:1:1:1:1:1:1:1:1:1)"
+
+GLOBAL G001 "Continuity-first development" state=active
+  SOURCE ".MIVIM.spec" role=authority
+  SOURCE "docs/OPERATING_GUIDE.md" role=method
+  SOURCE "docs/GUARDRAIL_DOCTRINE.md" role=method
+
+  PHASE P01 "Global context + theatre routing" state=integrated
+    PACE P01.01 "Preserve global map while loading only active source anchors" state=done
+    PACE P01.02 "Keep phase objectives and future dependencies visible during local work" state=done
+    EXIT coherent="agent can work without rereading whole project per pace"
+
+  PHASE P02 "Modulated work instead of independent-task fragmentation" state=integrated
+    PACE P02.01 "Group related changes under one development area" state=done
+    PACE P02.02 "Integrate each pace into shared source before moving on" state=done
+    PACE P02.03 "Carry unresolved low-risk assumptions forward explicitly instead of parking" state=done
+    EXIT coherent="phase produces one integrated operational state"
+
+  PHASE P03 "Guardrail demotion + approval latch" state=integrated
+    PACE P03.01 "Classify blockers by authority rather than by presence of a validation step" state=done
+    PACE P03.02 "Latch approved/skipped user checkpoints" state=done
+    PACE P03.03 "Escalate strict gates with maturity, not at proof-of-concept birth" state=done
+    EXIT coherent="user involvement is exceptional and durable"
+
+  PHASE P04 "Agent development loop" state=integrated
+    PACE P04.01 "Research, build, test, repair, integrate inside the same phase" state=done
+    PACE P04.02 "Absorb approved nodules without turning absorption into a stop" state=done
+    PACE P04.03 "Run :loop⠁: before OVERLORD state update" state=done
+    EXIT coherent="agent can continue through multiple paces autonomously"
+
+  PHASE P05 "Operational audit + anti-fragmentation tooling" state=active
+    PACE P05.01 "Audit gate density, REVIEW parking, one-pace phases, and missing loops" state=done
+    PACE P05.02 "Compile a small actionable THEATRE from the global WELL" state=done
+    PACE P05.03 "Map REPLICATA M01-M18 as evidence for integrated phase progression" state=done
+    PACE P05.04 "Exercise package against a sample project and refine semantics" state=active
+    EXIT coherent="package supports continuous agent development in a real project"
+
+  :loop⠁:
+  OVERLORD update="continue-next-eligible-pace"
+END

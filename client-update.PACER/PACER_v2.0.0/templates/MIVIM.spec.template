@@ -1,0 +1,14 @@
+.MIVIM.spec::PACER
+version = "2.0.0"
+project = "UNSET"
+maturity = "prototype"
+default = "continue"
+
+[WELL]
+sources = []
+decisions = []
+approved_nodules = []
+
+[THEATRE]
+active_global = "UNSET"
+active_phase = "UNSET"
