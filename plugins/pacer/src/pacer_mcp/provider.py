@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 import re
 import sqlite3
 from pathlib import Path
@@ -97,11 +98,12 @@ class BuiltinProvider:
         self._scan()
 
     def _files(self):
-        for path in self.root.rglob("*"):
-            if any(part in SKIP_DIRS for part in path.relative_to(self.root).parts):
-                continue
-            if path.is_file() and (path.suffix == ".py" or path.suffix in JS_EXT):
-                yield path
+        """Walk with directory pruning: skipped and dot-directories are never entered."""
+        for directory, children, names in os.walk(self.root):
+            children[:] = [c for c in children if c not in SKIP_DIRS and not c.startswith(".")]
+            for name in names:
+                if name.endswith(".py") or name.endswith(JS_EXT):
+                    yield Path(directory) / name
 
     def _load_cache(self) -> dict:
         try:

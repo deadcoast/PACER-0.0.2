@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import hashlib
+import os
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 from pacer_mcp.schema import contained_path, refs, utc_now
@@ -73,12 +75,15 @@ def freshness(row: dict, tables: dict, root: Path) -> str:
     return "CURRENT"
 
 
-def run_probe(row: dict, tables: dict, root: Path, actor: str, timeout: int = 600) -> dict:
+def run_probe(row: dict, tables: dict, root: Path, actor: str, timeout: int = 120) -> dict:
     """Execute the Probe, retain its full output on disk, return the evidence cell."""
     command = row.get("Probe", "").strip()
     if not command:
         raise ValueError(f"{row['ID']} has no Probe")
     src = src_digest(root, bound_paths(row, tables))
+    # Harness processes may carry a bare PATH; make PACER's own interpreter reachable last.
+    env = dict(os.environ)
+    env["PATH"] = env.get("PATH", "") + os.pathsep + str(Path(sys.executable).parent)
     try:
         completed = subprocess.run(
             command,
@@ -88,6 +93,7 @@ def run_probe(row: dict, tables: dict, root: Path, actor: str, timeout: int = 60
             text=True,
             timeout=timeout,
             errors="replace",
+            env=env,
         )
         exit_code, output = completed.returncode, completed.stdout + completed.stderr
     except subprocess.TimeoutExpired as exc:
