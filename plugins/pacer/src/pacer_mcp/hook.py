@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from pathlib import Path
 
@@ -64,6 +65,26 @@ def hook_output(event_name: str, context: str, *, deny: str = "", block: bool = 
 
 def run(event: str, payload: dict) -> tuple[int, str]:
     """Dispatch one harness event; silent when the cwd is not PACER-governed."""
+    code, out = _run(event, payload)
+    log = os.environ.get("PACER_HOOK_LOG")
+    if log:
+        try:
+            with open(log, "a", encoding="utf-8") as stream:
+                record = {
+                    "event": event,
+                    "cwd": payload.get("cwd"),
+                    "tool": payload.get("tool_name"),
+                    "source": payload.get("source"),
+                    "exit": code,
+                    "out": out,
+                }
+                stream.write(json.dumps(record, ensure_ascii=False) + "\n")
+        except OSError:
+            pass
+    return code, out
+
+
+def _run(event: str, payload: dict) -> tuple[int, str]:
     from pacer_mcp.service import Service
 
     if event not in EVENTS:

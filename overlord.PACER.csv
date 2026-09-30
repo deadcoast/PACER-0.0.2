@@ -571,3 +571,18 @@ OVR-569,evidence/pac-036/red-command.txt,,FILE,PACER red-command.txt configurati
 OVR-570,evidence/pac-036/verification.json,,FILE,PACER verification.json configuration or validation artifact,,OGM-032,,#core #codex
 OVR-571,evidence/pac-036/OGM-031.json,,FILE,PACER OGM-031.json configuration or validation artifact,,,,#core #codex
 OVR-572,evidence/pac-036/OGM-032.json,,FILE,PACER OGM-032.json configuration or validation artifact,,,,#core #codex
+OVR-573,plugins/pacer/src/pacer_mcp/cards.py,,FILE,"card grammar: one positional line per row, parse and render",integrated,,,#pacer3
+OVR-574,plugins/pacer/src/pacer_mcp/frames.py,,FILE,"session, edit, prompt frames; relevance-bounded card compilation",integrated,,,#pacer3
+OVR-575,plugins/pacer/src/pacer_mcp/rank.py,,FILE,"weighted distance over typed refs, tree position and provider edges",integrated,,,#pacer3
+OVR-576,plugins/pacer/src/pacer_mcp/gates.py,,FILE,tier matrix: stop decision and protected-edit denial,integrated,,,#pacer3
+OVR-577,plugins/pacer/src/pacer_mcp/hook.py,,FILE,harness adapter: stdin event to frame text or decision JSON,integrated,,,#pacer3
+OVR-578,plugins/pacer/src/pacer_mcp/probe.py,,FILE,"probe execution, evidence cell, src-digest freshness",integrated,,,#pacer3
+OVR-579,plugins/pacer/src/pacer_mcp/provider.py,,FILE,derived structure from codegraph sqlite or builtin ast/regex scan,integrated,,,#pacer3
+OVR-580,plugins/pacer/src/pacer_mcp/migrate.py,,FILE,profile 0.5 and v2 plans into PACER 3 tables plus ledger events,integrated,,,#pacer3
+OVR-581,plugins/pacer/src/pacer_mcp/spec.py,,FILE,.MIVIM.spec project frame with defaults,integrated,,,#pacer3
+OVR-582,plugins/pacer/src/pacer_mcp/tree.py,,FILE,indented plan view of the todo register,integrated,,,#pacer3
+OVR-583,plugins/pacer/hooks/hooks.json,,FILE,Claude Code and Codex hook wiring for the five frame events,integrated,,,#pacer3
+OVR-584,plugins/pacer/skills/pacer/SKILL.md,,FILE,"the single skill: card grammar, lexicon, gate matrix",integrated,,,#pacer3
+OVR-585,decision.PACER.csv,,FILE,"decision register: choices, latches, lessons, failed approaches",integrated,,,#pacer3
+OVR-586,ledger.PACER.jsonl,,FILE,append-only event history; never compiled into frames,integrated,,,#pacer3
+OVR-587,.MIVIM.spec,,FILE,"project frame: name, tier, provider, frame budgets",integrated,,,#pacer3

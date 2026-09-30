@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --no-sync --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook session-start",
+            "command": "uv run --locked --no-dev --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook session-start",
             "timeout": 20
           }
         ]
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --no-sync --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook prompt",
+            "command": "uv run --locked --no-dev --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook prompt",
             "timeout": 15
           }
         ]
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --no-sync --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook pre-edit",
+            "command": "uv run --locked --no-dev --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook pre-edit",
             "timeout": 15
           }
         ]
@@ -42,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --no-sync --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook post-edit",
+            "command": "uv run --locked --no-dev --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook post-edit",
             "timeout": 15
           }
         ]
@@ -53,7 +53,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --no-sync --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook stop",
+            "command": "uv run --locked --no-dev --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook stop",
             "timeout": 20
           }
         ]
