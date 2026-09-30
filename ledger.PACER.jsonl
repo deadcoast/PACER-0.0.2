@@ -682,3 +682,14 @@
 {"at":"2026-09-30T00:47:37Z","actor":"claude","op":"add","id":"PAC-047","detail":{"register":"todo"}}
 {"at":"2026-09-30T00:47:37Z","actor":"claude","op":"add","id":"NDL-019","detail":{"register":"nodule"}}
 {"at":"2026-09-30T00:47:37Z","actor":"claude","op":"status","id":"PAC-047","detail":{"from":"TODO","to":"ACTIVE"}}
+{"at":"2026-09-30T01:30:33Z","actor":"claude","op":"status","id":"PAC-046","detail":{"from":"TODO","to":"DONE"}}
+{"at":"2026-09-30T01:30:34Z","actor":"claude","op":"probe","id":"OGM-033","detail":{"evidence":"rev:46e0147 src:455c091 exit:0 out:34dc182 at:2026-09-30T01:30:33Z","exit":0,"output_path":".pacer/probes/OGM-033/2026-09-30T013033Z.txt","freshness":"CURRENT"}}
+{"at":"2026-09-30T01:47:09Z","actor":"claude","op":"add","id":"OVR-589","detail":{"register":"overlord"}}
+{"at":"2026-09-30T01:47:09Z","actor":"claude","op":"add","id":"OVR-590","detail":{"register":"overlord"}}
+{"at":"2026-09-30T01:47:09Z","actor":"claude","op":"add","id":"DEC-080","detail":{"register":"decision"}}
+{"at":"2026-09-30T01:47:09Z","actor":"claude","op":"add","id":"DEC-081","detail":{"register":"decision"}}
+{"at":"2026-09-30T01:47:09Z","actor":"claude","op":"status","id":"PAC-047","detail":{"from":"ACTIVE","to":"DONE"}}
+{"at":"2026-09-30T01:47:11Z","actor":"claude","op":"probe","id":"OGM-033","detail":{"evidence":"rev:c9cb623 src:c6b9583 exit:0 out:185fee9 at:2026-09-30T01:47:10Z","exit":0,"output_path":".pacer/probes/OGM-033/2026-09-30T014710Z.txt","freshness":"CURRENT"}}
+{"at":"2026-09-30T01:47:11Z","actor":"claude","op":"status","id":"OGM-033","detail":{"from":"PACED_REQUIREMENT","to":"VALIDATED_COMPLETE"}}
+{"at":"2026-09-30T01:47:11Z","actor":"claude","op":"status","id":"PAC-044","detail":{"from":"ACTIVE","to":"INTEGRATED"}}
+{"at":"2026-09-30T01:47:11Z","actor":"claude","op":"absorb","id":"NDL-019","detail":{}}

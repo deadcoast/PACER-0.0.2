@@ -586,3 +586,5 @@ OVR-584,plugins/pacer/skills/pacer/SKILL.md,,FILE,"the single skill: card gramma
 OVR-585,decision.PACER.csv,,FILE,"decision register: choices, latches, lessons, failed approaches",integrated,,,#pacer3
 OVR-586,ledger.PACER.jsonl,,FILE,append-only event history; never compiled into frames,integrated,,,#pacer3
 OVR-587,.MIVIM.spec,,FILE,"project frame: name, tier, provider, frame budgets",integrated,,,#pacer3
+OVR-589,evidence/pacer3-hook-trial.txt,,FILE,"live Claude Code hook trial: frames delivered, three defects found and fixed",,,,#pacer3 #evidence
+OVR-590,evidence/pacer3-consumer-trials.txt,,FILE,migration trials on image-riposte (0.5) and tag-replicata (v2) copies,,,,#pacer3 #evidence
