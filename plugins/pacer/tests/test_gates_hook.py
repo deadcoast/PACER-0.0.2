@@ -96,3 +96,4 @@ def test_hook_helpers(tmp_path):
         "decision": "block",
         "reason": "why",
     }
+    assert hook_output("Stop", "gate text", block=False) == ""

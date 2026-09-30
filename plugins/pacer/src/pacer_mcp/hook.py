@@ -47,13 +47,9 @@ def hook_output(event_name: str, context: str, *, deny: str = "", block: bool = 
     if event_name == "SessionStart":
         return context
     if event_name == "Stop":
-        if block:
-            return json.dumps({"decision": "block", "reason": context})
-        if not context:
-            return ""
-        return json.dumps(
-            {"hookSpecificOutput": {"hookEventName": "Stop", "additionalContext": context}}
-        )
+        # A non-blocking stop stays silent: any Stop output re-prompts the model
+        # and produces empty "no change" turns. The checkpoint is already written.
+        return json.dumps({"decision": "block", "reason": context}) if block else ""
     specific: dict = {"hookEventName": event_name}
     if deny:
         specific["permissionDecision"] = "deny"
