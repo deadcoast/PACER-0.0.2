@@ -43,3 +43,15 @@ MCP server env first start ~1–2.4 s from a warm uv cache.
 Codex: plugin installed and enabled (codex-cli 0.157.1) with hooks manifest "./hooks/hooks.json" present in
 the installed copy; matcher includes apply_patch and the hook parses "*** Update File:" paths. A live Codex
 session was not exercised.
+
+Run 5 (2026-09-30) — one copy per host, duplicate suppression
+  Kit INSTALL.ps1 over a dev install: "Claude Code replaced pacer@personal", "Codex replaced pacer@personal";
+  afterwards exactly pacer@pacer3 in both hosts. Repo install.ps1 afterwards: "Replacing pacer@pacer3" in both
+  hosts; exactly pacer@personal remains.
+  Forced duplicate (pacer@pacer3 + pacer@personal both installed in Claude Code), claude -p on the kit fixture:
+  hook log session-start x1 (frame delivered), prompt x1, post-edit Bash x3 (three distinct tool calls),
+  stop x1 silent. One session frame delivered. README.md edited as asked.
+  Runtime: hook events are keyed by session, source, tool_use_id, tool input and prompt, recorded under
+  .pacer/hook.lock; an identical event inside 3 s emits nothing (unit test drives run() twice).
+  Gaps found and fixed: prompt frame did not match root-level paths (README.md); empty hook context still
+  emitted a JSON shell.
