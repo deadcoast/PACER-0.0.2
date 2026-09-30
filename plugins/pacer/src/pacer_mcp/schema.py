@@ -1,4 +1,4 @@
-"""Literal PACER columns, reference relations, and grammar."""
+"""Literal PACER 3 columns, vocabularies, limits and grammar."""
 
 from __future__ import annotations
 
@@ -6,67 +6,64 @@ import re
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath, PureWindowsPath
 
-VERSION = "0.5"
+VERSION = "3.0"
+REGISTERS = ("todo", "overlord", "organism", "nodule", "decision")
+LEDGER = "ledger.PACER.jsonl"
 HEADERS = {
-    "todo": "ID Title Phase Status Priority Assignee DoD BlockedBy DependencyType "
-    "DependencyReason UnblockingStrategy Context Instructions ExpectedOutput ValidationCriteria "
-    "ErrorHandling PreviousAttempts RelatedWork LearningNotes Notes StartedAt DoneAt "
-    "OVRRefs OGMRefs NDLRefs Tags UpdatedAt NextAction ContextCheckpoint "
-    "ApprovalState ApprovalEvidence ApprovalActor ApprovedAt ApprovalBasis ApprovalHistory".split(),
-    "overlord": "ID AssetType Path Symbol Purpose Exports Imports Requires RequiredBy OGMRefs "
-    "PACRefs NDLRefs Tags Notes UpdatedAt EvidenceFor".split(),
-    "organism": "ID Title Domain Status Requirement AcceptanceEvidence OVRRefs PACRefs "
-    "BlockedByOGM AbsorbedFromNDL Tags Notes UpdatedAt NDLRefs Authority OriginText "
-    "RuleType RuleSubject RuleSelector RuleValue EvidenceBindings EvidenceArtifact".split(),
-    "nodule": "ID NoduleName Intent Status TargetOVR NewAssets OGMTargets SpawnedPACs "
-    "AbsorptionCriteria Tags Notes CreatedAt AbsorbedAt Lane AcceptanceEvidence "
-    "ContextPolicy UserRequest".split(),
+    "todo": (
+        "ID Kind Pos Title Status Tier Produce In Out Binds Needs Probe Exit Next Latch Tags"
+    ).split(),
+    "overlord": "ID Path Symbol Kind Purpose Tier Binds Latch Tags".split(),
+    "organism": "ID Title Status Authority Origin Requirement Binds Probe Evidence Tier Tags".split(),
+    "nodule": "ID Name Status Lane Request Intent In Out Targets Spawned Exit Tags".split(),
+    "decision": (
+        "ID Kind Subject Question Chosen Rejected Why Authority Latched Supersedes Tags"
+    ).split(),
 }
-PREFIX = {"todo": "PAC", "overlord": "OVR", "organism": "OGM", "nodule": "NDL"}
-ID_PATTERN = re.compile(r"(?:PAC|OVR|OGM|NDL)-[0-9]{3,}[A-Z]*")
-REF_PATTERN = re.compile(r"\b(?:PAC|OVR|OGM|NDL)-[0-9]{3,}[A-Z]*\b")
+PREFIX = {"todo": "PAC", "overlord": "OVR", "organism": "OGM", "nodule": "NDL", "decision": "DEC"}
+REGISTER_OF = {v: k for k, v in PREFIX.items()}
+ID_PATTERN = re.compile(r"(?:PAC|OVR|OGM|NDL|DEC)-[0-9]{3,}[A-Z]*")
+REF_PATTERN = re.compile(r"\b(?:PAC|OVR|OGM|NDL|DEC)-[0-9]{3,}[A-Z]*\b")
 TAG_PATTERN = re.compile(r"#[a-z][a-z0-9-]*")
+POS_PATTERN = re.compile(r"A(\d+)(?:\.P(\d+)(?:\.(\d+))?)?")
+# "*" means any prefix.
 REF_FIELDS = {
-    "todo": {"BlockedBy": "PAC", "OVRRefs": "OVR", "OGMRefs": "OGM", "NDLRefs": "NDL"},
-    "overlord": {
-        "EvidenceFor": "OGM",
-        "Requires": "OVR",
-        "RequiredBy": "OVR",
-        "OGMRefs": "OGM",
-        "PACRefs": "PAC",
-        "NDLRefs": "NDL",
-    },
-    "organism": {
-        "OVRRefs": "OVR",
-        "PACRefs": "PAC",
-        "BlockedByOGM": "OGM",
-        "AbsorbedFromNDL": "NDL",
-        "NDLRefs": "NDL",
-        "RuleSubject": "OVR",
-        "EvidenceArtifact": "OVR",
-    },
-    "nodule": {"TargetOVR": "OVR", "OGMTargets": "OGM", "SpawnedPACs": "PAC"},
+    "todo": {"In": "OVR", "Binds": "OGM", "Needs": "PAC", "Latch": "DEC"},
+    "overlord": {"Binds": "OGM", "Latch": "DEC"},
+    "organism": {"Binds": "OVR"},
+    "nodule": {"In": "OVR", "Targets": "OGM", "Spawned": "PAC"},
+    "decision": {"Subject": "*", "Supersedes": "DEC"},
 }
-# (source register, column, target register, reciprocal column)
-PAIRS = [
-    ("organism", "EvidenceArtifact", "overlord", "EvidenceFor"),
-    ("overlord", "Requires", "overlord", "RequiredBy"),
-    ("overlord", "OGMRefs", "organism", "OVRRefs"),
-    ("overlord", "PACRefs", "todo", "OVRRefs"),
-    ("overlord", "NDLRefs", "nodule", "TargetOVR"),
-    ("todo", "OGMRefs", "organism", "PACRefs"),
-    ("todo", "NDLRefs", "nodule", "SpawnedPACs"),
-    ("organism", "NDLRefs", "nodule", "OGMTargets"),
-]
-TODO_TRANSITIONS = {
-    ("TODO", "DOING"),
-    ("DOING", "REVIEW"),
-    ("DOING", "TODO"),
-    ("REVIEW", "DONE"),
-    ("REVIEW", "DOING"),
+PATH_FIELDS = {"todo": ("Out",), "nodule": ("Out",), "overlord": ("Path",)}
+LIMITS = {
+    "Title": 80,
+    "Produce": 140,
+    "Purpose": 140,
+    "Requirement": 280,
+    "Origin": 400,
+    "Why": 280,
+    "Chosen": 140,
+    "Rejected": 140,
+    "Question": 140,
+    "Exit": 140,
+    "Intent": 140,
+    "Request": 400,
+    "Probe": 200,
+    "Name": 60,
+    "Lane": 40,
+    "Symbol": 120,
+    "Path": 240,
 }
-OGM_STATUSES = {"SCAFFOLD", "PACED_REQUIREMENT", "VALIDATED_COMPLETE"}
-HISTORY = {"Notes", "LearningNotes", "PreviousAttempts"}
+TASK_KINDS = ("AREA", "PHASE", "PACE")
+TASK_STATUSES = ("TODO", "ACTIVE", "INTEGRATED", "DONE")
+TIERS = ("sketch", "prototype", "playable", "integrated", "release", "protected")
+OGM_STATUSES = ("SCAFFOLD", "PACED_REQUIREMENT", "VALIDATED_COMPLETE")
+AUTHORITIES = ("USER", "OBSERVED", "INFERRED", "UNRESOLVED", "LEGACY")
+DEC_KINDS = ("CHOICE", "LATCH", "LESSON", "FAILED")
+NEXT_ACTIONS = ("inspect", "implement", "verify", "integrate", "absorb")
+OVR_KINDS = ("FILE", "MODULE", "CLASS", "FUNCTION", "METHOD", "CONFIG", "SCHEMA")
+NDL_STATUSES = ("ACTIVE", "ABSORBED")
+IMMUTABLE = {"ID", "Kind", "Status", "Evidence", "Latched", "Pos"}
 
 
 def utc_now() -> str:
@@ -76,20 +73,16 @@ def utc_now() -> str:
 
 def refs(value: str) -> list[str]:
     """Split the semicolon grammar without interpreting prose."""
-    return [part.strip() for part in value.split(";") if part.strip()]
+    return [part.strip() for part in (value or "").split(";") if part.strip()]
 
 
-def hard_blockers(row: dict[str, str]) -> list[str]:
-    """Resolve uniform or position-aligned dependency types; blank means hard."""
-    blockers = refs(row.get("BlockedBy", ""))
-    kinds = refs(row.get("DependencyType", "")) or ["hard"]
-    if any(kind not in {"hard", "soft", "optional"} for kind in kinds):
-        raise ValueError(f"Invalid DependencyType on {row['ID']}")
-    if len(kinds) > 1 and len(kinds) != len(blockers):
-        raise ValueError(f"DependencyType count mismatch on {row['ID']}")
-    if len(kinds) == 1:
-        kinds *= len(blockers)
-    return [item for item, kind in zip(blockers, kinds, strict=True) if kind == "hard"]
+def pos_parts(value: str) -> tuple[int, int | None, int | None]:
+    """Decode A1 / A1.P2 / A1.P2.03 into (area, phase, pace)."""
+    match = POS_PATTERN.fullmatch(value or "")
+    if not match:
+        raise ValueError(f"Invalid Pos {value!r}; expected A1, A1.P2 or A1.P2.03")
+    area, phase, pace = match.groups()
+    return int(area), (int(phase) if phase else None), (int(pace) if pace else None)
 
 
 def contained_path(root: Path, value: str) -> Path:

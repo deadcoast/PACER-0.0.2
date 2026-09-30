@@ -15,7 +15,7 @@ from threading import Lock
 
 from filelock import FileLock, Timeout
 
-from pacer_mcp.schema import HEADERS, ID_PATTERN, contained_path
+from pacer_mcp.schema import HEADERS, ID_PATTERN, LEDGER, REGISTERS, contained_path, utc_now
 
 _CSV_LIMIT_LOCK = Lock()
 
@@ -122,7 +122,7 @@ class Store:
         files = {}
         headers = {}
         tables: dict[str, list[dict[str, str]]] = {}
-        for register in HEADERS:
+        for register in REGISTERS:
             name = f"{register}.PACER.csv"
             path = contained_path(self.root, name)
             if not path.exists():
@@ -211,7 +211,7 @@ class Store:
                 decoded[name] = data
             # Unchanged files also belong to the transaction's input revision.
             current_files = {}
-            for register in HEADERS:
+            for register in REGISTERS:
                 name = f"{register}.PACER.csv"
                 path = self._register_path(name)
                 if path.exists():
@@ -234,7 +234,7 @@ class Store:
                     candidate.pop(name, None)
                 else:
                     candidate[name] = data
-            tables: dict[str, list[dict[str, str]]] = {name: [] for name in HEADERS}
+            tables: dict[str, list[dict[str, str]]] = {name: [] for name in REGISTERS}
             headers = {}
             for name, data in candidate.items():
                 register = "nodule" if name.startswith("archive/") else name.split(".")[0]
@@ -265,6 +265,27 @@ class Store:
                 _atomic_write(path, data)
         journal.unlink()
         return {"recovered": True, "files": sorted(decoded)}
+
+    def ledger_append(self, entry: dict) -> None:
+        """Append one dated event; history is never rewritten."""
+        line = json.dumps({"at": utc_now(), **entry}, ensure_ascii=False, separators=(",", ":"))
+        path = contained_path(self.root, LEDGER)
+        with path.open("a", encoding="utf-8") as stream:
+            stream.write(line + "\n")
+
+    def ledger_read(self, row_id: str | None, limit: int) -> list[dict]:
+        """Return the newest matching events, oldest first within the window."""
+        path = contained_path(self.root, LEDGER)
+        if not path.exists():
+            return []
+        entries = []
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            entry = json.loads(line)
+            if row_id is None or entry.get("id") == row_id or row_id in str(entry.get("detail", "")):
+                entries.append(entry)
+        return entries[-limit:]
 
     def _register_path(self, name: str) -> Path:
         valid_root = name in {f"{r}.PACER.csv" for r in HEADERS}
