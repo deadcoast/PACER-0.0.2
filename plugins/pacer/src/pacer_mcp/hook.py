@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import subprocess
 from pathlib import Path
 
 PATCH_FILE = re.compile(r"^\*\*\* (?:Update|Add) File: (.+)$", re.MULTILINE)
@@ -59,6 +60,34 @@ def hook_output(event_name: str, context: str, *, deny: str = "", block: bool = 
     return json.dumps({"hookSpecificOutput": specific})
 
 
+def worktree_changes(root: Path) -> list[str]:
+    """Modified or untracked source paths, so shell-driven edits are still recorded."""
+    try:
+        out = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=all"],
+            cwd=root,
+            stdin=subprocess.DEVNULL,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return []
+    if out.returncode != 0:
+        return []
+    paths = []
+    for line in out.stdout.splitlines():
+        if len(line) < 4 or line[0] == "D" or line[1] == "D":
+            continue
+        rel = line[3:].split(" -> ")[-1].strip().strip('"')
+        if rel.endswith(".PACER.csv") or rel.endswith(".PACER.jsonl") or rel.startswith(".pacer/"):
+            continue
+        if rel.endswith("/") or "/." in f"/{rel}":
+            continue
+        paths.append(rel)
+    return sorted(set(paths))[:20]
+
+
 def run(event: str, payload: dict) -> tuple[int, str]:
     """Dispatch one harness event; silent when the cwd is not PACER-governed."""
     code, out = _run(event, payload)
@@ -97,13 +126,17 @@ def _run(event: str, payload: dict) -> tuple[int, str]:
         prompt = str(payload.get("prompt") or payload.get("user_prompt") or "")
         return 0, hook_output(name, service.frame("prompt", focus=prompt))
     if event in {"pre-edit", "post-edit"}:
-        path = edit_path(str(payload.get("tool_name", "")), payload.get("tool_input") or {}, root)
-        if not path:
-            return 0, ""
+        tool = str(payload.get("tool_name", ""))
+        path = edit_path(tool, payload.get("tool_input") or {}, root)
         if event == "pre-edit":
+            if not path:
+                return 0, ""
             decision = service.edit_decision(path)
             deny = decision["reason"] if decision["deny"] else ""
             return 0, hook_output(name, service.frame("edit", focus=path), deny=deny)
-        return 0, hook_output(name, service.touch(path, actor))
+        paths = [path] if path else (worktree_changes(root) if tool == "Bash" else [])
+        lines = [service.touch(p, actor) for p in paths]
+        return 0, hook_output(name, "
+".join(line for line in lines if line))
     result = service.stop(actor)
     return 0, hook_output(name, result["text"], block=result["block"])

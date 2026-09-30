@@ -34,6 +34,7 @@ def git_rev(root: Path) -> str:
         out = subprocess.run(
             ["git", "rev-parse", "--short=7", "HEAD"],
             cwd=root,
+            stdin=subprocess.DEVNULL,
             capture_output=True,
             text=True,
             timeout=10,
@@ -89,6 +90,7 @@ def run_probe(row: dict, tables: dict, root: Path, actor: str, timeout: int = 12
             command,
             cwd=root,
             shell=True,
+            stdin=subprocess.DEVNULL,
             capture_output=True,
             text=True,
             timeout=timeout,

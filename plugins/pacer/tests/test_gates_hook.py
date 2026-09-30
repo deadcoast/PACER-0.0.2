@@ -1,7 +1,7 @@
 import json
 
 from pacer_mcp.gates import edit_decision, effective_tier, stop_decision
-from pacer_mcp.hook import edit_path, find_root, hook_output
+from pacer_mcp.hook import edit_path, find_root, hook_output, worktree_changes
 from pacer_mcp.provider import NullProvider
 from pacer_mcp.schema import empty_row
 from pacer_mcp.spec import read_spec
@@ -97,3 +97,18 @@ def test_hook_helpers(tmp_path):
         "reason": "why",
     }
     assert hook_output("Stop", "gate text", block=False) == ""
+
+
+def test_worktree_changes_lists_shell_edits(tmp_path):
+    import subprocess
+
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    (tmp_path / "todo.PACER.csv").write_text("ID
+")
+    (tmp_path / "ledger.PACER.jsonl").write_text("")
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "a.py").write_text("x = 1
+")
+    (tmp_path / ".pacer").mkdir()
+    (tmp_path / ".pacer" / "lock").write_text("")
+    assert worktree_changes(tmp_path) == ["src/a.py"]

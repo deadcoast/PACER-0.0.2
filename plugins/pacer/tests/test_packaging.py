@@ -36,6 +36,7 @@ def test_hooks_cover_five_events_and_never_allow():
                 assert hook["type"] == "command" and "pacer hook" in hook["command"]
                 assert hook["timeout"] <= 20
     assert hooks["PreToolUse"][0]["matcher"] == "Edit|Write|NotebookEdit|apply_patch"
+    assert hooks["PostToolUse"][0]["matcher"] == "Edit|Write|NotebookEdit|apply_patch|Bash"
     assert hooks["SessionStart"][0]["matcher"] == "startup|resume|clear|compact"
 
 
