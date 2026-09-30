@@ -1,0 +1,15 @@
+# PACER v2.0.0 Package Manifest
+# Generated for: CREATIVUS_ARCHITECTUS_SOLUTIS
+# Authority: PRINCIPLE_DEVELOPOS_IMPERITUS
+
+[Version]
+PACER_CORE=2.0.0
+SPEC_TYPE=MIVIM.spec
+ENGINEER_RANK=PRINCIPLE_DEVELOPOS_IMPERITUS
+
+[Execution_Doctrinal_Directives]
+1. No sign-off ceremonies on frivolous matters or greybox numbers.
+2. No REVIEW parking loops for minuscule functionalities.
+3. Eliminate repetitive token-bloat re-verifications.
+4. Demote guardrails strictly to preserving finalized content, never blocking progressive velocity.
+5. Maximize sub-agent Theatre of Actionable Context to handle code execution without human reinforcing.
