@@ -32,7 +32,11 @@ NDL NDL-019 ACTIVE lane=auth | Intent: … | Targets: OGM-004 | Spawned: PAC-040
 
 One grammar everywhere: frames, query results, MCP tool output. Evidence is a probe run (`rev src exit out at`); staleness is computed from the bound files, so an uncommitted edit counts.
 
-## Install and use
+## Kit for other projects
+
+`uv run --locked python scripts/build_kit.py` builds `dist/PACER3-KIT-<version>/` and its zip: a local marketplace with the plugin for Claude Code and Codex, `INSTALL.ps1` / `install.sh`, project templates (`.MIVIM.spec`, `AGENTS.md`, a worked first pace) and the format docs. The latest build is committed at `client-update.PACER/packages/PACER3-KIT-<version>.zip`. Unzip anywhere, run the installer once, then `pacer --root . initialize` in a project.
+
+## Install and use (this repository)
 
 ```powershell
 ./install.ps1                                   # installs the plugin into Claude Code and Codex

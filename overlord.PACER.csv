@@ -588,3 +588,12 @@ OVR-586,ledger.PACER.jsonl,,FILE,append-only event history; never compiled into 
 OVR-587,.MIVIM.spec,,FILE,"project frame: name, tier, provider, frame budgets",integrated,,,#pacer3
 OVR-589,evidence/pacer3-hook-trial.txt,,FILE,"live Claude Code hook trial: frames delivered, three defects found and fixed",,,,#pacer3 #evidence
 OVR-590,evidence/pacer3-consumer-trials.txt,,FILE,migration trials on image-riposte (0.5) and tag-replicata (v2) copies,,,,#pacer3 #evidence
+OVR-591,scripts/build_kit.py,,FILE,"assemble the PACER 3 kit: marketplace snapshot, project templates, docs, zip",,,,#pacer3 #kit
+OVR-592,kit/README.md,,FILE,"kit quick start: install once, initialize a project, work by frames",,,,#pacer3 #kit
+OVR-593,kit/INSTALL.ps1,,FILE,"Windows installer: marketplace into Claude Code and Codex, pacer CLI via uv tool",,,,#pacer3 #kit
+OVR-594,kit/install.sh,,FILE,macOS/Linux installer mirroring INSTALL.ps1,,,,#pacer3 #kit
+OVR-595,kit/project/.MIVIM.spec,,FILE,"project frame template: name, tier, provider, frame budgets",,,,#pacer3 #kit
+OVR-596,kit/project/AGENTS.md,,FILE,agent operating rules and gate matrix for a governed project,,,,#pacer3 #kit
+OVR-597,kit/project/first-pace.json,,FILE,worked first area/phase/pace batch bound to OVR-001,,,,#pacer3 #kit
+OVR-598,kit/project/gitignore.snippet,,FILE,ignore .pacer runtime state,,,,#pacer3 #kit
+OVR-599,client-update.PACER/packages/PACER3-KIT-3.0.0.zip,,FILE,"built kit 3.0.0: verified install in Claude Code and Codex, fresh project trial",,,,#pacer3 #kit #evidence

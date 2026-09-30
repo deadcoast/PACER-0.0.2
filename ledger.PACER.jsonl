@@ -693,3 +693,13 @@
 {"at":"2026-09-30T01:47:11Z","actor":"claude","op":"status","id":"OGM-033","detail":{"from":"PACED_REQUIREMENT","to":"VALIDATED_COMPLETE"}}
 {"at":"2026-09-30T01:47:11Z","actor":"claude","op":"status","id":"PAC-044","detail":{"from":"ACTIVE","to":"INTEGRATED"}}
 {"at":"2026-09-30T01:47:11Z","actor":"claude","op":"absorb","id":"NDL-019","detail":{}}
+{"at":"2026-09-30T09:21:10Z","actor":"claude","op":"add","id":"OVR-591","detail":{"register":"overlord"}}
+{"at":"2026-09-30T09:21:10Z","actor":"claude","op":"add","id":"OVR-592","detail":{"register":"overlord"}}
+{"at":"2026-09-30T09:21:10Z","actor":"claude","op":"add","id":"OVR-593","detail":{"register":"overlord"}}
+{"at":"2026-09-30T09:21:10Z","actor":"claude","op":"add","id":"OVR-594","detail":{"register":"overlord"}}
+{"at":"2026-09-30T09:21:10Z","actor":"claude","op":"add","id":"OVR-595","detail":{"register":"overlord"}}
+{"at":"2026-09-30T09:21:10Z","actor":"claude","op":"add","id":"OVR-596","detail":{"register":"overlord"}}
+{"at":"2026-09-30T09:21:10Z","actor":"claude","op":"add","id":"OVR-597","detail":{"register":"overlord"}}
+{"at":"2026-09-30T09:21:10Z","actor":"claude","op":"add","id":"OVR-598","detail":{"register":"overlord"}}
+{"at":"2026-09-30T09:21:10Z","actor":"claude","op":"add","id":"OVR-599","detail":{"register":"overlord"}}
+{"at":"2026-09-30T09:21:10Z","actor":"claude","op":"add","id":"DEC-082","detail":{"register":"decision"}}

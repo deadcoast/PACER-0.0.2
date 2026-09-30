@@ -1,0 +1,25 @@
+[
+  {
+    "op": "pace",
+    "nodule": {
+      "ID": "NDL-001",
+      "Name": "first-area",
+      "Lane": "main",
+      "Request": "paste the user's literal request here",
+      "Intent": "one line: what this scope makes true",
+      "Exit": "one line: the coherent operational state that closes this scope"
+    },
+    "tasks": [
+      {"ID": "PAC-001", "Kind": "AREA", "Pos": "A1", "Title": "Core", "Tier": "prototype"},
+      {"ID": "PAC-002", "Kind": "PHASE", "Pos": "A1.P1", "Title": "Foundation", "Tier": "prototype", "Exit": "the phase's coherence condition", "Binds": "OGM-001"},
+      {"ID": "PAC-003", "Kind": "PACE", "Pos": "A1.P1.01", "Title": "First pace", "Produce": "imperative: what this pace makes true", "In": "OVR-001", "Binds": "OGM-001"}
+    ],
+    "requirements": [
+      {"ID": "OGM-001", "Title": "First requirement", "Authority": "USER", "Origin": "the user's words for this requirement", "Requirement": "normalised statement of what must hold", "Binds": "OVR-001", "Probe": "python -c \"print('replace with a real check')\""}
+    ],
+    "decisions": [
+      {"ID": "DEC-001", "Kind": "CHOICE", "Subject": "PAC-002", "Question": "a design question already settled", "Chosen": "the choice", "Rejected": "the alternative", "Why": "the reason", "Authority": "INFERRED"}
+    ]
+  },
+  {"op": "status", "id": "PAC-003", "status": "ACTIVE"}
+]
