@@ -149,6 +149,8 @@ Delivery channels, per the Claude Code hooks reference (checked 2026-09-29): Ses
 
 The SESSION frame on `source=compact` is the compaction-survival mechanism: the constraint field is re-delivered after every summarisation without the agent doing anything.
 
+Observed 2026-09-29 in a live Claude Code session: a non-blocking Stop hook must emit nothing. Any Stop output, even `additionalContext`, re-prompts the model and yields empty "no change" turns until the turn limit. The STOP frame therefore writes the checkpoint silently and only speaks when it blocks.
+
 ### 4.3 Relevance ranking replaces closure
 
 `score(row) = 1 / (1 + d(focus,row))` with typed-edge distances: `Binds, In, Out, Latch, Subject` = 1; same PHASE = 1; `Needs`, provider `used-by` = 2; same AREA = 3. The spine is mandatory and always fits: focus card + its PHASE card + LATCH DECs on the focus (≤ ~1 KB by column limits). Remaining budget fills by score, ties by ID. The frame ends with `+N more: pacer q <focus>` when truncated. No refusal on budget. Completeness means "the spine and the top-K by relevance", which is what an engineer holds in working memory, not every reachable row.

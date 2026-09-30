@@ -1,0 +1,30 @@
+PACER 3 live hook trial — Claude Code 2.1.285, plugin pacer 3.0.0 (local snapshot), 2026-09-29
+
+Fixture: %TEMP%\claude\pacer-fixture — one AREA/PHASE/PACE (PAC-003 ACTIVE, In=OVR-002 src/app.py),
+one requirement OGM-001 (Probe: python -c "... assert hello()=='hello world'"), one USER latch DEC-001.
+Hook log captured with PACER_HOOK_LOG (raw files: evidence/pacer3/pacer-hook-log*.jsonl; transcript:
+evidence/pacer3/hook-trial-stream-*.jsonl).
+
+Run 1  claude -p "Edit src/app.py so hello() returns 'hello world'..." --permission-mode acceptEdits --max-turns 6
+  session-start  source=startup   -> SESSION frame (8 cards, 979 B) injected as plain stdout
+  prompt                          -> PROMPT frame: OVR OVR-002 card (path mentioned in the prompt)
+  pre-edit       tool=Edit        -> EDIT frame: OVR-002, OGM-001 (Probe, UNBOUND), DEC-001 latch, PAC-003
+  post-edit      tool=Edit        -> "touched src/app.py"; ledger event touch PAC-003
+  result: src/app.py returns "hello world". Turn limit reached before Stop fired.
+
+Run 2  same prompt plus "run the probe ... report whether it passed", --max-turns 20
+  Agent's first message: "I'll read the file, load the PACER skill and probe tool, then make the edit and run
+  the probe for OGM-001." The prompt never named OGM-001; the agent took it from the SESSION/EDIT frames.
+  Agent called Skill pacer:pacer, then mcp pacer_probe(root, "OGM-001") — denied by -p permission mode
+  (harness, not PACER). Agent reported: "OGM-001 remains UNBOUND at prototype tier, which does not block"
+  (tier matrix from the skill).
+  stop                            -> STOP frame "PACER stop tier=prototype pace=PAC-003 next=integrate /
+                                     OGM-001: UNBOUND"; checkpoint written (PAC-003 Next=integrate).
+  Defect found: a non-blocking Stop that returned additionalContext re-prompted the model into eight
+  "no change" turns. Fixed in d420400: non-blocking Stop emits nothing.
+
+Timing: first hook call on a fresh plugin snapshot 1.1–1.8 s (creates the uv env); subsequent calls 0.3 s.
+
+Codex: plugin installed (codex-cli 0.157.1) with hooks manifest "./hooks/hooks.json" present in the
+installed copy; matcher includes apply_patch and the hook parses "*** Update File:" paths. Live Codex
+session not exercised.
