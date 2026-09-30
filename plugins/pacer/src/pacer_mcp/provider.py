@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ast
+import json
 import re
 import sqlite3
 from pathlib import Path
@@ -25,6 +26,7 @@ SKIP_DIRS = {
 }
 JS_IMPORT = re.compile(r"""(?:from\s+|import\s*\(?\s*|require\s*\(\s*)['"](\.{1,2}/[^'"]+)['"]""")
 JS_EXT = (".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx")
+CACHE_VERSION = 1
 
 
 class Provider(Protocol):
@@ -79,7 +81,11 @@ class CodegraphProvider:
 
 
 class BuiltinProvider:
-    """Python via ast; JS/TS via relative import regex. One scan, cached per instance."""
+    """Python via ast; JS/TS via relative import regex.
+
+    Per-file results are cached in .pacer/provider-cache.json keyed by size and
+    mtime, so a large tree costs one stat per file on later calls.
+    """
 
     name = "builtin"
 
@@ -87,6 +93,7 @@ class BuiltinProvider:
         self.root = root.resolve()
         self._deps: dict[str, set[str]] = {}
         self._users: dict[str, set[str]] = {}
+        self._cache_path = self.root / ".pacer" / "provider-cache.json"
         self._scan()
 
     def _files(self):
@@ -96,20 +103,52 @@ class BuiltinProvider:
             if path.is_file() and (path.suffix == ".py" or path.suffix in JS_EXT):
                 yield path
 
+    def _load_cache(self) -> dict:
+        try:
+            data = json.loads(self._cache_path.read_text(encoding="utf-8"))
+            if data.get("version") == CACHE_VERSION and isinstance(data.get("files"), dict):
+                return data["files"]
+        except (OSError, ValueError):
+            pass
+        return {}
+
+    def _save_cache(self, files: dict) -> None:
+        try:
+            self._cache_path.parent.mkdir(parents=True, exist_ok=True)
+            self._cache_path.write_text(
+                json.dumps({"version": CACHE_VERSION, "files": files}, separators=(",", ":")),
+                encoding="utf-8",
+            )
+        except OSError:
+            pass
+
     def _scan(self):
         files = list(self._files())
         py = {p.relative_to(self.root).as_posix() for p in files if p.suffix == ".py"}
         tops = {p.split("/")[0] for p in py if "/" in p}
+        cache = self._load_cache()
+        fresh: dict = {}
+        changed = False
         for path in files:
             rel = path.relative_to(self.root).as_posix()
-            if path.suffix == ".py":
-                targets = self._python_targets(path, rel, py, tops)
+            stat = path.stat()
+            key = [stat.st_size, int(stat.st_mtime_ns)]
+            entry = cache.get(rel)
+            if entry and entry.get("k") == key:
+                targets = set(entry.get("d", []))
             else:
-                targets = self._js_targets(path, rel)
+                changed = True
+                if path.suffix == ".py":
+                    targets = self._python_targets(path, rel, py, tops)
+                else:
+                    targets = self._js_targets(path, rel)
+            fresh[rel] = {"k": key, "d": sorted(targets)}
             for target in targets:
                 if target != rel:
                     self._deps.setdefault(rel, set()).add(target)
                     self._users.setdefault(target, set()).add(rel)
+        if changed or set(fresh) != set(cache):
+            self._save_cache(fresh)
 
     def _python_targets(self, path: Path, rel: str, py: set[str], tops: set[str]) -> set[str]:
         try:

@@ -121,6 +121,7 @@ GLOBAL G001 "Core" state=active
     EXIT coherent="boots"
   :nodule NDL-003 "shared pattern" state=active
   +approved NDL-003
+  +approved ENGINEERING-OATH
   :loop⠁:
 END
 """
@@ -143,5 +144,9 @@ def test_from_v2(registers):
     )
     assert tables["nodule"][0]["ID"] == "NDL-003" and tables["nodule"][0]["Spawned"] == "PAC-003"
     assert tables["decision"][0]["Kind"] == "LATCH" and tables["decision"][0]["Latched"] == "true"
+    assert (
+        tables["decision"][1]["Subject"] == "PAC-002"
+        and "ENGINEERING-OATH" in tables["decision"][1]["Question"]
+    )
     assert (registers / ".MIVIM.spec").exists()
     assert validate_web(tables, registers)["errors"] == []

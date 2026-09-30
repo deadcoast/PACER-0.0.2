@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from pacer_mcp.schema import REGISTERS, empty_row, refs
+from pacer_mcp.schema import ID_PATTERN, REGISTERS, empty_row, refs
 
 STATUS_05 = {"TODO": "TODO", "DOING": "ACTIVE", "REVIEW": "INTEGRATED", "DONE": "DONE"}
 NEXT_05 = {
@@ -277,9 +277,9 @@ def from_05(
                 "nodule",
                 {
                     "ID": row["ID"],
-                    "Name": _cut(row.get("NoduleName", ""), 60),
+                    "Name": _cut(row.get("NoduleName") or row["ID"], 60),
                     "Status": row.get("Status", "ACTIVE"),
-                    "Lane": _cut(row.get("Lane") or row.get("NoduleName", ""), 40),
+                    "Lane": _cut(row.get("Lane") or row.get("NoduleName") or row["ID"], 40),
                     "Request": _cut(row.get("UserRequest") or row.get("Intent", ""), 400),
                     "Intent": _cut(row.get("Intent", ""), 140),
                     "In": row.get("TargetOVR", ""),
@@ -422,6 +422,13 @@ def from_v2(text: str, project_dir: Path) -> tuple[dict, list[dict]]:
             )
         elif line.startswith("+approved "):
             subject = line.split()[1]
+            question = f"approve {subject}"
+            if not ID_PATTERN.fullmatch(subject) or not any(
+                r["ID"] == subject for reg in tables.values() for r in reg
+            ):
+                subject = phase_id or area_id or ""
+                if not subject:
+                    continue
             tables["decision"].append(
                 empty_row(
                     "decision",
@@ -429,7 +436,7 @@ def from_v2(text: str, project_dir: Path) -> tuple[dict, list[dict]]:
                         "ID": nid("DEC"),
                         "Kind": "LATCH",
                         "Subject": subject,
-                        "Question": _cut(f"approve {subject}", 140),
+                        "Question": _cut(question, 140),
                         "Chosen": "approved",
                         "Authority": "USER",
                         "Latched": "true",

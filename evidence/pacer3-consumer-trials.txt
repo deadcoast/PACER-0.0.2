@@ -1,0 +1,19 @@
+PACER 3 consumer migration trials — run on copies under %TEMP%\claude\pacer-trials, 2026-09-29.
+The real repositories were not modified.
+
+image-riposte (profile 0.5 registers; 14,559 Python files in the copy)
+  before  todo 4,760,730 B   overlord 1,725,253 B   organism 7,802,675 B   nodule 178 B      (14.3 MB)
+  after   todo 28,782 B      overlord 380,660 B     organism 36,047 B      nodule 68 B
+          decision 26,060 B                                                                  (471 KB)
+  rows    todo 57 (49 paces + synthesized area/phases)  overlord 2,536  organism 30  nodule 29  decision 80
+  migrate --from 0.5 preview: 1.3 s. First preview reported "NDL-022: Name required" (an archived
+  nodule with an empty NoduleName); migration now falls back to the ID for Name and Lane. Apply: valid, 0 errors.
+  Session frame after apply: 12+ cards; first call 21.7 s with the builtin provider parsing every file,
+  which motivated the mtime-keyed provider cache.
+
+tag-replicata (v2.0.0 todo.PACER, 10,899 B)
+  after   todo 9,261 B (53 rows: 1 area, 5 phases, 47 paces)  overlord 2,388 B (41 SOURCE anchors)
+          organism 0  nodule 0  decision 1 latch
+  First preview reported "DEC-001.Subject: invalid reference ENGINEERING-OATH" (a `+approved` line whose
+  subject is not an ID); migration now latches such approvals onto the current phase and keeps the
+  original token in the latch's Question. Apply: valid, 0 errors. `pacer tree` reproduces the M01–M18 plan.
