@@ -53,7 +53,7 @@ async def test_probe_through_stdio_server(project):
                     ),
                     45,
                 )
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 pytest.fail("pacer_probe hung inside the stdio MCP server")
             assert not result.isError
             assert result.structuredContent["exit"] == 0

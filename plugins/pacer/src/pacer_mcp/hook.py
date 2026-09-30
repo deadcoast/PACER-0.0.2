@@ -136,7 +136,6 @@ def _run(event: str, payload: dict) -> tuple[int, str]:
             return 0, hook_output(name, service.frame("edit", focus=path), deny=deny)
         paths = [path] if path else (worktree_changes(root) if tool == "Bash" else [])
         lines = [service.touch(p, actor) for p in paths]
-        return 0, hook_output(name, "
-".join(line for line in lines if line))
+        return 0, hook_output(name, "\n".join(line for line in lines if line))
     result = service.stop(actor)
     return 0, hook_output(name, result["text"], block=result["block"])

@@ -1,30 +1,45 @@
-PACER 3 live hook trial — Claude Code 2.1.285, plugin pacer 3.0.0 (local snapshot), 2026-09-29
+PACER 3 live hook trial — Claude Code 2.1.285, plugin pacer 3.0.0 (local snapshots), 2026-09-29
 
 Fixture: %TEMP%\claude\pacer-fixture — one AREA/PHASE/PACE (PAC-003 ACTIVE, In=OVR-002 src/app.py),
 one requirement OGM-001 (Probe: python -c "... assert hello()=='hello world'"), one USER latch DEC-001.
-Hook log captured with PACER_HOOK_LOG (raw files: evidence/pacer3/pacer-hook-log*.jsonl; transcript:
+Hook log captured with PACER_HOOK_LOG (raw files: evidence/pacer3/pacer-hook-log*.jsonl; transcripts:
 evidence/pacer3/hook-trial-stream-*.jsonl).
 
-Run 1  claude -p "Edit src/app.py so hello() returns 'hello world'..." --permission-mode acceptEdits --max-turns 6
+Run 1  --permission-mode acceptEdits --max-turns 6
   session-start  source=startup   -> SESSION frame (8 cards, 979 B) injected as plain stdout
   prompt                          -> PROMPT frame: OVR OVR-002 card (path mentioned in the prompt)
   pre-edit       tool=Edit        -> EDIT frame: OVR-002, OGM-001 (Probe, UNBOUND), DEC-001 latch, PAC-003
   post-edit      tool=Edit        -> "touched src/app.py"; ledger event touch PAC-003
-  result: src/app.py returns "hello world". Turn limit reached before Stop fired.
+  src/app.py returns "hello world". Turn limit reached before Stop fired.
 
-Run 2  same prompt plus "run the probe ... report whether it passed", --max-turns 20
+Run 2  same plus "run the probe ... report whether it passed", --max-turns 20
   Agent's first message: "I'll read the file, load the PACER skill and probe tool, then make the edit and run
-  the probe for OGM-001." The prompt never named OGM-001; the agent took it from the SESSION/EDIT frames.
-  Agent called Skill pacer:pacer, then mcp pacer_probe(root, "OGM-001") — denied by -p permission mode
-  (harness, not PACER). Agent reported: "OGM-001 remains UNBOUND at prototype tier, which does not block"
-  (tier matrix from the skill).
-  stop                            -> STOP frame "PACER stop tier=prototype pace=PAC-003 next=integrate /
-                                     OGM-001: UNBOUND"; checkpoint written (PAC-003 Next=integrate).
-  Defect found: a non-blocking Stop that returned additionalContext re-prompted the model into eight
-  "no change" turns. Fixed in d420400: non-blocking Stop emits nothing.
+  the probe for OGM-001." The prompt never named OGM-001; the agent took it from the frames.
+  pacer_probe via MCP was denied by -p permission mode. Agent: "OGM-001 remains UNBOUND at prototype tier,
+  which does not block" (tier matrix from the skill). Stop frame delivered; checkpoint written (Next=integrate).
+  Defect 1: a non-blocking Stop that returned additionalContext re-prompted the model into eight "no change"
+  turns. Fixed in d420400: non-blocking Stop emits nothing.
+
+Run 3  --allowedTools including pacer_probe; hung on the pacer_probe call, killed after 14 min.
+  Reproduced outside Claude Code with a python MCP stdio client: pacer_q 0.0 s, pacer_probe timeout 60 s.
+  Defect 2 (root cause): the probe child inherited the server's stdin, the JSON-RPC pipe, and deadlocked the
+  transport on Windows. Fixed by stdin=subprocess.DEVNULL for probe and git children; the same MCP call then
+  completes in 0.1 s. Regression test: plugins/pacer/tests/test_mcp_probe.py drives a real stdio server.
+
+Run 4  --permission-mode bypassPermissions, --max-turns 16, after the fix
+  Agent: Skill pacer:pacer -> Bash heredoc rewrite of src/app.py -> pacer_probe(OGM-001) -> "Probe passed with
+  exit 0 and CURRENT evidence" -> pacer_write [status OGM-001 VALIDATED_COMPLETE, status PAC-003 DONE] in one
+  atomic batch -> pacer_q PAC-003 -> done. 9 turns, $0.31.
+  hooks: session-start x2, prompt x1, stop x1 (silent, checkpoint written). No pre/post-edit because the
+  edit went through Bash, which the Edit|Write matcher does not see.
+  Defect 3: shell-driven edits escaped the RESULT frame. Fixed: PostToolUse also matches Bash and touches
+  modified/untracked paths from `git status --porcelain`.
+  Registers after: OGM-001 VALIDATED_COMPLETE, Evidence rev:4dffc0e exit:0 CURRENT; PAC-003 DONE; ledger holds
+  probe, two status events.
 
 Timing: first hook call on a fresh plugin snapshot 1.1–1.8 s (creates the uv env); subsequent calls 0.3 s.
+MCP server env first start ~1–2.4 s from a warm uv cache.
 
-Codex: plugin installed (codex-cli 0.157.1) with hooks manifest "./hooks/hooks.json" present in the
-installed copy; matcher includes apply_patch and the hook parses "*** Update File:" paths. Live Codex
-session not exercised.
+Codex: plugin installed and enabled (codex-cli 0.157.1) with hooks manifest "./hooks/hooks.json" present in
+the installed copy; matcher includes apply_patch and the hook parses "*** Update File:" paths. A live Codex
+session was not exercised.

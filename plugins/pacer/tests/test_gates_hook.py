@@ -103,12 +103,10 @@ def test_worktree_changes_lists_shell_edits(tmp_path):
     import subprocess
 
     subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
-    (tmp_path / "todo.PACER.csv").write_text("ID
-")
+    (tmp_path / "todo.PACER.csv").write_text("ID\n")
     (tmp_path / "ledger.PACER.jsonl").write_text("")
     (tmp_path / "src").mkdir()
-    (tmp_path / "src" / "a.py").write_text("x = 1
-")
+    (tmp_path / "src" / "a.py").write_text("x = 1\n")
     (tmp_path / ".pacer").mkdir()
     (tmp_path / ".pacer" / "lock").write_text("")
     assert worktree_changes(tmp_path) == ["src/a.py"]
