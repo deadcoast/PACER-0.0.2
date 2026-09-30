@@ -321,6 +321,15 @@ try {
                 $null = Invoke-InstallCli $cli @('plugin', 'marketplace', 'remove', $market.name) 'Updating Codex marketplace location'
             }
             $null = Invoke-InstallCli $cli @('plugin', 'marketplace', 'add', $workRoot) 'Registering Codex marketplace'
+            # Exactly one PACER copy per host: a copy from another marketplace (for example a kit
+            # install) would run the hooks and MCP server twice, so it is replaced here.
+            foreach ($other in @(($markets | ConvertFrom-Json).marketplaces | Where-Object { $_.name -ne $market.name })) {
+                $otherList = Invoke-InstallCli $cli @('plugin', 'list', '--marketplace', $other.name, '--json') "Checking $($other.name) marketplace" | ConvertFrom-Json
+                foreach ($dup in @($otherList.installed | Where-Object { $_.name -eq 'pacer' })) {
+                    $null = Invoke-InstallCli $cli @('plugin', 'remove', $dup.pluginId, '--json') "Replacing $($dup.pluginId)"
+                    Write-InstallMilestone "Codex  replaced $($dup.pluginId)" Yellow
+                }
+            }
             $previous = $before.installed | Where-Object { $_.pluginId -eq $pluginId } | Select-Object -First 1
             $protectedFiles = @()
             try {
@@ -350,6 +359,10 @@ try {
             $before = Invoke-InstallCli $cli @('plugin', 'list', '--json') 'Checking Claude installation' | ConvertFrom-Json
             $existing = @($before | Where-Object { $_.id -eq $pluginId -and $_.scope -eq 'user' }).Count -gt 0
             $null = Invoke-InstallCli $cli @('plugin', 'marketplace', 'add', $workRoot, '--scope', 'user') 'Registering Claude marketplace'
+            foreach ($dup in @($before | Where-Object { $_.id -like 'pacer@*' -and $_.id -ne $pluginId })) {
+                $null = Invoke-InstallCli $cli @('plugin', 'uninstall', $dup.id, '--scope', $dup.scope) "Replacing $($dup.id)"
+                Write-InstallMilestone "Claude  replaced $($dup.id)" Yellow
+            }
             if ($existing) {
                 $null = Invoke-InstallCli $cli @('plugin', 'marketplace', 'update', $claudeMarket.name) 'Refreshing Claude marketplace'
             }

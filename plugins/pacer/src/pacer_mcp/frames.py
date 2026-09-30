@@ -10,7 +10,7 @@ from pacer_mcp.probe import bound_paths, freshness, parse_evidence
 from pacer_mcp.rank import rank
 from pacer_mcp.schema import REF_PATTERN, REGISTERS, TAG_PATTERN, pos_parts, refs
 
-PATH_TOKEN = re.compile(r"(?<![\w./-])((?:[\w.-]+/)+[\w.-]+\.[A-Za-z0-9]+)")
+PATH_TOKEN = re.compile(r"(?<![\w./-])((?:[\w.-]+/)*[\w-]+\.[A-Za-z0-9]+)")
 MAX_USED_BY = 8
 
 

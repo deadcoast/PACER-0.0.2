@@ -1,6 +1,7 @@
 from pacer_mcp.frames import edit_frame, prompt_frame, session_frame
 from pacer_mcp.provider import NullProvider
 from pacer_mcp.rank import rank
+from pacer_mcp.schema import empty_row
 from pacer_mcp.spec import read_spec
 from pacer_mcp.store import Store
 
@@ -52,3 +53,12 @@ def test_prompt_frame_only_on_mentions(registers):
     assert prompt_frame(t, registers, NullProvider(), spec, "hello there") == ""
     text = prompt_frame(t, registers, NullProvider(), spec, "look at OGM-001 and src/b.py")
     assert "OGM OGM-001" in text and "OVR OVR-002 src/b.py" in text
+    (registers / "README.md").write_text("x")
+    t["overlord"].append(
+        empty_row(
+            "overlord", {"ID": "OVR-009", "Path": "README.md", "Kind": "FILE", "Purpose": "p"}
+        )
+    )
+    assert "OVR OVR-009 README.md" in prompt_frame(
+        t, registers, NullProvider(), spec, "fix README.md v3.0.0"
+    )

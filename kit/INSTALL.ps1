@@ -37,6 +37,12 @@ if ($Agent -in @('Both', 'Claude')) {
         if ($listed -match 'pacer3') { & $claude plugin marketplace update pacer3 | Out-Null }
         else { & $claude plugin marketplace add $market --scope user | Out-Null }
         $installed = & $claude plugin list --json 2>$null | Out-String
+        try {
+            foreach ($dup in @(($installed | ConvertFrom-Json) | Where-Object { $_.id -like 'pacer@*' -and $_.id -ne 'pacer@pacer3' })) {
+                & $claude plugin uninstall $dup.id --scope $dup.scope | Out-Null
+                Write-Host "Claude Code  replaced $($dup.id) (one PACER copy per host)"
+            }
+        } catch { }
         if ($installed -match 'pacer@pacer3') { & $claude plugin update pacer@pacer3 --scope user | Out-Null }
         else { & $claude plugin install pacer@pacer3 --scope user | Out-Null }
         $done += 'Claude Code'
@@ -48,6 +54,15 @@ if ($Agent -in @('Both', 'Codex')) {
         Write-Host "Codex  $(& $codex --version 2>$null | Select-Object -First 1)"
         $markets = & $codex plugin marketplace list --json 2>$null | Out-String
         if ($markets -notmatch '"pacer3"') { & $codex plugin marketplace add $market | Out-Null }
+        try {
+            foreach ($m in @(($markets | ConvertFrom-Json).marketplaces | Where-Object { $_.name -ne 'pacer3' })) {
+                $ol = & $codex plugin list --marketplace $m.name --json 2>$null | Out-String
+                foreach ($dup in @(($ol | ConvertFrom-Json).installed | Where-Object { $_.name -eq 'pacer' })) {
+                    & $codex plugin remove $dup.pluginId --json | Out-Null
+                    Write-Host "Codex  replaced $($dup.pluginId) (one PACER copy per host)"
+                }
+            }
+        } catch { }
         $plugins = & $codex plugin list --marketplace pacer3 --json 2>$null | Out-String
         if ($plugins -match '"installed":\s*true') { & $codex plugin update pacer@pacer3 --json | Out-Null }
         else { & $codex plugin add pacer@pacer3 --json | Out-Null }

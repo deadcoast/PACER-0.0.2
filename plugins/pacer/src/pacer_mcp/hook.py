@@ -2,11 +2,15 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
 import subprocess
+import time
 from pathlib import Path
+
+from filelock import FileLock, Timeout
 
 PATCH_FILE = re.compile(r"^\*\*\* (?:Update|Add) File: (.+)$", re.MULTILINE)
 EVENTS = {
@@ -51,6 +55,8 @@ def hook_output(event_name: str, context: str, *, deny: str = "", block: bool = 
         # A non-blocking stop stays silent: any Stop output re-prompts the model
         # and produces empty "no change" turns. The checkpoint is already written.
         return json.dumps({"decision": "block", "reason": context}) if block else ""
+    if not context and not deny:
+        return ""
     specific: dict = {"hookEventName": event_name}
     if deny:
         specific["permissionDecision"] = "deny"
@@ -88,9 +94,55 @@ def worktree_changes(root: Path) -> list[str]:
     return sorted(set(paths))[:20]
 
 
+DEDUPE_WINDOW = 3.0
+
+
+def event_key(event: str, payload: dict) -> str:
+    """Identity of one harness event; identical payloads from a second plugin copy collide."""
+    basis = {
+        "event": event,
+        "session": payload.get("session_id", ""),
+        "source": payload.get("source", ""),
+        "tool_use": payload.get("tool_use_id", ""),
+        "tool": payload.get("tool_name", ""),
+        "input": payload.get("tool_input", {}),
+        "prompt": payload.get("prompt") or payload.get("user_prompt") or "",
+    }
+    digest = hashlib.sha256(json.dumps(basis, sort_keys=True, default=str).encode())
+    return digest.hexdigest()[:16]
+
+
+def seen_recently(root: Path, key: str, window: float = DEDUPE_WINDOW) -> bool:
+    """Record the key under a lock; True when the same key was recorded inside the window.
+
+    Two installed copies of the plugin, or a harness that fires an event twice, call the
+    hook with the same payload within milliseconds; only the first delivers a frame.
+    """
+    state = root / ".pacer"
+    try:
+        state.mkdir(exist_ok=True)
+        with FileLock(state / "hook.lock", timeout=2):
+            path = state / "hook-seen.json"
+            now = time.time()
+            try:
+                seen = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                seen = {}
+            seen = {k: t for k, t in seen.items() if isinstance(t, int | float) and now - t < 60}
+            duplicate = key in seen and now - seen[key] < window
+            if not duplicate:
+                seen[key] = now
+            path.write_text(json.dumps(seen), encoding="utf-8")
+            return duplicate
+    except (OSError, Timeout):
+        return False
+
+
 def run(event: str, payload: dict) -> tuple[int, str]:
-    """Dispatch one harness event; silent when the cwd is not PACER-governed."""
-    code, out = _run(event, payload)
+    """Dispatch one harness event; silent when the cwd is not governed or the event repeats."""
+    root = find_root(Path(payload.get("cwd") or Path.cwd()))
+    deduped = root is not None and seen_recently(root, event_key(event, payload))
+    code, out = (0, "") if deduped else _run(event, payload)
     log = os.environ.get("PACER_HOOK_LOG")
     if log:
         try:
@@ -100,6 +152,7 @@ def run(event: str, payload: dict) -> tuple[int, str]:
                     "cwd": payload.get("cwd"),
                     "tool": payload.get("tool_name"),
                     "source": payload.get("source"),
+                    "deduped": deduped,
                     "exit": code,
                     "out": out,
                 }

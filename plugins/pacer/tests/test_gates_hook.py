@@ -1,7 +1,15 @@
 import json
 
 from pacer_mcp.gates import edit_decision, effective_tier, stop_decision
-from pacer_mcp.hook import edit_path, find_root, hook_output, worktree_changes
+from pacer_mcp.hook import (
+    edit_path,
+    event_key,
+    find_root,
+    hook_output,
+    run,
+    seen_recently,
+    worktree_changes,
+)
 from pacer_mcp.provider import NullProvider
 from pacer_mcp.schema import empty_row
 from pacer_mcp.spec import read_spec
@@ -92,6 +100,8 @@ def test_hook_helpers(tmp_path):
     assert "permissionDecision" not in out["hookSpecificOutput"]
     assert out["hookSpecificOutput"]["additionalContext"] == "ctx"
     assert hook_output("SessionStart", "ctx") == "ctx"
+    assert hook_output("UserPromptSubmit", "") == ""
+    assert hook_output("PostToolUse", "") == ""
     assert json.loads(hook_output("Stop", "why", block=True)) == {
         "decision": "block",
         "reason": "why",
@@ -110,3 +120,27 @@ def test_worktree_changes_lists_shell_edits(tmp_path):
     (tmp_path / ".pacer").mkdir()
     (tmp_path / ".pacer" / "lock").write_text("")
     assert worktree_changes(tmp_path) == ["src/a.py"]
+
+
+def test_duplicate_events_are_suppressed(project):
+    payload = {"cwd": str(project.root), "session_id": "s1", "source": "startup"}
+    key = event_key("session-start", payload)
+    assert key == event_key("session-start", dict(payload))
+    assert key != event_key("session-start", {**payload, "session_id": "s2"})
+    assert seen_recently(project.root, key) is False
+    assert seen_recently(project.root, key) is True
+    assert seen_recently(project.root, key, window=0.0) is False
+    fresh = {**payload, "session_id": "s3"}
+    first = run("session-start", fresh)
+    second = run("session-start", fresh)
+    assert first[1].startswith("PACER ") and second == (0, "")
+    edit = {
+        "cwd": str(project.root),
+        "session_id": "s3",
+        "tool_name": "Edit",
+        "tool_use_id": "t1",
+        "tool_input": {"file_path": str(project.root / "src" / "a.py")},
+    }
+    assert run("pre-edit", edit)[1] != ""
+    assert run("pre-edit", edit) == (0, "")
+    assert run("pre-edit", {**edit, "tool_use_id": "t2"})[1] != ""
