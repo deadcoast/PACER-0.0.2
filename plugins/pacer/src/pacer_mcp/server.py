@@ -1,35 +1,29 @@
-"""Official MCP SDK tools, resources and prompt for the PACER workflow."""
+"""MCP tools over the same Service. Frames are text; writes are typed."""
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Literal
 
 from mcp.server.fastmcp import FastMCP
-from mcp.types import CallToolResult, TextContent, ToolAnnotations
+from mcp.types import ToolAnnotations
 
-from pacer_mcp.models import ContextReceipt, Operation
-from pacer_mcp.schema import HEADERS, OGM_STATUSES, PAIRS, REF_FIELDS, TODO_TRANSITIONS, VERSION
-from pacer_mcp.semantics import canonical, semantic_schema
+from pacer_mcp.models import Operation
 from pacer_mcp.service import Service
+
+INSTRUCTIONS = (
+    "PACER 3 delivers project context as cards: PAC (work), OVR (source), OGM (requirement+probe), "
+    "DEC (decision/latch), NDL (intake). Hooks inject frames at session start, before/after edits "
+    "and at stop. Use pacer_q for any ID, path or #tag; pacer_write for the lexicon "
+    "(add/set/link/move/status/latch/pace/absorb); pacer_probe to run a requirement's Probe. "
+    "Cells are bounded; long text belongs in files."
+)
 
 
 def build_server(bound_root: Path | None = None) -> FastMCP:
     """Build a stdio server; an optional project binding restricts every tool's root."""
-    bound_root = bound_root.resolve(strict=True) if bound_root else None
-    server = FastMCP(
-        "PACER",
-        instructions=(
-            "PACER is the project's operational context. Onboard with the absolute project root; "
-            "Read authority entry points. Pace original wording and explicit rules. "
-            "Read pacer_context or every pacer_context_page before acting; restart stale cursors. "
-            "Apply with current revision, onboarding and context receipt. Checkpoint next_action. "
-            "Evaluate and verify rules against source; refresh stale evidence before completion. "
-            "Query OVR paths before edits. Plugin cwd is not the project root."
-        ),
-        log_level="WARNING",
-    )
+    bound = bound_root.resolve(strict=True) if bound_root else None
+    server = FastMCP("PACER", instructions=INSTRUCTIONS, log_level="WARNING")
     read = ToolAnnotations(
         readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False
     )
@@ -42,155 +36,64 @@ def build_server(bound_root: Path | None = None) -> FastMCP:
         if not path.is_absolute():
             raise ValueError("Pass the absolute project root explicitly")
         path = path.resolve(strict=True)
-        if bound_root is not None and path != bound_root:
+        if bound is not None and path != bound:
             raise ValueError("Project root is outside this server's binding")
         return Service(path)
 
     @server.tool(annotations=read)
-    def pacer_onboard(root: str) -> dict[str, object]:
-        """Start a session with authority hashes, ready work, health, active growth and next IDs."""
-        return service(root).onboard()
+    def pacer_frame(
+        root: str, kind: Literal["session", "edit", "prompt", "stop"], focus: str = ""
+    ) -> str:
+        """Compile a bounded card frame: session spine, edit constraints for a path, prompt
+        mentions, or the stop gate."""
+        return service(root).frame(kind, focus)
 
     @server.tool(annotations=read)
-    def pacer_query(
-        root: str,
-        register: Literal["todo", "overlord", "organism", "nodule"],
-        where: dict[str, str] | None = None,
-        fields: list[str] | None = None,
-        tag: str = "",
-        ready: bool = False,
-        limit: int = 20,
-        offset: int = 0,
+    def pacer_q(root: str, query: str, limit: int = 40) -> str:
+        """Cards for an ID (with neighbours), a repo path, a #tag, a register, or
+        register:STATUS."""
+        return service(root).q(query, limit)
+
+    @server.tool(annotations=write)
+    def pacer_write(
+        root: str, operations: list[Operation], actor: str, preview: bool = False
     ) -> dict[str, object]:
-        """Retrieve bounded rows by columns, path, status, tag or hard-gated readiness."""
-        return service(root).query(
-            register, where=where, fields=fields, tag=tag, ready=ready, limit=limit, offset=offset
+        """Apply add/set/link/move/status/latch/pace/absorb atomically; every change is
+        ledgered."""
+        return service(root).write(
+            [op.model_dump(by_alias=True) for op in operations], actor, preview=preview
         )
 
-    @server.tool(annotations=read)
-    def pacer_graph(root: str, id: str, depth: int = 1, limit: int = 30) -> dict[str, object]:
-        """Follow a bounded cross-register reference neighborhood around an existing ID."""
-        return service(root).graph(id, depth=depth, limit=limit)
-
-    @server.tool(annotations=read)
-    def pacer_context(
-        root: str, id: str, max_bytes: int = 32_000, encoding: str = "compact"
-    ) -> dict[str, object]:
-        """Load task context, typed rules, source freshness, checkpoint delta and receipt."""
-        return service(root).context(id, max_bytes=max_bytes, encoding=encoding)
-
-    @server.tool(annotations=read)
-    def pacer_context_page(
-        root: str, id: str, cursor: str = "", max_bytes: int = 8_000
-    ) -> CallToolResult:
-        """Read bounded context entries by JSON path. Follow next_cursor with unchanged max_bytes
-        until complete; only the final page provides a receipt. Read every entry in order.
-        value sets a path; append continues a long string. Restart on a stale cursor.
-        max_bytes bounds canonical JSON, not MCP framing or host token truncation.
-        """
-        page = service(root).context_page(id, cursor=cursor, max_bytes=max_bytes)
-        return CallToolResult(
-            content=[TextContent(type="text", text=canonical(page))], structuredContent=page
-        )
-
-    @server.tool(annotations=read)
-    def pacer_evaluate(root: str, id: str) -> dict[str, object]:
-        """Evaluate an OGM rule and inspect exact source bindings without changing acceptance."""
-        return service(root).evaluate(id)
-
-    @server.tool(annotations=read)
-    def pacer_schema(register: str = "") -> dict[str, object]:
-        """Inspect literal columns, typed refs, reciprocal links and legal status transitions."""
-        if register and register not in HEADERS:
-            raise ValueError("Unknown register")
-        return {
-            "version": VERSION,
-            "columns": {register: HEADERS[register]} if register else HEADERS,
-            "references": {register: REF_FIELDS[register]} if register else REF_FIELDS,
-            "reciprocal_pairs": PAIRS,
-            "task_transitions": sorted(TODO_TRANSITIONS),
-            "organism_statuses": sorted(OGM_STATUSES),
-            **semantic_schema(),
-        }
+    @server.tool(annotations=write)
+    def pacer_probe(root: str, id: str, actor: str) -> dict[str, object]:
+        """Run an OGM's Probe command, record its evidence cell and return the updated card."""
+        return service(root).probe(id, actor)
 
     @server.tool(annotations=read)
     def pacer_validate(root: str) -> dict[str, object]:
-        """Check CSV, dependencies, source paths, evidence and all cross-register references."""
+        """Validate every register and cross-reference."""
         return service(root).validate()
 
     @server.tool(annotations=write)
     def pacer_initialize(root: str) -> dict[str, object]:
-        """Initialize absent registers only after project README.md and AGENTS.md exist."""
+        """Create empty PACER 3 registers; never overwrites."""
         return service(root).initialize()
-
-    @server.tool(annotations=read)
-    def pacer_preview(
-        root: str,
-        operations: list[Operation],
-        actor: str,
-        revision: str,
-        onboarding: str,
-        context: ContextReceipt | None = None,
-    ) -> dict[str, object]:
-        """Validate a candidate command batch and return affected IDs/files without publishing."""
-        return service(root).apply(
-            [op.model_dump(by_alias=True) for op in operations],
-            actor=actor,
-            revision=revision,
-            onboarding=onboarding,
-            preview=True,
-            context=context.model_dump() if context else None,
-        )
-
-    @server.tool(annotations=write)
-    def pacer_apply(
-        root: str,
-        operations: list[Operation],
-        actor: str,
-        revision: str,
-        onboarding: str,
-        context: ContextReceipt | None = None,
-    ) -> dict[str, object]:
-        """Publish a validated PACER command batch using one applying writer and revision checks."""
-        return service(root).apply(
-            [op.model_dump(by_alias=True) for op in operations],
-            actor=actor,
-            revision=revision,
-            onboarding=onboarding,
-            context=context.model_dump() if context else None,
-        )
 
     @server.tool(annotations=write)
     def pacer_migrate(
-        root: str, actor: str, revision: str, onboarding: str, preview: bool = True
+        root: str, source: Literal["0.5", "v2"], actor: str, preview: bool = True
     ) -> dict[str, object]:
-        """Upgrade missing legacy profile columns and reciprocal refs; preview by default."""
-        return service(root).migrate(
-            actor=actor, revision=revision, onboarding=onboarding, preview=preview
-        )
+        """Migrate profile 0.5 CSV registers or a v2 todo.PACER plan; preview by default."""
+        return service(root).migrate(source, actor=actor, preview=preview)
+
+    @server.tool(annotations=read)
+    def pacer_log(root: str, id: str = "", limit: int = 20) -> list[dict[str, object]]:
+        """Ledger events for an ID (or the newest overall)."""
+        return service(root).log(id or None, limit)
 
     @server.tool(annotations=write)
     def pacer_recover(root: str) -> dict[str, object]:
-        """Complete a known interrupted register publication; refuse conflicting external edits."""
+        """Complete an interrupted register publication; refuse conflicting edits."""
         return service(root).recover()
-
-    @server.resource("pacer://schema")
-    def schema_resource() -> str:
-        return json.dumps(pacer_schema())
-
-    @server.resource("pacer://schema/{register}")
-    def register_schema(register: str) -> str:
-        return json.dumps(pacer_schema(register))
-
-    @server.prompt()
-    def pacer_onboarding(root: str) -> str:
-        """Read project authority and query the four connected organs before development."""
-        return (
-            f"Work in {root}. Read README.md, then AGENTS.md. Call pacer_onboard with this "
-            "absolute root. Query ready todo rows, organism health and ACTIVE nodules. "
-            "Before editing any source file query overlord by Path; register new assets "
-            "with the source change. Pace the user's request in a nodule; preserve PACER's "
-            "source-defined meanings and use typed commands for all register mutations."
-        )
 
     return server

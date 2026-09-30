@@ -1,290 +1,309 @@
-"""Transport-neutral PACER application boundary and onboarding receipts."""
+"""Transport-neutral application boundary: frames in, events out."""
 
 from __future__ import annotations
 
-import json
-from copy import deepcopy
 from pathlib import Path
 
 from pacer_mcp.commands import Editor
-from pacer_mcp.context import build_context, guard_context, operational_nodules
-from pacer_mcp.evidence import evaluate_rule, stale_requirements
-from pacer_mcp.pages import context_page
-from pacer_mcp.query import graph, health, next_ids, query_rows
-from pacer_mcp.schema import HEADERS, REF_PATTERN, VERSION, contained_path, empty_row, refs, utc_now
-from pacer_mcp.semantics import approval_allowed, approval_state
-from pacer_mcp.store import Store, digest
+from pacer_mcp.frames import active_pace, edit_frame, prompt_frame, render, session_frame
+from pacer_mcp.gates import edit_decision, stop_decision
+from pacer_mcp.probe import run_probe
+from pacer_mcp.provider import select_provider
+from pacer_mcp.rank import rank
+from pacer_mcp.schema import (
+    HEADERS,
+    REF_PATTERN,
+    REGISTERS,
+    TAG_PATTERN,
+    VERSION,
+    contained_path,
+    empty_row,
+    refs,
+    utc_now,
+)
+from pacer_mcp.spec import read_spec
+from pacer_mcp.store import Store, encode_csv, parse_csv
 from pacer_mcp.validation import validate_web
 
 
 class Service:
-    """Expose identical guarded operations to shell users and MCP clients."""
+    """Expose identical operations to the CLI, the hooks and the MCP server."""
 
     def __init__(self, root: Path):
         self.store = Store(root)
+        self.root = self.store.root
+        self.spec = read_spec(self.root)
+        self._provider = None
 
-    def authority(self) -> dict:
-        """Fingerprint the real project instructions; a digest is not proof of comprehension."""
-        result = {}
-        for name in ("README.md", "AGENTS.md"):
-            path = contained_path(self.store.root, name)
-            if not path.is_file():
-                raise ValueError(f"Onboarding requires {name} at the project root")
-            result[name] = digest(path.read_bytes())
-        return {
-            "files": result,
-            "onboarding": digest(
-                json.dumps(
-                    {"profile": VERSION, "root": str(self.store.root), "files": result},
-                    sort_keys=True,
-                ).encode()
-            ),
-        }
+    @property
+    def provider(self):
+        if self._provider is None:
+            self._provider = select_provider(self.root, self.spec["provider"])
+        return self._provider
 
-    def onboard(self) -> dict:
-        """Return the session opening queries and exact authority fingerprints."""
+    # -- reads ---------------------------------------------------------------
+    def frame(self, kind: str, focus: str = "") -> str:
         with self.store.locked():
-            snapshot = self.store.load()
-            return {
-                "root": str(self.store.root),
-                "format": VERSION,
-                **self.authority(),
-                "revision": snapshot.revision,
-                "health": health(snapshot.tables),
-                "ready": query_rows(snapshot.tables, "todo", ready=True),
-                "active": query_rows(snapshot.tables, "nodule", where={"Status": "ACTIVE"}),
-                "next_ids": next_ids(snapshot.tables),
-                "validation": validate_web(snapshot.tables, self.store.root, snapshot.headers),
-                "stale_evidence": stale_requirements(snapshot.tables, self.store.root),
-                "instructions": "Read this project's README.md then AGENTS.md. Query OVR by Path "
-                "before source edits. Pace new scope before building. Use query projections and "
-                "pacer_context for the active task. Submit commands with current revision, "
-                "onboarding and context receipt. Checkpoint next action; evaluate, refresh and "
-                "verify rules. Receipts do not prove understanding; judge DoDs and evidence.",
-            }
+            t = self.store.load().tables
+            if kind == "session":
+                return session_frame(t, self.root, self.store, self.provider, self.spec)
+            if kind == "edit":
+                return edit_frame(t, self.root, self.store, self.provider, self.spec, focus)
+            if kind == "prompt":
+                return prompt_frame(t, self.root, self.provider, self.spec, focus)
+            if kind == "stop":
+                return stop_decision(t, self.root, self.store, self.provider, self.spec)["text"]
+            raise ValueError("frame kind must be session, edit, prompt or stop")
 
-    def initialize(self) -> dict:
-        """Create empty real registers, mapping authority files without copying examples."""
-        self.authority()
+    def q(self, query: str, limit: int = 40) -> str:
+        """Cards for an ID (plus neighbours), a #tag, a register, register:STATUS or a path."""
         with self.store.locked():
-            snapshot = self.store.load(missing_ok=True)
-            if snapshot.files:
-                raise ValueError(
-                    "Registers already exist; initialize never overwrites existing work"
-                )
-            now = utc_now()
-            paths = ["README.md", "AGENTS.md"] + [f"{name}.PACER.csv" for name in HEADERS]
-            for i, path in enumerate(paths, 1):
-                snapshot.tables["overlord"].append(
-                    empty_row(
-                        "overlord",
-                        {
-                            "ID": f"OVR-{i:03d}",
-                            "AssetType": "FILE",
-                            "Path": path,
-                            "Purpose": "Project authority or canonical PACER register",
-                            "UpdatedAt": now,
-                            "Notes": f"{now} initialize: registered project authority",
-                            "Tags": "#core",
-                        },
-                    )
-                )
-            _require_valid(validate_web(snapshot.tables, self.store.root, snapshot.headers))
-            self.store.publish(snapshot, snapshot.encode())
-        return self.onboard()
+            t = self.store.load().tables
+            index = {r["ID"]: reg for reg in REGISTERS for r in t[reg]}
+            query = query.strip()
+            if REF_PATTERN.fullmatch(query) and query in index:
+                keys = [k for d, k in rank(t, self.provider, [query]) if d <= 2]
+            elif TAG_PATTERN.fullmatch(query):
+                keys = [
+                    r["ID"]
+                    for reg in REGISTERS
+                    for r in t[reg]
+                    if query in r.get("Tags", "").split()
+                ]
+            elif ":" in query and query.split(":")[0] in REGISTERS:
+                reg, status = query.split(":", 1)
+                keys = [r["ID"] for r in t[reg] if r.get("Status") == status]
+            elif query in REGISTERS:
+                keys = [r["ID"] for r in t[query]]
+            else:
+                keys = [r["ID"] for r in t["overlord"] if r.get("Path") == query]
+                if not keys:
+                    return edit_frame(t, self.root, self.store, self.provider, self.spec, query)
+            lines = [render(k, t, self.root, self.provider) for k in keys[:limit]]
+            if len(keys) > limit:
+                lines.append(f"+{len(keys) - limit} more")
+            return "\n".join(lines)
+
+    def log(self, row_id: str | None, limit: int = 20) -> list[dict]:
+        return self.store.ledger_read(row_id, limit)
 
     def validate(self) -> dict:
-        """Validate current CSV and cross-file invariants without mutating register data."""
         with self.store.locked():
-            snapshot = self.store.load()
-            return {
-                "revision": snapshot.revision,
-                **validate_web(snapshot.tables, self.store.root, snapshot.headers),
-                "stale_evidence": stale_requirements(snapshot.tables, self.store.root),
-            }
+            snap = self.store.load()
+            return {"revision": snap.revision, **validate_web(snap.tables, self.root, snap.headers)}
 
-    def context(self, task_id: str, *, max_bytes: int = 32_000, encoding: str = "compact") -> dict:
-        """Retrieve sufficient operational state for a task, including a freshness receipt."""
+    def edit_decision(self, path: str) -> dict:
         with self.store.locked():
-            snapshot = self.store.load()
-            return build_context(
-                snapshot.tables, self.store.root, task_id, max_bytes, encoding=encoding
-            )
+            t = self.store.load().tables
+            return edit_decision(t, self.root, self.store, self.spec, path)
 
-    def context_page(self, task_id: str, *, cursor: str = "", max_bytes: int = 8_000) -> dict:
-        """Retrieve one bounded page from a fresh, consistent task packet."""
+    def tree(self) -> str:
+        from pacer_mcp.tree import render_tree
+
         with self.store.locked():
-            snapshot = self.store.load()
-            packet = build_context(snapshot.tables, self.store.root, task_id, 1_000_000)
-            return context_page(packet, cursor=cursor, max_bytes=max_bytes)
+            return render_tree(self.store.load().tables, self.spec)
 
-    def evaluate(self, row_id: str) -> dict:
-        """Evaluate a rule without changing its stored acceptance or source files."""
-        with self.store.locked():
-            snapshot = self.store.load()
-            index = {r["ID"]: r for rows in snapshot.tables.values() for r in rows}
-            if row_id not in index or not row_id.startswith("OGM-"):
-                raise ValueError(f"REFUSAL: Unknown ID {row_id}")
-            return evaluate_rule(index[row_id], index, self.store.root)
-
-    def query(self, register: str, **options) -> dict:
-        """Return bounded rows from a consistent locked snapshot."""
-        with self.store.locked():
-            snapshot = self.store.load()
-            return {
-                "revision": snapshot.revision,
-                **query_rows(snapshot.tables, register, **options),
-            }
-
-    def graph(self, row_id: str, *, depth: int = 1, limit: int = 30) -> dict:
-        """Retrieve a small connected context neighborhood."""
-        with self.store.locked():
-            snapshot = self.store.load()
-            return {
-                "revision": snapshot.revision,
-                **graph(snapshot.tables, row_id, depth=depth, limit=limit),
-            }
-
-    def apply(
-        self,
-        operations: list[dict],
-        *,
-        actor: str,
-        revision: str,
-        onboarding: str,
-        preview: bool = False,
-        context: dict | None = None,
-    ) -> dict:
-        """Apply one atomic logical change after onboarding and revision preconditions."""
-        if not actor.strip() or len(actor) > 100 or "\n" in actor:
+    # -- writes --------------------------------------------------------------
+    def write(self, operations: list[dict], actor: str, preview: bool = False) -> dict:
+        """Apply a batch atomically; publish the CSVs, then append the events."""
+        if not actor.strip() or "\n" in actor or len(actor) > 100:
             raise ValueError("A short single-line actor is required")
-        if not 1 <= len(operations) <= 200 or len(json.dumps(operations)) > 1_000_000:
-            raise ValueError("Batch must contain 1..200 operations and at most 1 MB")
+        if not 1 <= len(operations) <= 200:
+            raise ValueError("Batch must contain 1..200 operations")
         with self.store.locked():
-            snapshot = self.store.load()
-            if revision != snapshot.revision:
-                raise ValueError("Stale revision; query the current web before applying")
-            if onboarding != self.authority()["onboarding"]:
-                raise ValueError("Stale onboarding; reread README.md and AGENTS.md")
-            guard_context(snapshot.tables, self.store.root, operations, context)
-            before_tables = deepcopy(snapshot.tables)
-            editor = Editor(snapshot.tables, actor, self.store.root)
-            for operation in operations:
+            snap = self.store.load()
+            editor = Editor(snap.tables, actor, self.root)
+            for op in operations:
                 try:
-                    editor.execute(operation)
+                    editor.execute(op)
                 except (KeyError, TypeError, AttributeError) as exc:
-                    raise ValueError(
-                        f"Malformed {operation.get('op', 'unknown')} command: {exc}"
-                    ) from exc
-            editor.reconcile()
-            guard_context(before_tables, self.store.root, operations, context, snapshot.tables)
-            index = {r["ID"]: r for rows in snapshot.tables.values() for r in rows}
-            old_nodules = {r["ID"]: r for r in before_tables["nodule"]}
-            for nodule in snapshot.tables["nodule"]:
-                added = set(refs(nodule["SpawnedPACs"])) - set(
-                    refs(old_nodules.get(nodule["ID"], {}).get("SpawnedPACs", ""))
-                )
-                if nodule["Status"] == "ACTIVE" and any(
-                    not approval_allowed(index[key]) for key in added
-                ):
-                    raise ValueError("Task approval required before nodule admission")
-            for operation in operations:
-                if operation.get("op") == "split" and not approval_allowed(index[operation["id"]]):
-                    raise ValueError("Final parent approval required for split admission")
-                if operation.get("op") == "verify":
-                    _, verified = editor.find(operation["id"])
-                    if evaluate_rule(verified, index, self.store.root)["freshness"] != "CURRENT":
-                        raise ValueError(
-                            "Verified basis changed during batch; retrieve context and verify again"
-                        )
-                if operation.get("op") == "absorb" or (
-                    operation.get("op") == "transition" and operation.get("status") == "DONE"
-                ):
-                    accepted = index[operation["id"]]
-                    if operational_nodules(accepted, index):
-                        field = "OGMTargets" if operation["op"] == "absorb" else "OGMRefs"
-                        for target in refs(accepted.get(field, "")):
-                            if (
-                                index[target]["Status"] != "VALIDATED_COMPLETE"
-                                or evaluate_rule(index[target], index, self.store.root)["freshness"]
-                                != "CURRENT"
-                            ):
-                                raise ValueError(
-                                    f"Final acceptance requires current verified rule {target}"
-                                )
-            report = validate_web(snapshot.tables, self.store.root, snapshot.headers)
-            _require_valid(report)
-            after = snapshot.encode()
-            changed_files = [
-                k
-                for k in sorted(set(after) | set(snapshot.files))
-                if after.get(k) != snapshot.files.get(k)
-            ]
+                    raise ValueError(f"Malformed {op.get('op', 'unknown')} command: {exc}") from exc
+            report = validate_web(snap.tables, self.root, snap.headers)
+            if not report["valid"]:
+                raise ValueError(report["errors"][0])
             result = {
                 "preview": preview,
                 "changed_ids": sorted(editor.changed),
-                "changed_files": changed_files,
                 "validation": report,
+                "events": len(editor.events),
             }
             if preview:
-                return {**result, "revision": snapshot.revision}
-            return {**result, "revision": self.store.publish(snapshot, after)}
+                return {**result, "revision": snap.revision}
+            revision = self.store.publish(snap, snap.encode())
+            for event in editor.events:
+                self.store.ledger_append(event)
+            return {**result, "revision": revision}
 
-    def migrate(self, *, actor: str, revision: str, onboarding: str, preview: bool = True) -> dict:
-        """Add profile columns and reciprocal refs without losing legacy or custom cells."""
+    def probe(self, row_id: str, actor: str) -> dict:
         with self.store.locked():
-            snapshot = self.store.load()
-            if revision != snapshot.revision or onboarding != self.authority()["onboarding"]:
-                raise ValueError("Stale revision or onboarding")
-            editor = Editor(snapshot.tables, actor, legacy_migration=True)
-            for register, rows in snapshot.tables.items():
-                snapshot.headers[register].extend(
-                    k for k in HEADERS[register] if k not in snapshot.headers[register]
-                )
-                for row in rows:
-                    for key in HEADERS[register]:
-                        row.setdefault(key, "")
-                    if register == "todo":
-                        row["ApprovalState"] = approval_state(row)
-                        for prefix, field in (
-                            ("OVR", "OVRRefs"),
-                            ("OGM", "OGMRefs"),
-                            ("NDL", "NDLRefs"),
-                        ):
-                            values = [
-                                r
-                                for r in REF_PATTERN.findall(row["RelatedWork"])
-                                if r.startswith(prefix + "-")
-                            ]
-                            row[field] = ";".join(
-                                dict.fromkeys(row[field].split(";") + values)
-                            ).strip(";")
-                    if register == "nodule":
-                        row["Lane"] = row["Lane"] or row["NoduleName"] or row["ID"]
-                    if register == "organism":
-                        row["Authority"] = row["Authority"] or "LEGACY"
-                    if register != "nodule" or row["Status"] != "ABSORBED":
-                        editor.note(
-                            row,
-                            f"migrated to executable profile {VERSION}; original cells retained",
-                        )
-            editor.reconcile()
-            report = validate_web(snapshot.tables, self.store.root, snapshot.headers)
-            _require_valid(report)
-            if preview:
-                return {"preview": True, "revision": snapshot.revision, "validation": report}
+            snap = self.store.load()
+            row = next((r for r in snap.tables["organism"] if r["ID"] == row_id), None)
+            if row is None:
+                raise ValueError(f"REFUSAL: Unknown ID {row_id}")
+            result = run_probe(row, snap.tables, self.root, actor)
+            row["Evidence"] = result["evidence"]
+            report = validate_web(snap.tables, self.root, snap.headers)
+            if not report["valid"]:
+                raise ValueError(report["errors"][0])
+            self.store.publish(snap, snap.encode())
+            self.store.ledger_append(
+                {"actor": actor, "op": "probe", "id": row_id, "detail": result}
+            )
             return {
-                "preview": False,
-                "revision": self.store.publish(snapshot, snapshot.encode()),
-                "validation": report,
+                "id": row_id,
+                **result,
+                "card": render(row_id, snap.tables, self.root, self.provider),
             }
+
+    def touch(self, path: str, actor: str) -> str:
+        """Record an edit against the active pace; register unknown paths."""
+        with self.store.locked():
+            snap = self.store.load()
+            pace = active_pace(snap.tables, self.store)
+            editor = Editor(snap.tables, actor, self.root)
+            editor.execute({"op": "touch", "path": path, "pace": pace["ID"] if pace else ""})
+            report = validate_web(snap.tables, self.root, snap.headers)
+            if not report["valid"]:
+                return f"touch refused: {report['errors'][0]}"
+            self.store.publish(snap, snap.encode())
+            for event in editor.events:
+                self.store.ledger_append(event)
+            new = next((e["detail"].get("new") for e in editor.events if e["op"] == "touch"), None)
+            bound_here = {r["ID"] for r in snap.tables["overlord"] if r["Path"] == path}
+            stale = [
+                r["ID"]
+                for r in snap.tables["organism"]
+                if r.get("Evidence") and set(refs(r.get("Binds", ""))) & bound_here
+            ]
+            parts = [f"{new} registered #unpurposed" if new else f"touched {path}"]
+            if stale:
+                parts.append("stale: " + ", ".join(stale))
+            return " | ".join(parts)
+
+    def stop(self, actor: str) -> dict:
+        with self.store.locked():
+            snap = self.store.load()
+            decision = stop_decision(snap.tables, self.root, self.store, self.provider, self.spec)
+            pace = active_pace(snap.tables, self.store)
+            if pace and pace.get("Next") != decision["next"]:
+                pace["Next"] = decision["next"]
+                self.store.publish(snap, snap.encode())
+                self.store.ledger_append(
+                    {
+                        "actor": actor,
+                        "op": "checkpoint",
+                        "id": pace["ID"],
+                        "detail": {"next": decision["next"]},
+                    }
+                )
+            return decision
+
+    def initialize(self) -> dict:
+        with self.store.locked():
+            snap = self.store.load(missing_ok=True)
+            if snap.files:
+                raise ValueError("Registers already exist; initialize never overwrites")
+            for name in ("README.md", "AGENTS.md"):
+                if contained_path(self.root, name).is_file():
+                    snap.tables["overlord"].append(
+                        empty_row(
+                            "overlord",
+                            {
+                                "ID": f"OVR-{len(snap.tables['overlord']) + 1:03d}",
+                                "Path": name,
+                                "Kind": "FILE",
+                                "Purpose": "project authority",
+                                "Tags": "#core",
+                            },
+                        )
+                    )
+            self.store.publish(snap, snap.encode())
+            self.store.ledger_append(
+                {
+                    "actor": "initialize",
+                    "op": "initialize",
+                    "id": "-",
+                    "detail": {"version": VERSION, "at": utc_now()},
+                }
+            )
+        return self.validate()
 
     def recover(self) -> dict:
-        """Explicitly resume a known interrupted publication under the writer lock."""
         with self.store.locked():
             return self.store.recover()
 
+    def migrate(self, source: str, *, actor: str, preview: bool = True) -> dict:
+        """Migrate profile 0.5 registers or a v2 plan into PACER 3; preview by default."""
+        import shutil
 
-def _require_valid(report: dict) -> None:
-    if not report["valid"]:
-        raise ValueError(report["errors"][0])
+        from pacer_mcp.migrate import from_05, from_v2
+
+        with self.store.locked():
+            if source == "0.5":
+                old, sizes = {}, {}
+                for name in ("todo", "overlord", "organism", "nodule"):
+                    path = contained_path(self.root, f"{name}.PACER.csv")
+                    data = path.read_bytes()
+                    sizes[name] = len(data)
+                    columns, old[name] = parse_csv(data, name)
+                    if name == "todo" and "Kind" in columns:
+                        raise ValueError("Registers already use PACER 3 columns")
+                archived = []
+                archive = contained_path(self.root, "archive/nodules")
+                if archive.exists():
+                    for path in sorted(archive.glob("*.PACER.csv")):
+                        archived += parse_csv(path.read_bytes(), path.name)[1]
+                tables, events = from_05(old, archived, self.spec["tier"], self.root)
+            elif source == "v2":
+                text = contained_path(self.root, "todo.PACER").read_text(encoding="utf-8")
+                sizes = {"todo.PACER": len(text.encode("utf-8"))}
+                tables, events = from_v2(text, self.root)
+            else:
+                raise ValueError("source must be 0.5 or v2")
+            report = validate_web(tables, self.root)
+            encoded = {}
+            for register in REGISTERS:
+                live = [
+                    r
+                    for r in tables[register]
+                    if not (register == "nodule" and r["Status"] == "ABSORBED")
+                ]
+                encoded[f"{register}.PACER.csv"] = encode_csv(HEADERS[register], live)
+            result = {
+                "preview": preview,
+                "sizes_before": sizes,
+                "sizes_after": {k: len(v) for k, v in encoded.items()},
+                "counts": {k: len(v) for k, v in tables.items()},
+                "validation": report,
+                "ledger_events": len(events),
+            }
+            if preview or not report["valid"]:
+                return result
+            if source == "0.5":
+                old_dir = contained_path(self.root, "archive/pacer-0.5")
+                old_dir.mkdir(parents=True, exist_ok=True)
+                for name in ("todo", "overlord", "organism", "nodule"):
+                    shutil.move(
+                        str(contained_path(self.root, f"{name}.PACER.csv")),
+                        str(old_dir / f"{name}.PACER.csv"),
+                    )
+                if archive.exists():
+                    shutil.move(str(archive), str(old_dir / "nodules"))
+            for name, data in encoded.items():
+                contained_path(self.root, name).write_bytes(data)
+            for row in tables["nodule"]:
+                if row["Status"] == "ABSORBED":
+                    target = contained_path(self.root, f"archive/nodules/{row['ID']}.PACER.csv")
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(encode_csv(HEADERS["nodule"], [row]))
+            for event in events:
+                self.store.ledger_append(event)
+            self.store.ledger_append(
+                {
+                    "actor": actor,
+                    "op": "migrate",
+                    "id": "-",
+                    "detail": {"from": source, "counts": result["counts"]},
+                }
+            )
+        return {**result, "validation": self.validate()}

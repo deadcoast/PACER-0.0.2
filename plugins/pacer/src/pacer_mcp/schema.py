@@ -14,7 +14,9 @@ HEADERS = {
         "ID Kind Pos Title Status Tier Produce In Out Binds Needs Probe Exit Next Latch Tags"
     ).split(),
     "overlord": "ID Path Symbol Kind Purpose Tier Binds Latch Tags".split(),
-    "organism": "ID Title Status Authority Origin Requirement Binds Probe Evidence Tier Tags".split(),
+    "organism": (
+        "ID Title Status Authority Origin Requirement Binds Probe Evidence Tier Tags"
+    ).split(),
     "nodule": "ID Name Status Lane Request Intent In Out Targets Spawned Exit Tags".split(),
     "decision": (
         "ID Kind Subject Question Chosen Rejected Why Authority Latched Supersedes Tags"

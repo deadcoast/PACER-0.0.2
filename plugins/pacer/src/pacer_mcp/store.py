@@ -283,7 +283,11 @@ class Store:
             if not line.strip():
                 continue
             entry = json.loads(line)
-            if row_id is None or entry.get("id") == row_id or row_id in str(entry.get("detail", "")):
+            if (
+                row_id is None
+                or entry.get("id") == row_id
+                or row_id in str(entry.get("detail", ""))
+            ):
                 entries.append(entry)
         return entries[-limit:]
 

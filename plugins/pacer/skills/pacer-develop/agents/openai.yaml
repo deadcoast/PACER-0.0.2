@@ -1,8 +1,0 @@
-interface:
-  display_name: "Develop with PACER"
-  short_description: "Keep development, source and evidence connected"
-dependencies:
-  tools:
-    - type: "mcp"
-      value: "pacer"
-      description: "Bundled local PACER register server"

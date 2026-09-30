@@ -56,7 +56,7 @@ Six files. IDs remain `PAC|OVR|OGM|NDL|DEC-###`, immutable, never reused. Multi-
 | Out | `path[:symbol]` list | | assets to create; become OVR rows on first touch |
 | Binds | OGM refs | | invariants that constrain this node; PACE inherits PHASE's |
 | Needs | PAC refs | | hard deps only; position order is the default sequence |
-| Probe | command | 200 | proves the pace; required at Tier ≥ integrated |
+| Probe | command | 200 | proves the pace; a warning when absent at Tier ≥ integrated |
 | Exit | text | 140 | PHASE only: coherence condition |
 | Next | inspect·implement·verify·integrate·absorb | | durable next action; written by the STOP frame |
 | Latch | DEC refs | | decisions that gate or authorise this node |
@@ -87,11 +87,11 @@ Dropped from 0.5: DoD (→ Produce + Probe), Context/Instructions/ExpectedOutput
 | Requirement | 280 | normalised statement |
 | Binds | | OVR refs the requirement constrains |
 | Probe | 200 | command; exit 0 = PASS |
-| Evidence | | `rev:<sha7> exit:<n> out:<sha7> at:<date>` — one cell |
+| Evidence | | `rev:<git sha7> src:<bound-files sha7> exit:<n> out:<stdout sha7> at:<UTC>` — one cell |
 | Tier | | gate posture for this requirement |
 | Tags | | |
 
-Freshness is derived at compile time, not stored: STALE when `git diff --name-only <Evidence.rev>..HEAD` intersects the paths of `Binds` or their one-hop provider dependents. FAIL when the last probe exit ≠ 0. `pacer probe OGM-004` runs the command, writes the Evidence cell, stores full output at `.pacer/probes/OGM-004/<ts>.txt`, appends the ledger. One command replaces the five-step manual-report ceremony. VALIDATED_COMPLETE requires `exit:0` and not STALE, same rule as before, one cell.
+Freshness is derived at compile time, not stored: the Evidence cell carries `src`, a 7-hex digest over the bound files' bytes; STALE when the current digest of `Binds` paths differs (uncommitted edits count). FAIL when the last probe exit ≠ 0. `pacer probe OGM-004` runs the command, writes the Evidence cell, stores full output at `.pacer/probes/OGM-004/<ts>.txt`, appends the ledger. One command replaces the five-step manual-report ceremony. VALIDATED_COMPLETE requires `exit:0` and not STALE, same rule as before, one cell.
 
 ### 3.4 decision.PACER.csv — new (11 columns)
 

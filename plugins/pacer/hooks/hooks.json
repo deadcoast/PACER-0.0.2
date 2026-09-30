@@ -1,0 +1,63 @@
+{
+  "description": "PACER 3 delivered context: frames at session start, before and after edits, and at stop.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-sync --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook session-start",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-sync --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook prompt",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit|apply_patch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-sync --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook pre-edit",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit|apply_patch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-sync --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook post-edit",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --no-sync --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook stop",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}

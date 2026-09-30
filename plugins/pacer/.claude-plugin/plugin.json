@@ -1,6 +1,8 @@
 {
   "name": "pacer",
-  "version": "0.5.0+codex.20260916150500",
-  "description": "Operate PACER's connected task, source, design and growth registers.",
-  "author": { "name": "MIVIM" }
+  "version": "3.0.0",
+  "description": "PACER 3: hook-delivered project context as bounded cards over five CSV registers.",
+  "author": {
+    "name": "MIVIM"
+  }
 }

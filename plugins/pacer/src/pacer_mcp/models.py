@@ -1,4 +1,4 @@
-"""Typed command schemas published through MCP tool input schemas."""
+"""Typed operations for MCP tool schemas."""
 
 from __future__ import annotations
 
@@ -15,7 +15,9 @@ class Command(BaseModel):
 
 class Add(Command):
     op: Literal["add"]
-    register_name: Literal["todo", "overlord"] = Field(alias="register")
+    register_name: Literal["todo", "overlord", "organism", "nodule", "decision"] = Field(
+        alias="register"
+    )
     row: dict[str, str]
 
 
@@ -23,13 +25,6 @@ class Set(Command):
     op: Literal["set"]
     id: str
     fields: dict[str, str]
-
-
-class Append(Command):
-    op: Literal["append"]
-    id: str
-    field: Literal["Notes", "LearningNotes", "PreviousAttempts"]
-    text: str
 
 
 class Link(Command):
@@ -40,90 +35,46 @@ class Link(Command):
     remove: bool = False
 
 
-class Transition(Command):
-    op: Literal["transition"]
+class Move(Command):
+    op: Literal["move"]
+    id: str
+    pos: str
+
+
+class Status(Command):
+    op: Literal["status"]
     id: str
     status: Literal[
-        "TODO", "DOING", "REVIEW", "DONE", "SCAFFOLD", "PACED_REQUIREMENT", "VALIDATED_COMPLETE"
+        "TODO",
+        "ACTIVE",
+        "INTEGRATED",
+        "DONE",
+        "SCAFFOLD",
+        "PACED_REQUIREMENT",
+        "VALIDATED_COMPLETE",
     ]
+
+
+class Latch(Command):
+    op: Literal["latch"]
+    id: str
+    latched: Literal["true", "false"]
     evidence: str = ""
 
 
 class Pace(Command):
     op: Literal["pace"]
     nodule: dict[str, str]
-    tasks: list[dict[str, str]]
+    tasks: list[dict[str, str]] = Field(default_factory=list)
     requirements: list[dict[str, str]] = Field(default_factory=list)
-
-
-class Split(Command):
-    op: Literal["split"]
-    id: str
-    children: list[dict[str, str]]
+    decisions: list[dict[str, str]] = Field(default_factory=list)
 
 
 class Absorb(Command):
     op: Literal["absorb"]
     id: str
-    evidence: str
-
-
-class CorrectAssets(Command):
-    """Normalize reviewed legacy entries while retaining their original scope history."""
-
-    op: Literal["correct_assets"]
-    id: str
-    expected: str
-    replacements: dict[str, list[str]]
-    evidence: str = Field(min_length=1)
-
-
-class ContextReceipt(Command):
-    task: str
-    root: str
-    basis: str = Field(pattern=r"^[a-f0-9]{64}$")
-
-
-class Verify(Command):
-    op: Literal["verify"]
-    id: str
-    evidence: str
-    artifact: str = ""
-
-
-class Checkpoint(Command):
-    op: Literal["checkpoint"]
-    id: str
-    next_action: Literal["inspect", "implement", "verify", "review", "absorb", "resolve"]
-
-
-class Refresh(Command):
-    op: Literal["refresh"]
-    id: str
-
-
-class Approval(Command):
-    """Attest a user decision with preserved evidence; not an authentication boundary."""
-
-    op: Literal["approval"]
-    id: str
-    state: Literal["APPROVED", "WITHDRAWN"]
-    evidence: str = Field(min_length=1)
 
 
 Operation = Annotated[
-    Add
-    | Set
-    | Append
-    | Link
-    | Transition
-    | Pace
-    | Split
-    | Absorb
-    | CorrectAssets
-    | Verify
-    | Checkpoint
-    | Refresh
-    | Approval,
-    Field(discriminator="op"),
+    Add | Set | Link | Move | Status | Latch | Pace | Absorb, Field(discriminator="op")
 ]

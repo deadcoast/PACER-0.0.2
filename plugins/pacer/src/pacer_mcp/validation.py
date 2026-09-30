@@ -18,7 +18,6 @@ from pacer_mcp.schema import (
     PATH_FIELDS,
     PREFIX,
     REF_FIELDS,
-    REF_PATTERN,
     REGISTERS,
     TAG_PATTERN,
     TASK_KINDS,
@@ -34,7 +33,6 @@ EVIDENCE_PATTERN = re.compile(
     r"at:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z"
 )
 POS_DEPTH = {"AREA": 1, "PHASE": 2, "PACE": 3}
-LITERAL_FIELDS = {"Origin", "Request"}
 
 
 def validate_web(tables: dict, root: Path, headers: dict | None = None) -> dict:
@@ -70,10 +68,6 @@ def validate_web(tables: dict, root: Path, headers: dict | None = None) -> dict:
                 errors.append(f"{row_id}.{field}: contains | or newline")
             if field in LIMITS and len(value) > LIMITS[field]:
                 errors.append(f"{row_id}: {field} exceeds {LIMITS[field]}")
-            if field not in LITERAL_FIELDS:
-                for reference in REF_PATTERN.findall(value):
-                    if reference not in index:
-                        errors.append(f"REFUSAL: Unknown ID {reference}")
         for field, prefix in REF_FIELDS[register].items():
             values = refs(row.get(field, ""))
             if len(values) != len(set(values)):
@@ -84,6 +78,8 @@ def validate_web(tables: dict, root: Path, headers: dict | None = None) -> dict:
                 )
                 if not ok:
                     errors.append(f"{row_id}.{field}: invalid reference {target}")
+                elif target not in index:
+                    errors.append(f"REFUSAL: Unknown ID {target}")
         for field in PATH_FIELDS.get(register, ()):
             items = [row.get("Path", "")] if field == "Path" else refs(row.get(field, ""))
             for item in items:
@@ -96,7 +92,7 @@ def validate_web(tables: dict, root: Path, headers: dict | None = None) -> dict:
         if row.get("Tier") and row["Tier"] not in TIERS:
             errors.append(f"{row_id}: invalid Tier")
         if register == "todo":
-            _todo(row, row_id, index, errors)
+            _todo(row, row_id, index, errors, warnings)
         elif register == "overlord":
             _overlord(row, row_id, tables, root, errors, warnings)
         elif register == "organism":
@@ -137,7 +133,7 @@ def effective_task_tier(row: dict, index: dict, default: str = "prototype") -> s
     return max(candidates, key=TIERS.index) if candidates else default
 
 
-def _todo(row, row_id, index, errors):
+def _todo(row, row_id, index, errors, warnings):
     kind, status = row.get("Kind"), row.get("Status")
     if kind not in TASK_KINDS:
         errors.append(f"{row_id}: invalid Kind")
@@ -160,7 +156,7 @@ def _todo(row, row_id, index, errors):
         errors.append(f"{row_id}: invalid Next")
     tier = effective_task_tier(row, index)
     if kind == "PACE" and TIERS.index(tier) >= TIERS.index("integrated") and not row.get("Probe"):
-        errors.append(f"{row_id}: Probe required at tier {tier}")
+        warnings.append(f"{row_id}: Probe required at tier {tier}")
     blocked = [t for t in refs(row.get("Needs", "")) if index.get(t, {}).get("Status") != "DONE"]
     if status == "DONE" and blocked:
         errors.append(f"REFUSAL: Blocked by {';'.join(blocked)}")

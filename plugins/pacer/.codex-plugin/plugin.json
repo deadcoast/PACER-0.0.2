@@ -1,22 +1,23 @@
 {
   "name": "pacer",
-  "version": "0.5.0+codex.20260916150500",
-  "description": "Operate PACER's connected task, source, design and growth registers in Codex.",
+  "version": "3.0.0",
+  "description": "PACER 3: hook-delivered project context as bounded cards over five CSV registers.",
   "author": {
     "name": "PACER maintainer"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "PACER",
-    "shortDescription": "Connected development registers for Codex.",
-    "longDescription": "Query project state, pace development, map source assets and verify evidence through PACER's four connected CSV registers.",
+    "shortDescription": "Delivered project context for agents.",
+    "longDescription": "Frames of PAC/OVR/OGM/DEC/NDL cards at session start, before and after edits and at stop; probes as evidence; latches for user decisions.",
     "developerName": "PACER maintainer",
     "category": "Productivity",
     "capabilities": [
       "Read",
       "Write"
     ],
-    "defaultPrompt": "Use PACER to onboard to this project and pace the development request."
+    "defaultPrompt": "Continue the active PACER pace."
   },
-  "mcpServers": "./codex.mcp.json"
+  "mcpServers": "./codex.mcp.json",
+  "hooks": "./hooks/hooks.json"
 }

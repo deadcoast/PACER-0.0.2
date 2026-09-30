@@ -1,6 +1,6 @@
 interface:
-  display_name: "Audit PACER"
-  short_description: "Verify register integrity and source evidence"
+  display_name: "PACER"
+  short_description: "Card grammar and write lexicon for PACER 3"
 dependencies:
   tools:
     - type: "mcp"
