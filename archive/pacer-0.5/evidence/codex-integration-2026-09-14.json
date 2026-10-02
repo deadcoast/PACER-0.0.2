@@ -1,0 +1,133 @@
+{
+  "verified_at": "2026-09-14T12:44:03.768679+00:00",
+  "format_version": "0.2.0",
+  "plugin_version": "0.2.0+codex.20260914124024",
+  "commands": [
+    {
+      "command": ".cache/dev-env/Scripts/python.exe scripts/check.py",
+      "result": "59 passed in 13.89s; Ruff check and format passed; 176 source interfaces and 15 examples valid before this evidence file was added"
+    },
+    {
+      "command": "uv lock --check --offline --project plugins/pacer",
+      "result": "41 locked packages resolved"
+    },
+    {
+      "command": "Official plugin-creator validate_plugin.py and skill-creator quick_validate.py",
+      "result": "Plugin and all three skills valid"
+    },
+    {
+      "command": ".cache/dev-env/Scripts/python.exe scripts/prove_codex.py --installed",
+      "result": "passed; native Codex 0.154.0, exact plugin server, real MCP onboarding, no model turns"
+    }
+  ],
+  "native": {
+    "cli": "codex-cli 0.154.0",
+    "plugin_id": "pacer@personal",
+    "server": "pacer",
+    "tools": [
+      "pacer_apply",
+      "pacer_graph",
+      "pacer_initialize",
+      "pacer_migrate",
+      "pacer_onboard",
+      "pacer_preview",
+      "pacer_query",
+      "pacer_recover",
+      "pacer_schema",
+      "pacer_validate"
+    ],
+    "runtime_status": null,
+    "skills": [
+      "pacer:pacer-onboard",
+      "pacer:pacer-develop",
+      "pacer:pacer-audit"
+    ],
+    "onboarding_succeeded": true,
+    "model_turns": 0,
+    "installed_path": "C:\\Users\\ryanf\\.codex\\plugins\\cache\\personal\\pacer\\0.2.0+codex.20260914124024",
+    "matched_source_files": 31,
+    "retained_local_report": ".cache/c/f299692f/report.json",
+    "initial_isolated_report": ".cache/c/cc619b08/report.json"
+  },
+  "independent_skill_trial": {
+    "method": "Independent agent followed pacer-develop in a disposable calculator project; initialized, paced, registered FILE and FUNCTION, verified five cases, completed and absorbed, queried archived graph, validated zero errors/warnings.",
+    "cases": [
+      "empty",
+      "positive",
+      "negative",
+      "mixed",
+      "large integers"
+    ],
+    "source_sha256": "b47b31a794b87aeadc830e1a124860262cedbd9943ce047bbf8a9d8f3ec31f0c",
+    "register_revision": "8572ccf52b973e21372db46b3329532757a0ee5dbe68f5808e0595de1531ae43",
+    "retained_trial": ".cache/skill-trial",
+    "transport": "CLI/service; separate native MCP proof above"
+  },
+  "review_regressions": [
+    "Protected admitted nodule scope and inverse links",
+    "Demotion required for accepted requirement meaning/basis including inverse edits",
+    "Recovery binds unchanged registers and validates reconstructed web",
+    "Empty and archived root headers cannot mask missing schema",
+    "Canonical NewAssets aliases conflict across lanes",
+    "Ordered link/link and add/link inverse removal",
+    "Stale DOING cannot reset clock through TODO"
+  ],
+  "official_sources": [
+    "https://learn.chatgpt.com/docs/customization/overview",
+    "https://learn.chatgpt.com/docs/extend/mcp",
+    "https://learn.chatgpt.com/docs/build-skills",
+    "https://developers.openai.com/plugins/build/plugins",
+    "https://learn.chatgpt.com/docs/app-server",
+    "https://github.com/modelcontextprotocol/python-sdk"
+  ],
+  "source_hashes_sha256": {
+    ".agents/plugins/marketplace.json": "f639c4f41c61a8bdea980c481a0b820de768f3d2dc60f278ed3b9aebc7297489",
+    ".gitignore": "c85b93d0f60c941416f7bd1953e283eb6022e184783172e6b38d19dcfeb62f37",
+    "AGENTS.md": "f7863d5c09fc0bacb91ff02c9adcce7f28b6f202dad24033ca0c87995be3a171",
+    "README.md": "e5042f3f35c847fb152d2b89760ad6783169bbf51362c4405fa948843574817e",
+    "TEMPLATES/nodule.PACER.csv": "78a602236a65aa9c4029d3e49aa16ddcaf3fe976a38f88cde3f9bf4a8fe919bf",
+    "TEMPLATES/organism.PACER.csv": "1ea47da975df6ad886cb4c9d4da8aac5e91c8a13a68d39ce3adbed883f83a8f2",
+    "TEMPLATES/overlord.PACER.csv": "dbae80f6f2d2936c33093747af883f116278ce35b822f84a948da402e09b37b6",
+    "TEMPLATES/todo.PACER.csv": "258e2f9db5d598dc58cbde6e8da088d00a892609a490322f387b29c9c6116d27",
+    "plugins/pacer/.codex-plugin/plugin.json": "ed46b7a4bc29e087d3cfb4943c4a4ff813ceb115f19ea7ab9a705f0f0eb1e635",
+    "plugins/pacer/.mcp.json": "da062489e04b7251d8da76ba7ba5f4cb8fac9aff0f89c805623347323f9aa284",
+    "plugins/pacer/README.md": "d691fee183ff953f24f7b3cfbfea11f46d6740585b20e60a30fa804654ad20b1",
+    "plugins/pacer/mcp.json": "1e36ea01d1e671c2e4e776b3ce869e3471c362af6f4122c05f0717278b3619a8",
+    "plugins/pacer/plugin.json": "e782dde3a86f42691f0d785d3dcde80437bf9fc1a5cc83ef07e33f24f9c0af54",
+    "plugins/pacer/pyproject.toml": "d287258ec98a851caedc8e45f17f8d18a20f68ba29afa399b69e100ae16b3b12",
+    "plugins/pacer/references/FORMAT.md": "8bfc29a5eb9617cc317b2e1e5f27bd3dab2daa9c4b293046298b4598d2132007",
+    "plugins/pacer/skills/pacer-audit/SKILL.md": "1c0df0eea6d7d1f21da0e7c0b3eda29dd0cd3cda1ae89a1a9fcb4b1e4781c83d",
+    "plugins/pacer/skills/pacer-audit/agents/openai.yaml": "179d1c208dfc8a1e5219fae467d68d992e39ae692bc5a3833a68c0cfa40d5f90",
+    "plugins/pacer/skills/pacer-develop/SKILL.md": "c057246325b5eb996978c31938385278d957a55f402748ce558ca294fb7a3e9d",
+    "plugins/pacer/skills/pacer-develop/agents/openai.yaml": "a7e9bce0d039b2413fbd4a89bb0cc5b4c24384c31fa3bd5daf88e4afbc9e948c",
+    "plugins/pacer/skills/pacer-onboard/SKILL.md": "6fac80b4ab6e912c28f822d803b44470702bc5d6175ed7f7dae936dd363c1324",
+    "plugins/pacer/skills/pacer-onboard/agents/openai.yaml": "3418c71e5f30297a4302f62aa4045699fe92998b0566ee0012c1fff547da7bb2",
+    "plugins/pacer/src/pacer_mcp/__init__.py": "00db8b97dc6771ea7df83737a9a8055dbca8f392a8bdbc2a673402473d05722b",
+    "plugins/pacer/src/pacer_mcp/cli.py": "90475d319690b3c0e1dde74a166e885650c13e8b897ae161d6edd3ec35bde98a",
+    "plugins/pacer/src/pacer_mcp/commands.py": "615361134c89e7812bcae16b3d8f0dfe21efc611e99b3d39026ba9cf18dfaa02",
+    "plugins/pacer/src/pacer_mcp/models.py": "f451c20c4d323bab2630cf9c4b2db6e4e918e4f2876aff574467ceea8f889a9b",
+    "plugins/pacer/src/pacer_mcp/query.py": "04163a77ca91f9c8dc481107f36768c0d9013f2a33bc9b2570a2002f7329698e",
+    "plugins/pacer/src/pacer_mcp/schema.py": "65680516e9d4d2bbeb210ba277e2243ad24ee43bf6596bb41839e77d6779fa08",
+    "plugins/pacer/src/pacer_mcp/server.py": "8523772d40f0fc7da13bafc5d13324fef451c780a5320d50fef7feb08ee754dd",
+    "plugins/pacer/src/pacer_mcp/service.py": "0e98b6a56930db9ecfded544bc066d9c6c844ae68c066aefbc7349f9727d37a9",
+    "plugins/pacer/src/pacer_mcp/store.py": "de0b40147c4a67f533f9f50e42cb363b1d64bee757883e85b068437b8931ab61",
+    "plugins/pacer/src/pacer_mcp/validation.py": "20e4b7284564abf5626885d6cb6f1a324c7555ab3418b97cb4e147303ae22ee0",
+    "plugins/pacer/tests/conftest.py": "c078d7009c2cc9a7ae80542d24b108dbd9c4efe36b638fa16f7d5f4d59490e18",
+    "plugins/pacer/tests/test_cli.py": "2cbcbe1ef6ad09658879b4eb25e55c5d7eb5470efe59e2e177a7824183c57429",
+    "plugins/pacer/tests/test_guards.py": "ce91a9864e2085d2c7f4ced1f5c67e9220d428c2e8d61285b6ff97edd431e72c",
+    "plugins/pacer/tests/test_lifecycle.py": "be786c46ee1787411f8be62510718569aa6e6053969e9d682f0e56afd0b7fa56",
+    "plugins/pacer/tests/test_mcp.py": "3a92cced2b0993aed1243ebc5fa7a41d85cc05edc329afa67d1104346f81c714",
+    "plugins/pacer/tests/test_packaging.py": "6010e9dc7d7319ac6e56bcb3251440b330c94cde2339b4c41d8e8c95e7f4d5ee",
+    "plugins/pacer/tests/test_store.py": "463f414666ace248fe13c9a85a6c2905e0bdcc635416066c454b334658e118c9",
+    "plugins/pacer/uv.lock": "41e29c099aded645dc7934354087c8d7fe37b95f75f6d183bbb01db77d09b095",
+    "scripts/check.py": "87a873846eae8e0b80a81985df6be91f77f2c86904eace9b6189990e40658246",
+    "scripts/install.ps1": "fe44de06784e8561376704e313ede141929e4af32d9160685785df81e550ae04",
+    "scripts/maintain.py": "5e1a1579f20060237ddfa947031ef2a1383851df47e4af81ad8aa081f4926935",
+    "scripts/prove_codex.py": "341befd0283b50dbb2957bcff7a81cbd959d9275230e118375a2904fc34dde80"
+  },
+  "limits": [
+    "Structural validation checks evidence presence, not truth of arbitrary assertions. Agents still inspect source, DoDs and acceptance.",
+    "Native test used no model turn; independent skill trial used an agent and CLI/service.",
+    "Source hashes exclude evolving live registers and this self-referential evidence file."
+  ]
+}
