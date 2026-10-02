@@ -1,0 +1,67 @@
+ID,Path,Symbol,Kind,Purpose,Tier,Tags
+OVR-001,README.md,,FILE,"what PACER is, how to install and use it, where things are",,#repository
+OVR-002,AGENTS.md,,FILE,rules for agents working in this repository and where new things go,,#repository
+OVR-011,.gitignore,,FILE,"ignored local state: environments, caches, build output",,#repository
+OVR-012,plugins/pacer/pyproject.toml,,FILE,"the one Python project: package, MCP dependency, tool settings",,#product
+OVR-013,plugins/pacer/uv.lock,,FILE,locked environment of the MCP server,,#product
+OVR-014,plugins/pacer/src/pacer/__init__.py,,FILE,package version,,#product
+OVR-028,plugins/pacer/src/pacer/commands.py,,FILE,"the write operations, applied to an in-memory copy",,#product
+OVR-039,plugins/pacer/src/pacer/schema.py,,FILE,"register columns, vocabularies, limits, reference grammar, the tier rule",,#product
+OVR-050,plugins/pacer/src/pacer/service.py,,FILE,"application boundary shared by CLI, hooks and MCP server",,#product
+OVR-062,plugins/pacer/src/pacer/store.py,,FILE,"CSV codec, snapshots, journaled atomic publication, ledger",,#product
+OVR-065,plugins/pacer/src/pacer/validation.py,,FILE,errors that refuse a write and warnings that never do,,#product
+OVR-069,plugins/pacer/tests/conftest.py,,FILE,"fixtures: bare tree, initialised project, seeded web, git helper",,#test
+OVR-089,plugins/pacer/tests/test_store.py,,FILE,"init, CSV codec, archive files, recovery, atomicity, ledger tail",,#test
+OVR-093,plugins/pacer/src/pacer/cli.py,,FILE,the pacer command,,#product
+OVR-103,plugins/pacer/src/pacer/models.py,,FILE,typed operation schema for the MCP tools,,#product
+OVR-105,plugins/pacer/src/pacer/server.py,,FILE,MCP tools over the service,,#product
+OVR-108,plugins/pacer/.codex-plugin/plugin.json,,FILE,plugin manifest for Codex; the one Codex loads hooks from,,#product
+OVR-109,plugins/pacer/.mcp.json,,FILE,MCP server entry for Claude Code,,#product
+OVR-112,plugins/pacer/README.md,,FILE,"what the plugin directory holds, how it starts, how to work on it",,#product
+OVR-126,.agents/plugins/marketplace.json,,FILE,marketplace manifest read by Codex,,#repository
+OVR-157,scripts/check.py,,FILE,"every check in one command, keeping generated files out of the product",,#tooling
+OVR-167,plugins/pacer/tests/test_packaging.py,,FILE,"manifests, versions, stdlib-only rule, format reference agree with the runtime",,#test
+OVR-262,.gitattributes,,FILE,byte-exact checkouts: no end-of-line conversion,,#repository
+OVR-471,.claude-plugin/marketplace.json,,FILE,marketplace manifest read by Claude Code,,#repository
+OVR-473,plugins/pacer/.claude-plugin/plugin.json,,FILE,plugin manifest for Claude Code,,#product
+OVR-573,plugins/pacer/src/pacer/cards.py,,FILE,card grammar: render and parse one row as one line,integrated,#product
+OVR-574,plugins/pacer/src/pacer/frames.py,,FILE,"compiles session, prompt and edit frames within a byte budget",integrated,#product
+OVR-575,plugins/pacer/src/pacer/rank.py,,FILE,relevance as shortest distance over typed edges,integrated,#product
+OVR-576,plugins/pacer/src/pacer/gates.py,,FILE,tier matrix: when a stop blocks and an edit is denied,integrated,#product
+OVR-577,plugins/pacer/src/pacer/hook.py,,FILE,"harness adapter: event JSON in, frame or decision out; dedupe; rename detection",integrated,#product
+OVR-578,plugins/pacer/src/pacer/probe.py,,FILE,"runs a probe, writes the evidence cell, derives freshness",integrated,#product
+OVR-579,plugins/pacer/src/pacer/provider.py,,FILE,derived source structure: CodeGraph index or builtin import scan,integrated,#product
+OVR-580,plugins/pacer/src/pacer/migrate/importers.py,,FILE,translates profile 0.5 rows and v2.0.0 plans into current rows,integrated,#product
+OVR-581,plugins/pacer/src/pacer/config.py,,FILE,"project frame: defaults, template, tolerant parsing",integrated,#product
+OVR-582,plugins/pacer/src/pacer/tree.py,,FILE,the work tree as indented cards,integrated,#product
+OVR-583,plugins/pacer/hooks/hooks.json,,FILE,"hook wiring for both hosts: five events, one entry point",integrated,#product
+OVR-584,plugins/pacer/skills/pacer/SKILL.md,,FILE,"the skill: card grammar, operations, operating rules",integrated,#product
+OVR-589,docs/trials/pre-baseline/hook-trial.txt,,FILE,live hook trials of the first PACER 3 build,,#record
+OVR-590,docs/trials/pre-baseline/consumer-trials.txt,,FILE,migration trials of the first PACER 3 build on two real projects,,#record
+OVR-591,scripts/build_kit.py,,FILE,builds the kit from tracked files and verifies the committed one,,#tooling
+OVR-600,CHANGELOG.md,,FILE,what each release changed,,#repository
+OVR-601,install.py,,FILE,"installer: one PACER copy per host from this directory, plus status and uninstall",,#repository
+OVR-602,ruff.toml,,FILE,"lint settings for scripts and the installer, inherited from the product",,#repository
+OVR-603,archive/README.md,,FILE,index of the frozen earlier lineages,,#repository
+OVR-604,docs/structure.md,,FILE,"repository map: product, tooling, record, archive, and where a new thing goes",,#record
+OVR-605,docs/design/pacer-3-design.md,,FILE,"why PACER 3 is shaped as it is: review of 0.5 and 2.0, architecture, decisions",,#record
+OVR-606,docs/design/baseline-3.0.0.md,,FILE,decisions of the 3.0.0 baseline with the options considered,,#record
+OVR-607,docs/trials/baseline-3.0.0.md,,FILE,measurements and live-session records for the 3.0.0 baseline,,#record
+OVR-608,releases/pacer-kit-3.0.0.zip,,FILE,"the 3.0.0 kit: marketplace, plugin and installer",,#repository
+OVR-609,plugins/pacer/.codex-plugin/mcp.json,,FILE,"MCP server entry for Codex, plugin-relative cwd",,#product
+OVR-610,plugins/pacer/skills/pacer/agents/openai.yaml,,FILE,Codex display metadata for the skill,,#product
+OVR-611,plugins/pacer/skills/pacer/references/format.md,,FILE,normative format reference for 3.0,,#product
+OVR-612,plugins/pacer/src/pacer/__main__.py,,FILE,entry point by module or by file path on a bare interpreter,,#product
+OVR-613,plugins/pacer/src/pacer/layout.py,,FILE,every file and directory name of a governed project; project root discovery,,#product
+OVR-614,plugins/pacer/src/pacer/lock.py,,FILE,inter-process file lock on the standard library,,#product
+OVR-615,plugins/pacer/src/pacer/migrate/__init__.py,,FILE,"detects an older layout, plans, previews and applies the upgrade",,#product
+OVR-616,plugins/pacer/tests/__init__.py,,FILE,marks the tests as a package,,#test
+OVR-617,plugins/pacer/tests/test_layout_lock.py,,FILE,names and root discovery; lock exclusion across processes,,#test
+OVR-618,plugins/pacer/tests/test_validation.py,,FILE,"cell, register and closed-web rules",,#test
+OVR-619,plugins/pacer/tests/test_cards.py,,FILE,card rendering and parsing,,#test
+OVR-620,plugins/pacer/tests/test_commands.py,,FILE,"every write operation, its guards, probes",,#test
+OVR-621,plugins/pacer/tests/test_frames_gates.py,,FILE,"ranking, frames, budgets, tier matrix",,#test
+OVR-622,plugins/pacer/tests/test_hook.py,,FILE,"hook events, dedupe, rename following, silence",,#test
+OVR-623,plugins/pacer/tests/test_probe_provider.py,,FILE,"evidence, freshness, providers",,#test
+OVR-624,plugins/pacer/tests/test_migrate.py,,FILE,"upgrades from 0.5, 2.0 and the root layout",,#test
+OVR-625,plugins/pacer/tests/test_cli_server.py,,FILE,"CLI, bare-interpreter start, MCP tools, stdio probe",,#test

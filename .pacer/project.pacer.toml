@@ -1,0 +1,28 @@
+# PACER project frame. Every key is optional; these are the defaults.
+format = "3.0"
+
+[project]
+name = "PACER"
+# sketch | prototype | playable | integrated | release | protected
+# sketch..playable never block; integrated blocks a stop on a FAILED probe;
+# release also blocks on STALE evidence; protected denies edits without a USER latch.
+tier = "integrated"
+
+[provider]
+# Where derived source structure comes from:
+# auto (codegraph when .codegraph/ exists, else builtin) | codegraph | builtin | none
+name = "auto"
+# Directories the builtin scanner skips, relative to the project root.
+exclude = []
+
+[frames]
+# Byte budget per frame. The spine always fits; the rest fills by relevance.
+session = 4000
+prompt = 2000
+edit = 1500
+stop = 1000
+
+[probe]
+# Seconds a requirement's Probe may run before it is stopped and recorded as exit 124.
+# The baseline requirement runs every check, which takes about a minute and a half.
+timeout = 600
