@@ -1,0 +1,2 @@
+# Repository scripts follow the product's lint and format rules.
+extend = "plugins/pacer/pyproject.toml"

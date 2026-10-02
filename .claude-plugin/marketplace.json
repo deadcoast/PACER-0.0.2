@@ -1,7 +1,16 @@
 {
-  "name": "personal",
-  "owner": { "name": "MIVIM" },
+  "name": "mivim",
+  "owner": {
+    "name": "MIVIM"
+  },
+  "metadata": {
+    "description": "MIVIM agent tooling."
+  },
   "plugins": [
-    { "name": "pacer", "source": "./plugins/pacer", "description": "PACER development workflow, skills and MCP server." }
+    {
+      "name": "pacer",
+      "source": "./plugins/pacer",
+      "description": "PACER: delivered project context for coding agents."
+    }
   ]
 }

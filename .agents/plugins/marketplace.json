@@ -1,7 +1,7 @@
 {
-  "name": "personal",
+  "name": "mivim",
   "interface": {
-    "displayName": "Personal"
+    "displayName": "MIVIM"
   },
   "plugins": [
     {
