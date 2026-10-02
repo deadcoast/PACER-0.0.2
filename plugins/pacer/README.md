@@ -1,36 +1,54 @@
-# PACER plugin for Claude Code and Codex
+# PACER plugin
 
-The plugin ships one MCP server, one skill and one `hooks/hooks.json`. The hooks are the point: they call `pacer hook <event>` at SessionStart (including after compaction), UserPromptSubmit, PreToolUse and PostToolUse on edits, and Stop, and inject the compiled card frame. Nothing in the plugin needs an API key or makes model calls. Register data stays in the governed project.
+One plugin for Claude Code and Codex: hooks that deliver card frames, an MCP server for explicit reads and writes, and one skill that carries the grammar. It makes no model calls and needs no API key. A project's state stays in that project's `.pacer/` directory.
 
-## Install
+## What is in this directory
 
-Run `./install.ps1` from the PACER repository root. It needs an existing uv, the Python selected by `.python-version`, and the agent CLIs you want to target (`-Agent Codex` or `-Agent Claude` selects one). It syncs the root workspace, verifies imports resolve to this checkout, snapshots the plugin under `.cache/install/builds/`, and registers that local marketplace with each host CLI. Logs and a `result.json` land under `.cache/install/logs/`. Start a new agent session afterwards.
+| Path | Read by | Purpose |
+|---|---|---|
+| `.claude-plugin/plugin.json` | Claude Code | plugin manifest |
+| `.mcp.json` | Claude Code | MCP server; paths through `${CLAUDE_PLUGIN_ROOT}` and `${CLAUDE_PLUGIN_DATA}` |
+| `.codex-plugin/plugin.json` | Codex | plugin manifest; names the hooks, skills and MCP file |
+| `.codex-plugin/mcp.json` | Codex | MCP server; `cwd` relative to the plugin root |
+| `hooks/hooks.json` | both | five events, one entry point |
+| `skills/pacer/` | both | card grammar and operations; `references/format.md` is the format reference |
+| `src/pacer/` | | the runtime |
+| `pyproject.toml`, `uv.lock` | uv | the MCP server's locked environment |
+| `tests/` | | not part of the kit |
 
-Installed plugin copies are standalone Python 3.11+ packages with their own `uv.lock`; the hook and MCP commands run `uv run --project <plugin root>` so they work from any project directory. `.mcp.json` pins `UV_PROJECT_ENVIRONMENT` to `${CLAUDE_PLUGIN_DATA}/venv-<first 16 hex of SHA256(version)>`; `mcp.json` does the same with `${PLUGIN_DATA}` for Codex. Packaging tests enforce that rule.
+Each host reads one manifest and one MCP file; everything else is shared. There is deliberately no root `plugin.json`: Codex 0.160 stops loading a plugin's hooks when one is present (measured, `docs/trials/baseline-3.0.0.md`).
 
-## Tools
+## How it starts
 
-| Tool | Purpose |
-|---|---|
-| `pacer_frame(root, kind, focus)` | `session`, `edit` (focus = path), `prompt` (focus = text) or `stop` frame |
-| `pacer_q(root, query)` | cards for an ID and its neighbours, a path, a `#tag`, a register, or `register:STATUS` |
-| `pacer_write(root, operations, actor, preview)` | `add set link move status latch pace absorb`, atomic, ledgered |
-| `pacer_probe(root, id, actor)` | run an OGM's Probe and record its Evidence cell |
-| `pacer_validate(root)` | structure, references, statuses, tiers, lanes |
-| `pacer_initialize(root)` | create empty registers |
-| `pacer_migrate(root, source, actor, preview)` | from profile `0.5` CSVs or a `v2` `todo.PACER` |
-| `pacer_log(root, id, limit)` | ledger events |
-| `pacer_recover(root)` | finish an interrupted publication |
+Hooks run on every edit, so they start without an environment:
 
-Every tool takes the absolute project root. A server started with `pacer serve --root <project>` refuses other roots.
-
-## Development
-
-```powershell
-uv run --locked pacer --root . frame session
-uv run --locked pacer --root . q PAC-001
-uv run --locked python scripts/check.py
-uv build --package pacer-mcp
+```
+uv run --no-project --no-python-downloads --python ">=3.11" "<plugin>/src/pacer/__main__.py" hook <event>
 ```
 
-Repository development uses the root `.venv` and `uv.lock`. After a version or dependency change, run `uv lock` at the root and regenerate this plugin's `uv.lock` from a copy outside the workspace. The format is specified in [references/FORMAT.md](references/FORMAT.md).
+uv only picks the interpreter. Everything outside `server.py` and `models.py` uses the standard library alone, which a test enforces. A hook call takes about 0.2 s. Claude Code substitutes `${CLAUDE_PLUGIN_ROOT}` into `command`. Codex substitutes nothing and exports the same variable instead: its POSIX shell expands it in `command`, and on Windows, where it runs hooks in PowerShell, it uses `commandWindows` with `$env:PLUGIN_ROOT`.
+
+The MCP server is the one part with a dependency (`mcp`):
+
+```
+uv run --locked --no-dev --project <plugin> pacer serve
+```
+
+Its environment is built from `uv.lock` on first start, which needs network access: under Claude Code in the plugin data directory (`venv/`, kept across updates), under Codex in `.venv/` inside the installed copy. uv never downloads a Python: 3.11 or newer must already be installed.
+
+## Prerequisites
+
+uv, Python 3.11 or newer, git (for rename following and evidence revisions), and Claude Code or Codex. In Codex, hooks must be enabled (`codex features enable hooks`) and the plugin's hooks trusted once (`/hooks`).
+
+## Working on the plugin
+
+From the repository root:
+
+```
+python scripts/check.py              # lint, format, types, tests, manifests, registers, kit
+python scripts/check.py --matrix     # tests on Python 3.11 to 3.14
+claude --plugin-dir plugins/pacer    # run a session against the working tree, no install
+python -B plugins/pacer/src/pacer/__main__.py frame session
+```
+
+`check.py` keeps the environment in `.venv/` at the repository root and every cache under `.cache/`: hosts copy this directory verbatim, so nothing may be generated inside it.

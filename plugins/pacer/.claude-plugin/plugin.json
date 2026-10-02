@@ -1,8 +1,16 @@
 {
   "name": "pacer",
   "version": "3.0.0",
-  "description": "PACER 3: hook-delivered project context as bounded cards over five CSV registers.",
+  "description": "PACER: project context delivered to coding agents as bounded cards over CSV registers, with probes as proof and latches for user decisions.",
   "author": {
     "name": "MIVIM"
-  }
+  },
+  "repository": "https://github.com/deadcoast/PACER-0.0.2",
+  "keywords": [
+    "context",
+    "hooks",
+    "mcp",
+    "requirements",
+    "agents"
+  ]
 }

@@ -1,5 +1,5 @@
 {
-  "description": "PACER 3 delivered context: frames at session start, before and after edits, and at stop.",
+  "description": "PACER frames at session start, on a prompt that names a card, before and after edits, and at stop.",
   "hooks": {
     "SessionStart": [
       {
@@ -7,7 +7,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --locked --no-dev --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook session-start",
+            "command": "uv run --no-project --no-python-downloads --python \">=3.11\" \"${CLAUDE_PLUGIN_ROOT}/src/pacer/__main__.py\" hook session-start",
+            "commandWindows": "uv run --no-project --no-python-downloads --python \">=3.11\" \"$env:PLUGIN_ROOT/src/pacer/__main__.py\" hook session-start",
             "timeout": 20
           }
         ]
@@ -18,7 +19,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --locked --no-dev --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook prompt",
+            "command": "uv run --no-project --no-python-downloads --python \">=3.11\" \"${CLAUDE_PLUGIN_ROOT}/src/pacer/__main__.py\" hook prompt",
+            "commandWindows": "uv run --no-project --no-python-downloads --python \">=3.11\" \"$env:PLUGIN_ROOT/src/pacer/__main__.py\" hook prompt",
             "timeout": 15
           }
         ]
@@ -30,7 +32,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --locked --no-dev --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook pre-edit",
+            "command": "uv run --no-project --no-python-downloads --python \">=3.11\" \"${CLAUDE_PLUGIN_ROOT}/src/pacer/__main__.py\" hook pre-edit",
+            "commandWindows": "uv run --no-project --no-python-downloads --python \">=3.11\" \"$env:PLUGIN_ROOT/src/pacer/__main__.py\" hook pre-edit",
             "timeout": 15
           }
         ]
@@ -42,7 +45,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --locked --no-dev --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook post-edit",
+            "command": "uv run --no-project --no-python-downloads --python \">=3.11\" \"${CLAUDE_PLUGIN_ROOT}/src/pacer/__main__.py\" hook post-edit",
+            "commandWindows": "uv run --no-project --no-python-downloads --python \">=3.11\" \"$env:PLUGIN_ROOT/src/pacer/__main__.py\" hook post-edit",
             "timeout": 15
           }
         ]
@@ -53,7 +57,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run --locked --no-dev --project \"${CLAUDE_PLUGIN_ROOT}\" pacer hook stop",
+            "command": "uv run --no-project --no-python-downloads --python \">=3.11\" \"${CLAUDE_PLUGIN_ROOT}/src/pacer/__main__.py\" hook stop",
+            "commandWindows": "uv run --no-project --no-python-downloads --python \">=3.11\" \"$env:PLUGIN_ROOT/src/pacer/__main__.py\" hook stop",
             "timeout": 20
           }
         ]

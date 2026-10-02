@@ -1,23 +1,31 @@
 {
   "name": "pacer",
   "version": "3.0.0",
-  "description": "PACER 3: hook-delivered project context as bounded cards over five CSV registers.",
+  "description": "PACER: project context delivered to coding agents as bounded cards over CSV registers, with probes as proof and latches for user decisions.",
   "author": {
-    "name": "PACER maintainer"
+    "name": "MIVIM"
   },
+  "repository": "https://github.com/deadcoast/PACER-0.0.2",
+  "keywords": [
+    "context",
+    "hooks",
+    "mcp",
+    "requirements",
+    "agents"
+  ],
   "skills": "./skills/",
+  "mcpServers": "./.codex-plugin/mcp.json",
+  "hooks": "./hooks/hooks.json",
   "interface": {
     "displayName": "PACER",
-    "shortDescription": "Delivered project context for agents.",
-    "longDescription": "Frames of PAC/OVR/OGM/DEC/NDL cards at session start, before and after edits and at stop; probes as evidence; latches for user decisions.",
-    "developerName": "PACER maintainer",
+    "shortDescription": "Project context delivered as cards.",
+    "longDescription": "Frames of PAC, OVR, OGM, DEC and NDL cards at session start, before and after edits and at stop; probes as evidence; latches for user decisions.",
+    "developerName": "MIVIM",
     "category": "Productivity",
     "capabilities": [
       "Read",
       "Write"
     ],
     "defaultPrompt": "Continue the active PACER pace."
-  },
-  "mcpServers": "./codex.mcp.json",
-  "hooks": "./hooks/hooks.json"
+  }
 }

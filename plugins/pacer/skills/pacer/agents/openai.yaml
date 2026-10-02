@@ -1,8 +1,8 @@
 interface:
   display_name: "PACER"
-  short_description: "Card grammar and write lexicon for PACER 3"
+  short_description: "Card grammar and write operations for PACER projects"
 dependencies:
   tools:
     - type: "mcp"
       value: "pacer"
-      description: "Bundled local PACER register server"
+      description: "The PACER register server bundled with this plugin"

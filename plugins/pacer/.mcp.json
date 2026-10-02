@@ -2,9 +2,17 @@
   "mcpServers": {
     "pacer": {
       "command": "uv",
-      "args": ["run", "--locked", "--no-dev", "--project", "${CLAUDE_PLUGIN_ROOT}", "pacer", "serve"],
+      "args": [
+        "run",
+        "--locked",
+        "--no-dev",
+        "--project",
+        "${CLAUDE_PLUGIN_ROOT}",
+        "pacer",
+        "serve"
+      ],
       "env": {
-        "UV_PROJECT_ENVIRONMENT": "${CLAUDE_PLUGIN_DATA}/venv-c9163ff21f1f2b03",
+        "UV_PROJECT_ENVIRONMENT": "${CLAUDE_PLUGIN_DATA}/venv",
         "UV_CACHE_DIR": "${CLAUDE_PLUGIN_DATA}/uv-cache",
         "UV_PYTHON_DOWNLOADS": "never"
       }

@@ -1,6 +1,0 @@
-{
-  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "pacer",
-  "version": "3.0.0",
-  "description": "PACER 3: hook-delivered project context as bounded cards over five CSV registers."
-}
