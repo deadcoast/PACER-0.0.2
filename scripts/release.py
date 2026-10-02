@@ -194,7 +194,7 @@ def main() -> int:
     args = parser.parse_args()
     version = args.version
 
-    plan = ["preflight", "version", "check", "kit"]
+    plan = ["preflight", "version", "kit", "check"]
     if not args.dry_run:
         plan += ["claude", "codex", "command", "prove", "commit", "tag"]
         if not args.no_push:
@@ -214,21 +214,16 @@ def main() -> int:
                 touched = write_version(version)
                 stage.done(f"{len(touched)} files")
         if journey.ok:
-            check = [
-                python,
-                "-B",
-                str(REPO / "scripts" / "check.py"),
-                *(["--matrix"] if args.matrix else []),
-            ]
-            with journey.step("check", "lint, types, tests, registers, manifests") as stage:
-                stage.done(run(check, journey, kept, "check"))
-        if journey.ok:
+            # The kit first: the checks verify the kit that will ship.
             with journey.step("kit") as stage:
-                stage.done(
-                    run(
-                        [python, "-B", str(REPO / "scripts" / "build_kit.py")], journey, kept, "kit"
-                    )
-                )
+                build = [python, "-B", str(REPO / "scripts" / "build_kit.py")]
+                stage.done(run(build, journey, kept, "kit"))
+        if journey.ok:
+            check = [python, "-B", str(REPO / "scripts" / "check.py")]
+            if args.matrix:
+                check.append("--matrix")
+            with journey.step("check", "lint, types, tests, registers, manifests, kit") as stage:
+                stage.done(run(check, journey, kept, "check"))
         if journey.ok and not args.dry_run:
             changed, advice, failure = run_installer(REPO, journey, ["--host", "all"])
             if failure:
