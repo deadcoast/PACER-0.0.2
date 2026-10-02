@@ -1,0 +1,15 @@
+pipeline {
+  agent PACER
+  stages {
+    stage('MIVIM.Hierarchy') {
+      steps {
+        // [1] Parent Organization
+        "MIVIM":"parent_org",
+        // [2] Organization Specification Category
+        "spec":"category",
+        // [3] Assigned Organization Spec
+        "vigiles":"Specialised Semantic Translation Management Spec"
+      }
+    }
+  }
+}
