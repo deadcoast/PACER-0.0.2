@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 import pacer
-from tests.conftest import PASS, archived, row, tables
+from tests.conftest import FAIL, PASS, archived, row, tables
 
 
 def ids(service, register):
