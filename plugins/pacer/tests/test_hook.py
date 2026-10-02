@@ -163,3 +163,11 @@ def test_hook_trace_lists_payload_keys(seeded, tmp_path, monkeypatch):
     entry = json.loads(log.read_text().splitlines()[0])
     assert entry["event"] == "session-start" and entry["keys"] == ["cwd", "session_id", "source"]
     assert entry["deduped"] is False and entry["out"].startswith("PACER demo")
+
+
+def test_stale_is_reported_only_when_evidence_really_is(seeded):
+    (seeded.root / "src" / "a.py").write_text("x = 5\n")
+    seeded.probe("OGM-001", "t")  # the probe ran after the edit: evidence covers it
+    assert seeded.record(["src/a.py"], [], "hook", register_new=False) == "pacer: touched src/a.py"
+    (seeded.root / "src" / "a.py").write_text("x = 6\n")
+    assert seeded.record(["src/a.py"], [], "hook", register_new=False).endswith("| stale OGM-001")

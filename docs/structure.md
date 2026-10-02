@@ -34,6 +34,7 @@ docs/                            DEVELOPMENT RECORD
 releases/                        built kits, one per version
 
 .pacer/                          this repository's own PACER state
+.claude/settings.json            enables the installed pacer@mivim plugin for sessions in this repository
 
 archive/                         FROZEN LINEAGES; see archive/README.md
 ```
@@ -42,9 +43,9 @@ Ignored and local: `.venv/` (development environment), `.cache/` (tool caches an
 
 ## The product
 
-`plugins/pacer/` is everything a user installs and the only place product code lives. Hosts copy the directory verbatim into their plugin cache, so two rules hold:
+`plugins/pacer/` is everything a user installs and the only place product code lives. Hosts copy the directory verbatim into their plugin cache, or run it where it sits: with this checkout registered as a local marketplace, Claude Code 2.1.287 starts the MCP server straight from `plugins/pacer/`. So two rules hold:
 
-1. Nothing is generated inside it. `scripts/check.py` points uv at `.venv/` in the repository root and sends bytecode, lint and type caches to `.cache/`.
+1. The repository's tooling generates nothing inside it. `scripts/check.py` points uv at `.venv/` in the repository root and sends bytecode, lint and type caches to `.cache/`. The one thing that does appear is `__pycache__/` written by a host running the plugin in place; git and the kit builder ignore it.
 2. It stands alone. It carries its own `pyproject.toml` and `uv.lock`, and nothing in it refers to a path outside itself.
 
 `install.py`, the two marketplace manifests, `README.md` and `CHANGELOG.md` are the rest of what ships. `scripts/build_kit.py` packs exactly these, minus `tests/`, into `releases/pacer-kit-<version>.zip` with the same relative layout, so the installer and manifests work unchanged from an unpacked kit. `check.py` fails when the committed kit does not match the sources.
@@ -75,7 +76,7 @@ The agent tooling used to develop PACER is the product itself, installed the nor
 
 - `AGENTS.md` at the root carries the rules for this repository. Claude Code and Codex both read it.
 - `.pacer/` is this repository's state, read by the installed plugin like any other project.
-- There is no `.claude/` or `.codex/` directory with project-level skills, hooks or MCP servers. Adding one would give a session two sources for the same skill and hooks: the installed plugin and the working tree. Develop against the working tree with `claude --plugin-dir plugins/pacer`, or reinstall with `uv run install.py`.
+- `.claude/settings.json` holds one setting: it enables the installed plugin here. Neither `.claude/` nor `.codex/` carries project-level skills, hooks or MCP servers. Adding those would give a session two sources for the same skill and hooks: the installed plugin and the working tree. Develop against the working tree with `claude --plugin-dir plugins/pacer`, or reinstall with `uv run install.py`.
 
 Neither host documents a layout for a repository whose product is itself agent tooling. Both document where a project's own agent configuration goes (`AGENTS.md`, `.claude/`, `.codex/`) and where a distributable plugin goes (a plugin directory under a marketplace). The separation above follows from that: the distributable lives in the plugin directory, and the project-configuration locations stay empty except for `AGENTS.md`.
 

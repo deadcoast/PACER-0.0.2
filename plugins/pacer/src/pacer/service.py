@@ -233,10 +233,12 @@ class Service:
                 return f"pacer: change not recorded: {report['errors'][0]}"
             self._commit(snapshot, editor)
             assets = {r["ID"] for r in tables["overlord"] if r["Path"] in set(edited)}
+            # Measured, not presumed: a probe may already have run on the edited files.
             stale = [
                 r["ID"]
                 for r in tables["organism"]
-                if r.get("Evidence") and set(refs(r.get("Binds", ""))) & assets
+                if set(refs(r.get("Binds", ""))) & assets
+                and freshness(r, tables, self.root) == "STALE"
             ]
             return _summary(followed, registered, touched, unknown, stale)
 

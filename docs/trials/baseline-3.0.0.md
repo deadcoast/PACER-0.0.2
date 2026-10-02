@@ -10,8 +10,8 @@
 |---|---|
 | ruff check, ruff format | clean |
 | mypy on `src/pacer`, `scripts/`, `install.py` | clean |
-| pytest, development interpreter | 90 passed |
-| pytest on Python 3.11, 3.12, 3.13, 3.14 | 90 passed on each |
+| pytest, development interpreter | 91 passed |
+| pytest on Python 3.11, 3.12, 3.13, 3.14 | 91 passed on each |
 | `claude plugin validate` on the plugin and on the marketplace | passed |
 | kit matches sources | 39 files |
 
@@ -50,6 +50,8 @@ Scratch project at tier `integrated` with one area, phase, pace, requirement, la
 The MCP server started from a new environment in the plugin data directory. `pacer_probe` recorded `exit:0`, state CURRENT. The ledger shows `touch` (hook), `probe` (the agent), `checkpoint` (hook), in that order. Whole turn: 24 s.
 
 `hooks.json` carries a `commandWindows` key for Codex on every hook. Claude Code ran all five with it present.
+
+Observed later in an interactive session, with the plugin also enabled at project scope and this checkout registered as the marketplace: Claude Code started the MCP server with `--project <checkout>/plugins/pacer`, the working tree, not its cache copy. The environment was still the one in the plugin data directory. `claude plugin list` then shows `pacer@mivim` once per scope, both pointing at the same installed copy.
 
 ## 4. Codex, live sessions
 

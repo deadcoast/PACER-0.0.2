@@ -51,4 +51,4 @@ claude --plugin-dir plugins/pacer    # run a session against the working tree, n
 python -B plugins/pacer/src/pacer/__main__.py frame session
 ```
 
-`check.py` keeps the environment in `.venv/` at the repository root and every cache under `.cache/`: hosts copy this directory verbatim, so nothing may be generated inside it.
+`check.py` keeps the environment in `.venv/` at the repository root and every cache under `.cache/`: hosts copy this directory verbatim or run it in place, so the repository's tooling generates nothing inside it.

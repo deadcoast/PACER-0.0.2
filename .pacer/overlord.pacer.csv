@@ -65,3 +65,4 @@ OVR-622,plugins/pacer/tests/test_hook.py,,FILE,"hook events, dedupe, rename foll
 OVR-623,plugins/pacer/tests/test_probe_provider.py,,FILE,"evidence, freshness, providers",,#test
 OVR-624,plugins/pacer/tests/test_migrate.py,,FILE,"upgrades from 0.5, 2.0 and the root layout",,#test
 OVR-625,plugins/pacer/tests/test_cli_server.py,,FILE,"CLI, bare-interpreter start, MCP tools, stdio probe",,#test
+OVR-626,.claude/settings.json,,FILE,enables the installed pacer@mivim plugin for sessions in this repository,,#repository

@@ -4,7 +4,7 @@
     python scripts/check.py --matrix   also run the tests on every supported Python
     python scripts/check.py --fix      apply lint fixes and formatting first
 
-The product directory is copied verbatim by plugin hosts, so nothing here may
+Plugin hosts copy the product directory verbatim or run it in place, so nothing here may
 write into it: the environment lives in `.venv/` at the repository root and
 every cache under `.cache/`.
 """

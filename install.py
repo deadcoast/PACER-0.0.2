@@ -159,14 +159,21 @@ class Host:
     def status(self, version: str) -> tuple[bool, list[str]]:
         """Whether this host runs exactly this directory's PACER, and what it has instead."""
         copies, markets = self.copies(), self.markets()
-        notes = [f"{c.plugin_id}  {c.version or 'unknown version'}" for c in copies]
+        # One plugin enabled at several scopes (user, project) is one copy listed more than once.
+        installed: dict[tuple[str, str], list[str]] = {}
+        for copy in copies:
+            installed.setdefault((copy.plugin_id, copy.version), []).append(copy.scope)
+        notes = [
+            f"{plugin_id}  {found or 'unknown version'}  ({', '.join(scopes)} scope)"
+            for (plugin_id, found), scopes in installed.items()
+        ]
         here = MARKET in markets and local(markets[MARKET]).resolve() == ROOT
         if MARKET in markets:
             where = local(markets[MARKET])
             notes.append(
                 f"marketplace {MARKET}: {where}" + ("" if here else "  (another directory)")
             )
-        current = [c.plugin_id for c in copies] == [PLUGIN_ID] and copies[0].version == version
+        current = list(installed) == [(PLUGIN_ID, version)]
         if not copies:
             notes.append("not installed")
         elif not (current and here):

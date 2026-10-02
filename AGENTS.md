@@ -30,7 +30,8 @@ The runtime enforces structure. These are the rules it cannot enforce.
 
 Three rules keep the product apart from the tooling that develops it:
 
-- **Nothing generated goes in `plugins/pacer/`.** Hosts copy that directory verbatim. `scripts/check.py` keeps the environment and every cache outside it.
+- **Nothing generated goes in `plugins/pacer/`.** Hosts copy that directory verbatim or run it in place. `scripts/check.py` keeps the environment and every cache outside it.
+- **The working tree is live.** With this checkout as the marketplace, Claude Code runs the plugin from `plugins/pacer/` directly, so a broken edit there breaks the frames of the session making it. Run `check.py` before leaving it broken.
 - **No second copy of the product.** The sessions developing PACER use the installed plugin (`uv run install.py`) or `claude --plugin-dir plugins/pacer`. Do not add project-level skills, hooks or MCP entries under `.claude/` or `.codex/` that duplicate what the plugin ships.
 - **A host-facing change is measured, not assumed.** Manifests, hook commands and MCP configuration change only with a live session in the affected host, recorded under `docs/trials/`.
 

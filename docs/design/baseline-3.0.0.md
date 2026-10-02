@@ -98,7 +98,7 @@ The repository root is the marketplace, named `mivim`. The kit is the same layou
 
 ### 9. One Python project
 
-A root workspace and a second lock file existed so the development environment would not sit inside the plugin directory, which hosts copy verbatim. The cost was two locks that could drift. Now the plugin is the only project, and `scripts/check.py` places the environment at the repository root and every cache under `.cache/` through environment variables. The product directory stays free of generated files under the documented commands.
+A root workspace and a second lock file existed so the development environment would not sit inside the plugin directory, which hosts copy verbatim or run in place. The cost was two locks that could drift. Now the plugin is the only project, and `scripts/check.py` places the environment at the repository root and every cache under `.cache/` through environment variables. The product directory stays free of generated files under the documented commands.
 
 ### 10. Smaller corrections
 
