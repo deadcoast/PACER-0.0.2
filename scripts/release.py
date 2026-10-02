@@ -176,11 +176,24 @@ def prove(journey: Journey) -> str:
     results = []
     for row in rows:
         journey.note(f"probing {row['ID']} {row['Title']}")
-        result = service.probe(row["ID"], "release")
+        try:
+            result = service.probe(row["ID"], "release")
+        except ValueError as error:
+            raise StepError(f"{row['ID']}: {error}") from error
         results.append((row["ID"], result["freshness"]))
         if result["freshness"] != "CURRENT":
             raise StepError(f"{row['ID']} came back {result['freshness']}")
     return ", ".join(f"{k} {v}" for k, v in results) or "no proven requirements"
+
+
+def restore(touched: list[Path], version: str) -> None:
+    """Put the tree back: the versioned files, the registers the proof wrote, the new kit."""
+    for path in touched:
+        git("checkout", "--quiet", "--", str(path))
+    git("checkout", "--quiet", "--", str(REPO / ".pacer"))
+    new_kit = REPO / "releases" / f"pacer-kit-{version}.zip"
+    if not git("ls-files", "--", str(new_kit)) and new_kit.exists():
+        new_kit.unlink()
 
 
 def main() -> int:
@@ -206,55 +219,61 @@ def main() -> int:
     touched: list[Path] = []
     started = time.monotonic()
     python = sys.executable
+    committed = False
     with journey:
-        with journey.step("preflight") as stage:
-            stage.done(preflight(version))
-        if journey.ok:
-            with journey.step("version") as stage:
-                touched = write_version(version)
-                stage.done(f"{len(touched)} files")
-        if journey.ok:
-            # The kit first: the checks verify the kit that will ship.
-            with journey.step("kit") as stage:
-                build = [python, "-B", str(REPO / "scripts" / "build_kit.py")]
-                stage.done(run(build, journey, kept, "kit"))
-        if journey.ok:
-            check = [python, "-B", str(REPO / "scripts" / "check.py")]
-            if args.matrix:
-                check.append("--matrix")
-            with journey.step("check", "lint, types, tests, registers, manifests, kit") as stage:
-                stage.done(run(check, journey, kept, "check"))
-        if journey.ok and not args.dry_run:
-            changed, advice, failure = run_installer(REPO, journey, ["--host", "all"])
-            if failure:
-                journey.plan([Step("install", "install", 1.0)])
-                journey.begin("install")
-                journey.end("install", "fail", failure)
-        if journey.ok and not args.dry_run:
-            with journey.step("prove") as stage:
-                stage.done(prove(journey))
-            with journey.step("commit") as stage:
-                git("add", "-A")
-                git("commit", "-q", "-m", f"release: PACER {version}")
-                stage.done(git("rev-parse", "--short=7", "HEAD"))
-            with journey.step("tag") as stage:
-                git("tag", "-a", f"v{version}", "-m", f"PACER {version}")
-                stage.done(f"v{version}")
-            if not args.no_push:
-                with journey.step("push") as stage:
-                    branch = git("symbolic-ref", "-q", "--short", "HEAD")
-                    git("push", "--quiet", "--follow-tags", "origin", branch)
-                    stage.done(f"origin/{branch} and v{version}")
-        if args.dry_run or not journey.ok:
-            for path in touched:
-                git("checkout", "--quiet", "--", str(path))
-            new_kit = REPO / "releases" / f"pacer-kit-{version}.zip"
-            if not git("ls-files", "--", str(new_kit)) and new_kit.exists():
-                new_kit.unlink()
+        try:
+            with journey.step("preflight") as stage:
+                stage.done(preflight(version))
+            if journey.ok:
+                with journey.step("version") as stage:
+                    touched = write_version(version)
+                    stage.done(f"{len(touched)} files")
+            if journey.ok:
+                # The kit first: the checks verify the kit that will ship.
+                with journey.step("kit") as stage:
+                    build = [python, "-B", str(REPO / "scripts" / "build_kit.py")]
+                    stage.done(run(build, journey, kept, "kit"))
+            if journey.ok:
+                check = [python, "-B", str(REPO / "scripts" / "check.py")]
+                if args.matrix:
+                    check.append("--matrix")
+                with journey.step(
+                    "check", "lint, types, tests, registers, manifests, kit"
+                ) as stage:
+                    stage.done(run(check, journey, kept, "check"))
+            if journey.ok and not args.dry_run:
+                changed, advice, failure = run_installer(REPO, journey, ["--host", "all"])
+                if failure:
+                    journey.plan([Step("install", "install", 1.0)])
+                    journey.begin("install")
+                    journey.end("install", "fail", failure)
+            if journey.ok and not args.dry_run:
+                with journey.step("prove") as stage:
+                    stage.done(prove(journey))
+            if journey.ok and not args.dry_run:
+                with journey.step("commit") as stage:
+                    git("add", "-A")
+                    git("commit", "-q", "-m", f"release: PACER {version}")
+                    committed = True
+                    stage.done(git("rev-parse", "--short=7", "HEAD"))
+                with journey.step("tag") as stage:
+                    git("tag", "-a", f"v{version}", "-m", f"PACER {version}")
+                    stage.done(f"v{version}")
+                if journey.ok and not args.no_push:
+                    with journey.step("push") as stage:
+                        branch = git("symbolic-ref", "-q", "--short", "HEAD")
+                        git("push", "--quiet", "--follow-tags", "origin", branch)
+                        stage.done(f"origin/{branch} and v{version}")
+        finally:
+            if not committed and (args.dry_run or not journey.ok):
+                restore(touched, version)
         took = time.monotonic() - started
         if not journey.ok:
             failed = next(s.label for s in journey.steps if s.state == "fail")
-            hints = ["The tree is as it was before the release."]
+            if committed:
+                hints = [f"The release commit exists; finish by hand from the {failed} stage."]
+            else:
+                hints = ["The tree is as it was before the release."]
             ok = journey.close(f"stopped at {failed}", hints)
         elif args.dry_run:
             ok = journey.close(

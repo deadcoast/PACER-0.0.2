@@ -358,3 +358,14 @@ def test_probe_timeout_comes_from_the_project_frame(seeded):
     assert slow.probe("OGM-001", "t")["exit"] == 124
     frame.write_text(frame.read_text().replace("timeout = 1", "timeout = 99999"))
     assert type(seeded)(seeded.root).config["probe_timeout"] == 120  # out of range: the default
+
+
+def test_a_proven_requirement_keeps_its_status_when_a_later_probe_fails(seeded):
+    seeded.probe("OGM-001", "t")
+    seeded.write([{"op": "status", "id": "OGM-001", "status": "VALIDATED_COMPLETE"}], "t")
+    seeded.write([{"op": "set", "id": "OGM-001", "fields": {"Probe": FAIL}}], "t")
+    result = seeded.probe("OGM-001", "t")  # recorded, not refused: the gates report FAIL
+    assert result["exit"] == 3 and result["freshness"] == "FAIL"
+    assert row(seeded, "OGM-001")["Status"] == "VALIDATED_COMPLETE"
+    assert " FAIL |" in seeded.q("OGM-001").splitlines()[0]
+    assert seeded.validate()["valid"]

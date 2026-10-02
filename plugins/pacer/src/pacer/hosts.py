@@ -187,7 +187,7 @@ class Host:
         sources = set()
         for copy in self.copies():
             if keep_market and copy.plugin_id == PLUGIN_ID and copy.scope != "user":
-                # A project enables the same installed copy; refreshing that copy is enough.
+                # A project-scope entry is re-pointed after the install, not dropped.
                 continue
             # A reinstall keeps the plugin's data directory: the MCP server's environment is there.
             self.uninstall(copy, keep_data=keep_market and copy.plugin_id == PLUGIN_ID)
@@ -214,6 +214,7 @@ class Host:
 
         A version bump or a changed file both end here: hosts refresh nothing on their own.
         """
+        scoped = [c for c in self.copies() if c.plugin_id == PLUGIN_ID and c.scope != "user"]
         try:
             notes = self.remove(keep_market=True)
         except RuntimeError as error:
@@ -227,7 +228,14 @@ class Host:
         if MARKET not in self.markets():
             self.add_market()
         self.add_plugin()
+        for copy in scoped:
+            self.rebind(copy)
+            notes.append(f"{copy.scope} scope re-pointed in {copy.project or 'the project'}")
         return [*notes, f"installed {PLUGIN_ID}"]
+
+    def rebind(self, copy: Copy) -> None:
+        """Point a project- or local-scope entry at the copy just installed."""
+        raise NotImplementedError
 
     def status(self, version: str) -> tuple[bool, list[str], list[str]]:
         """Whether this host runs exactly the source: (current, notes, files that differ)."""
@@ -316,6 +324,18 @@ class Claude(Host):
     def add_plugin(self) -> None:
         self.run("plugin", "install", PLUGIN_ID, "--scope", "user")
 
+    def rebind(self, copy: Copy) -> None:
+        # Claude Code binds each scope entry to one version directory; the old one goes with it.
+        cwd = copy.project if copy.project and copy.project.is_dir() else None
+        for args in (
+            ("plugin", "uninstall", PLUGIN_ID, "--scope", copy.scope, "--keep-data"),
+            ("plugin", "install", PLUGIN_ID, "--scope", copy.scope),
+        ):
+            code, out = call(self.exe, *args, cwd=cwd)
+            if code:
+                reason = out.splitlines()[-1] if out else code
+                raise RuntimeError(f"{self.command} {' '.join(args)}: {reason}")
+
     def cache_root(self) -> Path:
         return Path.home() / ".claude" / "plugins" / "cache" / MARKET / PLUGIN
 
@@ -354,6 +374,9 @@ class Codex(Host):
 
     def add_plugin(self) -> None:
         self.run("plugin", "add", PLUGIN_ID)
+
+    def rebind(self, copy: Copy) -> None:
+        return None  # Codex has one scope
 
     def cache_root(self) -> Path:
         return self.home() / "plugins" / "cache" / MARKET / PLUGIN

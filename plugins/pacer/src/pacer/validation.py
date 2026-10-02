@@ -207,7 +207,9 @@ def _organism(row, row_id, errors):
     evidence = row.get("Evidence", "")
     if evidence and not EVIDENCE_PATTERN.fullmatch(evidence):
         errors.append(f"{row_id}: invalid Evidence cell")
-    if row.get("Status") == "VALIDATED_COMPLETE" and not (evidence and " exit:0 " in evidence):
+    # CURRENT evidence is required at the transition (commands.op_status); afterwards a probe
+    # may fail or go stale, which the card and the gates report. Only absent evidence is refused.
+    if row.get("Status") == "VALIDATED_COMPLETE" and not evidence:
         errors.append("REFUSAL: Evidence required")
 
 
