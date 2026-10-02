@@ -271,6 +271,7 @@ Warnings: `missing <path>`; `#unpurposed`; `no Probe at tier <tier>`.
 | `pacer_migrate` | `pacer migrate [--from] [--apply]` | upgrade an older layout |
 | `pacer_recover` | `pacer recover` | finish an interrupted write |
 | | `pacer tree` | the work tree as indented PAC cards |
+| | `pacer update [--check] [--notify on\|off]` | bring the installation to the latest version; report it; silence the notice |
 
 Every MCP tool takes the absolute project root. The CLI finds it from the working directory, or takes `--root`.
 

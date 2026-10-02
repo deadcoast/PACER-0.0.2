@@ -24,6 +24,7 @@ PLUGIN = "plugins/pacer"
 INCLUDE = (
     "README.md",
     "CHANGELOG.md",
+    "MIVIM.pipeline",
     "install.py",
     ".claude-plugin/marketplace.json",
     ".agents/plugins/marketplace.json",

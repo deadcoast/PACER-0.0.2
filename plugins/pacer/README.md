@@ -12,7 +12,7 @@ One plugin for Claude Code and Codex: hooks that deliver card frames, an MCP ser
 | `.codex-plugin/mcp.json` | Codex | MCP server; `cwd` relative to the plugin root |
 | `hooks/hooks.json` | both | five events, one entry point |
 | `skills/pacer/` | both | card grammar and operations; `references/format.md` is the format reference |
-| `src/pacer/` | | the runtime |
+| `src/pacer/` | | the runtime; `display/` is the Pace Line, `update.py` and `hosts.py` the update engine |
 | `pyproject.toml`, `uv.lock` | uv | the MCP server's locked environment |
 | `tests/` | | not part of the kit |
 
@@ -47,8 +47,13 @@ From the repository root:
 ```
 python scripts/check.py              # lint, format, types, tests, manifests, registers, kit
 python scripts/check.py --matrix     # tests on Python 3.11 to 3.14
+python scripts/release.py 3.1.0      # version, checks, kit, sync, proof, commit, tag, push
+pacer update                         # sync every host from the working tree
+pacer update --demo                  # the Pace Line, with nothing changed
 claude --plugin-dir plugins/pacer    # run a session against the working tree, no install
 python -B plugins/pacer/src/pacer/__main__.py frame session
 ```
+
+`PACER_DISPLAY=live|plain|events` forces a display mode; `PACER_HOME` moves the user-level state; `PACER_NO_UPDATE_CHECK=1` stops the version check and the notice (the tests set all three).
 
 `check.py` keeps the environment in `.venv/` at the repository root and every cache under `.cache/`: hosts copy this directory verbatim or run it in place, so the repository's tooling generates nothing inside it.
