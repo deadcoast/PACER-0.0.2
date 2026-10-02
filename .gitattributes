@@ -1,7 +1,3 @@
-# PACER acceptance binds exact source bytes. Preserve them across Git checkouts;
-# implicit core.autocrlf conversion would invalidate source-bound evidence.
+# Every file is stored and checked out byte for byte. Archived material stays exactly
+# as it was, and core.autocrlf never rewrites a register, a fixture or a manifest.
 * -text
-# These pre-existing Git blobs were normalized on the initial import; explicitly
-# restore their originally verified CRLF working bytes on every platform.
-.agents/plugins/marketplace.json text eol=crlf
-evidence/codex-integration-2026-09-14.json text eol=crlf

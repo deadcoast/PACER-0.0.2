@@ -1,53 +1,89 @@
-# PACER 3 — delivered context
+# PACER
 
-PACER is the project's knowledge substrate for coding agents. It does not ask the agent to onboard, fetch, or operate a database. The harness delivers the relevant slice of project state as fixed-grammar cards at the moments that matter: session start, after compaction, before and after every edit, and when the agent tries to stop.
-
-```
-registers   five CSV files, current state only, bounded cells   +  ledger.PACER.jsonl (append-only history)
-compiler    pacer frame <session|edit|prompt|stop>   ranks rows by typed-edge distance, fills a byte budget
-adapters    hooks/hooks.json for Claude Code and Codex; MCP tools for explicit query and write
-```
-
-## Registers
-
-| File | Prefix | One row per | Carries |
-|---|---|---|---|
-| `todo.PACER.csv` | PAC | AREA, PHASE or PACE | position `A1.P2.03`, status, tier, Produce, In/Out assets, Binds, Needs, Probe, Exit, Next, Latch |
-| `overlord.PACER.csv` | OVR | source asset | path, symbol, kind, Purpose, tier, Binds, Latch. Imports and dependents are derived from code, never stored |
-| `organism.PACER.csv` | OGM | requirement | status, authority, literal Origin, Requirement, Binds, Probe command, one-cell Evidence, tier |
-| `nodule.PACER.csv` | NDL | scoped intake | lane, literal Request, Intent, In/Out, Targets, Spawned, Exit |
-| `decision.PACER.csv` | DEC | choice, latch, lesson or failed approach | Subject, Question, Chosen, Rejected, Why, authority, Latched |
-
-Statuses: PAC `TODO ACTIVE INTEGRATED DONE`; OGM `SCAFFOLD PACED_REQUIREMENT VALIDATED_COMPLETE`; NDL `ACTIVE ABSORBED`. Tiers: `sketch prototype playable integrated release protected`.
-
-## Cards
+PACER keeps a project's working knowledge in five small registers and delivers the relevant part of it to a coding agent at the moments it acts: session start, after compaction, before and after every edit, and when it stops. The agent does not onboard, fetch or operate a database. It receives cards.
 
 ```
-PAC PAC-041 A2.P3.05 ACTIVE prototype | Produce: … | In: OVR-012 | Out: src/x.py:Foo | Binds: OGM-004 | Probe: pytest -q | Next: implement
-OVR OVR-012 src/a.py:S integrated | Purpose: … | Binds: OGM-004 | Latch: DEC-003 | used-by: src/main.py (+3)
-OGM OGM-004 PACED_REQUIREMENT USER release | Requirement: … | Probe: pytest -q | Evidence: rev:a1b2c3d exit:0 at:2026-09-20 STALE(src/a.py)
-DEC DEC-003 LATCH USER latched | Subject: OVR-012 | Chosen: keep sync API | Why: …
-NDL NDL-019 ACTIVE lane=auth | Intent: … | Targets: OGM-004 | Spawned: PAC-040;PAC-041 | Exit: …
+PACER my-project tier=integrated pace=PAC-041
+PAC PAC-040 A2.P3 ACTIVE integrated | Title: Session handling | Binds: OGM-004 | Exit: sessions survive restart
+PAC PAC-041 A2.P3.05 ACTIVE | Produce: session manager with expiry | In: OVR-012 | Out: src/session.py | Probe: pytest tests/test_session.py -q
+DEC DEC-003 LATCH USER latched | Subject: OVR-012 | Chosen: keep the sync API; no async rewrite
+OGM OGM-004 PACED_REQUIREMENT USER | Requirement: a session expires after 30 idle minutes | Probe: pytest tests/test_session.py -q | Evidence: rev:a1b2c3d exit:0 at:2026-09-20 STALE(src/auth.py)
+OVR OVR-012 src/auth.py | Purpose: login and token checks | bound-by: OGM-004 | latch: DEC-003 | used-by: src/main.py, src/api.py
 ```
 
-One grammar everywhere: frames, query results, MCP tool output. Evidence is a probe run (`rev src exit out at`); staleness is computed from the bound files, so an uncommitted edit counts.
+| Card | Register | One row per |
+|---|---|---|
+| PAC | `todo.pacer.csv` | area, phase or pace of work, with its position `A2.P3.05` |
+| OVR | `overlord.pacer.csv` | source asset and its one-line purpose |
+| OGM | `organism.pacer.csv` | requirement, the command that proves it, and the evidence |
+| DEC | `decision.pacer.csv` | choice, lesson, failed approach, or a latch only the user answers |
+| NDL | `nodule.pacer.csv` | scoped intake of new work, carrying the user's literal request |
 
-## Kit for other projects
+State lives in `.pacer/` inside the governed project and is committed with it. It works with Claude Code and Codex, makes no model calls and needs no API key.
 
-`uv run --locked python scripts/build_kit.py` builds `dist/PACER3-KIT-<version>/` and its zip: a local marketplace with the plugin for Claude Code and Codex, `INSTALL.ps1` / `install.sh`, project templates (`.MIVIM.spec`, `AGENTS.md`, a worked first pace) and the format docs. The latest build is committed at `client-update.PACER/packages/PACER3-KIT-<version>.zip`. Unzip anywhere, run the installer once, then `pacer --root . initialize` in a project.
+## Install
 
-## Install and use (this repository)
+Requires [uv](https://docs.astral.sh/uv/), Python 3.11 or newer, git, and Claude Code or Codex.
 
-```powershell
-./install.ps1                                   # installs the plugin into Claude Code and Codex
-uv run --locked pacer --root . frame session    # what a session receives
-uv run --locked pacer --root . q OGM-004        # cards for an ID, path, #tag, register or register:STATUS
-uv run --locked pacer --root . write --file ops.json --actor me
-uv run --locked pacer --root . probe OGM-004
-uv run --locked pacer --root . validate
-uv run --locked pacer --root . tree             # indented plan view
-uv run --locked pacer --root . migrate --from 0.5 [--apply]   # or --from v2
-uv run --locked python scripts/check.py         # ruff, pytest, validation
+```
+uv run install.py                  # every host found, plus the `pacer` command
+uv run install.py --host claude    # one host
+uv run install.py --status         # what is installed where
+uv run install.py --uninstall
 ```
 
-`.MIVIM.spec` at the project root sets the project name, default tier, structure provider and frame budgets. The format, ranking, gate matrix and migration are specified in [plugins/pacer/references/FORMAT.md](plugins/pacer/references/FORMAT.md). Operating rules for agents are in [AGENTS.md](AGENTS.md). Development history of this repository lives in `ledger.PACER.jsonl` and git.
+Run it from a checkout of this repository or from an unpacked `releases/pacer-kit-<version>.zip`; the layout is the same. A host never runs two copies: the installer replaces any earlier one.
+
+Codex delivers frames only with hooks enabled (`codex features enable hooks`) and after the plugin's hooks are trusted once (`/hooks`).
+
+## Use
+
+```
+cd <project>
+pacer init                         # creates .pacer/
+```
+
+Then work with the agent. Ask it to pace a request; frames arrive on their own.
+
+| When | The agent receives |
+|---|---|
+| session start, resume, after compaction | the active area, phase and pace; their decisions; bound requirements with evidence state; what comes next |
+| a prompt names an ID, a path or a `#tag` | those cards |
+| before an edit | the file's card, the requirements that bind it, the decisions on it, who uses it, `OFF-PACE` when it is outside the active pace |
+| after an edit | what was recorded: the touch, a new asset, a followed rename, evidence gone stale |
+| at stop | nothing, unless a gate blocks |
+
+The same operations are available to you:
+
+```
+pacer frame session                pacer q OGM-004            pacer tree
+pacer write --file ops.json --actor me                        pacer probe OGM-004
+pacer validate                     pacer log PAC-041          pacer sync --apply
+```
+
+A project on an older PACER layout is upgraded in place with `pacer migrate` (preview) and `pacer migrate --apply`.
+
+## Gates
+
+| Tier | A stop is blocked when | An edit is denied when |
+|---|---|---|
+| sketch, prototype, playable | never | never |
+| integrated | a bound probe failed | never |
+| release | a bound probe failed or its evidence is stale | never |
+| protected | as release | no user latch covers the file |
+
+An open latch on the active work is the one question put to the user, once.
+
+## Where things are
+
+| Path | What |
+|---|---|
+| `plugins/pacer/` | the product: runtime, hooks, skill, manifests for both hosts |
+| `plugins/pacer/skills/pacer/references/format.md` | the format reference |
+| `install.py` | the installer |
+| `releases/` | built kits |
+| `docs/` | repository map, design record, trial records |
+| `archive/` | earlier lineages, frozen |
+| `scripts/` | development checks and the kit builder |
+
+`docs/structure.md` explains every entry and where new things go.

@@ -1,10 +1,11 @@
+# Local environments and tool caches
+.venv/
 .cache/
 .codegraph/
 .mypy_cache/
-.venv/
-__pycache__/
 .pytest_cache/
 .ruff_cache/
+__pycache__/
 *.egg-info/
-dist/
-.pacer/
+# Build output; kits are built into releases/, which is tracked
+/dist/
