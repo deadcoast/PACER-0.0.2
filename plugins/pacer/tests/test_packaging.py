@@ -31,7 +31,8 @@ def test_one_version_everywhere():
         load(".codex-plugin/plugin.json")["version"],
     }
     assert len(versions) == 1 and re.fullmatch(r"\d+\.\d+\.\d+", pacer.__version__)
-    assert pacer.__version__.startswith(layout.FORMAT)
+    # The state layout has its own version; a product release changes it only when the layout does.
+    assert pacer.__version__.split(".")[0] == layout.FORMAT.split(".")[0]
 
 
 def test_each_host_has_one_manifest_describing_the_same_plugin():
