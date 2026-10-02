@@ -117,6 +117,14 @@ SEED = [
 ]
 
 
+@pytest.fixture(autouse=True)
+def isolated_home(tmp_path_factory, monkeypatch):
+    """Every test gets its own PACER home; none may reach the network or the real hosts."""
+    monkeypatch.setenv("PACER_HOME", str(tmp_path_factory.mktemp("home")))
+    monkeypatch.setenv("PACER_NO_UPDATE_CHECK", "1")
+    monkeypatch.setenv("PACER_DISPLAY", "plain")
+
+
 @pytest.fixture
 def root(tmp_path: Path) -> Path:
     """A bare source tree with three files and no PACER state."""

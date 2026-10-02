@@ -67,6 +67,19 @@ def build_parser() -> argparse.ArgumentParser:
 
     hook = sub.add_parser("hook", help="harness hook; reads the event JSON on stdin")
     hook.add_argument("event", choices=HOOK_EVENTS)
+
+    update = sub.add_parser("update", help="bring PACER to the latest version in every host")
+    update.add_argument("--check", action="store_true", help="report versions; change nothing")
+    update.add_argument(
+        "--force", action="store_true", help="reinstall even where a copy is current"
+    )
+    update.add_argument("--host", choices=["claude", "codex", "all", "none"], default="all")
+    update.add_argument("--no-cli", action="store_true", help="leave the `pacer` command alone")
+    update.add_argument(
+        "--notify", choices=["on", "off"], help="announce a new version once (default on)"
+    )
+    update.add_argument("--refresh", action="store_true", help=argparse.SUPPRESS)
+    update.add_argument("--demo", action="store_true", help=argparse.SUPPRESS)
     return parser
 
 
@@ -80,10 +93,19 @@ def main(argv: list[str] | None = None) -> int:
 
             build_server(args.bind).run(transport="stdio")
             return 0
-        return _command(args)
+        if args.command == "update":
+            from pacer.update import update_main
+
+            return update_main(args)
+        code = _command(args)
     except (ValueError, OSError) as exc:
         print(f"pacer: {exc}", file=sys.stderr)
         return 2
+    # A person ran a command in a terminal: the one place a newer version is mentioned.
+    from pacer.update import cli_notice
+
+    cli_notice(sys.stderr)
+    return code
 
 
 def _hook(event: str) -> int:

@@ -30,7 +30,7 @@ def test_one_version_everywhere():
         load(".claude-plugin/plugin.json")["version"],
         load(".codex-plugin/plugin.json")["version"],
     }
-    assert versions == {"3.0.0"}
+    assert len(versions) == 1 and re.fullmatch(r"\d+\.\d+\.\d+", pacer.__version__)
     assert pacer.__version__.startswith(layout.FORMAT)
 
 

@@ -49,10 +49,18 @@ def edit_path(tool_name: str, tool_input: dict, root: Path) -> str | None:
     return None if rel == STATE_DIR or rel.startswith(STATE_DIR + "/") else rel
 
 
-def hook_output(event_name: str, context: str, *, deny: str = "", block: bool = False) -> str:
-    """Shape a reply for the harness. Never grants permission; only adds context or refuses."""
+def hook_output(
+    event_name: str, context: str, *, deny: str = "", block: bool = False, aside: str = ""
+) -> str:
+    """Shape a reply for the harness. Never grants permission; only adds context or refuses.
+
+    `aside` is for the person, not the model: the host shows it and keeps it out of context.
+    """
     if event_name == "SessionStart":
-        return context
+        if not aside:
+            return context
+        session = {"hookEventName": event_name, "additionalContext": context}
+        return json.dumps({"hookSpecificOutput": session, "systemMessage": aside})
     if event_name == "Stop":
         # Any output from a non-blocking Stop re-prompts the model into empty turns.
         return json.dumps({"decision": "block", "reason": context}) if block else ""
@@ -214,6 +222,16 @@ def run(event: str, payload: dict) -> tuple[int, str]:
     return code, out
 
 
+def _update_notice() -> str:
+    """One line to the person when a newer PACER exists; never a reason for a hook to fail."""
+    try:
+        from pacer.update import session_notice
+
+        return session_notice()
+    except Exception:  # noqa: BLE001 - the frame matters more than the notice
+        return ""
+
+
 def _upgrade_notice(cwd: Path) -> str:
     """A project still in an older PACER layout gets one line at session start, not silence."""
     from pacer.migrate import detect
@@ -237,7 +255,7 @@ def _dispatch(event: str, payload: dict, root: Path) -> tuple[int, str]:
     service = Service(root)
     name = EVENTS[event]
     if event == "session-start":
-        return 0, hook_output(name, service.frame("session"))
+        return 0, hook_output(name, service.frame("session"), aside=_update_notice())
     if event == "prompt":
         prompt = str(payload.get("prompt") or payload.get("user_prompt") or "")
         return 0, hook_output(name, service.frame("prompt", focus=prompt))
