@@ -1,2 +1,9 @@
 ID,Kind,Pos,Title,Status,Tier,Produce,In,Out,Binds,Needs,Probe,Exit,Next,Tags
 PAC-043,AREA,A2,PACER 3,ACTIVE,integrated,,,,,,,,,#pacer3
+PAC-055,PHASE,A2.P3,Update delivery,INTEGRATED,,,,,OGM-036;OGM-037;OGM-038,,,"pacer update, the once-only notice and scripts/release.py are verified in both hosts",,
+PAC-056,PACE,A2.P3.01,Display,DONE,,"Render every long operation as a journey under the Pace Line, with a plain fallback off a terminal",OVR-629;OVR-630;OVR-631;OVR-633,plugins/pacer/src/pacer/display/term.py;plugins/pacer/src/pacer/display/paceline.py;plugins/pacer/src/pacer/display/journey.py;plugins/pacer/src/pacer/display/__init__.py,,,python scripts/check.py,,,
+PAC-057,PACE,A2.P3.02,Lineage,DONE,,"Carry the MIVIM hierarchy in the runtime identity, the user-level home and the kit",,plugins/pacer/src/pacer/identity.py;plugins/pacer/src/pacer/home.py;MIVIM.pipeline,,,python scripts/check.py,,,
+PAC-058,PACE,A2.P3.03,Update engine,DONE,,"Advance the source, sync each host only when its copy differs, and keep the command editable",,plugins/pacer/src/pacer/hosts.py;plugins/pacer/src/pacer/update.py,,,python scripts/check.py,,,
+PAC-059,PACE,A2.P3.04,Notice,DONE,,"Announce a new version once, with the update and silence commands, in the terminal and in agent sessions",,,,,python scripts/check.py,,,
+PAC-060,PACE,A2.P3.05,Release automation,DONE,,"Ship a release from one command: version, checks, kit, proof, commit, tag, push, sync",,scripts/release.py,,,python scripts/check.py,,,
+PAC-061,PACE,A2.P3.06,Record,DONE,,"Record the decisions and the live trials; update the format reference, READMEs and changelog",,docs/design/update-delivery.md;docs/trials/update-3.1.0.md,,,python scripts/check.py,,,

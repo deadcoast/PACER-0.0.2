@@ -848,3 +848,185 @@
 {"at":"2026-10-02T20:27:04Z","actor":"hook","op":"touch","id":"-","detail":{"path":"plugins/pacer/tests/test_hook.py"}}
 {"at":"2026-10-02T20:27:04Z","actor":"hook","op":"touch","id":"-","detail":{"path":"releases/pacer-kit-3.0.0.zip"}}
 {"at":"2026-10-02T20:27:38Z","actor":"claude","op":"probe","id":"OGM-034","detail":{"evidence":"rev:af29a5e src:9dd9f9e exit:0 out:52d999f at:2026-10-02T20:27:38Z","exit":0,"output_path":".pacer/run/probes/OGM-034/2026-10-02T202738Z.txt","freshness":"CURRENT","files":{"plugins/pacer/.claude-plugin/plugin.json":"d3dff67","plugins/pacer/.codex-plugin/mcp.json":"9d788ee","plugins/pacer/.codex-plugin/plugin.json":"85215db","plugins/pacer/.mcp.json":"391b2c3","plugins/pacer/hooks/hooks.json":"87cc40a","plugins/pacer/pyproject.toml":"297b072","plugins/pacer/skills/pacer/SKILL.md":"b0ec134","plugins/pacer/skills/pacer/references/format.md":"1281777","plugins/pacer/src/pacer/__init__.py":"1dcbac9","plugins/pacer/src/pacer/__main__.py":"4c2b76f","plugins/pacer/src/pacer/cards.py":"1d63353","plugins/pacer/src/pacer/cli.py":"de297cd","plugins/pacer/src/pacer/commands.py":"4bb3942","plugins/pacer/src/pacer/config.py":"a71a36e","plugins/pacer/src/pacer/frames.py":"e6956cc","plugins/pacer/src/pacer/gates.py":"02ece65","plugins/pacer/src/pacer/hook.py":"61dcaeb","plugins/pacer/src/pacer/layout.py":"f2e0847","plugins/pacer/src/pacer/lock.py":"4be0955","plugins/pacer/src/pacer/migrate/__init__.py":"16d5b8f","plugins/pacer/src/pacer/migrate/importers.py":"4c51013","plugins/pacer/src/pacer/models.py":"f63d4b6","plugins/pacer/src/pacer/probe.py":"c5bc06c","plugins/pacer/src/pacer/provider.py":"04e8870","plugins/pacer/src/pacer/rank.py":"a063b3d","plugins/pacer/src/pacer/schema.py":"84a7f3b","plugins/pacer/src/pacer/server.py":"1210fe3","plugins/pacer/src/pacer/service.py":"86463fb","plugins/pacer/src/pacer/store.py":"0cf79cb","plugins/pacer/src/pacer/tree.py":"46e88da","plugins/pacer/src/pacer/validation.py":"7c0f659","scripts/build_kit.py":"162fe76","scripts/check.py":"6b06779"}}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"OGM-036","detail":{"register":"organism"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"OGM-037","detail":{"register":"organism"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"OGM-038","detail":{"register":"organism"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"PAC-055","detail":{"register":"todo"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"PAC-056","detail":{"register":"todo"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"PAC-057","detail":{"register":"todo"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"PAC-058","detail":{"register":"todo"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"PAC-059","detail":{"register":"todo"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"PAC-060","detail":{"register":"todo"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"PAC-061","detail":{"register":"todo"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"add","id":"NDL-021","detail":{"register":"nodule"}}
+{"at":"2026-10-02T22:19:53Z","actor":"claude","op":"status","id":"PAC-056","detail":{"from":"TODO","to":"ACTIVE"}}
+{"at":"2026-10-02T22:21:11Z","actor":"hook","op":"add","id":"OVR-627","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:21:11Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/identity.py","new":"OVR-627"}}
+{"at":"2026-10-02T22:21:11Z","actor":"hook","op":"add","id":"OVR-628","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:21:11Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/home.py","new":"OVR-628"}}
+{"at":"2026-10-02T22:21:12Z","actor":"hook","op":"add","id":"OVR-629","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:21:12Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/term.py","new":"OVR-629"}}
+{"at":"2026-10-02T22:22:03Z","actor":"hook","op":"add","id":"OVR-630","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:22:03Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/paceline.py","new":"OVR-630"}}
+{"at":"2026-10-02T22:23:29Z","actor":"hook","op":"add","id":"OVR-631","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:23:29Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/journey.py","new":"OVR-631"}}
+{"at":"2026-10-02T22:23:29Z","actor":"hook","op":"add","id":"OVR-632","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:23:29Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/notice.py","new":"OVR-632"}}
+{"at":"2026-10-02T22:23:30Z","actor":"hook","op":"add","id":"OVR-633","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:23:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/__init__.py","new":"OVR-633"}}
+{"at":"2026-10-02T22:23:48Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":".claude/settings.json"}}
+{"at":"2026-10-02T22:23:48Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/__init__.py"}}
+{"at":"2026-10-02T22:23:48Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-02T22:23:48Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/notice.py"}}
+{"at":"2026-10-02T22:23:48Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/paceline.py"}}
+{"at":"2026-10-02T22:23:48Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/term.py"}}
+{"at":"2026-10-02T22:23:48Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/home.py"}}
+{"at":"2026-10-02T22:23:48Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/identity.py"}}
+{"at":"2026-10-02T22:28:04Z","actor":"hook","op":"add","id":"OVR-634","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:28:04Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hosts.py","new":"OVR-634"}}
+{"at":"2026-10-02T22:30:34Z","actor":"hook","op":"add","id":"OVR-635","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:30:34Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/update.py","new":"OVR-635"}}
+{"at":"2026-10-02T22:30:55Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":".claude/settings.json"}}
+{"at":"2026-10-02T22:30:55Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-02T22:30:55Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-02T22:30:56Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"install.py"}}
+{"at":"2026-10-02T22:31:04Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hook.py"}}
+{"at":"2026-10-02T22:31:28Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hook.py"}}
+{"at":"2026-10-02T22:31:28Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hook.py"}}
+{"at":"2026-10-02T22:31:29Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-02T22:31:29Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-02T22:31:34Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"install.py"}}
+{"at":"2026-10-02T22:31:34Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-02T22:31:34Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hook.py"}}
+{"at":"2026-10-02T22:32:01Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":".claude/settings.json"}}
+{"at":"2026-10-02T22:33:04Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":".claude/settings.json"}}
+{"at":"2026-10-02T22:33:04Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-02T22:34:12Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/conftest.py"}}
+{"at":"2026-10-02T22:34:12Z","actor":"hook","op":"add","id":"OVR-636","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:34:12Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_display.py","new":"OVR-636"}}
+{"at":"2026-10-02T22:35:34Z","actor":"hook","op":"add","id":"OVR-637","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:35:34Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_update.py","new":"OVR-637"}}
+{"at":"2026-10-02T22:35:35Z","actor":"hook","op":"add","id":"OVR-638","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:35:35Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_lineage.py","new":"OVR-638"}}
+{"at":"2026-10-02T22:35:36Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_packaging.py"}}
+{"at":"2026-10-02T22:35:36Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_display.py"}}
+{"at":"2026-10-02T22:35:36Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_lineage.py"}}
+{"at":"2026-10-02T22:35:36Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_update.py"}}
+{"at":"2026-10-02T22:35:50Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/term.py"}}
+{"at":"2026-10-02T22:36:01Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/term.py"}}
+{"at":"2026-10-02T22:36:55Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-02T22:36:55Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_display.py"}}
+{"at":"2026-10-02T22:36:55Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_update.py"}}
+{"at":"2026-10-02T22:37:35Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_update.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":".claude/settings.json"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"install.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hook.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/conftest.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_packaging.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/__init__.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/notice.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/paceline.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/term.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/home.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/identity.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_display.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_lineage.py"}}
+{"at":"2026-10-02T22:41:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_update.py"}}
+{"at":"2026-10-02T22:41:44Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hook.py"}}
+{"at":"2026-10-02T22:41:44Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-02T22:41:44Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_lineage.py"}}
+{"at":"2026-10-02T22:42:42Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-02T22:42:43Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"scripts/check.py"}}
+{"at":"2026-10-02T22:43:14Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-02T22:43:14Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"scripts/check.py"}}
+{"at":"2026-10-02T22:43:14Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-02T22:43:14Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-02T22:43:14Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_display.py"}}
+{"at":"2026-10-02T22:43:14Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_lineage.py"}}
+{"at":"2026-10-02T22:43:14Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/tests/test_update.py"}}
+{"at":"2026-10-02T22:43:33Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"scripts/check.py"}}
+{"at":"2026-10-02T22:43:54Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-02T22:43:54Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-02T22:44:40Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/src/pacer/display/term.py"}}
+{"at":"2026-10-02T22:44:40Z","actor":"hook","op":"add","id":"OVR-639","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:44:40Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"scripts/release.py","new":"OVR-639"}}
+{"at":"2026-10-02T22:44:52Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"scripts/release.py"}}
+{"at":"2026-10-02T22:45:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"CHANGELOG.md"}}
+{"at":"2026-10-02T22:45:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"README.md"}}
+{"at":"2026-10-02T22:45:30Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"scripts/build_kit.py"}}
+{"at":"2026-10-02T22:46:22Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"AGENTS.md"}}
+{"at":"2026-10-02T22:46:22Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"docs/structure.md"}}
+{"at":"2026-10-02T22:46:22Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/README.md"}}
+{"at":"2026-10-02T22:46:22Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"plugins/pacer/skills/pacer/references/format.md"}}
+{"at":"2026-10-02T22:46:22Z","actor":"hook","op":"add","id":"OVR-640","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:46:22Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"docs/design/update-delivery.md","new":"OVR-640"}}
+{"at":"2026-10-02T22:46:31Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"docs/design/update-delivery.md"}}
+{"at":"2026-10-02T22:46:53Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":".claude/settings.json"}}
+{"at":"2026-10-02T22:50:22Z","actor":"hook","op":"add","id":"OVR-641","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:50:22Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"docs/trials/update-3.1.0.md","new":"OVR-641"}}
+{"at":"2026-10-02T22:50:23Z","actor":"hook","op":"touch","id":"PAC-056","detail":{"path":"docs/trials/update-3.1.0.md"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-627","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"who PACER is: the MIVIM lineage, plugin and marketplace names, the repository","Tags":"#product"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-628","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"user-level home under mivim/pacer: install record, update check, timings","Tags":"#product"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-629","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"terminal capabilities, a pen that degrades to them, width helpers","Tags":"#product"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-630","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"the Pace Line: segment layout and one frame of the line, pure","Tags":"#product"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-631","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"a journey of stages in live, plain or events form; relays a child journey","Tags":"#product"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-632","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"the update notice, plain for hosts and styled for terminals","Tags":"#product"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-633","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"display package exports","Tags":"#product"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-634","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"Claude Code and Codex as install targets; copy comparison; the editable pacer command","Tags":"#product"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-635","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"versions from tags, the once-only notice, source advance, host sync, pacer update","Tags":"#product"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-636","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"capabilities, pen, Pace Line rendering, journeys in every mode, the notice wording","Tags":"#test"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-637","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"tags from a local origin, source advance, notice once, background check, sync, update end to end","Tags":"#test"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-638","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"identity constants held to MIVIM.pipeline and the manifests","Tags":"#test"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-639","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"ships a release: version, checks, kit, sync, proof, commit, tag, push","Tags":"#tooling"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-640","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"decisions behind update delivery, with the options considered","Tags":"#record"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"set","id":"OVR-641","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"measurements and live trials of update delivery","Tags":"#record"}}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"add","id":"OVR-642","detail":{"register":"overlord"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-036","detail":{"field":"Binds","target":"OVR-635"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-036","detail":{"field":"Binds","target":"OVR-632"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-036","detail":{"field":"Binds","target":"OVR-577"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-036","detail":{"field":"Binds","target":"OVR-093"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-036","detail":{"field":"Binds","target":"OVR-637"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-037","detail":{"field":"Binds","target":"OVR-629"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-037","detail":{"field":"Binds","target":"OVR-630"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-037","detail":{"field":"Binds","target":"OVR-631"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-037","detail":{"field":"Binds","target":"OVR-635"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-037","detail":{"field":"Binds","target":"OVR-636"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-038","detail":{"field":"Binds","target":"OVR-627"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-038","detail":{"field":"Binds","target":"OVR-638"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-034","detail":{"field":"Binds","target":"OVR-634"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-034","detail":{"field":"Binds","target":"OVR-635"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-034","detail":{"field":"Binds","target":"OVR-631"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-034","detail":{"field":"Binds","target":"OVR-639"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"link","id":"OGM-035","detail":{"field":"Binds","target":"OVR-634"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"add","id":"DEC-093","detail":{"register":"decision"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"add","id":"DEC-094","detail":{"register":"decision"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"add","id":"DEC-095","detail":{"register":"decision"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"add","id":"DEC-096","detail":{"register":"decision"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"add","id":"DEC-097","detail":{"register":"decision"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"add","id":"DEC-098","detail":{"register":"decision"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"add","id":"DEC-099","detail":{"register":"decision"}}
+{"at":"2026-10-02T22:51:26Z","actor":"claude","op":"add","id":"DEC-100","detail":{"register":"decision"}}
+{"at":"2026-10-02T22:51:38Z","actor":"claude","op":"probe","id":"OGM-036","detail":{"evidence":"rev:1040796 src:255540c exit:0 out:cf90e56 at:2026-10-02T22:51:38Z","exit":0,"output_path":".pacer/run/probes/OGM-036/2026-10-02T225138Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/cli.py":"bcf26dc","plugins/pacer/src/pacer/display/notice.py":"adaef3c","plugins/pacer/src/pacer/hook.py":"f2b8d89","plugins/pacer/src/pacer/update.py":"05c0098","plugins/pacer/tests/test_update.py":"5a2f9d9"}}}
+{"at":"2026-10-02T22:51:41Z","actor":"claude","op":"probe","id":"OGM-037","detail":{"evidence":"rev:1040796 src:a0a5ea8 exit:0 out:0cb9f2f at:2026-10-02T22:51:40Z","exit":0,"output_path":".pacer/run/probes/OGM-037/2026-10-02T225140Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/display/journey.py":"9f9e8d0","plugins/pacer/src/pacer/display/paceline.py":"c8c4791","plugins/pacer/src/pacer/display/term.py":"b89b81e","plugins/pacer/src/pacer/update.py":"05c0098","plugins/pacer/tests/test_display.py":"cac9681"}}}
+{"at":"2026-10-02T22:51:42Z","actor":"claude","op":"probe","id":"OGM-038","detail":{"evidence":"rev:1040796 src:5a14074 exit:0 out:4e972c2 at:2026-10-02T22:51:42Z","exit":0,"output_path":".pacer/run/probes/OGM-038/2026-10-02T225142Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/identity.py":"c7527f6","plugins/pacer/tests/test_lineage.py":"4bb6018"}}}
+{"at":"2026-10-02T22:51:50Z","actor":"claude","op":"status","id":"OGM-036","detail":{"from":"SCAFFOLD","to":"VALIDATED_COMPLETE"}}
+{"at":"2026-10-02T22:51:50Z","actor":"claude","op":"status","id":"OGM-037","detail":{"from":"SCAFFOLD","to":"VALIDATED_COMPLETE"}}
+{"at":"2026-10-02T22:51:50Z","actor":"claude","op":"status","id":"OGM-038","detail":{"from":"SCAFFOLD","to":"VALIDATED_COMPLETE"}}
+{"at":"2026-10-02T22:51:50Z","actor":"claude","op":"status","id":"PAC-056","detail":{"from":"ACTIVE","to":"DONE"}}
+{"at":"2026-10-02T22:51:50Z","actor":"claude","op":"status","id":"PAC-057","detail":{"from":"TODO","to":"DONE"}}
+{"at":"2026-10-02T22:51:50Z","actor":"claude","op":"status","id":"PAC-058","detail":{"from":"TODO","to":"DONE"}}
+{"at":"2026-10-02T22:51:50Z","actor":"claude","op":"status","id":"PAC-059","detail":{"from":"TODO","to":"DONE"}}
+{"at":"2026-10-02T22:51:50Z","actor":"claude","op":"status","id":"PAC-060","detail":{"from":"TODO","to":"DONE"}}
+{"at":"2026-10-02T22:51:50Z","actor":"claude","op":"status","id":"PAC-061","detail":{"from":"TODO","to":"DONE"}}
+{"at":"2026-10-02T22:51:50Z","actor":"claude","op":"status","id":"PAC-055","detail":{"from":"ACTIVE","to":"INTEGRATED"}}
+{"at":"2026-10-02T22:52:21Z","actor":"hook","op":"touch","id":"-","detail":{"path":"releases/pacer-kit-3.0.0.zip"}}
+{"at":"2026-10-02T22:53:32Z","actor":"hook","op":"touch","id":"-","detail":{"path":"releases/pacer-kit-3.0.0.zip"}}
+{"at":"2026-10-02T22:53:32Z","actor":"hook","op":"touch","id":"-","detail":{"path":"scripts/release.py"}}
+{"at":"2026-10-02T22:53:49Z","actor":"hook","op":"touch","id":"-","detail":{"path":"scripts/check.py"}}
+{"at":"2026-10-02T22:53:59Z","actor":"hook","op":"touch","id":"-","detail":{"path":"scripts/check.py"}}
+{"at":"2026-10-02T22:54:15Z","actor":"hook","op":"touch","id":"-","detail":{"path":"scripts/check.py"}}
+{"at":"2026-10-02T22:54:17Z","actor":"hook","op":"touch","id":"-","detail":{"path":"scripts/check.py"}}

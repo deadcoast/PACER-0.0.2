@@ -5,7 +5,8 @@ What every entry is, who reads it, and where a new thing belongs. Four kinds of 
 ```
 README.md  CHANGELOG.md          what PACER is; what changed
 AGENTS.md                        rules for agents working in this repository
-install.py                       the installer (product; shipped in the kit)
+install.py                       the installer (product; shipped in the kit); pacer update runs it from the latest source
+MIVIM.pipeline                   the hierarchy PACER belongs to: MIVIM, spec, vigiles (shipped; held to the runtime by a test)
 ruff.toml                        lint settings for scripts/ and install.py, inherited from the product
 
 .claude-plugin/marketplace.json  marketplace manifest, read by Claude Code
@@ -25,6 +26,7 @@ plugins/pacer/                   THE PRODUCT
 scripts/                         DEVELOPMENT TOOLING
   check.py                         every check, one command
   build_kit.py                     builds and verifies the kit
+  release.py                       ships a release: version, checks, kit, sync, proof, commit, tag, push
 
 docs/                            DEVELOPMENT RECORD
   structure.md                     this file
@@ -70,7 +72,7 @@ The Agent Plugins portable manifest (`plugin.json` and `mcp.json` at the plugin 
 
 ## Development tooling
 
-`scripts/` holds what develops the product and is never shipped. Both scripts use the standard library only and run with any Python 3.11 or newer.
+`scripts/` holds what develops the product and is never shipped. The scripts use the standard library only and run with any Python 3.11 or newer; they import the product's display and home modules from `plugins/pacer/src` so that checks and releases look like updates.
 
 The agent tooling used to develop PACER is the product itself, installed the normal way:
 
@@ -99,6 +101,6 @@ Decisions and lessons that govern ongoing work are also DEC rows in `.pacer/`, s
 | a development check or build step | `scripts/`, called from `check.py` |
 | a decision with its reasoning | `docs/design/`, and a DEC row |
 | a measurement or a live-session record | `docs/trials/` |
-| a release artifact | `releases/`, built by `scripts/build_kit.py` |
+| a release artifact | `releases/`, built by `scripts/build_kit.py`; a release itself is `scripts/release.py` |
 | something replaced by a newer version | `archive/<lineage>/`, with an entry in `archive/README.md` |
 | temporary output | `.cache/` or the system temporary directory; never the repository root |

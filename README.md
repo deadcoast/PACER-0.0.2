@@ -36,6 +36,29 @@ Run it from a checkout of this repository or from an unpacked `releases/pacer-ki
 
 Codex delivers frames only with hooks enabled (`codex features enable hooks`) and after the plugin's hooks are trusted once (`/hooks`).
 
+## Update
+
+```
+pacer update                       # the latest version, in every host, in one go
+pacer update --check               # what is installed, what is on the origin, nothing changed
+pacer update --notify off          # stop announcing new versions
+```
+
+When a newer version exists you hear about it once: after a `pacer` command in a terminal, or at the start of an agent session, with the two commands above. The check runs in the background at most once a day, through git. `pacer update` advances the source, refreshes only the hosts whose copy differs, and shows its progress on the Pace Line.
+
+```
+  PACER  update · 3.0.0 ▸ 3.1.0                         MIVIM · spec · vigiles
+  ━━━━ ━━━━━━ ━━━━━━━━━━━━━━━━━ ━━━━━━━━━━━━ ━━━  ready in 12.8s
+
+  ✓ resolve      v3.1.0 on origin
+  ✓ source       fast-forward c8e16ee..4f0a1d2, 9 commit(s)
+  ✓ Claude Code  pacer@mivim 3.1.0, 14 file(s) refreshed
+  ✓ Codex        pacer@mivim 3.1.0, 14 file(s) refreshed
+  · command      pacer command current
+
+  Start a new session to load it.
+```
+
 ## Use
 
 ```
@@ -80,7 +103,8 @@ An open latch on the active work is the one question put to the user, once.
 |---|---|
 | `plugins/pacer/` | the product: runtime, hooks, skill, manifests for both hosts |
 | `plugins/pacer/skills/pacer/references/format.md` | the format reference |
-| `install.py` | the installer |
+| `install.py` | the installer; `pacer update` runs it again from the latest version |
+| `MIVIM.pipeline` | the hierarchy PACER belongs to: MIVIM, spec, vigiles |
 | `releases/` | built kits |
 | `docs/` | repository map, design record, trial records |
 | `archive/` | earlier lineages, frozen |

@@ -66,3 +66,19 @@ OVR-623,plugins/pacer/tests/test_probe_provider.py,,FILE,"evidence, freshness, p
 OVR-624,plugins/pacer/tests/test_migrate.py,,FILE,"upgrades from 0.5, 2.0 and the root layout",,#test
 OVR-625,plugins/pacer/tests/test_cli_server.py,,FILE,"CLI, bare-interpreter start, MCP tools, stdio probe",,#test
 OVR-626,.claude/settings.json,,FILE,enables the installed pacer@mivim plugin for sessions in this repository,,#repository
+OVR-627,plugins/pacer/src/pacer/identity.py,,FILE,"who PACER is: the MIVIM lineage, plugin and marketplace names, the repository",,#product
+OVR-628,plugins/pacer/src/pacer/home.py,,FILE,"user-level home under mivim/pacer: install record, update check, timings",,#product
+OVR-629,plugins/pacer/src/pacer/display/term.py,,FILE,"terminal capabilities, a pen that degrades to them, width helpers",,#product
+OVR-630,plugins/pacer/src/pacer/display/paceline.py,,FILE,"the Pace Line: segment layout and one frame of the line, pure",,#product
+OVR-631,plugins/pacer/src/pacer/display/journey.py,,FILE,"a journey of stages in live, plain or events form; relays a child journey",,#product
+OVR-632,plugins/pacer/src/pacer/display/notice.py,,FILE,"the update notice, plain for hosts and styled for terminals",,#product
+OVR-633,plugins/pacer/src/pacer/display/__init__.py,,FILE,display package exports,,#product
+OVR-634,plugins/pacer/src/pacer/hosts.py,,FILE,Claude Code and Codex as install targets; copy comparison; the editable pacer command,,#product
+OVR-635,plugins/pacer/src/pacer/update.py,,FILE,"versions from tags, the once-only notice, source advance, host sync, pacer update",,#product
+OVR-636,plugins/pacer/tests/test_display.py,,FILE,"capabilities, pen, Pace Line rendering, journeys in every mode, the notice wording",,#test
+OVR-637,plugins/pacer/tests/test_update.py,,FILE,"tags from a local origin, source advance, notice once, background check, sync, update end to end",,#test
+OVR-638,plugins/pacer/tests/test_lineage.py,,FILE,identity constants held to MIVIM.pipeline and the manifests,,#test
+OVR-639,scripts/release.py,,FILE,"ships a release: version, checks, kit, sync, proof, commit, tag, push",,#tooling
+OVR-640,docs/design/update-delivery.md,,FILE,"decisions behind update delivery, with the options considered",,#record
+OVR-641,docs/trials/update-3.1.0.md,,FILE,measurements and live trials of update delivery,,#record
+OVR-642,MIVIM.pipeline,,FILE,"the hierarchy PACER belongs to: MIVIM, spec, vigiles; held to the runtime by a test",,#repository
