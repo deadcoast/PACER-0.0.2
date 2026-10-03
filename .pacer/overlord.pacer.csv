@@ -82,3 +82,12 @@ OVR-639,scripts/release.py,,FILE,"ships a release: version, checks, kit, sync, p
 OVR-640,docs/design/update-delivery.md,,FILE,"decisions behind update delivery, with the options considered",,#record
 OVR-641,docs/trials/update-3.1.0.md,,FILE,measurements and live trials of update delivery,,#record
 OVR-642,MIVIM.pipeline,,FILE,"the hierarchy PACER belongs to: MIVIM, spec, vigiles; held to the runtime by a test",,#repository
+OVR-643,plugins/pacer/src/pacer/display/keys.py,,FILE,keys from the console without echo: msvcrt or termios behind one Keys protocol; a Scripted source for tests,,#product
+OVR-644,plugins/pacer/src/pacer/display/prompt.py,,FILE,the prompts: a chooser on rails and a path field with a live scan; defaults off a terminal,,#product
+OVR-645,plugins/pacer/src/pacer/initiate.py,,FILE,"pacer init: registers, host enrolment, the path and agent questions; JSON for agents",,#product
+OVR-646,plugins/pacer/src/pacer/doctor.py,,FILE,"pacer doctor: machine, host and project checks as rows; --fix applies the repairs it owns",,#product
+OVR-647,plugins/pacer/tests/test_prompt.py,,FILE,prompt tests: scripted keys through the chooser and the field; silence off a terminal,,#test
+OVR-648,plugins/pacer/tests/test_initiate.py,,FILE,"init tests: enrolment with a fake host, the JSON form, the prompts, the refusals",,#test
+OVR-649,plugins/pacer/tests/test_doctor.py,,FILE,"doctor tests: every row kind, the repairs, the exit code",,#test
+OVR-650,docs/design/human-cli.md,,FILE,"decisions behind the human CLI layer, with the options considered",,#record
+OVR-651,docs/trials/human-cli-3.2.0.md,,FILE,"live trial of init, doctor and the prompts in both hosts on Windows",,#record

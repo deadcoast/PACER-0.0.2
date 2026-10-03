@@ -16,7 +16,8 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-from pacer.display.term import RGB, Pen
+from pacer.display.term import RGB, Pen, between
+from pacer.identity import AGENT, LINEAGE
 
 NIGHT: RGB = (104, 92, 230)
 DUSK: RGB = (62, 136, 255)
@@ -25,6 +26,7 @@ LANTERN: RGB = (255, 200, 87)
 TRACK: RGB = (92, 97, 115)
 ALARM: RGB = (255, 92, 92)
 MINT: RGB = (61, 214, 140)
+WHITE: RGB = (255, 255, 255)
 
 GLINT_PERIOD = 1.5  # seconds for the glint to travel the drawn line
 GLINT_SPREAD = 1.8  # cells
@@ -39,13 +41,15 @@ class Glyphs:
     done: str
     skip: str
     fail: str
+    warn: str
     arrow: str
     dot: str
     ellipsis: str
+    caret: str
 
 
-UNICODE = Glyphs("━", "╸", "─", "✓", "·", "✗", "▸", "·", "…")
-ASCII = Glyphs("=", ">", "-", "ok", "--", "!!", "->", "/", "...")
+UNICODE = Glyphs("━", "╸", "─", "✓", "·", "✗", "!", "▸", "·", "…", "▏")
+ASCII = Glyphs("=", ">", "-", "ok", "--", "!!", " !", "->", "/", "...", "|")
 
 
 def mix(a: RGB, b: RGB, t: float) -> RGB:
@@ -61,6 +65,32 @@ def gradient(x: float) -> RGB:
     """Night to dusk to ice, for x from 0 to 1."""
     x = min(max(x, 0.0), 1.0)
     return mix(NIGHT, DUSK, x * 2) if x < 0.5 else mix(DUSK, ICE, x * 2 - 1)
+
+
+def wordmark(pen: Pen) -> str:
+    """The agent's name, each letter a step along the gradient."""
+    last = max(len(AGENT) - 1, 1)
+    return "".join(
+        pen.rgb(letter, gradient(i / last), 94, bold=True) for i, letter in enumerate(AGENT)
+    )
+
+
+def signature(pen: Pen, glyphs: Glyphs, title: str, detail: str, width: int) -> str:
+    """The header every display opens with: wordmark, title and detail; the lineage at the right."""
+    dot = glyphs.dot
+    left = f"{wordmark(pen)}  {pen.dim(title)}"
+    if detail:
+        left += f" {pen.dim(dot)} {detail}"
+    return between(left, pen.dim(f" {dot} ".join(LINEAGE)), width)
+
+
+def rail(pen: Pen, glyphs: Glyphs, color: RGB, cells: int, clock: float | None = None) -> str:
+    """A short line in one colour; with a clock its last cell breathes like the lantern."""
+    if clock is None:
+        return pen.rgb(glyphs.line * cells, color, 94)
+    breath = 0.5 + 0.5 * math.sin(clock * 2 * math.pi * BREATH)
+    body = pen.rgb(glyphs.line * (cells - 1), color, 94)
+    return body + pen.rgb(glyphs.line, mix(color, WHITE, 0.15 + 0.45 * breath), 97)
 
 
 def layout(weights: list[float], width: int) -> list[int]:

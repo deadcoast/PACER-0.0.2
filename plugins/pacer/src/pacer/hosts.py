@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -24,7 +25,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from pacer.display import StepError
-from pacer.identity import MARKET, PLUGIN, PLUGIN_ID
+from pacer.identity import AGENTS, MARKET, PLUGIN, PLUGIN_ID
 
 MANIFESTS = (".claude-plugin/marketplace.json", ".agents/plugins/marketplace.json")
 SKIP = {"__pycache__", ".venv", ".ruff_cache", ".mypy_cache", ".pytest_cache", "node_modules"}
@@ -133,6 +134,7 @@ class Host:
 
     name = ""
     command = ""
+    scoped = False  # whether the host can enable the plugin for one project in particular
 
     def __init__(self, exe: str, root: Path):
         self.exe, self.root = exe, root
@@ -178,6 +180,41 @@ class Host:
 
     def advice(self) -> list[str]:
         return []
+
+    def hooks_enabled(self) -> bool | None:
+        """Whether this host runs plugin hooks; None when it has no such switch."""
+        return None
+
+    # -- a project -------------------------------------------------------------
+    def enrolled(self, project: Path) -> bool:
+        """Whether this host already runs PACER for `project` in particular."""
+        return any(c.plugin_id == PLUGIN_ID for c in self.copies())
+
+    def enroll(self, project: Path) -> str:
+        """Make this host run PACER for `project`; one line on what that took."""
+        return "the user-scope install covers every project"
+
+    # -- the cache -------------------------------------------------------------
+    def stale_copies(self) -> list[Path]:
+        """Version directories in the cache that no installed entry points at."""
+        root = self.cache_root()
+        if not root.is_dir():
+            return []
+        live = {c.path.resolve() for c in self.copies() if c.path is not None}
+        return sorted(d for d in root.iterdir() if d.is_dir() and d.resolve() not in live)
+
+    def drop_stale(self) -> list[str]:
+        """Remove the stale version directories; names of those removed."""
+        removed = []
+        for directory in self.stale_copies():
+            try:
+                shutil.rmtree(directory)
+            except OSError:
+                stop_servers(directory)
+                shutil.rmtree(directory, ignore_errors=True)
+            if not directory.exists():
+                removed.append(directory.name)
+        return removed
 
     # -- procedure -----------------------------------------------------------
     def remove(self, *, keep_market: bool) -> list[str]:
@@ -249,11 +286,11 @@ class Host:
             for (plugin_id, found), scopes in installed.items()
         ]
         here = MARKET in markets and local(markets[MARKET]).resolve() == self.root.resolve()
-        if MARKET in markets:
-            where = local(markets[MARKET])
-            notes.append(
-                f"marketplace {MARKET}: {where}" + ("" if here else "  (another directory)")
-            )
+        if MARKET in markets and not here:
+            # The marketplace is named only when it is not this directory: then it matters.
+            notes.append(f"marketplace {MARKET} is another directory: {local(markets[MARKET])}")
+        elif MARKET not in markets and copies:
+            notes.append(f"marketplace {MARKET} is not registered")
         current = list(installed) == [(PLUGIN_ID, version)] and here
         changed: list[str] = []
         if current:
@@ -261,12 +298,13 @@ class Host:
             if path is not None and path.is_dir():
                 changed = differences(self.root / "plugins" / PLUGIN, path)
                 current = not changed
+        # The verdict leads; the inventory follows it.
         if not copies:
-            notes.append("not installed")
+            notes.insert(0, "not installed")
         elif changed:
-            notes.append(f"installed copy differs from the source in {len(changed)} file(s)")
+            notes.insert(0, f"{len(changed)} file(s) differ from the source")
         elif not current:
-            notes.append(f"expected only {PLUGIN_ID} {version} from this directory")
+            notes.insert(0, f"expected only {PLUGIN_ID} {version} from this directory")
         return current, notes, changed
 
     def sync(self, version: str, note: Note, *, force: bool = False) -> tuple[str, str]:
@@ -283,7 +321,9 @@ class Host:
 
 
 class Claude(Host):
-    name, command = "Claude Code", "claude"
+    command = "claude"
+    scoped = True
+    name = AGENTS[command]
 
     def markets(self) -> dict[str, str]:
         found = self.listing("plugin", "marketplace", "list")
@@ -339,9 +379,32 @@ class Claude(Host):
     def cache_root(self) -> Path:
         return Path.home() / ".claude" / "plugins" / "cache" / MARKET / PLUGIN
 
+    def enrolled(self, project: Path) -> bool:
+        target = project.resolve()
+        return any(
+            c.plugin_id == PLUGIN_ID
+            and c.scope == "project"
+            and c.project is not None
+            and c.project.resolve() == target
+            for c in self.copies()
+        )
+
+    def enroll(self, project: Path) -> str:
+        # Measured: a project-scope install writes `enabledPlugins` into the project's
+        # .claude/settings.json and nothing else, so the repository carries the setting.
+        if self.enrolled(project):
+            return "already enabled at project scope"
+        args = ("plugin", "install", PLUGIN_ID, "--scope", "project")
+        code, out = call(self.exe, *args, cwd=project)
+        if code:
+            reason = out.splitlines()[-1] if out else code
+            raise RuntimeError(f"{self.command} {' '.join(args)}: {reason}")
+        return "enabled at project scope in .claude/settings.json"
+
 
 class Codex(Host):
-    name, command = "Codex", "codex"
+    command = "codex"
+    name = AGENTS[command]
 
     def home(self) -> Path:
         return Path(os.environ.get("CODEX_HOME") or Path.home() / ".codex")
@@ -381,10 +444,15 @@ class Codex(Host):
     def cache_root(self) -> Path:
         return self.home() / "plugins" / "cache" / MARKET / PLUGIN
 
-    def advice(self) -> list[str]:
+    def hooks_enabled(self) -> bool | None:
         code, features = call(self.exe, "features", "list")
         state = [line.split() for line in features.splitlines() if line.startswith("hooks ")]
-        if code == 0 and state and state[0][-1] == "false":
+        if code != 0 or not state:
+            return None
+        return state[0][-1] != "false"
+
+    def advice(self) -> list[str]:
+        if self.hooks_enabled() is False:
             return [
                 "Codex has hooks disabled, so no frames arrive there: codex features enable hooks, "
                 "then trust the plugin's hooks once with /hooks"

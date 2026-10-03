@@ -1041,3 +1041,175 @@
 {"at":"2026-10-03T21:39:37Z","actor":"release","op":"probe","id":"OGM-036","detail":{"evidence":"rev:23105c8 src:255540c exit:0 out:622ceda at:2026-10-03T21:39:36Z","exit":0,"output_path":".pacer/run/probes/OGM-036/2026-10-03T213936Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/cli.py":"bcf26dc","plugins/pacer/src/pacer/display/notice.py":"adaef3c","plugins/pacer/src/pacer/hook.py":"f2b8d89","plugins/pacer/src/pacer/update.py":"05c0098","plugins/pacer/tests/test_update.py":"5a2f9d9"}}}
 {"at":"2026-10-03T21:39:39Z","actor":"release","op":"probe","id":"OGM-037","detail":{"evidence":"rev:23105c8 src:a0a5ea8 exit:0 out:1bcd9d0 at:2026-10-03T21:39:39Z","exit":0,"output_path":".pacer/run/probes/OGM-037/2026-10-03T213939Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/display/journey.py":"9f9e8d0","plugins/pacer/src/pacer/display/paceline.py":"c8c4791","plugins/pacer/src/pacer/display/term.py":"b89b81e","plugins/pacer/src/pacer/update.py":"05c0098","plugins/pacer/tests/test_display.py":"cac9681"}}}
 {"at":"2026-10-03T21:39:40Z","actor":"release","op":"probe","id":"OGM-038","detail":{"evidence":"rev:23105c8 src:5a14074 exit:0 out:e15be2a at:2026-10-03T21:39:40Z","exit":0,"output_path":".pacer/run/probes/OGM-038/2026-10-03T213940Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/identity.py":"c7527f6","plugins/pacer/tests/test_lineage.py":"4bb6018"}}}
+{"at":"2026-10-03T22:14:48Z","actor":"hook","op":"touch","id":"-","detail":{"path":"plugins/pacer/src/pacer/display/term.py"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"OGM-039","detail":{"register":"organism"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"OGM-040","detail":{"register":"organism"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"OGM-041","detail":{"register":"organism"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"PAC-062","detail":{"register":"todo"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"PAC-063","detail":{"register":"todo"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"PAC-064","detail":{"register":"todo"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"PAC-065","detail":{"register":"todo"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"PAC-066","detail":{"register":"todo"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"PAC-067","detail":{"register":"todo"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"DEC-101","detail":{"register":"decision"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"DEC-102","detail":{"register":"decision"}}
+{"at":"2026-10-03T22:20:06Z","actor":"claude","op":"add","id":"NDL-022","detail":{"register":"nodule"}}
+{"at":"2026-10-03T22:20:14Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/term.py"}}
+{"at":"2026-10-03T22:20:35Z","actor":"hook","op":"add","id":"OVR-643","detail":{"register":"overlord"}}
+{"at":"2026-10-03T22:20:35Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/keys.py","new":"OVR-643"}}
+{"at":"2026-10-03T22:21:17Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/paceline.py"}}
+{"at":"2026-10-03T22:21:25Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/paceline.py"}}
+{"at":"2026-10-03T22:21:33Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:21:39Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:21:42Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:21:46Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:21:54Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:22:07Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:22:12Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:22:24Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:22:30Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/paceline.py"}}
+{"at":"2026-10-03T22:23:22Z","actor":"hook","op":"add","id":"OVR-644","detail":{"register":"overlord"}}
+{"at":"2026-10-03T22:23:22Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/prompt.py","new":"OVR-644"}}
+{"at":"2026-10-03T22:23:32Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/prompt.py"}}
+{"at":"2026-10-03T22:23:37Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/prompt.py"}}
+{"at":"2026-10-03T22:23:46Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:23:46Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/paceline.py"}}
+{"at":"2026-10-03T22:23:46Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/term.py"}}
+{"at":"2026-10-03T22:23:46Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/keys.py"}}
+{"at":"2026-10-03T22:23:46Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/prompt.py"}}
+{"at":"2026-10-03T22:24:02Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/keys.py"}}
+{"at":"2026-10-03T22:24:08Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/keys.py"}}
+{"at":"2026-10-03T22:24:08Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/prompt.py"}}
+{"at":"2026-10-03T22:24:32Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/prompt.py"}}
+{"at":"2026-10-03T22:24:41Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-03T22:24:45Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-03T22:24:52Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-03T22:24:58Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-03T22:25:28Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-03T22:25:28Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/prompt.py"}}
+{"at":"2026-10-03T22:26:04Z","actor":"hook","op":"add","id":"OVR-645","detail":{"register":"overlord"}}
+{"at":"2026-10-03T22:26:04Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/initiate.py","new":"OVR-645"}}
+{"at":"2026-10-03T22:26:36Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/initiate.py"}}
+{"at":"2026-10-03T22:27:33Z","actor":"hook","op":"add","id":"OVR-646","detail":{"register":"overlord"}}
+{"at":"2026-10-03T22:27:33Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py","new":"OVR-646"}}
+{"at":"2026-10-03T22:27:39Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py"}}
+{"at":"2026-10-03T22:27:45Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-03T22:27:55Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-03T22:28:04Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-03T22:28:23Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-03T22:28:37Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-03T22:28:43Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-03T22:28:47Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-03T22:28:59Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-03T22:28:59Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/update.py"}}
+{"at":"2026-10-03T22:28:59Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py"}}
+{"at":"2026-10-03T22:29:11Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/identity.py"}}
+{"at":"2026-10-03T22:29:24Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-03T22:29:28Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/cli.py"}}
+{"at":"2026-10-03T22:29:28Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/identity.py"}}
+{"at":"2026-10-03T22:29:34Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-03T22:29:41Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py"}}
+{"at":"2026-10-03T22:29:41Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/initiate.py"}}
+{"at":"2026-10-03T22:30:52Z","actor":"hook","op":"add","id":"OVR-647","detail":{"register":"overlord"}}
+{"at":"2026-10-03T22:30:52Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_prompt.py","new":"OVR-647"}}
+{"at":"2026-10-03T22:30:59Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_prompt.py"}}
+{"at":"2026-10-03T22:31:32Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_prompt.py"}}
+{"at":"2026-10-03T22:31:39Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_prompt.py"}}
+{"at":"2026-10-03T22:31:46Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_prompt.py"}}
+{"at":"2026-10-03T22:31:51Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_prompt.py"}}
+{"at":"2026-10-03T22:31:57Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_prompt.py"}}
+{"at":"2026-10-03T22:32:19Z","actor":"hook","op":"add","id":"OVR-648","detail":{"register":"overlord"}}
+{"at":"2026-10-03T22:32:19Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_initiate.py","new":"OVR-648"}}
+{"at":"2026-10-03T22:32:45Z","actor":"hook","op":"add","id":"OVR-649","detail":{"register":"overlord"}}
+{"at":"2026-10-03T22:32:45Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_doctor.py","new":"OVR-649"}}
+{"at":"2026-10-03T22:32:52Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_doctor.py"}}
+{"at":"2026-10-03T22:32:52Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_initiate.py"}}
+{"at":"2026-10-03T22:32:52Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_prompt.py"}}
+{"at":"2026-10-03T22:33:14Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_doctor.py"}}
+{"at":"2026-10-03T22:33:20Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_doctor.py"}}
+{"at":"2026-10-03T22:33:25Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_doctor.py"}}
+{"at":"2026-10-03T22:33:31Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py"}}
+{"at":"2026-10-03T22:33:42Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/prompt.py"}}
+{"at":"2026-10-03T22:33:49Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/prompt.py"}}
+{"at":"2026-10-03T22:33:59Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/prompt.py"}}
+{"at":"2026-10-03T22:33:59Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py"}}
+{"at":"2026-10-03T22:33:59Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_initiate.py"}}
+{"at":"2026-10-03T22:33:59Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_prompt.py"}}
+{"at":"2026-10-03T22:34:12Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_update.py"}}
+{"at":"2026-10-03T22:34:50Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_update.py"}}
+{"at":"2026-10-03T22:34:50Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_doctor.py"}}
+{"at":"2026-10-03T22:34:50Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_initiate.py"}}
+{"at":"2026-10-03T22:34:50Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_prompt.py"}}
+{"at":"2026-10-03T22:35:00Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py"}}
+{"at":"2026-10-03T22:35:04Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py"}}
+{"at":"2026-10-03T22:35:14Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py"}}
+{"at":"2026-10-03T22:35:44Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-03T22:35:49Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-03T22:35:54Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-03T22:36:03Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py"}}
+{"at":"2026-10-03T22:36:12Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/doctor.py"}}
+{"at":"2026-10-03T22:36:12Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_doctor.py"}}
+{"at":"2026-10-03T22:36:29Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_doctor.py"}}
+{"at":"2026-10-03T22:36:43Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_update.py"}}
+{"at":"2026-10-03T22:40:53Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:40:57Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:41:15Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/display/journey.py"}}
+{"at":"2026-10-03T22:41:15Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/src/pacer/hosts.py"}}
+{"at":"2026-10-03T22:41:15Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/tests/test_doctor.py"}}
+{"at":"2026-10-03T22:41:48Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"README.md"}}
+{"at":"2026-10-03T22:42:01Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"README.md"}}
+{"at":"2026-10-03T22:42:06Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"README.md"}}
+{"at":"2026-10-03T22:42:24Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"AGENTS.md"}}
+{"at":"2026-10-03T22:42:24Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/README.md"}}
+{"at":"2026-10-03T22:42:24Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/skills/pacer/references/format.md"}}
+{"at":"2026-10-03T22:42:47Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"CHANGELOG.md"}}
+{"at":"2026-10-03T22:43:16Z","actor":"hook","op":"add","id":"OVR-650","detail":{"register":"overlord"}}
+{"at":"2026-10-03T22:43:16Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"docs/design/human-cli.md","new":"OVR-650"}}
+{"at":"2026-10-03T22:43:41Z","actor":"hook","op":"add","id":"OVR-651","detail":{"register":"overlord"}}
+{"at":"2026-10-03T22:43:41Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"docs/trials/human-cli-3.2.0.md","new":"OVR-651"}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"OVR-643","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"keys from the console without echo: msvcrt or termios behind one Keys protocol; a Scripted source for tests","Tags":"#product"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"OVR-644","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"the prompts: a chooser on rails and a path field with a live scan; defaults off a terminal","Tags":"#product"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"OVR-645","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"pacer init: registers, host enrolment, the path and agent questions; JSON for agents","Tags":"#product"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"OVR-646","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"pacer doctor: machine, host and project checks as rows; --fix applies the repairs it owns","Tags":"#product"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"OVR-647","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"prompt tests: scripted keys through the chooser and the field; silence off a terminal","Tags":"#test"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"OVR-648","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"init tests: enrolment with a fake host, the JSON form, the prompts, the refusals","Tags":"#test"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"OVR-649","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"doctor tests: every row kind, the repairs, the exit code","Tags":"#test"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"OVR-650","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"decisions behind the human CLI layer, with the options considered","Tags":"#record"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"OVR-651","detail":{"before":{"Purpose":"","Tags":"#unpurposed"},"after":{"Purpose":"live trial of init, doctor and the prompts in both hosts on Windows","Tags":"#record"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"PAC-063","detail":{"before":{"Out":"plugins/pacer/src/pacer/display/keys.py;plugins/pacer/src/pacer/display/prompt.py;plugins/pacer/src/pacer/display/term.py;plugins/pacer/src/pacer/display/journey.py"},"after":{"Out":"plugins/pacer/src/pacer/display/keys.py;plugins/pacer/src/pacer/display/prompt.py;plugins/pacer/src/pacer/display/term.py;plugins/pacer/src/pacer/display/journey.py;plugins/pacer/src/pacer/display/paceline.py;plugins/pacer/tests/test_prompt.py"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"PAC-064","detail":{"before":{"Out":"plugins/pacer/src/pacer/update.py;plugins/pacer/src/pacer/cli.py"},"after":{"Out":"plugins/pacer/src/pacer/update.py;plugins/pacer/src/pacer/cli.py;plugins/pacer/src/pacer/identity.py;plugins/pacer/tests/test_update.py"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"PAC-065","detail":{"before":{"Out":"plugins/pacer/src/pacer/initiate.py;plugins/pacer/src/pacer/hosts.py;plugins/pacer/src/pacer/cli.py"},"after":{"Out":"plugins/pacer/src/pacer/initiate.py;plugins/pacer/src/pacer/hosts.py;plugins/pacer/src/pacer/cli.py;plugins/pacer/tests/test_initiate.py"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"PAC-066","detail":{"before":{"Out":"plugins/pacer/src/pacer/doctor.py;plugins/pacer/src/pacer/cli.py"},"after":{"Out":"plugins/pacer/src/pacer/doctor.py;plugins/pacer/src/pacer/cli.py;plugins/pacer/tests/test_doctor.py"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"set","id":"PAC-067","detail":{"before":{"Out":"docs/design/human-cli.md;docs/trials/human-cli-3.2.0.md;CHANGELOG.md;README.md"},"after":{"Out":"docs/design/human-cli.md;docs/trials/human-cli-3.2.0.md;CHANGELOG.md;README.md;plugins/pacer/README.md;AGENTS.md;plugins/pacer/skills/pacer/references/format.md"}}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"link","id":"OGM-039","detail":{"field":"Binds","target":"OVR-643"}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"link","id":"OGM-039","detail":{"field":"Binds","target":"OVR-644"}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"link","id":"OGM-040","detail":{"field":"Binds","target":"OVR-645"}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"link","id":"OGM-040","detail":{"field":"Binds","target":"OVR-634"}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"link","id":"OGM-041","detail":{"field":"Binds","target":"OVR-646"}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"add","id":"DEC-103","detail":{"register":"decision"}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"add","id":"DEC-104","detail":{"register":"decision"}}
+{"at":"2026-10-03T22:44:12Z","actor":"claude","op":"add","id":"DEC-105","detail":{"register":"decision"}}
+{"at":"2026-10-03T22:44:51Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"CHANGELOG.md"}}
+{"at":"2026-10-03T22:44:51Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"docs/design/human-cli.md"}}
+{"at":"2026-10-03T22:44:51Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"docs/trials/human-cli-3.2.0.md"}}
+{"at":"2026-10-03T22:45:02Z","actor":"claude","op":"set","id":"OGM-034","detail":{"before":{"Probe":"python scripts/check.py"},"after":{"Probe":"uv run --no-project --python \">=3.11\" scripts/check.py"}}}
+{"at":"2026-10-03T22:45:02Z","actor":"claude","op":"set","id":"OGM-035","detail":{"before":{"Probe":"python install.py --status"},"after":{"Probe":"uv run --no-project --python \">=3.11\" install.py --status"}}}
+{"at":"2026-10-03T22:45:02Z","actor":"claude","op":"set","id":"OGM-036","detail":{"before":{"Probe":"python scripts/check.py --tests \"notice or update\""},"after":{"Probe":"uv run --no-project --python \">=3.11\" scripts/check.py --tests \"notice or update\""}}}
+{"at":"2026-10-03T22:45:02Z","actor":"claude","op":"set","id":"OGM-037","detail":{"before":{"Probe":"python scripts/check.py --tests \"display or journey or paceline\""},"after":{"Probe":"uv run --no-project --python \">=3.11\" scripts/check.py --tests \"display or journey or paceline or prompt\""}}}
+{"at":"2026-10-03T22:45:02Z","actor":"claude","op":"set","id":"OGM-038","detail":{"before":{"Probe":"python scripts/check.py --tests lineage"},"after":{"Probe":"uv run --no-project --python \">=3.11\" scripts/check.py --tests lineage"}}}
+{"at":"2026-10-03T22:45:20Z","actor":"claude","op":"probe","id":"OGM-039","detail":{"evidence":"rev:a0c301f src:aded499 exit:0 out:3efc9ae at:2026-10-03T22:45:20Z","exit":0,"output_path":".pacer/run/probes/OGM-039/2026-10-03T224520Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/display/keys.py":"2fabd12","plugins/pacer/src/pacer/display/prompt.py":"69ec4c3"}}}
+{"at":"2026-10-03T22:45:21Z","actor":"claude","op":"probe","id":"OGM-040","detail":{"evidence":"rev:a0c301f src:2fbc9e2 exit:0 out:c2f9d92 at:2026-10-03T22:45:21Z","exit":0,"output_path":".pacer/run/probes/OGM-040/2026-10-03T224521Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/hosts.py":"5c7ac18","plugins/pacer/src/pacer/initiate.py":"d9a4f4a"}}}
+{"at":"2026-10-03T22:45:23Z","actor":"claude","op":"probe","id":"OGM-041","detail":{"evidence":"rev:a0c301f src:c8c486d exit:0 out:93a4fca at:2026-10-03T22:45:23Z","exit":0,"output_path":".pacer/run/probes/OGM-041/2026-10-03T224523Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/doctor.py":"2ebdc33"}}}
+{"at":"2026-10-03T22:45:32Z","actor":"claude","op":"probe","id":"OGM-036","detail":{"evidence":"rev:a0c301f src:b7c92f3 exit:0 out:cacca8c at:2026-10-03T22:45:32Z","exit":0,"output_path":".pacer/run/probes/OGM-036/2026-10-03T224532Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/cli.py":"8798134","plugins/pacer/src/pacer/display/notice.py":"adaef3c","plugins/pacer/src/pacer/hook.py":"f2b8d89","plugins/pacer/src/pacer/update.py":"ae548de","plugins/pacer/tests/test_update.py":"18d9afe"}}}
+{"at":"2026-10-03T22:45:34Z","actor":"claude","op":"probe","id":"OGM-037","detail":{"evidence":"rev:a0c301f src:191211e exit:0 out:06a652b at:2026-10-03T22:45:34Z","exit":0,"output_path":".pacer/run/probes/OGM-037/2026-10-03T224534Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/display/journey.py":"03653b1","plugins/pacer/src/pacer/display/paceline.py":"3c54bb1","plugins/pacer/src/pacer/display/term.py":"31b7a29","plugins/pacer/src/pacer/update.py":"ae548de","plugins/pacer/tests/test_display.py":"cac9681"}}}
+{"at":"2026-10-03T22:45:36Z","actor":"claude","op":"probe","id":"OGM-038","detail":{"evidence":"rev:a0c301f src:875e612 exit:0 out:7719ed8 at:2026-10-03T22:45:35Z","exit":0,"output_path":".pacer/run/probes/OGM-038/2026-10-03T224535Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/identity.py":"7259f33","plugins/pacer/tests/test_lineage.py":"4bb6018"}}}
+{"at":"2026-10-03T22:45:36Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"AGENTS.md"}}
+{"at":"2026-10-03T22:45:36Z","actor":"hook","op":"touch","id":"PAC-063","detail":{"path":"plugins/pacer/README.md"}}
+{"at":"2026-10-03T22:45:42Z","actor":"claude","op":"status","id":"OGM-039","detail":{"from":"SCAFFOLD","to":"VALIDATED_COMPLETE"}}
+{"at":"2026-10-03T22:45:42Z","actor":"claude","op":"status","id":"OGM-040","detail":{"from":"SCAFFOLD","to":"VALIDATED_COMPLETE"}}
+{"at":"2026-10-03T22:45:42Z","actor":"claude","op":"status","id":"OGM-041","detail":{"from":"SCAFFOLD","to":"VALIDATED_COMPLETE"}}
+{"at":"2026-10-03T22:45:42Z","actor":"claude","op":"status","id":"PAC-063","detail":{"from":"ACTIVE","to":"DONE"}}
+{"at":"2026-10-03T22:45:42Z","actor":"claude","op":"status","id":"PAC-064","detail":{"from":"TODO","to":"DONE"}}
+{"at":"2026-10-03T22:45:42Z","actor":"claude","op":"status","id":"PAC-065","detail":{"from":"TODO","to":"DONE"}}
+{"at":"2026-10-03T22:45:42Z","actor":"claude","op":"status","id":"PAC-066","detail":{"from":"TODO","to":"DONE"}}
+{"at":"2026-10-03T22:45:42Z","actor":"claude","op":"status","id":"PAC-067","detail":{"from":"TODO","to":"ACTIVE"}}

@@ -1,5 +1,33 @@
 # Changelog
 
+## 3.2.0
+The human layer of the command line: the three commands a person types, made to ask for what is missing, show what they do, and repair what they find.
+
+### Prompts
+
+- A chooser on rails: each option on a short line of track, the chosen one lit from night to ice with the lantern at its tip; arrows, j/k or a digit choose, enter accepts, esc cancels; the answer collapses to one ledger line.
+- A path field with a live scan: as a path is typed it is read for what it is (exists, a git repository, already governed, an older PACER format, which agent files it carries, how many entries) and the rail beneath it takes the colour of the verdict; tab completes directories, ctrl-w drops a component, ctrl-u starts over; a path that does not exist cannot be accepted.
+- Keys are read raw from the console with the standard library alone (`msvcrt` on Windows, `termios` elsewhere). Every prompt animates while it waits and is shown only when both standard streams are a terminal; anywhere else it returns its default at once, so an agent or a script running the same command is never asked anything.
+
+### Update
+
+- `pacer update --claude`, `--codex` and `--all` name the hosts. Without a flag, a terminal is asked where (each host with what it runs now, or both); a script gets every host, as before. `--host` stays for scripts.
+
+### Init
+
+- `pacer init [path] --claude|--codex` creates `.pacer/` in the project and enrols it with the agent: Claude Code is installed from the source if missing and the plugin enabled at project scope, which writes `.claude/settings.json` so the repository carries it; Codex is installed if missing and its hooks switch reported. A project that already has `.pacer/` keeps its registers and is enrolled anyway. In a terminal a missing path and a missing agent are asked for; off one, `pacer init` is unchanged: `.pacer/` here, one JSON document.
+
+### Doctor
+
+- `pacer doctor` reads the vitals in three groups: the machine (uv, an interpreter uv can start hooks with, git, the source, the origin and the latest release, the user-level home), each host (its copy against the source, stale cache copies, its hooks switch, the project's enablement, the `pacer` command and whether it is on PATH) and the project (registers, format, git tracking, an interrupted write, the evidence of every proven requirement). Each check is a row with a verdict; a failure exits 1.
+- `pacer doctor --fix` applies every repair the doctor owns under the Pace Line (resync a host, drop stale copies, reinstall the command, roll an interrupted write forward) and reads the vitals again. A row it cannot repair names the one command that does.
+
+### Polish
+
+- Reports carry group headings and an attention state short of failure; a host's status leads with its verdict and names the marketplace only when it is another directory.
+- The CLI parser imports nothing but the agent names, so the hook path stays as light as before; `AGENTS` in `pacer.identity` is the one place those names live.
+- `KeyboardInterrupt` in a human command exits 130 with the cursor restored. Every long display draws through one region.
+
 ## 3.1.0 — 2026-10-03
 Updates and releases become one command each, with a display worth watching.
 

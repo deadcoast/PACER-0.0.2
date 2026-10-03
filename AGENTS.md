@@ -38,17 +38,19 @@ Three rules keep the product apart from the tooling that develops it:
 ## Commands
 
 ```
-python scripts/check.py              # lint, format, types, tests, manifests, registers, kit
-python scripts/check.py --fix        # apply lint fixes and formatting first
-python scripts/check.py --matrix     # tests on Python 3.11 to 3.14
-python scripts/build_kit.py          # rebuild releases/pacer-kit-<version>.zip
-python scripts/release.py X.Y.Z      # ship a release: version, checks, kit, sync, proof, commit, tag, push
-pacer update                         # sync every host from the working tree (install.py does the same)
+uv run --no-project --python ">=3.11" scripts/check.py              # lint, format, types, tests, manifests, registers, kit
+uv run --no-project --python ">=3.11" scripts/check.py --fix        # apply lint fixes and formatting first
+uv run --no-project --python ">=3.11" scripts/check.py --matrix     # tests on Python 3.11 to 3.14
+uv run --no-project --python ">=3.11" scripts/build_kit.py          # rebuild releases/pacer-kit-<version>.zip
+uv run --no-project --python ">=3.11" scripts/release.py X.Y.Z      # ship a release: version, checks, kit, sync, proof, commit, tag, push
+pacer update --all                   # sync every host from the working tree (install.py does the same)
 pacer update --check                 # what each host runs, and what the origin has
-python -B plugins/pacer/src/pacer/__main__.py <command>      # the runtime from source, no bytecode left behind
+pacer doctor                         # the vitals of the machine, the hosts and this project; --fix repairs
+pacer init <path> --claude           # govern another project and enrol it with a host
+uv run --no-project --python ">=3.11" python -B plugins/pacer/src/pacer/__main__.py <command>   # the runtime from source
 ```
 
-Run `check.py` before a commit. Rebuild the kit when anything under `plugins/pacer/`, the installer, the README or the changelog changes; `check.py` fails when the kit is stale. A release is `release.py` on a clean tree with a `## X.Y.Z` section in `CHANGELOG.md`; it is the only thing that tags, and the tag is what `pacer update` finds on other machines.
+Every Python here starts through uv; nothing calls an interpreter from PATH. Run `check.py` before a commit. Rebuild the kit when anything under `plugins/pacer/`, the installer, the README or the changelog changes; `check.py` fails when the kit is stale. A release is `release.py` on a clean tree with a `## X.Y.Z` section in `CHANGELOG.md`; it is the only thing that tags, and the tag is what `pacer update` finds on other machines.
 
 ## Gate matrix
 

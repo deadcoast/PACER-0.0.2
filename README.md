@@ -39,12 +39,27 @@ Codex delivers frames only with hooks enabled (`codex features enable hooks`) an
 ## Update
 
 ```
-pacer update                       # the latest version, in every host, in one go
+pacer update                       # in a terminal: asks where; in a script: every host
+pacer update --claude              # one host; --codex, or --all for every host on PATH
 pacer update --check               # what is installed, what is on the origin, nothing changed
 pacer update --notify off          # stop announcing new versions
 ```
 
 When a newer version exists you hear about it once: after a `pacer` command in a terminal, or at the start of an agent session, with the two commands above. The check runs in the background at most once a day, through git. `pacer update` advances the source, refreshes only the hosts whose copy differs, and shows its progress on the Pace Line.
+
+Typed without a host flag in a terminal, it asks:
+
+```
+  PACER  update · where?                                MIVIM · spec · vigiles
+
+    ───────  Claude Code  3.1.0 installed
+    ───────  Codex        3.1.0 installed
+  ▸ ━━━━━━━  both
+
+  ↑↓ or 1–3  ·  enter chooses  ·  esc
+```
+
+The chosen rail is lit; the answer collapses to one line. Off a terminal (an agent, a script, a pipe) there is no question and every host is taken, so the same command is safe to automate.
 
 ```
   PACER  update · 3.0.0 ▸ 3.1.0                         MIVIM · spec · vigiles
@@ -62,11 +77,51 @@ When a newer version exists you hear about it once: after a `pacer` command in a
 ## Use
 
 ```
-cd <project>
-pacer init                         # creates .pacer/
+pacer init ~/work/app --claude     # .pacer/ there, and Claude Code enabled for that project
+pacer init --codex                 # .pacer/ here, Codex installed and its hooks switch checked
+pacer init                         # in a terminal: asks for the path, then the agent
 ```
 
+`init` creates `.pacer/` with empty registers and enrols the project with the agent you name. For Claude Code that is a project-scope enablement in `.claude/settings.json`, so the repository carries it; Codex runs the plugin for every project, so it is installed if missing. A project that already has `.pacer/` keeps its registers and is enrolled anyway. In a terminal, a missing path is asked for in a field that scans as you type (does it exist, is it a repository, is it governed, what agent files are there; tab completes directories), and a missing agent is asked for on rails. Off a terminal, `pacer init` does what it always did: `.pacer/` here, one JSON document.
+
 Then work with the agent. Ask it to pace a request; frames arrive on their own.
+
+## Doctor
+
+```
+pacer doctor                       # the vitals: machine, hosts, project; exit 1 on a failure
+pacer doctor --fix                 # apply every repair the doctor owns, then read the vitals again
+```
+
+```
+  PACER  doctor · 3.2.0                                 MIVIM · spec · vigiles
+
+  machine
+  ✓ uv                  uv 0.9.5  C:\Users\you\.local\bin\uv.exe
+  ✓ python              3.13.9  C:\Users\you\AppData\Roaming\uv\python\cpython-3.13.9\python.exe
+  ✓ git                 git version 2.53.0.windows.1
+  ✓ source              3.2.0 (checkout)  C:\Users\you\github\PACER
+  ✓ origin              v3.2.0, current
+  ✓ home                C:\Users\you\AppData\Local\mivim\pacer
+
+  hosts
+  ✗ Claude Code         15 file(s) differ from the source; pacer@mivim  3.2.0  (user scope)
+  ! Claude Code cache   stale copy: 3.1.0
+  ✓ Codex               pacer@mivim  3.2.0  (user scope)
+  ✓ Codex hooks         enabled
+  ✓ command             pacer v3.2.0
+
+  project
+  ✓ registers           valid
+  ✓ format              format 3.0
+  ✓ tracking            registers are tracked
+  ! evidence            1 of 5 proven not current: OGM-034
+
+  pacer doctor --fix repairs 2 of these
+  pacer probe OGM-034
+```
+
+A row the doctor can repair (a host whose copy differs, a stale cache copy, the `pacer` command, an interrupted write) names no command: `--fix` does it. A row it cannot repair names the one command that does.
 
 | When | The agent receives |
 |---|---|

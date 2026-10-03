@@ -267,11 +267,12 @@ Warnings: `missing <path>`; `#unpurposed`; `no Probe at tier <tier>`.
 | `pacer_validate` | `pacer validate` | errors and warnings |
 | `pacer_sync` | `pacer sync [--apply]` | retire assets whose file is gone |
 | `pacer_log` | `pacer log [ID]` | ledger events |
-| `pacer_init` | `pacer init [--name] [--tier]` | create `.pacer/` |
+| `pacer_init` | `pacer init [path] [--name] [--tier] [--claude] [--codex]` | create `.pacer/`; with a host flag, enrol the project with that agent |
 | `pacer_migrate` | `pacer migrate [--from] [--apply]` | upgrade an older layout |
 | `pacer_recover` | `pacer recover` | finish an interrupted write |
 | | `pacer tree` | the work tree as indented PAC cards |
-| | `pacer update [--check] [--notify on\|off]` | bring the installation to the latest version; report it; silence the notice |
+| | `pacer update [--claude\|--codex\|--all] [--check] [--notify on\|off]` | bring the installation to the latest version in the named hosts (asked for in a terminal, all of them otherwise); report it; silence the notice |
+| | `pacer doctor [path] [--fix]` | every check of the machine, the hosts and the project as a row; `--fix` applies the repairs the doctor owns |
 
 Every MCP tool takes the absolute project root. The CLI finds it from the working directory, or takes `--root`.
 

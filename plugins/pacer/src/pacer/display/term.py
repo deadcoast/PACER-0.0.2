@@ -14,6 +14,7 @@ import os
 import re
 import shutil
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import TextIO
 
@@ -21,6 +22,7 @@ RGB = tuple[int, int, int]
 SGR = re.compile(r"\x1b\[[0-9;?]*[A-Za-z]")
 RESET = "\x1b[0m"
 MODES = ("live", "plain", "events")
+HIDE_CURSOR, SHOW_CURSOR = "\x1b[?25l", "\x1b[?25h"
 
 
 @dataclass(frozen=True)
@@ -104,6 +106,28 @@ class Pen:
 
     def dim(self, text: str) -> str:
         return f"\x1b[2m{text}{RESET}" if text and self.caps.live else text
+
+
+class Region:
+    """A block of lines redrawn in place: the live form of every PACER display.
+
+    Each draw replaces the previous one. Frames are wrapped in synchronised-output
+    marks so a terminal that honours them never shows a half-drawn frame.
+    """
+
+    def __init__(self, write: Callable[[str], None]):
+        self.write, self.height = write, 0
+
+    def draw(self, lines: list[str], *, final: bool = False) -> None:
+        out = ["\x1b[?2026h"]
+        if self.height:
+            out.append(f"\x1b[{self.height}A")
+        if final:
+            out.append("\r\x1b[J")
+        out += [f"\r\x1b[2K{line}\n" for line in lines]
+        out.append("\x1b[?2026l")
+        self.write("".join(out))
+        self.height = len(lines)
 
 
 def visible(text: str) -> int:

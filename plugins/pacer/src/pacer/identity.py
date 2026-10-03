@@ -16,3 +16,7 @@ MARKET = "mivim"
 PLUGIN = "pacer"
 PLUGIN_ID = f"{PLUGIN}@{MARKET}"
 REPOSITORY = "https://github.com/deadcoast/PACER-0.0.2"
+
+# The agents PACER is delivered into: command name to display name. The CLI's
+# `--claude` and `--codex` flags come from here; `pacer.hosts` drives each one.
+AGENTS = {"claude": "Claude Code", "codex": "Codex"}

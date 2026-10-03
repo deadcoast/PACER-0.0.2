@@ -308,7 +308,7 @@ def test_sync_installs_only_what_differs(tmp_path):
 
     (root / "plugins" / "pacer" / "extra.py").write_text("x = 1\n")
     current, notes, differs = host.status("3.1.0")
-    assert not current and differs == ["extra.py"] and any("differs" in n for n in notes)
+    assert not current and differs == ["extra.py"] and any("differ from" in n for n in notes)
     journey = Journey("install", stream=io.StringIO(), env={})
     with journey:
         changed, _ = update.sync(root, journey, [host], command)
@@ -386,6 +386,38 @@ def test_notify_switch_and_refresh_entry(origin, monkeypatch, capsys):
         refresh=True, notify=None, demo=False, check=False, host="none", no_cli=True, force=False
     )
     assert update.update_main(refresh) == 0 and home.read_state()["update"]["latest"] == "3.1.0"
+
+
+def test_update_resolves_where_from_flags_then_a_question_then_everything(tmp_path, monkeypatch):
+    def args(**flags):
+        base = dict(claude=False, codex=False, all=False, host=None)
+        return argparse.Namespace(**{**base, **flags})
+
+    assert update.resolve_host(args(claude=True), tmp_path) == "claude"
+    assert update.resolve_host(args(codex=True), tmp_path) == "codex"
+    assert update.resolve_host(args(claude=True, codex=True), tmp_path) == "all"
+    assert update.resolve_host(args(all=True), tmp_path) == "all"
+    assert update.resolve_host(args(host="none"), tmp_path) == "none"  # the scripting form
+
+    one = FakeHost(tmp_path, tmp_path / "cache")
+    monkeypatch.setattr(update, "present_hosts", lambda root, wanted: [one])
+    assert update.resolve_host(args(), tmp_path) == "all"  # one host: nothing to ask
+
+    two = FakeHost(tmp_path, tmp_path / "cache2")
+    two.installed.append(Copy(PLUGIN_ID, "mivim", "user", "3.0.0"))
+    asked: list = []
+    monkeypatch.setattr(update, "present_hosts", lambda root, wanted: [one, two])
+    monkeypatch.setattr(
+        update, "choose", lambda title, question, options, default: asked.append(options) or "fake"
+    )
+    assert update.resolve_host(args(), tmp_path) == "fake"
+    assert [(o.key, o.text) for o in asked[0]] == [
+        ("fake", "not installed"),
+        ("fake", "3.0.0 installed"),
+        ("all", ""),
+    ]
+    monkeypatch.setattr(update, "choose", lambda *a, **k: None)
+    assert update.resolve_host(args(), tmp_path) is None  # cancelled
 
 
 def test_home_is_namespaced_and_overridable(monkeypatch, tmp_path):

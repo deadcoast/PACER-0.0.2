@@ -28,6 +28,7 @@ from typing import TextIO
 from pacer import __version__
 from pacer.display import Journey, Step, StepError, report
 from pacer.display import notice as card
+from pacer.display.prompt import Option, choose
 from pacer.home import home, read_state, update_state
 from pacer.hosts import HOSTS, Command, Host, Note
 from pacer.identity import PLUGIN, PLUGIN_ID, REPOSITORY
@@ -340,6 +341,34 @@ def present_hosts(root: Path, wanted: str) -> list[Host]:
     return found
 
 
+def installed_text(host: Host) -> str:
+    """One dim phrase beside a host's name in a prompt: what it runs now."""
+    versions = sorted({c.version for c in host.copies() if c.plugin_id == PLUGIN_ID})
+    return f"{', '.join(v or '?' for v in versions)} installed" if versions else "not installed"
+
+
+def resolve_host(args: argparse.Namespace, root: Path) -> str | None:
+    """Which hosts `pacer update` works on.
+
+    `--claude`, `--codex`, `--all` and the scripting form `--host` decide when given.
+    Otherwise, in a terminal with more than one host present, the person is asked;
+    anywhere else every host is taken. None means the question was cancelled.
+    """
+    named = [name for name in HOSTS if getattr(args, name, False)]
+    if getattr(args, "all", False) or len(named) == len(HOSTS):
+        return "all"
+    if named:
+        return named[0]
+    if args.host:
+        return str(args.host)
+    found = present_hosts(root, "all")
+    if len(found) < 2:
+        return "all"
+    options = [Option(h.command, h.name, installed_text(h)) for h in found]
+    options.append(Option("all", "both"))
+    return choose("update", "where?", options, default=len(options) - 1)
+
+
 def host_steps(hosts: list[Host], command: bool) -> list[Step]:
     steps = [Step(h.command, h.name, expected(h.command)) for h in hosts]
     if command:
@@ -495,6 +524,11 @@ def update_main(args: argparse.Namespace) -> int:
         return 2
     if args.check:
         return check(source, args)
+    # The one question the command asks, and only of a person: where.
+    wanted = resolve_host(args, source.root)
+    if wanted is None:
+        return 1
+    args.host = wanted
     return run_update(source, args)
 
 
@@ -508,7 +542,7 @@ def check(source: Source, args: argparse.Namespace) -> int:
     else:
         rows.append(("done", "origin", f"v{latest}, current"))
     uv = shutil.which("uv")
-    hosts = present_hosts(source.root, args.host)
+    hosts = present_hosts(source.root, args.host or "all")
     command = None if args.no_cli or uv is None else Command(uv, source.root / "plugins" / PLUGIN)
     for host in hosts:
         current, notes, _ = host.status(source.version)

@@ -45,13 +45,14 @@ uv, Python 3.11 or newer, git (for rename following and evidence revisions), and
 From the repository root:
 
 ```
-python scripts/check.py              # lint, format, types, tests, manifests, registers, kit
-python scripts/check.py --matrix     # tests on Python 3.11 to 3.14
-python scripts/release.py 3.1.0      # version, checks, kit, sync, proof, commit, tag, push
-pacer update                         # sync every host from the working tree
+uv run --no-project --python ">=3.11" scripts/check.py              # lint, format, types, tests, manifests, registers, kit
+uv run --no-project --python ">=3.11" scripts/check.py --matrix     # tests on Python 3.11 to 3.14
+uv run --no-project --python ">=3.11" scripts/release.py 3.2.0      # version, checks, kit, sync, proof, commit, tag, push
+pacer update --all                   # sync every host from the working tree
 pacer update --demo                  # the Pace Line, with nothing changed
+pacer doctor                         # what the machine, the hosts and this project look like
 claude --plugin-dir plugins/pacer    # run a session against the working tree, no install
-python -B plugins/pacer/src/pacer/__main__.py frame session
+uv run --no-project --python ">=3.11" python -B plugins/pacer/src/pacer/__main__.py frame session
 ```
 
 `PACER_DISPLAY=live|plain|events` forces a display mode; `PACER_HOME` moves the user-level state; `PACER_NO_UPDATE_CHECK=1` stops the version check and the notice (the tests set all three).

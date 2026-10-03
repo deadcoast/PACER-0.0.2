@@ -1,4 +1,16 @@
-"""The `pacer` command. `hook` is the harness entry point; `serve` is the MCP entry point."""
+"""The `pacer` command.
+
+Two layers share one command. Agents and scripts use the plain layer: every
+subcommand takes its arguments on the line, prints JSON or cards, and never
+asks anything. People use three of them above all, and those carry a human
+layer that only exists in a terminal:
+
+    pacer update          asks where when no host is named; the Pace Line while it runs
+    pacer init            asks for the path and the agent when they are missing
+    pacer doctor          the vitals of the machine, the hosts and the project
+
+`hook` is the harness entry point; `serve` is the MCP entry point.
+"""
 
 from __future__ import annotations
 
@@ -8,6 +20,7 @@ import sys
 from pathlib import Path
 
 from pacer import __version__
+from pacer.identity import AGENTS
 from pacer.layout import find_root
 from pacer.migrate import SOURCES
 
@@ -15,15 +28,43 @@ FRAMES = ("session", "edit", "prompt", "stop")
 HOOK_EVENTS = ("session-start", "prompt", "pre-edit", "post-edit", "stop")
 
 
+def host_flags(parser: argparse.ArgumentParser, verb: str) -> None:
+    """`--claude`, `--codex` and `--all`: which agent a command concerns."""
+    group = parser.add_argument_group("hosts")
+    for name, shown in AGENTS.items():
+        group.add_argument(f"--{name}", action="store_true", help=f"{verb} {shown}")
+    group.add_argument("--all", action="store_true", help=f"{verb} every host on PATH")
+
+
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="pacer", description="PACER: delivered project context")
+    parser = argparse.ArgumentParser(
+        prog="pacer",
+        description="PACER: delivered project context",
+        epilog="In a terminal, init and update ask for what is missing; doctor finds and fixes.",
+    )
     parser.add_argument("--version", action="version", version=f"pacer {__version__}")
     parser.add_argument("--root", type=Path, help="project root (default: nearest .pacer/ upward)")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    init = sub.add_parser("init", help="create .pacer/ with empty registers")
+    init = sub.add_parser(
+        "init",
+        help="create .pacer/ and enrol the project with an agent",
+        description="Create .pacer/ with empty registers. With --claude or --codex the project "
+        "is also enrolled with that agent. In a terminal, a missing path or agent is asked for.",
+    )
+    init.add_argument("path", nargs="?", type=Path, help="the project (default: here)")
     init.add_argument("--name", default="", help="project name (default: directory name)")
     init.add_argument("--tier", default="prototype")
+    host_flags(init, "enrol the project with")
+
+    doctor = sub.add_parser(
+        "doctor",
+        help="check the installation and the project; --fix repairs what it can",
+        description="The vitals of the machine, each host and the project, one row each. "
+        "--fix applies every repair the doctor owns and names the command for the rest.",
+    )
+    doctor.add_argument("path", nargs="?", type=Path, help="the project (default: here)")
+    doctor.add_argument("--fix", action="store_true", help="apply the repairs")
 
     frame = sub.add_parser("frame", help="compile a card frame")
     frame.add_argument("kind", choices=FRAMES)
@@ -68,12 +109,19 @@ def build_parser() -> argparse.ArgumentParser:
     hook = sub.add_parser("hook", help="harness hook; reads the event JSON on stdin")
     hook.add_argument("event", choices=HOOK_EVENTS)
 
-    update = sub.add_parser("update", help="bring PACER to the latest version in every host")
+    update = sub.add_parser(
+        "update",
+        help="bring PACER to the latest version in a host, or in every host",
+        description="Advance the source to the latest release, sync each chosen host whose "
+        "installed copy differs, and keep the pacer command current. Without a host flag, "
+        "a terminal asks where; a script gets every host.",
+    )
     update.add_argument("--check", action="store_true", help="report versions; change nothing")
     update.add_argument(
         "--force", action="store_true", help="reinstall even where a copy is current"
     )
-    update.add_argument("--host", choices=["claude", "codex", "all", "none"], default="all")
+    host_flags(update, "update")
+    update.add_argument("--host", choices=[*AGENTS, "all", "none"], help=argparse.SUPPRESS)
     update.add_argument("--no-cli", action="store_true", help="leave the `pacer` command alone")
     update.add_argument(
         "--notify", choices=["on", "off"], help="announce a new version once (default on)"
@@ -97,10 +145,22 @@ def main(argv: list[str] | None = None) -> int:
             from pacer.update import update_main
 
             return update_main(args)
-        code = _command(args)
+        if args.command == "init":
+            from pacer.initiate import init_main
+
+            code = init_main(args)
+        elif args.command == "doctor":
+            from pacer.doctor import doctor_main
+
+            code = doctor_main(args)
+        else:
+            code = _command(args)
     except (ValueError, OSError) as exc:
         print(f"pacer: {exc}", file=sys.stderr)
         return 2
+    except KeyboardInterrupt:
+        print(file=sys.stderr)
+        return 130
     # A person ran a command in a terminal: the one place a newer version is mentioned.
     from pacer.update import cli_notice
 
@@ -128,9 +188,7 @@ def _hook(event: str) -> int:
 def _command(args) -> int:
     from pacer.service import Service
 
-    root = args.root or (
-        Path.cwd() if args.command in {"init", "migrate"} else find_root(Path.cwd())
-    )
+    root = args.root or (Path.cwd() if args.command == "migrate" else find_root(Path.cwd()))
     if root is None:
         raise ValueError("no .pacer/ here or above; run `pacer init` or pass --root")
     service = Service(root)
@@ -144,9 +202,7 @@ def _command(args) -> int:
         for entry in service.log(args.id or None, args.limit):
             print(json.dumps(entry, ensure_ascii=False))
     else:
-        if args.command == "init":
-            result = service.init(args.name, args.tier)
-        elif args.command == "write":
+        if args.command == "write":
             text = sys.stdin.read() if str(args.file) == "-" else args.file.read_text("utf-8")
             result = service.write(json.loads(text), args.actor, preview=args.preview)
         elif args.command == "probe":

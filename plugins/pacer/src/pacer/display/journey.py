@@ -28,13 +28,25 @@ from dataclasses import dataclass
 from typing import TextIO
 
 from pacer.display import paceline
-from pacer.display.term import Caps, Pen, between, clip, detect, visible
-from pacer.identity import AGENT, LINEAGE
+from pacer.display.term import (
+    HIDE_CURSOR,
+    SHOW_CURSOR,
+    Caps,
+    Pen,
+    Region,
+    between,
+    clip,
+    detect,
+    visible,
+)
+from pacer.identity import AGENT
 
 FPS = 30
 PROTOCOL = 1
 MARGIN = "  "
 ENDED = ("done", "skip", "fail")
+# A report may also carry `warn` (attention, not failure) and `head` (a group heading).
+PLAIN_MARKS = {"done": "ok", "skip": "--", "fail": "!!", "warn": " !"}
 INTRO = 0.35  # seconds for the line to unroll
 OUTRO_FRAMES = 14
 
@@ -101,7 +113,8 @@ class Journey:
         self._thread: threading.Thread | None = None
         self._opened = self._closed = False
         self._shown = 0.0
-        self._height = 0
+        self._region = Region(self._write)
+        self._headed = False  # plain mode: whether the header line is out
         self._t0 = time.monotonic()
 
     # -- the caller's side ---------------------------------------------------
@@ -129,7 +142,7 @@ class Journey:
         if self.mode == "events":
             self._emit("plan", steps=[_wire(step) for step in self.steps])
         elif self.mode == "live":
-            self._write("\x1b[?25l")
+            self._write(HIDE_CURSOR)
             atexit.register(self._restore)
             self._thread = threading.Thread(target=self._loop, name="pacer-journey", daemon=True)
             self._thread.start()
@@ -175,8 +188,7 @@ class Journey:
             self._emit("end", id=step_id, state=state, text=text)
         elif self.mode == "plain":
             self._plain_header()
-            mark = {"done": "ok", "skip": "--", "fail": "!!"}[state]
-            self._write(f"  {mark}  {step.label:<14} {text}".rstrip() + "\n")
+            self._write(f"  {PLAIN_MARKS[state]}  {step.label:<14} {text}".rstrip() + "\n")
 
     @contextmanager
     def step(self, step_id: str, note: str = "") -> Iterator[Outcome]:
@@ -255,27 +267,18 @@ class Journey:
         self._write(json.dumps({"journey": PROTOCOL, "event": event, **fields}) + "\n")
 
     def _plain_header(self) -> None:
-        if self._height:
+        if self._headed:
             return
-        self._height = 1
+        self._headed = True
         self._write(" ".join(part for part in (AGENT, self.title, self.detail) if part) + "\n")
-
-    def wordmark(self) -> str:
-        last = len(AGENT) - 1
-        return "".join(
-            self.pen.rgb(letter, paceline.gradient(i / last), 94, bold=True)
-            for i, letter in enumerate(AGENT)
-        )
 
     def _width(self) -> int:
         return max(min(self.caps.width - 4, 76), 30)
 
     def _header(self) -> str:
-        pen, dot = self.pen, self.glyphs.dot
-        left = f"{self.wordmark()}  {pen.dim(self.title)}"
-        if self.detail:
-            left += f" {pen.dim(dot)} {self.detail}"
-        return MARGIN + between(left, pen.dim(f" {dot} ".join(LINEAGE)), self._width())
+        return MARGIN + paceline.signature(
+            self.pen, self.glyphs, self.title, self.detail, self._width()
+        )
 
     def _line(self, now: float, *, settled: bool) -> tuple[str, int]:
         width = max(18, min(46, self._width() - 26))
@@ -327,14 +330,18 @@ class Journey:
             "",
         ]
 
-    def _ledger(self, *, with_line: bool = True) -> list[str]:
+    def _marks(self) -> dict[str, str]:
         pen, glyphs = self.pen, self.glyphs
-        marks = {
+        return {
             "done": pen.rgb(glyphs.done, paceline.MINT, 92),
             "skip": pen.dim(glyphs.skip),
             "fail": pen.rgb(glyphs.fail, paceline.ALARM, 91, bold=True),
+            "warn": pen.rgb(glyphs.warn, paceline.LANTERN, 93, bold=True),
         }
-        column = max((len(step.label) for step in self.steps), default=0)
+
+    def _ledger(self, *, with_line: bool = True) -> list[str]:
+        pen, glyphs, marks = self.pen, self.glyphs, self._marks()
+        column = max((len(step.label) for step in self.steps if step.state != "head"), default=0)
         pad = len(glyphs.done)
         lines = ["", self._header()]
         if with_line:
@@ -343,12 +350,17 @@ class Journey:
             headline = clip(self.headline, self._width() - width - 2)
             lines.append(f"{MARGIN}{line}  {pen.rgb(headline, *tone, bold=True)}")
         lines.append("")
-        for step in self.steps:
-            if step.state not in ENDED and self.ok:
+        for index, step in enumerate(self.steps):
+            if step.state == "head":
+                if index:
+                    lines.append("")
+                lines.append(MARGIN + pen.dim(step.label))
+                continue
+            if step.state not in ENDED and step.state != "warn" and self.ok:
                 continue
             mark = marks.get(step.state, " " * pad)
             mark += " " * (pad - visible(mark))
-            text = step.text if step.state in ENDED else "not run"
+            text = step.text if step.state in ENDED or step.state == "warn" else "not run"
             text = clip(text, self._width() - column - pad - 3)
             if step.state != "done":
                 text = pen.dim(text)
@@ -371,15 +383,7 @@ class Journey:
         self._shown += (target - self._shown) * (1 - math.exp(-elapsed / 0.15))
 
     def _draw(self, lines: list[str], *, final: bool = False) -> None:
-        out = ["\x1b[?2026h"]
-        if self._height:
-            out.append(f"\x1b[{self._height}A")
-        if final:
-            out.append("\r\x1b[J")
-        out += [f"\r\x1b[2K{line}\n" for line in lines]
-        out.append("\x1b[?2026l")
-        self._write("".join(out))
-        self._height = len(lines)
+        self._region.draw(lines, final=final)
 
     def _settle(self) -> None:
         self._stop.set()
@@ -397,7 +401,7 @@ class Journey:
 
     def _restore(self) -> None:
         if self.mode == "live" and self._opened:
-            self._write("\x1b[?25h")
+            self._write(SHOW_CURSOR)
             atexit.unregister(self._restore)
 
 
@@ -413,7 +417,11 @@ def report(
     hints: Iterable[str] = (),
     stream: TextIO | None = None,
 ) -> bool:
-    """A finished ledger with no line: `rows` are (state, label, text). True when none failed."""
+    """A finished ledger with no line. True when no row failed.
+
+    `rows` are (state, label, text): `done`, `skip`, `fail`, `warn` for attention
+    short of failure, or `head` for a group heading above the rows that follow.
+    """
     journey = Journey(title, detail=detail, stream=stream)
     journey.steps = [Step(label, label, state=state, text=text) for state, label, text in rows]
     journey.hints = list(hints)
@@ -421,9 +429,12 @@ def report(
         journey._write("\n".join(journey._ledger(with_line=False)) + "\n")
     else:
         journey._plain_header()
-        marks = {"done": "ok", "skip": "--", "fail": "!!"}
-        for step in journey.steps:
-            journey._write(f"  {marks.get(step.state, '  ')}  {step.label:<14} {step.text}\n")
+        for index, step in enumerate(journey.steps):
+            if step.state == "head":
+                journey._write(("\n" if index else "") + f"{step.label}\n")
+                continue
+            mark = PLAIN_MARKS.get(step.state, "  ")
+            journey._write(f"  {mark}  {step.label:<14} {step.text}".rstrip() + "\n")
         for hint in journey.hints:
             journey._write(hint + "\n")
     return journey.ok
