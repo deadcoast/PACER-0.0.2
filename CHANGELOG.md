@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.2.0
+## 3.2.0 — 2026-10-03
 The human layer of the command line: the three commands a person types, made to ask for what is missing, show what they do, and repair what they find.
 
 ### Prompts
