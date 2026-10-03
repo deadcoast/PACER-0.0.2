@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pacer"
-version = "3.0.0"
+version = "3.1.0"
 description = "PACER: project context delivered to coding agents as bounded cards"
 readme = "README.md"
 requires-python = ">=3.11"

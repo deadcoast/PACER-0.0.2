@@ -1,7 +1,6 @@
 # Changelog
 
-## 3.1.0
-
+## 3.1.0 — 2026-10-03
 Updates and releases become one command each, with a display worth watching.
 
 ### Update

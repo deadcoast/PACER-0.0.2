@@ -1,6 +1,6 @@
 {
   "name": "pacer",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "PACER: project context delivered to coding agents as bounded cards over CSV registers, with probes as proof and latches for user decisions.",
   "author": {
     "name": "MIVIM"
