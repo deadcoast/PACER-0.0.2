@@ -63,4 +63,17 @@ Frames of the chooser and the field were captured with a scripted key source, co
 
 ## After the release
 
-To be appended once `scripts/release.py 3.2.0` has synced both hosts: `pacer doctor` with every host row `ok`.
+`scripts/release.py 3.2.0` synced both hosts (Codex: four servers running from the old copy were stopped and restarted by the host), re-proved all eight requirements, tagged `v3.2.0` and pushed. `pacer doctor` then read every row `ok` except one: Claude Code's cache held the `3.0.0` and `3.1.0` directories no entry pointed at. `pacer doctor --fix`:
+
+```
+PACER doctor repairs
+  ok  Claude Code cache removed 3.0.0, 3.1.0
+repaired
+PACER doctor 3.2.0  after repairs  10s
+…
+  ok  Claude Code cache one copy per installed version
+…
+  ok  evidence       8 proven, all current
+```
+
+Exit 0. The cache holds `3.2.0` alone.

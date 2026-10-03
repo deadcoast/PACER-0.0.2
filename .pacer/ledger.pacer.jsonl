@@ -1221,3 +1221,8 @@
 {"at":"2026-10-03T22:48:19Z","actor":"release","op":"probe","id":"OGM-039","detail":{"evidence":"rev:41cd5ac src:aded499 exit:0 out:03f0ea0 at:2026-10-03T22:48:19Z","exit":0,"output_path":".pacer/run/probes/OGM-039/2026-10-03T224819Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/display/keys.py":"2fabd12","plugins/pacer/src/pacer/display/prompt.py":"69ec4c3"}}}
 {"at":"2026-10-03T22:48:20Z","actor":"release","op":"probe","id":"OGM-040","detail":{"evidence":"rev:41cd5ac src:2fbc9e2 exit:0 out:66e6738 at:2026-10-03T22:48:20Z","exit":0,"output_path":".pacer/run/probes/OGM-040/2026-10-03T224820Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/hosts.py":"5c7ac18","plugins/pacer/src/pacer/initiate.py":"d9a4f4a"}}}
 {"at":"2026-10-03T22:48:22Z","actor":"release","op":"probe","id":"OGM-041","detail":{"evidence":"rev:41cd5ac src:c8c486d exit:0 out:18e9dd3 at:2026-10-03T22:48:22Z","exit":0,"output_path":".pacer/run/probes/OGM-041/2026-10-03T224822Z.txt","freshness":"CURRENT","files":{"plugins/pacer/src/pacer/doctor.py":"2ebdc33"}}}
+{"at":"2026-10-03T22:49:00Z","actor":"hook","op":"touch","id":"PAC-067","detail":{"path":"docs/trials/human-cli-3.2.0.md"}}
+{"at":"2026-10-03T22:49:04Z","actor":"claude","op":"status","id":"PAC-067","detail":{"from":"ACTIVE","to":"DONE"}}
+{"at":"2026-10-03T22:49:04Z","actor":"claude","op":"status","id":"PAC-062","detail":{"from":"ACTIVE","to":"INTEGRATED"}}
+{"at":"2026-10-03T22:49:04Z","actor":"claude","op":"absorb","id":"NDL-021","detail":{}}
+{"at":"2026-10-03T22:49:04Z","actor":"claude","op":"absorb","id":"NDL-022","detail":{}}
